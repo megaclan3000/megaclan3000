@@ -12,7 +12,7 @@ var steamAPIKey string
 var playerInfo *SteamPlayerInfo
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	t, _ := template.ParseFiles("view.html")
+	t, _ := template.ParseFiles("views/stats.html")
 	data := playerInfo.GetAll()
 	t.Execute(w, data)
 }
