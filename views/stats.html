@@ -18,30 +18,47 @@
 						<div class="card cyan darken-3">
 							<div class="card-content white-text">
 								<span class="card-title">
-
-									<img src="{{$val.Avatarfull}}" style="width:50px;height:50px;vertical-align: middle" alt="">&nbsp;&nbsp;
-									{{$val.Personaname}} 
 									<span class="new badge red" data-badge-caption="">offline</span>
+									<img src="{{$val.Avatarfull}}" style="width:50px;height:50px;vertical-align: middle" alt=""></td>
+									&nbsp;&nbsp;<a href="{{$val.Profileurl}}" target="_blank" class="white-text">{{$val.Personaname}}</a>&nbsp;<span style="font-size: 0.75rem; color: #dddddd">(ID: {{$val.Steamid}})</span>
+										
 								</span>
 								<br>
-								<table class="white-text">
+								<table class="centered white-text">
 									<tr>
-										<th>Field</th>
-										<th>Value</th>
-									</tr>
-									<tr>
-										<td>Steam ID</td>
-										<td>{{$val.Steamid}}</td>
-									</tr>
-									<tr>
-										<td>Total Kills</td>
-										<td> {{index $val.Stats "total_kills"}} </td>
-									</tr>
-									<tr>
-										<td>Last Match kills</td>
-										<td>{{index $val.Stats "last_match_kills"}} </td>
+										<td>
+											<i class="medium material-icons" style="vertical-align: middle !important;font-size: 2.3rem;">beenhere</i>
+											&nbsp;&nbsp;
+											{{index $val.Stats "total_wins"}}
+										</td>
+										<td>
+											<i class="medium material-icons" style="vertical-align: middle !important;font-size: 2.3rem;">timer</i>
+											&nbsp;&nbsp;
+											{{index $val.Stats "total_time_played"}} sec
+										</td>
 									</tr>
 								</table>
+
+								<table class="centered white-text">
+									<tr>
+										<th>kills / deaths</th>
+										<td> {{index $val.Stats "total_kills"}} / {{index $val.Stats "total_deaths"}}</td>
+										<td>RATIO</td>
+									</tr>
+									<tr>
+										<th>kills (last match)</th>
+										<td>{{index $val.Stats "last_match_kills"}} </td>
+										<td>&nbsp;</td>
+									</tr>
+									<tr>
+										<th>shots hit / fired</th>
+										<td>{{index $val.Stats "total_shots_hit"}} / {{index $val.Stats "total_shots_fired"}}</td>
+										<td>PERCENTAGE</td>
+									</tr>
+
+									
+								</table>
+
 							</div>
 						</div>
 					</div>
