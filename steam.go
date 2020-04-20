@@ -10,30 +10,6 @@ import (
 	"time"
 )
 
-func GetAllPlayers() []PlayerInfo {
-
-	//TODO add IDs
-	IDs := []string{
-		"76561197978015984", //kapo
-		"76561198092006615", //pablo
-		"76561198104947907", //felix
-		"76561197962156894", //alex
-		"76561197967611281", //manu
-		"76561198217140904", //bene
-		"76561198242556348", //sonarse
-		"76561198881047143", //lukas
-		"76561197978562286", //enrico
-
-	}
-	var players []PlayerInfo
-
-	for _, v := range IDs {
-		players = append(players, getPlayerInfo(v))
-	}
-
-	return players
-}
-
 // PlayerInfo contains the information to be shown of a given player
 type PlayerInfo struct {
 	ID                       string
@@ -82,7 +58,6 @@ func getPlayerInfo(steamID string) PlayerInfo {
 	info.Loccountrycode = people1.Response.Players[0].Loccountrycode
 	info.Locstatecode = people1.Response.Players[0].Locstatecode
 
-	// info.Name = getPlayerName(steamID)
 	info.Stats = getPlayerStats(steamID)
 
 	return info
@@ -90,9 +65,7 @@ func getPlayerInfo(steamID string) PlayerInfo {
 
 func getPlayerStats(steamID string) map[string]string {
 
-	// url := "http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid=730&key=" + steamAPIKey + "&steamid=" + steamID
 	url := "https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=730&key=" + steamAPIKey + "&steamid=" + steamID
-	// url := "https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/
 
 	people1 := SteamData{}
 	getJson(url, &people1)
@@ -151,13 +124,9 @@ func getJson(url string, target interface{}) error {
 	r, err := myClient.Get(url)
 	if err != nil {
 		log.Fatal(err)
-		// return err
 	}
 
 	log.Println("Getting: ", url, " --------------")
-	// log.Println(url)
-	// log.Println(r.Body)
-	// log.Println("--------------")
 	defer r.Body.Close()
 
 	return json.NewDecoder(r.Body).Decode(target)

@@ -9,10 +9,11 @@ import (
 )
 
 var steamAPIKey string
+var playerInfo *SteamPlayerInfo
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	t, _ := template.ParseFiles("view.html")
-	data := GetAllPlayers()
+	data := playerInfo.GetAll()
 	t.Execute(w, data)
 }
 
@@ -24,6 +25,8 @@ func main() {
 	}
 
 	steamAPIKey = strings.TrimSuffix(string(content), "\n")
+
+	playerInfo = NewSteamPlayerInfo()
 
 	http.HandleFunc("/", handler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
