@@ -13,55 +13,54 @@
 			</div>
 			<div class="row">
 				{{range $val := .}}
+				<div class="col s12 m12 l6">
+					<div class="card cyan darken-3">
+						<div class="card-content white-text">
+							<span class="card-title">
+								<span class="new badge red" data-badge-caption="">offline</span>
+								<img src="{{$val.Avatarfull}}" style="width:50px;height:50px;vertical-align: middle" alt=""></td>
+							&nbsp;&nbsp;<a href="{{$val.Profileurl}}" target="_blank" class="white-text">{{$val.Personaname}}</a>&nbsp;<span style="font-size: 0.75rem; color: #dddddd">(ID: {{$val.Steamid}})</span>
 
-					<div class="col s12 m12 l6">
-						<div class="card cyan darken-3">
-							<div class="card-content white-text">
-								<span class="card-title">
-									<span class="new badge red" data-badge-caption="">offline</span>
-									<img src="{{$val.Avatarfull}}" style="width:50px;height:50px;vertical-align: middle" alt=""></td>
-									&nbsp;&nbsp;<a href="{{$val.Profileurl}}" target="_blank" class="white-text">{{$val.Personaname}}</a>&nbsp;<span style="font-size: 0.75rem; color: #dddddd">(ID: {{$val.Steamid}})</span>
-										
-								</span>
-								<br>
-								<table class="centered white-text">
-									<tr>
-										<td>
-											<i class="medium material-icons" style="vertical-align: middle !important;font-size: 2.3rem;">beenhere</i>
-											&nbsp;&nbsp;
-											{{index $val.Stats "total_wins"}}
-										</td>
-										<td>
-											<i class="medium material-icons" style="vertical-align: middle !important;font-size: 2.3rem;">timer</i>
-											&nbsp;&nbsp;
-											{{index $val.Stats "total_time_played"}} sec
-										</td>
-									</tr>
-								</table>
+							</span>
+							<br>
+							<table class="centered white-text">
+								<tr>
+									<td>
+										<i class="medium material-icons" style="vertical-align: middle !important;font-size: 2.3rem;">beenhere</i>
+										&nbsp;&nbsp;
+										{{index $val.Stats "total_wins"}}
+									</td>
+									<td>
+										<i class="medium material-icons" style="vertical-align: middle !important;font-size: 2.3rem;">timer</i>
+										&nbsp;&nbsp;
+										{{index $val.Playtime "PlaytimeForever"}} h
+									</td>
+								</tr>
+							</table>
 
-								<table class="centered white-text">
-									<tr>
-										<th>kills / deaths</th>
-										<td> {{index $val.Stats "total_kills"}} / {{index $val.Stats "total_deaths"}}</td>
-										<td>RATIO</td>
-									</tr>
-									<tr>
-										<th>kills (last match)</th>
-										<td>{{index $val.Stats "last_match_kills"}} </td>
-										<td>&nbsp;</td>
-									</tr>
-									<tr>
-										<th>shots hit / fired</th>
-										<td>{{index $val.Stats "total_shots_hit"}} / {{index $val.Stats "total_shots_fired"}}</td>
-										<td>PERCENTAGE</td>
-									</tr>
+							<table class="centered white-text">
+								<tr>
+									<th>K / D</th>
+									<td> {{index $val.Stats "total_kills"}} / {{index $val.Stats "total_deaths"}}</td>
+									<td>{{$val.TotalKD}}</td>
+								</tr>
+								<tr>
+									<th>K / D (Last Match)</th>
+									<td> {{index $val.Stats "last_match_kills"}} / {{index $val.Stats "last_match_deaths"}}</td>
+									<td>{{$val.LastMatchKD}}</td>
+								</tr>
+								<tr>
+									<th>shots hit / fired</th>
+									<td>{{index $val.Stats "total_shots_hit"}} / {{index $val.Stats "total_shots_fired"}}</td>
+									<td>{{$val.HitRatio}}</td>
+								</tr>
 
-									
-								</table>
 
-							</div>
+							</table>
+
 						</div>
 					</div>
+				</div>
 
 				{{end}}
 			</div>

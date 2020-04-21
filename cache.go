@@ -21,11 +21,13 @@ func NewSteamPlayerInfo() *SteamPlayerInfo {
 		"76561197962156894", //alex
 		"76561197967611281", //manu
 		"76561198217140904", //bene
-		"76561198242556348", //sonarse
+		"76561198962966497", //silvarse
 		"76561198881047143", //lukas
 		"76561197978562286", //enrico
 
 	}
+
+	// "76561198242556348", //sonarse
 
 	info := SteamPlayerInfo{
 		players:    players,
