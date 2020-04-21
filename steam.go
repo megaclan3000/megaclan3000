@@ -121,7 +121,6 @@ func getPlaytime(steamID string) map[string]string {
 	stats := make(map[string]string)
 
 	for _, v := range people1.Response.Games {
-		log.Println(v)
 		if v.Appid == 730 {
 			stats["PlaytimeForever"] = strconv.Itoa(v.PlaytimeForever / 60)
 			stats["Playtime2Weeks"] = strconv.Itoa(v.Playtime2Weeks / 60)
@@ -193,7 +192,7 @@ func getJson(url string, target interface{}) error {
 		log.Fatal(err)
 	}
 
-	log.Println("Getting: ", url, " --------------")
+	log.Println("Getting: ", url, "\n--------------")
 	defer r.Body.Close()
 
 	return json.NewDecoder(r.Body).Decode(target)
