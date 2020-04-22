@@ -12,6 +12,7 @@ import (
 var myClient = &http.Client{Timeout: 10 * time.Second}
 
 func getJson(url string, target interface{}) error {
+	log.Println("Downloading:", url)
 	r, err := myClient.Get(url)
 	if err != nil {
 		log.Fatal(err)
