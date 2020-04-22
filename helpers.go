@@ -18,6 +18,11 @@ func getJson(url string, target interface{}) error {
 		log.Fatal(err)
 	}
 
+	if r.StatusCode != 200 {
+		log.Println("Failed to get data from:")
+		log.Println("'" + url + "'")
+		log.Println(r.StatusCode, http.StatusText(r.StatusCode))
+	}
 	defer r.Body.Close()
 	return json.NewDecoder(r.Body).Decode(target)
 }

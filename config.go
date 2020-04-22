@@ -36,6 +36,7 @@ func (conf *SteamConfig) Refresh() {
 	players := []PlayerInfo{}
 
 	for _, v := range config.SteamIDs {
+		log.Println("")
 		log.Println("Fetching data for ID:", v)
 
 		players = append(players, getPlayerInfo(v))
