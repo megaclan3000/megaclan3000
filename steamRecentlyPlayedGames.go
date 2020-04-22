@@ -1,9 +1,11 @@
 package main
 
+import "strconv"
+
 // https://developer.valvesoftware.com/wiki/Steam_Web_API#GetRecentlyPlayedGames_.28v0001.29
 // http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=XXXXXXXXXXXXXXXXX&steamid=76561197960434622&format=json
 
-type RecentlyPlayedGamesData struct {
+type recentlyPlayedGamesData struct {
 	Response struct {
 
 		// the total number of unique games the user has played in the last
@@ -39,4 +41,43 @@ type RecentlyPlayedGamesData struct {
 			PlaytimeLinuxForever   int `json:"playtime_linux_forever"`
 		} `json:"games"`
 	} `json:"response"`
+}
+
+type RecentlyPlayedGames struct {
+	Appid                  string
+	Name                   string
+	Playtime2Weeks         string
+	PlaytimeForever        string
+	ImgIconURL             string
+	ImgLogoURL             string
+	PlaytimeWindowsForever string
+	PlaytimeMacForever     string
+	PlaytimeLinuxForever   string
+}
+
+func getRecentlyPlayedGames(steamID string) RecentlyPlayedGames {
+
+	url := "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=" + steamAPIKey + "&steamid=" + steamID
+
+	data := recentlyPlayedGamesData{}
+	getJson(url, &data)
+
+	for _, v := range data.Response.Games {
+		if v.Appid == 730 {
+
+			return RecentlyPlayedGames{
+
+				Appid:                  strconv.Itoa(v.Appid),
+				Name:                   v.Name,
+				Playtime2Weeks:         strconv.Itoa(v.Playtime2Weeks / 60),
+				PlaytimeForever:        strconv.Itoa(v.PlaytimeForever / 60),
+				ImgIconURL:             v.ImgIconURL,
+				ImgLogoURL:             v.ImgLogoURL,
+				PlaytimeWindowsForever: strconv.Itoa(v.PlaytimeWindowsForever / 60),
+				PlaytimeMacForever:     strconv.Itoa(v.PlaytimeMacForever / 60),
+				PlaytimeLinuxForever:   strconv.Itoa(v.PlaytimeLinuxForever / 60),
+			}
+		}
+	}
+	return RecentlyPlayedGames{}
 }

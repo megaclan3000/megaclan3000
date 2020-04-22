@@ -18,8 +18,8 @@
 						<div class="card-content white-text">
 							<span class="card-title">
 								<span class="new badge red" data-badge-caption="">offline</span>
-								<img src="{{$val.Avatarfull}}" style="width:50px;height:50px;vertical-align: middle" alt=""></td>
-							&nbsp;&nbsp;<a href="{{$val.Profileurl}}" target="_blank" class="white-text">{{$val.Personaname}}</a>&nbsp;<span style="font-size: 0.75rem; color: #dddddd">(ID: {{$val.Steamid}})</span>
+								<img src="{{$val.PlayerSummary.Avatarfull}}" style="width:50px;height:50px;vertical-align: middle" alt=""></td>
+							&nbsp;&nbsp;<a href="{{$val.PlayerSummary.Profileurl}}" target="_blank" class="white-text">{{$val.PlayerSummary.Personaname}}</a>&nbsp;<span style="font-size: 0.75rem; color: #dddddd">(ID: {{$val.PlayerSummary.Steamid}})</span>
 
 							</span>
 							<br>
@@ -28,12 +28,12 @@
 									<td>
 										<i class="medium material-icons" style="vertical-align: middle !important;font-size: 2.3rem;">beenhere</i>
 										&nbsp;&nbsp;
-										{{index $val.Stats "total_wins"}}
+										{{index $val.UserStatsForGame.Stats "total_wins"}}
 									</td>
 									<td>
 										<i class="medium material-icons" style="vertical-align: middle !important;font-size: 2.3rem;">timer</i>
 										&nbsp;&nbsp;
-										{{index $val.Playtime "PlaytimeForever"}} h
+										{{$val.RecentlyPlayedGames.PlaytimeForever}} h
 									</td>
 								</tr>
 							</table>
@@ -41,18 +41,18 @@
 							<table class="centered white-text">
 								<tr>
 									<th>K / D</th>
-									<td> {{index $val.Stats "total_kills"}} / {{index $val.Stats "total_deaths"}}</td>
-									<td>{{$val.TotalKD}}</td>
+									<td> {{index $val.UserStatsForGame.Stats "total_kills"}} / {{index $val.UserStatsForGame.Stats "total_deaths"}}</td>
+									<td>{{index $val.UserStatsForGame.Stats "total_kd"}}</td>
 								</tr>
 								<tr>
 									<th>K / D (Last Match)</th>
-									<td> {{index $val.Stats "last_match_kills"}} / {{index $val.Stats "last_match_deaths"}}</td>
-									<td>{{$val.LastMatchKD}}</td>
+									<td> {{index $val.UserStatsForGame.Stats "last_match_kills"}} / {{index $val.UserStatsForGame.Stats "last_match_deaths"}}</td>
+									<td>{{index $val.UserStatsForGame.Stats "last_match_kd"}}</td>
 								</tr>
 								<tr>
 									<th>shots hit / fired</th>
-									<td>{{index $val.Stats "total_shots_hit"}} / {{index $val.Stats "total_shots_fired"}}</td>
-									<td>{{$val.HitRatio}}</td>
+									<td>{{index $val.UserStatsForGame.Stats "total_shots_hit"}} / {{index $val.UserStatsForGame.Stats "total_shots_fired"}}</td>
+									<td>{{index $val.UserStatsForGame.Stats "hit_ratio"}}</td>
 								</tr>
 
 
