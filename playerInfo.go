@@ -15,7 +15,5 @@ func getPlayerInfo(steamID string) PlayerInfo {
 	info.UserStatsForGame = getUserStatsForGame(steamID)
 	info.RecentlyPlayedGames = getRecentlyPlayedGames(steamID)
 
-	// spew.Dump(info)
-
 	return info
 }

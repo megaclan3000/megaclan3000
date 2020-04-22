@@ -32,7 +32,7 @@ type UserStatsForGame struct {
 
 func getUserStatsForGame(steamID string) UserStatsForGame {
 
-	url := "https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=730&key=" + steamAPIKey + "&steamid=" + steamID
+	url := "https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=730&key=" + config.SteamAPIKey + "&steamid=" + steamID
 	data := userStatsForGameData{}
 	getJson(url, &data)
 
