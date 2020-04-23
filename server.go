@@ -4,6 +4,9 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"time"
+
+	"github.com/gorilla/mux"
 	// "github.com/davecgh/go-spew/spew"
 )
 
@@ -14,12 +17,42 @@ func main() {
 	config = readConfig()
 	config.Refresh()
 
-	http.HandleFunc("/", handler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	r := mux.NewRouter()
+	r.HandleFunc("/", handlerStats)
+	r.HandleFunc("/player/{id}", handlerDetails)
+	r.NotFoundHandler = http.HandlerFunc(handler404)
+
+	srv := &http.Server{
+		Handler:      r,
+		Addr:         "0.0.0.0:8080",
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+
+	log.Fatal(srv.ListenAndServe())
+
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
+func handlerStats(w http.ResponseWriter, r *http.Request) {
 	t, _ := template.ParseFiles("views/stats.html")
 	data := config.GetAll()
 	t.Execute(w, data)
+}
+
+func handler404(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "views/404.html")
+}
+
+func handlerDetails(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	players := config.GetAll()
+
+	for _, p := range players {
+		if vars["id"] == p.PlayerSummary.Steamid {
+			t, _ := template.ParseFiles("views/details.html")
+			t.Execute(w, p)
+			return
+		}
+	}
+	http.ServeFile(w, r, "views/404.html")
 }
