@@ -1,10 +1,7 @@
 package main
 
 import (
-	"log"
 	"strconv"
-
-	"github.com/davecgh/go-spew/spew"
 )
 
 type playerSummariesData struct {
@@ -154,7 +151,7 @@ func getPlayerSummary(steamID string) PlayerSummary {
 	data := playerSummariesData{}
 	getJson(url, &data)
 
-	sum := PlayerSummary{
+	return PlayerSummary{
 		Avatar:                   data.Response.Players[0].Avatar,
 		Avatarfull:               data.Response.Players[0].Avatarfull,
 		Avatarmedium:             data.Response.Players[0].Avatarmedium,
@@ -177,14 +174,5 @@ func getPlayerSummary(steamID string) PlayerSummary {
 		Steamid:                  data.Response.Players[0].Steamid,
 		Timecreated:              strconv.Itoa(data.Response.Players[0].Timecreated),
 	}
-	log.Println("-----------------------------------------------------------------------------------")
-	log.Println(sum.Personaname)
-	log.Println(sum.Avatar)
-	log.Println("JSON -----------------------------------------------------------------------------------")
-	spew.Dump(data)
-	log.Println("OBJECT-----------------------------------------------------------------------------------")
-	spew.Dump(sum)
-	log.Println("END -----------------------------------------------------------------------------------")
 
-	return sum
 }
