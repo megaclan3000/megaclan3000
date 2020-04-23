@@ -181,7 +181,7 @@ func getPlayerSummary(steamID string) PlayerSummary {
 	log.Println(sum.Personaname)
 	log.Println(sum.Avatar)
 	log.Println("JSON -----------------------------------------------------------------------------------")
-	log.Println(data)
+	spew.Dump(data)
 	log.Println("OBJECT-----------------------------------------------------------------------------------")
 	spew.Dump(sum)
 	log.Println("END -----------------------------------------------------------------------------------")
