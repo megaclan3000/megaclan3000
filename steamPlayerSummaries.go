@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"strconv"
 
 	"github.com/davecgh/go-spew/spew"
@@ -176,6 +177,9 @@ func getPlayerSummary(steamID string) PlayerSummary {
 		Steamid:                  data.Response.Players[0].Steamid,
 		Timecreated:              strconv.Itoa(data.Response.Players[0].Timecreated),
 	}
+	log.Println(sum.Personaname)
+	log.Println(sum.Avatar)
+
 	spew.Dump(sum)
 	return sum
 }
