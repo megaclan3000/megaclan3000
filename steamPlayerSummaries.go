@@ -177,9 +177,14 @@ func getPlayerSummary(steamID string) PlayerSummary {
 		Steamid:                  data.Response.Players[0].Steamid,
 		Timecreated:              strconv.Itoa(data.Response.Players[0].Timecreated),
 	}
+	log.Println("-----------------------------------------------------------------------------------")
 	log.Println(sum.Personaname)
 	log.Println(sum.Avatar)
-
+	log.Println("JSON -----------------------------------------------------------------------------------")
+	log.Println(data)
+	log.Println("OBJECT-----------------------------------------------------------------------------------")
 	spew.Dump(sum)
+	log.Println("END -----------------------------------------------------------------------------------")
+
 	return sum
 }
