@@ -1,6 +1,10 @@
 package main
 
-import "strconv"
+import (
+	"strconv"
+
+	"github.com/davecgh/go-spew/spew"
+)
 
 type playerSummariesData struct {
 	// https://developer.valvesoftware.com/wiki/Steam_Web_API#GetPlayerSummaries_.28v0002.29
@@ -149,7 +153,7 @@ func getPlayerSummary(steamID string) PlayerSummary {
 	data := playerSummariesData{}
 	getJson(url, &data)
 
-	return PlayerSummary{
+	sum := PlayerSummary{
 		Avatar:                   data.Response.Players[0].Avatar,
 		Avatarfull:               data.Response.Players[0].Avatarfull,
 		Avatarmedium:             data.Response.Players[0].Avatarmedium,
@@ -172,4 +176,6 @@ func getPlayerSummary(steamID string) PlayerSummary {
 		Steamid:                  data.Response.Players[0].Steamid,
 		Timecreated:              strconv.Itoa(data.Response.Players[0].Timecreated),
 	}
+	spew.Dump(sum)
+	return sum
 }
