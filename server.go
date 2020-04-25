@@ -27,6 +27,7 @@ func main() {
 	// Define routes
 	r.HandleFunc("/", handlerStats)
 	r.HandleFunc("/discord", handlerDiscord)
+	r.HandleFunc("/faq", handlerFAQ)
 	r.HandleFunc("/player/{id}", handlerDetails)
 
 	// Set custom 404 page
