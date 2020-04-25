@@ -17,7 +17,13 @@
 					<div class="card cyan darken-3">
 						<div class="card-content white-text">
 							<span class="card-title">
-								<span class="new badge red" data-badge-caption="">offline</span>
+
+								{{if eq $val.PlayerSummary.Personastate "0"}} 
+									<span class="new badge red" data-badge-caption="">offline</span>
+								{{else}} 
+									<span class="new badge green" data-badge-caption="">online</span>
+								{{end}}
+
 								<img src="{{$val.PlayerSummary.Avatarfull}}" style="width:50px;height:50px;vertical-align: middle" alt=""></td>
 							&nbsp;&nbsp;<a href="{{$val.PlayerSummary.Profileurl}}" target="_blank" class="white-text">{{$val.PlayerSummary.Personaname}}</a>&nbsp;<span style="font-size: 0.75rem; color: #dddddd">(ID: {{$val.PlayerSummary.Steamid}})</span>
 
