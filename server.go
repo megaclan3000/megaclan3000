@@ -60,6 +60,10 @@ func handlerDiscord(w http.ResponseWriter, r *http.Request) {
 	t.ExecuteTemplate(w, "discord.html", nil)
 }
 
+func handlerFAQ(w http.ResponseWriter, r *http.Request) {
+	t.ExecuteTemplate(w, "faq.html", nil)
+}
+
 func handler404(w http.ResponseWriter, r *http.Request) {
 	t.ExecuteTemplate(w, "404.html", nil)
 }
