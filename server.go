@@ -15,20 +15,22 @@ var t *template.Template
 
 func main() {
 
+	// Read config and pull initial data
 	config = readConfig()
 	config.Refresh()
 
 	r := mux.NewRouter()
+
+	// Serve all static files in public directory
+	r.PathPrefix("/public/").Handler(http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
+
+	// Define routes
 	r.HandleFunc("/", handlerStats)
 	r.HandleFunc("/player/{id}", handlerDetails)
-	r.NotFoundHandler = http.HandlerFunc(handler404)
+	r.HandleFunc("/discord", handlerDiscord)
 
-	srv := &http.Server{
-		Handler:      r,
-		Addr:         "0.0.0.0:8080",
-		WriteTimeout: 15 * time.Second,
-		ReadTimeout:  15 * time.Second,
-	}
+	// Set custom 404 page
+	r.NotFoundHandler = http.HandlerFunc(handler404)
 
 	// Parse all templates
 	var err error
@@ -38,12 +40,24 @@ func main() {
 		os.Exit(-1)
 	}
 
+	// Set up the HTTP-server
+	srv := &http.Server{
+		Handler:      r,
+		Addr:         "0.0.0.0:8080",
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+
 	log.Fatal(srv.ListenAndServe())
 }
 
 func handlerStats(w http.ResponseWriter, r *http.Request) {
 	data := config.GetAll()
 	t.ExecuteTemplate(w, "stats.html", data)
+}
+
+func handlerDiscord(w http.ResponseWriter, r *http.Request) {
+	t.ExecuteTemplate(w, "discord.html", nil)
 }
 
 func handler404(w http.ResponseWriter, r *http.Request) {
