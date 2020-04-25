@@ -7,45 +7,58 @@ page with info about:
 <h1>weapons</h1>
 
 
-						{{ index .UserStatsForGame.Stats "total_kills_knife"}}
-						{{ index .UserStatsForGame.Stats "total_kills_hegrenade"}}
-						{{ index .UserStatsForGame.Stats "total_kills_glock"}}
-						{{ index .UserStatsForGame.Stats "total_kills_deagle"}}
-						{{ index .UserStatsForGame.Stats "total_kills_elite"}}
-						{{ index .UserStatsForGame.Stats "total_kills_fiveseven"}}
-						{{ index .UserStatsForGame.Stats "total_kills_xm1014"}}
-						{{ index .UserStatsForGame.Stats "total_kills_mac10"}}
-						{{ index .UserStatsForGame.Stats "total_kills_ump45"}}
-						{{ index .UserStatsForGame.Stats "total_kills_p90"}}
-						{{ index .UserStatsForGame.Stats "total_kills_awp"}}
-						{{ index .UserStatsForGame.Stats "total_kills_ak47"}}
-						{{ index .UserStatsForGame.Stats "total_kills_aug"}}
-						{{ index .UserStatsForGame.Stats "total_kills_famas"}}
-						{{ index .UserStatsForGame.Stats "total_kills_g3sg1"}}
-						{{ index .UserStatsForGame.Stats "total_kills_m249"}}
-						{{ index .UserStatsForGame.Stats "total_kills_headshot"}}
-						{{ index .UserStatsForGame.Stats "total_kills_enemy_weapon"}}
-						{{ index .UserStatsForGame.Stats "total_kills_enemy_blinded"}}
-						{{ index .UserStatsForGame.Stats "total_kills_knife_fight"}}
-						{{ index .UserStatsForGame.Stats "total_kills_against_zoomed_sniper"}}
-						{{ index .UserStatsForGame.Stats "total_kills_hkp2000"}}
-						{{ index .UserStatsForGame.Stats "total_kills_p250"}}
-						{{ index .UserStatsForGame.Stats "total_kills_sg556"}}
-						{{ index .UserStatsForGame.Stats "total_kills_scar20"}}
-						{{ index .UserStatsForGame.Stats "total_kills_ssg08"}}
-						{{ index .UserStatsForGame.Stats "total_kills_mp7"}}
-						{{ index .UserStatsForGame.Stats "total_kills_mp9"}}
-						{{ index .UserStatsForGame.Stats "total_kills_nova"}}
-						{{ index .UserStatsForGame.Stats "total_kills_negev"}}
-						{{ index .UserStatsForGame.Stats "total_kills_sawedoff"}}
-						{{ index .UserStatsForGame.Stats "total_kills_bizon"}}
-						{{ index .UserStatsForGame.Stats "total_kills_tec9"}}
-						{{ index .UserStatsForGame.Stats "total_kills_mag7"}}
-						{{ index .UserStatsForGame.Stats "total_kills_m4a1"}}
-						{{ index .UserStatsForGame.Stats "total_kills_galilar"}}
-						{{ index .UserStatsForGame.Stats "total_kills_molotov"}}
+{{ index .UserStatsForGame.Stats "total_kills_knife"}}
+{{ index .UserStatsForGame.Stats "total_kills_hegrenade"}}
+{{ index .UserStatsForGame.Stats "total_kills_glock"}}
+{{ index .UserStatsForGame.Stats "total_kills_deagle"}}
+{{ index .UserStatsForGame.Stats "total_kills_elite"}}
+{{ index .UserStatsForGame.Stats "total_kills_fiveseven"}}
+{{ index .UserStatsForGame.Stats "total_kills_xm1014"}}
+{{ index .UserStatsForGame.Stats "total_kills_mac10"}}
+{{ index .UserStatsForGame.Stats "total_kills_ump45"}}
+{{ index .UserStatsForGame.Stats "total_kills_p90"}}
+{{ index .UserStatsForGame.Stats "total_kills_awp"}}
+{{ index .UserStatsForGame.Stats "total_kills_ak47"}}
+{{ index .UserStatsForGame.Stats "total_kills_aug"}}
+{{ index .UserStatsForGame.Stats "total_kills_famas"}}
+{{ index .UserStatsForGame.Stats "total_kills_g3sg1"}}
+{{ index .UserStatsForGame.Stats "total_kills_m249"}}
+{{ index .UserStatsForGame.Stats "total_kills_headshot"}}
+{{ index .UserStatsForGame.Stats "total_kills_enemy_weapon"}}
+{{ index .UserStatsForGame.Stats "total_kills_enemy_blinded"}}
+{{ index .UserStatsForGame.Stats "total_kills_knife_fight"}}
+{{ index .UserStatsForGame.Stats "total_kills_against_zoomed_sniper"}}
+{{ index .UserStatsForGame.Stats "total_kills_hkp2000"}}
+{{ index .UserStatsForGame.Stats "total_kills_p250"}}
+{{ index .UserStatsForGame.Stats "total_kills_sg556"}}
+{{ index .UserStatsForGame.Stats "total_kills_scar20"}}
+{{ index .UserStatsForGame.Stats "total_kills_ssg08"}}
+{{ index .UserStatsForGame.Stats "total_kills_mp7"}}
+{{ index .UserStatsForGame.Stats "total_kills_mp9"}}
+{{ index .UserStatsForGame.Stats "total_kills_nova"}}
+{{ index .UserStatsForGame.Stats "total_kills_negev"}}
+{{ index .UserStatsForGame.Stats "total_kills_sawedoff"}}
+{{ index .UserStatsForGame.Stats "total_kills_bizon"}}
+{{ index .UserStatsForGame.Stats "total_kills_tec9"}}
+{{ index .UserStatsForGame.Stats "total_kills_mag7"}}
+{{ index .UserStatsForGame.Stats "total_kills_m4a1"}}
+{{ index .UserStatsForGame.Stats "total_kills_galilar"}}
+{{ index .UserStatsForGame.Stats "total_kills_molotov"}}
 
 <h1>maps</h1>
-
+{{ index .UserStatsForGame.Stats "total_wins_map_cs_italy"}}
+{{ index .UserStatsForGame.Stats "total_wins_map_de_cbble"}}
+{{ index .UserStatsForGame.Stats "total_wins_map_de_dust2"}}
+{{ index .UserStatsForGame.Stats "total_wins_map_de_dust"}}
+{{ index .UserStatsForGame.Stats "total_wins_map_de_inferno"}}
+{{ index .UserStatsForGame.Stats "total_wins_map_de_nuke"}}
+{{ index .UserStatsForGame.Stats "total_wins_map_de_train"}}
+{{ index .UserStatsForGame.Stats "total_wins_map_de_bank"}}
+{{ index .UserStatsForGame.Stats "total_wins_map_de_vertigo"}}
+{{ index .UserStatsForGame.Stats "total_wins_map_ar_baggage"}}
+{{ index .UserStatsForGame.Stats "total_wins_map_de_lake"}}
+{{ index .UserStatsForGame.Stats "total_wins_map_de_sugarcane"}}
+{{ index .UserStatsForGame.Stats "total_wins_map_de_stmarc"}}
+{{ index .UserStatsForGame.Stats "total_wins_map_de_safehouse"}}
 
 {{template "footer.html"}}
