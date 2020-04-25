@@ -26,8 +26,8 @@ func main() {
 
 	// Define routes
 	r.HandleFunc("/", handlerStats)
-	r.HandleFunc("/player/{id}", handlerDetails)
 	r.HandleFunc("/discord", handlerDiscord)
+	r.HandleFunc("/player/{id}", handlerDetails)
 
 	// Set custom 404 page
 	r.NotFoundHandler = http.HandlerFunc(handler404)
