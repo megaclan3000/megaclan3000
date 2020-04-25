@@ -33,7 +33,7 @@ func main() {
 
 	// Parse all templates
 	var err error
-	t, err = template.ParseGlob("./views/*")
+	t, err = template.ParseGlob("./templates/*")
 	if err != nil {
 		log.Println("Cannot parse templates:", err)
 		os.Exit(-1)
@@ -43,14 +43,12 @@ func main() {
 }
 
 func handlerStats(w http.ResponseWriter, r *http.Request) {
-	// t, _ := template.ParseFiles("views/stats.html")
 	data := config.GetAll()
-	t.Execute(w, data)
-	t.ExecuteTemplate(w, "views/stats.html", data)
+	t.ExecuteTemplate(w, "stats.html", data)
 }
 
 func handler404(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "views/404.html")
+	t.ExecuteTemplate(w, "404.html", nil)
 }
 
 func handlerDetails(w http.ResponseWriter, r *http.Request) {
@@ -59,10 +57,9 @@ func handlerDetails(w http.ResponseWriter, r *http.Request) {
 
 	for _, p := range players {
 		if vars["id"] == p.PlayerSummary.Steamid {
-			t, _ := template.ParseFiles("views/details.html")
-			t.Execute(w, p)
+			t.ExecuteTemplate(w, "details.html", p)
 			return
 		}
 	}
-	http.ServeFile(w, r, "views/404.html")
+	t.ExecuteTemplate(w, "404.html", nil)
 }
