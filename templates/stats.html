@@ -1,0 +1,68 @@
+{{template "header.html"}}
+
+<div class="row">
+	<div class="col s12 m12 l12">
+		<h3 class="white-text"><i class="medium material-icons" style="vertical-align: middle !important;font-size: 2.5rem;">equalizer</i>&nbsp;PLAYER STATS</h3>
+	</div>
+</div>
+<div class="row">
+	{{range $val := .}}
+	<div class="col s12 m12 l6">
+		<div class="card cyan darken-3">
+			<div class="card-content white-text">
+				<span class="card-title">
+
+					{{if eq $val.PlayerSummary.Personastate "0"}} 
+						<span class="new badge red" data-badge-caption="">offline</span>
+					{{else}} 
+						<span class="new badge green" data-badge-caption="">online</span>
+					{{end}}
+
+					<img src="{{$val.PlayerSummary.Avatarfull}}" style="width:50px;height:50px;vertical-align: middle" alt=""></td>
+				&nbsp;&nbsp;<a href="{{$val.PlayerSummary.Profileurl}}" target="_blank" class="white-text">{{$val.PlayerSummary.Personaname}}</a>&nbsp;<span style="font-size: 0.75rem; color: #dddddd">(ID: {{$val.PlayerSummary.Steamid}})</span>
+
+				</span>
+				<br>
+				<table class="centered white-text">
+					<tr>
+						<td>
+							<i class="medium material-icons" style="vertical-align: middle !important;font-size: 2.3rem;">beenhere</i>
+							&nbsp;&nbsp;
+							{{index $val.UserStatsForGame.Stats "total_wins"}}
+						</td>
+						<td>
+							<i class="medium material-icons" style="vertical-align: middle !important;font-size: 2.3rem;">timer</i>
+							&nbsp;&nbsp;
+							{{$val.RecentlyPlayedGames.PlaytimeForever}} h
+						</td>
+					</tr>
+				</table>
+
+				<table class="centered white-text">
+					<tr>
+						<th>K / D</th>
+						<td> {{index $val.UserStatsForGame.Stats "total_kills"}} / {{index $val.UserStatsForGame.Stats "total_deaths"}}</td>
+						<td>{{index $val.UserStatsForGame.Stats "total_kd"}}</td>
+					</tr>
+					<tr>
+						<th>K / D (Last Match)</th>
+						<td> {{index $val.UserStatsForGame.Stats "last_match_kills"}} / {{index $val.UserStatsForGame.Stats "last_match_deaths"}}</td>
+						<td>{{index $val.UserStatsForGame.Stats "last_match_kd"}}</td>
+					</tr>
+					<tr>
+						<th>shots hit / fired</th>
+						<td>{{index $val.UserStatsForGame.Stats "total_shots_hit"}} / {{index $val.UserStatsForGame.Stats "total_shots_fired"}}</td>
+						<td>{{index $val.UserStatsForGame.Stats "hit_ratio"}}</td>
+					</tr>
+
+
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+	{{end}}
+</div>
+
+{{template "footer.html"}}

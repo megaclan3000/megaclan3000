@@ -34,13 +34,13 @@ func main() {
 }
 
 func handlerStats(w http.ResponseWriter, r *http.Request) {
-	t, _ := template.ParseFiles("views/stats.html")
+	t, _ := template.ParseFiles("templates/stats.html")
 	data := config.GetAll()
 	t.Execute(w, data)
 }
 
 func handler404(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "views/404.html")
+	http.ServeFile(w, r, "templates/404.html")
 }
 
 func handlerDetails(w http.ResponseWriter, r *http.Request) {
@@ -49,10 +49,10 @@ func handlerDetails(w http.ResponseWriter, r *http.Request) {
 
 	for _, p := range players {
 		if vars["id"] == p.PlayerSummary.Steamid {
-			t, _ := template.ParseFiles("views/details.html")
+			t, _ := template.ParseFiles("templates/details.html")
 			t.Execute(w, p)
 			return
 		}
 	}
-	http.ServeFile(w, r, "views/404.html")
+	http.ServeFile(w, r, "templates/404.html")
 }
