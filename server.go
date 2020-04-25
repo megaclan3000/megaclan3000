@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	// "github.com/davecgh/go-spew/spew"
 )
 
 var config SteamConfig
