@@ -2,7 +2,7 @@
 
 <div class="row">
 	<div class="col s12 m12 l12">
-		<h3 class="white-text"><i class="medium material-icons" style="vertical-align: middle !important;font-size: 2.5rem;">equalizer</i>&nbsp;PLAYER STATS</h3>
+		<h3 class="white-text"><i class="medium material-icons header-icon">equalizer</i>&nbsp;PLAYER STATS</h3>
 	</div>
 </div>
 <div class="row">
@@ -19,24 +19,24 @@
 					{{end}}
 
 					<a href="player/{{$val.PlayerSummary.Steamid}}" >
-						<img src="{{$val.PlayerSummary.Avatarfull}}" style="width:50px;height:50px;vertical-align: middle" alt="">
+						<img src="{{$val.PlayerSummary.Avatarfull}}" class="stats-profile-pic" alt="">
 					</a>
 					&nbsp;
 					<a href="player/{{$val.PlayerSummary.Steamid}}" class="white-text">{{$val.PlayerSummary.Personaname}}</a>
 					<a href="{{$val.PlayerSummary.Profileurl}}" target="_blank">
-						<span style="font-size: 0.75rem; color: #dddddd">(ID: {{$val.PlayerSummary.Steamid}})</span>
+						<span class="steam-id">(ID: {{$val.PlayerSummary.Steamid}})</span>
 					</a>
 				</span>
 				<br>
 				<table class="centered white-text">
 					<tr>
 						<td>
-							<i class="medium material-icons" style="vertical-align: middle !important;font-size: 2.3rem;">beenhere</i>
+							<i class="medium material-icons stats-icon">beenhere</i>
 							&nbsp;&nbsp;
 							{{index $val.UserStatsForGame.Stats "total_wins"}}
 						</td>
 						<td>
-							<i class="medium material-icons" style="vertical-align: middle !important;font-size: 2.3rem;">timer</i>
+							<i class="medium material-icons stats-icon">timer</i>
 							&nbsp;&nbsp;
 							{{$val.RecentlyPlayedGames.PlaytimeForever}} h
 						</td>

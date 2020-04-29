@@ -1,0 +1,54 @@
+body{
+    display: flex; 
+    min-height: 100vh; 
+    flex-direction: column;
+}
+
+.main-content{
+    flex: 1;
+}
+
+.h1-404{
+    text-align: center; 
+    font-size: 15rem; 
+    font-weight: bolder;
+}
+
+.h1-404-text{
+    text-align: center; 
+    font-size: 5rem; 
+    font-weight: bolder;
+}
+
+.h1-404-icon{
+    text-align: center;
+}
+
+.h1-404-icon i{
+    font-size: 20rem;
+}
+
+.header-icon{
+    vertical-align: middle !important;
+    font-size: 2.5rem !important;
+}
+
+.page-footer{
+    padding-top: 0px;
+}
+
+.stats-profile-pic{
+    width:50px;
+    height:50px;
+    vertical-align: middle
+}
+
+.stats-icon{
+    vertical-align: middle !important;
+    font-size: 2.3rem !important;
+}
+
+.steam-id{
+    font-size: 0.75rem; 
+    color: #dddddd
+}
