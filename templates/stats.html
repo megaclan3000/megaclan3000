@@ -8,8 +8,8 @@
 <div class="row">
 	{{range $val := .}}
 	<div class="col s12 m12 l6">
-		<div class="card cyan darken-3">
-			<div class="card-content white-text">
+		<div class="card blue-grey darken-2">
+			<div class="card-content">
 				<span class="card-title">
 
 					{{if eq $val.PlayerSummary.Personastate "0"}} 
@@ -26,7 +26,6 @@
 					<a href="{{$val.PlayerSummary.Profileurl}}" target="_blank">
 						<span style="font-size: 0.75rem; color: #dddddd">(ID: {{$val.PlayerSummary.Steamid}})</span>
 					</a>
-
 				</span>
 				<br>
 				<table class="centered white-text">
@@ -60,12 +59,9 @@
 						<td>{{index $val.UserStatsForGame.Stats "total_shots_hit"}} / {{index $val.UserStatsForGame.Stats "total_shots_fired"}}</td>
 						<td>{{index $val.UserStatsForGame.Stats "hit_ratio"}}</td>
 					</tr>
-
-
 				</table>
-
 			</div>
-		</div>
+		</div>	
 	</div>
 
 	{{end}}
