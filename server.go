@@ -26,7 +26,7 @@ func main() {
 
 	// Define routes
 	r.HandleFunc("/", handlerStats)
-	r.HandleFunc("/discord", handlerDiscord)
+	r.HandleFunc("/contact", handlerContact)
 	r.HandleFunc("/faq", handlerFAQ)
 	r.HandleFunc("/player/{id}", handlerDetails)
 
@@ -57,8 +57,8 @@ func handlerStats(w http.ResponseWriter, r *http.Request) {
 	t.ExecuteTemplate(w, "stats.html", data)
 }
 
-func handlerDiscord(w http.ResponseWriter, r *http.Request) {
-	t.ExecuteTemplate(w, "discord.html", nil)
+func handlerContact(w http.ResponseWriter, r *http.Request) {
+	t.ExecuteTemplate(w, "contact.html", nil)
 }
 
 func handlerFAQ(w http.ResponseWriter, r *http.Request) {
