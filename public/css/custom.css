@@ -4,6 +4,10 @@ body{
     flex-direction: column;
 }
 
+a{
+    color: #e65100;
+}
+
 .main-content{
     flex: 1;
 }
