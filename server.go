@@ -25,7 +25,8 @@ func main() {
 	r.PathPrefix("/public/").Handler(http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 
 	// Define routes
-	r.HandleFunc("/", handlerStats)
+	r.HandleFunc("/", handlerIndex)
+	r.HandleFunc("/stats", handlerStats)
 	r.HandleFunc("/contact", handlerContact)
 	r.HandleFunc("/faq", handlerFAQ)
 	r.HandleFunc("/player/{id}", handlerDetails)
@@ -50,6 +51,10 @@ func main() {
 	}
 
 	log.Fatal(srv.ListenAndServe())
+}
+
+func handlerIndex(w http.ResponseWriter, r *http.Request) {
+	t.ExecuteTemplate(w, "index.html", nil)
 }
 
 func handlerStats(w http.ResponseWriter, r *http.Request) {
