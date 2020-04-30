@@ -20,14 +20,14 @@
                     </div>
                     <div class="col s12 m6 l9">
                         <h3>{{.PlayerSummary.Personaname}}</h3>
-                        <p>Status: 
+                        <p>Status:&nbsp;&nbsp;&nbsp;
                             {{if eq .PlayerSummary.Personastate "0"}} 
                                 <span class="new badge red inline-badge" data-badge-caption="">offline</span>
                             {{else}} 
                                 <span class="new badge green inline-badge" data-badge-caption="">online</span>
                             {{end}}
                         </p>
-                        <p>Steam ID: <a href="{{.PlayerSummary.Profileurl}}" target="_blank">{{.PlayerSummary.Steamid}}</a></p>
+                        <p>Steam ID: &nbsp;<a href="{{.PlayerSummary.Profileurl}}" target="_blank">{{.PlayerSummary.Steamid}}</a></p>
                     </div>
                 </div> 
             </div>
