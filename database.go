@@ -9,7 +9,7 @@ import (
 
 // Public data query methods
 
-func (db *DataStorage) GetPlayerSummary(steamID string) (PlayerSummary, error) {
+func (ds *DataStorage) GetPlayerSummary(steamID string) (PlayerSummary, error) {
 	//TODO implement
 	// rows, _ := database.Query("SELECT id, firstname, lastname FROM people")
 	// var id int
@@ -22,544 +22,280 @@ func (db *DataStorage) GetPlayerSummary(steamID string) (PlayerSummary, error) {
 	return PlayerSummary{}, nil
 }
 
-func (db *DataStorage) GetUserStatsForGame(steamID string) (UserStatsForGame, error) {
+func (ds *DataStorage) GetUserStatsForGame(steamID string) (UserStatsForGame, error) {
 	//TODO implement
 	return UserStatsForGame{}, nil
 }
 
-func (db *DataStorage) GetRecentlyPlayedGames(steamID string) (RecentlyPlayedGames, error) {
+func (ds *DataStorage) GetRecentlyPlayedGames(steamID string) (RecentlyPlayedGames, error) {
 	//TODO implement
 	return RecentlyPlayedGames{}, nil
 }
 
-func (db *DataStorage) GetPlayerHistory(steamID string, numPoints int) (PlayerHistory, error) {
+func (ds *DataStorage) GetPlayerHistory(steamID string, numPoints int) (PlayerHistory, error) {
 	//TODO implement
 	return PlayerHistory{}, nil
 }
 
 // Private data retrieval methods
+func (ds *DataStorage) updatePlayerSummary(steamID string) {
 
-func (db *DataStorage) updatePlayerSummary(steamID string) {
-	// statement.Exec("Nic", "Raboy")
+	ps := getPlayerSummary(steamID)
+
+	if _, err := ds.statements["update_player_summary"].Exec(
+		ps.Communityvisibilitystate,
+		ps.Profilestate,
+		ps.Personaname,
+		ps.Profileurl,
+		ps.Avatar,
+		ps.Avatarmedium,
+		ps.Avatarfull,
+		ps.Lastlogoff,
+		ps.Personastate,
+		ps.Primaryclanid,
+		ps.Timecreated,
+	); err != nil {
+		log.Fatal(err)
+	}
 }
 
-func (db *DataStorage) updateUserStatsForGame(steamID string) {
+func (ds *DataStorage) updateUserStatsForGame(steamID string) {
+	stats := getUserStatsForGame(steamID)
+	if _, err := ds.statements["update_player_stats"].Exec(
+		stats.Stats["total_kills"],
+		stats.Stats["total_deaths"],
+		stats.Stats["total_time_played"],
+		stats.Stats["total_planted_bombs"],
+		stats.Stats["total_defused_bombs"],
+		stats.Stats["total_wins"],
+		stats.Stats["total_damage_done"],
+		stats.Stats["total_money_earned"],
+		stats.Stats["total_kills_knife"],
+		stats.Stats["total_kills_hegrenade"],
+		stats.Stats["total_kills_glock"],
+		stats.Stats["total_kills_deagle"],
+		stats.Stats["total_kills_elite"],
+		stats.Stats["total_kills_fiveseven"],
+		stats.Stats["total_kills_xm1014"],
+		stats.Stats["total_kills_mac10"],
+		stats.Stats["total_kills_ump45"],
+		stats.Stats["total_kills_p90"],
+		stats.Stats["total_kills_awp"],
+		stats.Stats["total_kills_ak47"],
+		stats.Stats["total_kills_aug"],
+		stats.Stats["total_kills_famas"],
+		stats.Stats["total_kills_g3sg1"],
+		stats.Stats["total_kills_m249"],
+		stats.Stats["total_kills_headshot"],
+		stats.Stats["total_kills_enemy_weapon"],
+		stats.Stats["total_wins_pistolround"],
+		stats.Stats["total_wins_map_cs_assault"],
+		stats.Stats["total_wins_map_de_dust2"],
+		stats.Stats["total_wins_map_de_inferno"],
+		stats.Stats["total_wins_map_de_train"],
+		stats.Stats["total_weapons_donated"],
+		stats.Stats["total_kills_enemy_blinded"],
+		stats.Stats["total_kills_knife_fight"],
+		stats.Stats["total_kills_against_zoomed_sniper"],
+		stats.Stats["total_dominations"],
+		stats.Stats["total_domination_overkills"],
+		stats.Stats["total_revenges"],
+		stats.Stats["total_shots_hit"],
+		stats.Stats["total_shots_fired"],
+		stats.Stats["total_rounds_played"],
+		stats.Stats["total_shots_deagle"],
+		stats.Stats["total_shots_glock"],
+		stats.Stats["total_shots_elite"],
+		stats.Stats["total_shots_fiveseven"],
+		stats.Stats["total_shots_awp"],
+		stats.Stats["total_shots_ak47"],
+		stats.Stats["total_shots_aug"],
+		stats.Stats["total_shots_famas"],
+		stats.Stats["total_shots_g3sg1"],
+		stats.Stats["total_shots_p90"],
+		stats.Stats["total_shots_mac10"],
+		stats.Stats["total_shots_ump45"],
+		stats.Stats["total_shots_xm1014"],
+		stats.Stats["total_shots_m249"],
+		stats.Stats["total_hits_deagle"],
+		stats.Stats["total_hits_glock"],
+		stats.Stats["total_hits_elite"],
+		stats.Stats["total_hits_fiveseven"],
+		stats.Stats["total_hits_awp"],
+		stats.Stats["total_hits_ak47"],
+		stats.Stats["total_hits_aug"],
+		stats.Stats["total_hits_famas"],
+		stats.Stats["total_hits_g3sg1"],
+		stats.Stats["total_hits_p90"],
+		stats.Stats["total_hits_mac10"],
+		stats.Stats["total_hits_ump45"],
+		stats.Stats["total_hits_xm1014"],
+		stats.Stats["total_hits_m249"],
+		stats.Stats["total_rounds_map_cs_assault"],
+		stats.Stats["total_rounds_map_de_dust2"],
+		stats.Stats["total_rounds_map_de_inferno"],
+		stats.Stats["total_rounds_map_de_train"],
+		stats.Stats["last_match_t_wins"],
+		stats.Stats["last_match_ct_wins"],
+		stats.Stats["last_match_wins"],
+		stats.Stats["last_match_max_players"],
+		stats.Stats["last_match_kills"],
+		stats.Stats["last_match_deaths"],
+		stats.Stats["last_match_mvps"],
+		stats.Stats["last_match_favweapon_id"],
+		stats.Stats["last_match_favweapon_shots"],
+		stats.Stats["last_match_favweapon_hits"],
+		stats.Stats["last_match_favweapon_kills"],
+		stats.Stats["last_match_damage"],
+		stats.Stats["last_match_money_spent"],
+		stats.Stats["last_match_dominations"],
+		stats.Stats["last_match_revenges"],
+		stats.Stats["total_mvps"],
+		stats.Stats["total_rounds_map_de_lake"],
+		stats.Stats["total_rounds_map_de_safehouse"],
+		stats.Stats["total_rounds_map_de_bank"],
+		stats.Stats["total_TR_planted_bombs"],
+		stats.Stats["total_gun_game_rounds_won"],
+		stats.Stats["total_gun_game_rounds_played"],
+		stats.Stats["total_wins_map_de_bank"],
+		stats.Stats["total_wins_map_de_lake"],
+		stats.Stats["total_matches_won_bank"],
+		stats.Stats["total_matches_won"],
+		stats.Stats["total_matches_played"],
+		stats.Stats["total_gg_matches_won"],
+		stats.Stats["total_gg_matches_played"],
+		stats.Stats["total_progressive_matches_won"],
+		stats.Stats["total_trbomb_matches_won"],
+		stats.Stats["total_contribution_score"],
+		stats.Stats["last_match_contribution_score"],
+		stats.Stats["last_match_rounds"],
+		stats.Stats["total_kills_hkp2000"],
+		stats.Stats["total_shots_hkp2000"],
+		stats.Stats["total_hits_hkp2000"],
+		stats.Stats["total_hits_p250"],
+		stats.Stats["total_kills_p250"],
+		stats.Stats["total_shots_p250"],
+		stats.Stats["total_kills_sg556"],
+		stats.Stats["total_shots_sg556"],
+		stats.Stats["total_hits_sg556"],
+		stats.Stats["total_hits_scar20"],
+		stats.Stats["total_kills_scar20"],
+		stats.Stats["total_shots_scar20"],
+		stats.Stats["total_shots_ssg08"],
+		stats.Stats["total_hits_ssg08"],
+		stats.Stats["total_kills_ssg08"],
+		stats.Stats["total_shots_mp7"],
+		stats.Stats["total_hits_mp7"],
+		stats.Stats["total_kills_mp7"],
+		stats.Stats["total_kills_mp9"],
+		stats.Stats["total_shots_mp9"],
+		stats.Stats["total_hits_mp9"],
+		stats.Stats["total_hits_nova"],
+		stats.Stats["total_kills_nova"],
+		stats.Stats["total_shots_nova"],
+		stats.Stats["total_hits_negev"],
+		stats.Stats["total_kills_negev"],
+		stats.Stats["total_shots_negev"],
+		stats.Stats["total_shots_sawedoff"],
+		stats.Stats["total_hits_sawedoff"],
+		stats.Stats["total_kills_sawedoff"],
+		stats.Stats["total_shots_bizon"],
+		stats.Stats["total_hits_bizon"],
+		stats.Stats["total_kills_bizon"],
+		stats.Stats["total_kills_tec9"],
+		stats.Stats["total_shots_tec9"],
+		stats.Stats["total_hits_tec9"],
+		stats.Stats["total_shots_mag7"],
+		stats.Stats["total_hits_mag7"],
+		stats.Stats["total_kills_mag7"],
+		stats.Stats["total_gun_game_contribution_score"],
+		stats.Stats["last_match_gg_contribution_score"],
+		stats.Stats["total_kills_m4a1"],
+		stats.Stats["total_kills_galilar"],
+		stats.Stats["total_kills_molotov"],
+		stats.Stats["total_kills_taser"],
+		stats.Stats["total_shots_m4a1"],
+		stats.Stats["total_shots_galilar"],
+		stats.Stats["total_shots_taser"],
+		stats.Stats["total_hits_m4a1"],
+		stats.Stats["total_hits_galilar"],
+		stats.Stats["total_matches_won_train"],
+		stats.Stats["total_matches_won_lake"],
+		stats.Stats["GI_lesson_csgo_instr_explain_buymenu"],
+		stats.Stats["GI_lesson_csgo_instr_explain_buyarmor"],
+		stats.Stats["GI_lesson_csgo_instr_explain_plant_bomb"],
+		stats.Stats["GI_lesson_csgo_instr_explain_bomb_carrier"],
+		stats.Stats["GI_lesson_bomb_sites_A"],
+		stats.Stats["GI_lesson_defuse_planted_bomb"],
+		stats.Stats["GI_lesson_csgo_instr_explain_follow_bomber"],
+		stats.Stats["GI_lesson_csgo_instr_explain_pickup_bomb"],
+		stats.Stats["GI_lesson_csgo_instr_explain_prevent_bomb_pickup"],
+		stats.Stats["GI_lesson_Csgo_cycle_weapons_kb"],
+		stats.Stats["GI_lesson_csgo_instr_explain_zoom"],
+		stats.Stats["GI_lesson_csgo_instr_explain_reload"],
+		stats.Stats["GI_lesson_tr_explain_plant_bomb"],
+		stats.Stats["GI_lesson_bomb_sites_B"],
+		stats.Stats["GI_lesson_version_number"],
+		stats.Stats["GI_lesson_find_planted_bomb"],
+		stats.Stats["GI_lesson_csgo_hostage_lead_to_hrz"],
+		stats.Stats["GI_lesson_csgo_instr_rescue_zone"],
+		stats.Stats["GI_lesson_csgo_instr_explain_inspect"],
+		stats.Stats["steam_stat_xpearnedgames"],
+		steamID,
+	); err != nil {
+		log.Fatal(err)
+	}
+
 }
 
-func (db *DataStorage) updateRecentlyPlayedGames(steamID string) {
+func (ds *DataStorage) updateRecentlyPlayedGames(steamID string) {
+
+	rp := getRecentlyPlayedGames(steamID)
+
+	if _, err := ds.statements["update_player_summary"].Exec(
+		rp.Playtime2Weeks,
+		rp.PlaytimeForever,
+		rp.PlaytimeWindowsForever,
+		rp.PlaytimeMacForever,
+		rp.PlaytimeLinuxForever,
+		steamID,
+	); err != nil {
+		log.Fatal(err)
+	}
 }
 
-// Initialization
 type DataStorage struct {
 	db         *sql.DB
-	statements map[string]sql.Stmt
+	statements map[string]*sql.Stmt
 }
 
-func NewDB(path string) (*DataStorage, error) {
-	//TODO implement
+func NewDataStorage(path string) (*DataStorage, error) {
 	var err error
+
+	// Initialize database
 	storage := new(DataStorage)
-	database, _ := sql.Open("sqlite3", path)
+	if storage.db, err = sql.Open("sqlite3", path); err != nil {
+		log.Fatal(err)
+	}
 
 	// Prepare all statements
-	statements := make(map[string]*sql.Stmt)
-
-	if statements["create_player_summary"], err = database.Prepare(
-		`CREATE TABLE IF NOT EXISTS player_summary (
-			steamid INTEGER PRIMARY KEY,
-			communityvisibilitystate INTEGER,
-			profilestate INTEGER,
-			personaname TEXT,
-			profileurl TEXT,
-			avatar TEXT,
-			avatarmedium TEXT,
-			avatarfull TEXT,
-			lastlogoff INTEGER,
-			personastate INTEGER,
-			primaryclanid INTEGER,
-			timecreated INTEGER,
-			personastateflags INTEGER)`); err != nil {
-		log.Fatal(err)
-	}
-
-	if statements["create_player_stats"], err = database.Prepare(
-		`CREATE TABLE IF NOT EXISTS player_stats (
-			steamid INTEGER PRIMARY KEY,
-			total_kills INTEGER,
-			total_deaths INTEGER,
-			total_time_played INTEGER,
-			total_planted_bombs INTEGER,
-			total_defused_bombs INTEGER,
-			total_wins INTEGER,
-			total_damage_done INTEGER,
-			total_money_earned INTEGER,
-			total_kills_knife INTEGER,
-			total_kills_hegrenade INTEGER,
-			total_kills_glock INTEGER,
-			total_kills_deagle INTEGER,
-			total_kills_elite INTEGER,
-			total_kills_fiveseven INTEGER,
-			total_kills_xm1014 INTEGER,
-			total_kills_mac10 INTEGER,
-			total_kills_ump45 INTEGER,
-			total_kills_p90 INTEGER,
-			total_kills_awp INTEGER,
-			total_kills_ak47 INTEGER,
-			total_kills_aug INTEGER,
-			total_kills_famas INTEGER,
-			total_kills_g3sg1 INTEGER,
-			total_kills_m249 INTEGER,
-			total_kills_headshot INTEGER,
-			total_kills_enemy_weapon INTEGER,
-			total_wins_pistolround INTEGER,
-			total_wins_map_cs_assault INTEGER,
-			total_wins_map_de_dust2 INTEGER,
-			total_wins_map_de_inferno INTEGER,
-			total_wins_map_de_train INTEGER,
-			total_weapons_donated INTEGER,
-			total_kills_enemy_blinded INTEGER,
-			total_kills_knife_fight INTEGER,
-			total_kills_against_zoomed_sniper INTEGER,
-			total_dominations INTEGER,
-			total_domination_overkills INTEGER,
-			total_revenges INTEGER,
-			total_shots_hit INTEGER,
-			total_shots_fired INTEGER,
-			total_rounds_played INTEGER,
-			total_shots_deagle INTEGER,
-			total_shots_glock INTEGER,
-			total_shots_elite INTEGER,
-			total_shots_fiveseven INTEGER,
-			total_shots_awp INTEGER,
-			total_shots_ak47 INTEGER,
-			total_shots_aug INTEGER,
-			total_shots_famas INTEGER,
-			total_shots_g3sg1 INTEGER,
-			total_shots_p90 INTEGER,
-			total_shots_mac10 INTEGER,
-			total_shots_ump45 INTEGER,
-			total_shots_xm1014 INTEGER,
-			total_shots_m249 INTEGER,
-			total_hits_deagle INTEGER,
-			total_hits_glock INTEGER,
-			total_hits_elite INTEGER,
-			total_hits_fiveseven INTEGER,
-			total_hits_awp INTEGER,
-			total_hits_ak47 INTEGER,
-			total_hits_aug INTEGER,
-			total_hits_famas INTEGER,
-			total_hits_g3sg1 INTEGER,
-			total_hits_p90 INTEGER,
-			total_hits_mac10 INTEGER,
-			total_hits_ump45 INTEGER,
-			total_hits_xm1014 INTEGER,
-			total_hits_m249 INTEGER,
-			total_rounds_map_cs_assault INTEGER,
-			total_rounds_map_de_dust2 INTEGER,
-			total_rounds_map_de_inferno INTEGER,
-			total_rounds_map_de_train INTEGER,
-			last_match_t_wins INTEGER,
-			last_match_ct_wins INTEGER,
-			last_match_wins INTEGER,
-			last_match_max_players INTEGER,
-			last_match_kills INTEGER,
-			last_match_deaths INTEGER,
-			last_match_mvps INTEGER,
-			last_match_favweapon_id INTEGER,
-			last_match_favweapon_shots INTEGER,
-			last_match_favweapon_hits INTEGER,
-			last_match_favweapon_kills INTEGER,
-			last_match_damage INTEGER,
-			last_match_money_spent INTEGER,
-			last_match_dominations INTEGER,
-			last_match_revenges INTEGER,
-			total_mvps INTEGER,
-			total_rounds_map_de_lake INTEGER,
-			total_rounds_map_de_safehouse INTEGER,
-			total_rounds_map_de_bank INTEGER,
-			total_TR_planted_bombs INTEGER,
-			total_gun_game_rounds_won INTEGER,
-			total_gun_game_rounds_played INTEGER,
-			total_wins_map_de_bank INTEGER,
-			total_wins_map_de_lake INTEGER,
-			total_matches_won_bank INTEGER,
-			total_matches_won INTEGER,
-			total_matches_played INTEGER,
-			total_gg_matches_won INTEGER,
-			total_gg_matches_played INTEGER,
-			total_progressive_matches_won INTEGER,
-			total_trbomb_matches_won INTEGER,
-			total_contribution_score INTEGER,
-			last_match_contribution_score INTEGER,
-			last_match_rounds INTEGER,
-			total_kills_hkp2000 INTEGER,
-			total_shots_hkp2000 INTEGER,
-			total_hits_hkp2000 INTEGER,
-			total_hits_p250 INTEGER,
-			total_kills_p250 INTEGER,
-			total_shots_p250 INTEGER,
-			total_kills_sg556 INTEGER,
-			total_shots_sg556 INTEGER,
-			total_hits_sg556 INTEGER,
-			total_hits_scar20 INTEGER,
-			total_kills_scar20 INTEGER,
-			total_shots_scar20 INTEGER,
-			total_shots_ssg08 INTEGER,
-			total_hits_ssg08 INTEGER,
-			total_kills_ssg08 INTEGER,
-			total_shots_mp7 INTEGER,
-			total_hits_mp7 INTEGER,
-			total_kills_mp7 INTEGER,
-			total_kills_mp9 INTEGER,
-			total_shots_mp9 INTEGER,
-			total_hits_mp9 INTEGER,
-			total_hits_nova INTEGER,
-			total_kills_nova INTEGER,
-			total_shots_nova INTEGER,
-			total_hits_negev INTEGER,
-			total_kills_negev INTEGER,
-			total_shots_negev INTEGER,
-			total_shots_sawedoff INTEGER,
-			total_hits_sawedoff INTEGER,
-			total_kills_sawedoff INTEGER,
-			total_shots_bizon INTEGER,
-			total_hits_bizon INTEGER,
-			total_kills_bizon INTEGER,
-			total_kills_tec9 INTEGER,
-			total_shots_tec9 INTEGER,
-			total_hits_tec9 INTEGER,
-			total_shots_mag7 INTEGER,
-			total_hits_mag7 INTEGER,
-			total_kills_mag7 INTEGER,
-			total_gun_game_contribution_score INTEGER,
-			last_match_gg_contribution_score INTEGER,
-			total_kills_m4a1 INTEGER,
-			total_kills_galilar INTEGER,
-			total_kills_molotov INTEGER,
-			total_kills_taser INTEGER,
-			total_shots_m4a1 INTEGER,
-			total_shots_galilar INTEGER,
-			total_shots_taser INTEGER,
-			total_hits_m4a1 INTEGER,
-			total_hits_galilar INTEGER,
-			total_matches_won_train INTEGER,
-			total_matches_won_lake INTEGER,
-			GI_lesson_csgo_instr_explain_buymenu INTEGER,
-			GI_lesson_csgo_instr_explain_buyarmor INTEGER,
-			GI_lesson_csgo_instr_explain_plant_bomb INTEGER,
-			GI_lesson_csgo_instr_explain_bomb_carrier INTEGER,
-			GI_lesson_bomb_sites_A INTEGER,
-			GI_lesson_defuse_planted_bomb INTEGER,
-			GI_lesson_csgo_instr_explain_follow_bomber INTEGER,
-			GI_lesson_csgo_instr_explain_pickup_bomb INTEGER,
-			GI_lesson_csgo_instr_explain_prevent_bomb_pickup INTEGER,
-			GI_lesson_Csgo_cycle_weapons_kb INTEGER,
-			GI_lesson_csgo_instr_explain_zoom INTEGER,
-			GI_lesson_csgo_instr_explain_reload INTEGER,
-			GI_lesson_tr_explain_plant_bomb INTEGER,
-			GI_lesson_bomb_sites_B INTEGER,
-			GI_lesson_version_number INTEGER,
-			GI_lesson_find_planted_bomb INTEGER,
-			GI_lesson_csgo_hostage_lead_to_hrz INTEGER,
-			GI_lesson_csgo_instr_rescue_zone INTEGER,
-			GI_lesson_csgo_instr_explain_inspect INTEGER,
-			steam_stat_xpearnedgames INTEGER)`); err != nil {
-		log.Fatal(err)
-	}
-
-	if statements["create_recently_played"], err = database.Prepare(
-		`CREATE TABLE IF NOT EXISTS recently_played (
-			steamid INTEGER PRIMARY KEY,
-			playtime_2weeks INTEGER,
-			playtime_forever INTEGER,
-			playtime_windows_forever INTEGER,
-			playtime_mac_forever INTEGER,
-			playtime_linux_forever INTEGER)`); err != nil {
-		log.Fatal(err)
-	}
-
-	// TODO add all fields for which we want historical info
-	if statements["create_player_history"], err = database.Prepare(
-		`CREATE TABLE IF NOT EXISTS player_history (
-			steamid INTEGER,
-			time INTEGER,
-			total_kills INTEGER)`); err != nil {
-		log.Fatal(err)
-	}
-
-	// - update recently_played
-	if statements["update_recently_played"], err = database.Prepare(
-		`UPDATE recently_played SET
-			playtime_2weeks = ?,
-			playtime_forever= ?,
-			playtime_windows_forever= ?,
-			playtime_mac_forever = ?,
-			playtime_linux_forever = ?
-			WHERE steamid = ?`); err != nil {
-		log.Fatal(err)
-	}
-
-	// - insert history
-	if statements["insert_history"], err = database.Prepare(
-		`INSERT INTO player_history (
-			steamid,
-			time,
-			total_kills
-		) VALUES (?, ?, ?)`); err != nil {
-		log.Fatal(err)
-	}
-
-	// - update player_summary
-	if statements["update_player_summary"], err = database.Prepare(
-		`UPDATE player_summary SET
-			communityvisibilitystate = ?,
-			profilestate = ?,
-			personaname = ?,
-			profileurl = ?,
-			avatar = ?,
-			avatarmedium = ?,
-			avatarfull = ?,
-			lastlogoff = ?,
-			personastate = ?,
-			primaryclanid = ?,
-			timecreated = ?,
-			personastateflags = ?
-			WHERE steamid = ?`); err != nil {
-		log.Fatal(err)
-	}
-
-	// May not be needed
-	// // - TODO update history time (if everything else is unchanged)
-	// if statements["update_history_time"], err = database.Prepare(
-	// 	`UPDATE history SET
-	// 		time = ?
-	// 		WHERE steamid = ?
-	// 		ORDER BY time desc
-	// 		LIMIT 1`); err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// - TODO update player_stats
-	if statements["update_player_stats"], err = database.Prepare(
-		`UPDATE player_stats SET
-			total_kills  = ?,
-			total_deaths  = ?,
-			total_time_played  = ?,
-			total_planted_bombs  = ?,
-			total_defused_bombs  = ?,
-			total_wins  = ?,
-			total_damage_done  = ?,
-			total_money_earned  = ?,
-			total_kills_knife  = ?,
-			total_kills_hegrenade  = ?,
-			total_kills_glock  = ?,
-			total_kills_deagle  = ?,
-			total_kills_elite  = ?,
-			total_kills_fiveseven  = ?,
-			total_kills_xm1014  = ?,
-			total_kills_mac10  = ?,
-			total_kills_ump45  = ?,
-			total_kills_p90  = ?,
-			total_kills_awp  = ?,
-			total_kills_ak47  = ?,
-			total_kills_aug  = ?,
-			total_kills_famas  = ?,
-			total_kills_g3sg1  = ?,
-			total_kills_m249  = ?,
-			total_kills_headshot  = ?,
-			total_kills_enemy_weapon  = ?,
-			total_wins_pistolround  = ?,
-			total_wins_map_cs_assault  = ?,
-			total_wins_map_de_dust2  = ?,
-			total_wins_map_de_inferno  = ?,
-			total_wins_map_de_train  = ?,
-			total_weapons_donated  = ?,
-			total_kills_enemy_blinded  = ?,
-			total_kills_knife_fight  = ?,
-			total_kills_against_zoomed_sniper  = ?,
-			total_dominations  = ?,
-			total_domination_overkills  = ?,
-			total_revenges  = ?,
-			total_shots_hit  = ?,
-			total_shots_fired  = ?,
-			total_rounds_played  = ?,
-			total_shots_deagle  = ?,
-			total_shots_glock  = ?,
-			total_shots_elite  = ?,
-			total_shots_fiveseven  = ?,
-			total_shots_awp  = ?,
-			total_shots_ak47  = ?,
-			total_shots_aug  = ?,
-			total_shots_famas  = ?,
-			total_shots_g3sg1  = ?,
-			total_shots_p90  = ?,
-			total_shots_mac10  = ?,
-			total_shots_ump45  = ?,
-			total_shots_xm1014  = ?,
-			total_shots_m249  = ?,
-			total_hits_deagle  = ?,
-			total_hits_glock  = ?,
-			total_hits_elite  = ?,
-			total_hits_fiveseven  = ?,
-			total_hits_awp  = ?,
-			total_hits_ak47  = ?,
-			total_hits_aug  = ?,
-			total_hits_famas  = ?,
-			total_hits_g3sg1  = ?,
-			total_hits_p90  = ?,
-			total_hits_mac10  = ?,
-			total_hits_ump45  = ?,
-			total_hits_xm1014  = ?,
-			total_hits_m249  = ?,
-			total_rounds_map_cs_assault  = ?,
-			total_rounds_map_de_dust2  = ?,
-			total_rounds_map_de_inferno  = ?,
-			total_rounds_map_de_train  = ?,
-			last_match_t_wins  = ?,
-			last_match_ct_wins  = ?,
-			last_match_wins  = ?,
-			last_match_max_players  = ?,
-			last_match_kills  = ?,
-			last_match_deaths  = ?,
-			last_match_mvps  = ?,
-			last_match_favweapon_id  = ?,
-			last_match_favweapon_shots  = ?,
-			last_match_favweapon_hits  = ?,
-			last_match_favweapon_kills  = ?,
-			last_match_damage  = ?,
-			last_match_money_spent  = ?,
-			last_match_dominations  = ?,
-			last_match_revenges  = ?,
-			total_mvps  = ?,
-			total_rounds_map_de_lake  = ?,
-			total_rounds_map_de_safehouse  = ?,
-			total_rounds_map_de_bank  = ?,
-			total_TR_planted_bombs  = ?,
-			total_gun_game_rounds_won  = ?,
-			total_gun_game_rounds_played  = ?,
-			total_wins_map_de_bank  = ?,
-			total_wins_map_de_lake  = ?,
-			total_matches_won_bank  = ?,
-			total_matches_won  = ?,
-			total_matches_played  = ?,
-			total_gg_matches_won  = ?,
-			total_gg_matches_played  = ?,
-			total_progressive_matches_won  = ?,
-			total_trbomb_matches_won  = ?,
-			total_contribution_score  = ?,
-			last_match_contribution_score  = ?,
-			last_match_rounds  = ?,
-			total_kills_hkp2000  = ?,
-			total_shots_hkp2000  = ?,
-			total_hits_hkp2000  = ?,
-			total_hits_p250  = ?,
-			total_kills_p250  = ?,
-			total_shots_p250  = ?,
-			total_kills_sg556  = ?,
-			total_shots_sg556  = ?,
-			total_hits_sg556  = ?,
-			total_hits_scar20  = ?,
-			total_kills_scar20  = ?,
-			total_shots_scar20  = ?,
-			total_shots_ssg08  = ?,
-			total_hits_ssg08  = ?,
-			total_kills_ssg08  = ?,
-			total_shots_mp7  = ?,
-			total_hits_mp7  = ?,
-			total_kills_mp7  = ?,
-			total_kills_mp9  = ?,
-			total_shots_mp9  = ?,
-			total_hits_mp9  = ?,
-			total_hits_nova  = ?,
-			total_kills_nova  = ?,
-			total_shots_nova  = ?,
-			total_hits_negev  = ?,
-			total_kills_negev  = ?,
-			total_shots_negev  = ?,
-			total_shots_sawedoff  = ?,
-			total_hits_sawedoff  = ?,
-			total_kills_sawedoff  = ?,
-			total_shots_bizon  = ?,
-			total_hits_bizon  = ?,
-			total_kills_bizon  = ?,
-			total_kills_tec9  = ?,
-			total_shots_tec9  = ?,
-			total_hits_tec9  = ?,
-			total_shots_mag7  = ?,
-			total_hits_mag7  = ?,
-			total_kills_mag7  = ?,
-			total_gun_game_contribution_score  = ?,
-			last_match_gg_contribution_score  = ?,
-			total_kills_m4a1  = ?,
-			total_kills_galilar  = ?,
-			total_kills_molotov  = ?,
-			total_kills_taser  = ?,
-			total_shots_m4a1  = ?,
-			total_shots_galilar  = ?,
-			total_shots_taser  = ?,
-			total_hits_m4a1  = ?,
-			total_hits_galilar  = ?,
-			total_matches_won_train  = ?,
-			total_matches_won_lake  = ?,
-			GI_lesson_csgo_instr_explain_buymenu  = ?,
-			GI_lesson_csgo_instr_explain_buyarmor  = ?,
-			GI_lesson_csgo_instr_explain_plant_bomb  = ?,
-			GI_lesson_csgo_instr_explain_bomb_carrier  = ?,
-			GI_lesson_bomb_sites_A  = ?,
-			GI_lesson_defuse_planted_bomb  = ?,
-			GI_lesson_csgo_instr_explain_follow_bomber  = ?,
-			GI_lesson_csgo_instr_explain_pickup_bomb  = ?,
-			GI_lesson_csgo_instr_explain_prevent_bomb_pickup  = ?,
-			GI_lesson_Csgo_cycle_weapons_kb  = ?,
-			GI_lesson_csgo_instr_explain_zoom  = ?,
-			GI_lesson_csgo_instr_explain_reload  = ?,
-			GI_lesson_tr_explain_plant_bomb  = ?,
-			GI_lesson_bomb_sites_B  = ?,
-			GI_lesson_version_number  = ?,
-			GI_lesson_find_planted_bomb  = ?,
-			GI_lesson_csgo_hostage_lead_to_hrz  = ?,
-			GI_lesson_csgo_instr_rescue_zone  = ?,
-			GI_lesson_csgo_instr_explain_inspect  = ?,
-			steam_stat_xpearnedgames  = ?
-			WHERE steamid = ?`); err != nil {
-		log.Fatal(err)
-	}
-
-	// - query player_summary for player
-
-	if statements["select_player_summary"], err = database.Prepare(`
-			SELECT * FROM player_summary
-			WHERE steamid = ?
-			LIMIT 1`); err != nil {
-		log.Fatal(err)
-	}
-
-	// - query player_stats
-	if statements["select_player_stats"], err = database.Prepare(`
-			SELECT * FROM player_stats
-			WHERE steamid = ?
-			LIMIT 1`); err != nil {
-		log.Fatal(err)
-	}
-	// - query recently_played
-	if statements["select_recently_played"], err = database.Prepare(`
-			SELECT * FROM recently_played
-			WHERE steamid = ?
-			LIMIT 1`); err != nil {
-		log.Fatal(err)
-	}
-	// - query history for last n entries of player
-	if statements["select_player_history"], err = database.Prepare(`
-			SELECT * FROM player_history
-			WHERE steamid = ?
-			ORDER BY time DESC
-			LIMIT ?`); err != nil {
+	if storage.statements, err = storage.getPreparedstatements(); err != nil {
 		log.Fatal(err)
 	}
 
 	// Create tables, if necessary
-	// statement, _ = database.Prepare("INSERT INTO people (firstname, lastname) VALUES (?, ?)")
+	if _, err = storage.statements["create_player_summary"].Exec(); err != nil {
+		log.Fatal(err)
+	}
+	if _, err = storage.statements["create_player_stats"].Exec(); err != nil {
+		log.Fatal(err)
+	}
+	if _, err = storage.statements["create_recently_played"].Exec(); err != nil {
+		log.Fatal(err)
+	}
+	if _, err = storage.statements["create_player_history"].Exec(); err != nil {
+		log.Fatal(err)
+	}
 
-	storage.db = database
 	return storage, nil
 }
