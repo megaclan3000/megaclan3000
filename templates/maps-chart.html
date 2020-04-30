@@ -1,7 +1,7 @@
 <script>
     var ctx = document.getElementById('mapsChart');
     var myChart = new Chart(ctx, {
-        type: 'pie',
+        type: 'doughnut',
         data: {
             labels: [
                 "Baggage",
@@ -38,36 +38,36 @@
                     {{ index .UserStatsForGame.Stats "total_wins_map_de_vertigo"}},
                 ],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.9)',
-                    'rgba(255, 99, 132, 0.85)',
-                    'rgba(255, 99, 132, 0.8)',
-                    'rgba(255, 99, 132, 0.75)',
-                    'rgba(255, 99, 132, 0.7)',
-                    'rgba(255, 99, 132, 0.65)',
-                    'rgba(255, 99, 132, 0.6)',
-                    'rgba(255, 99, 132, 0.55)',
-                    'rgba(255, 99, 132, 0.5)',
-                    'rgba(255, 99, 132, 0.45)',
-                    'rgba(255, 99, 132, 0.4)',
-                    'rgba(255, 99, 132, 0.35)',
-                    'rgba(255, 99, 132, 0.3)',
-                    'rgba(255, 99, 132, 0.25)',      
+                    '#fbe9e799',
+                    '#ffccbc99',
+                    '#ffab9199',
+                    '#ff8a6599',
+                    '#ff704399',
+                    '#ff572299',
+                    '#f4511e99',
+                    '#e64a1999',
+                    '#d8431599',
+                    '#bf360c99',
+                    '#e5393599',
+                    '#d32f2f99',
+                    '#c6282899',
+                    '#b71c1c99'
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',       
+                    '#fbe9e7',
+                    '#ffccbc',
+                    '#ffab91',
+                    '#ff8a65',
+                    '#ff7043',
+                    '#ff5722',
+                    '#f4511e',
+                    '#e64a19',
+                    '#d84315',
+                    '#bf360c',
+                    '#e53935',
+                    '#d32f2f',
+                    '#c62828',
+                    '#b71c1c'       
                 ],
                 borderWidth: 1
             }]
@@ -80,7 +80,8 @@
                     
                 },
                 position: 'bottom',
-                align: 'start'
+                align: 'start',
+                display: false
             }
         }
     });
