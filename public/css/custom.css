@@ -8,6 +8,28 @@ body{
     flex: 1;
 }
 
+.navbar-logo{
+    height:64px;
+}
+
+@media (max-width: 600px) {
+    .navbar-logo{
+        height: 56px;
+    }
+}
+
+.custom-orange-text{
+    color: #e65100;
+}
+
+.navbar-link{
+    color: #fff;
+}
+
+.main-logo{
+    max-height: 600px;
+}
+
 .h1-404{
     text-align: center; 
     font-size: 15rem; 
@@ -51,4 +73,8 @@ body{
 .steam-id{
     font-size: 0.75rem; 
     color: #dddddd
+}
+
+.mono-font{
+    font-family: 'Courier New', Courier, monospace;
 }
