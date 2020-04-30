@@ -78,3 +78,11 @@ body{
 .mono-font{
     font-family: 'Courier New', Courier, monospace;
 }
+
+.clickable-card:hover div{
+    -webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.3);
+    -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.3);
+    box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.3);
+    bottom: 5px;
+    right: 5px;
+}
