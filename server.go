@@ -25,10 +25,12 @@ func main() {
 	r.PathPrefix("/public/").Handler(http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 
 	// Define routes
-	r.HandleFunc("/", handlerStats)
+	r.HandleFunc("/", handlerIndex)
+	r.HandleFunc("/stats", handlerStats)
 	r.HandleFunc("/contact", handlerContact)
 	r.HandleFunc("/faq", handlerFAQ)
 	r.HandleFunc("/player/{id}", handlerDetails)
+	r.HandleFunc("/imprint", handlerImprint)
 
 	// Set custom 404 page
 	r.NotFoundHandler = http.HandlerFunc(handler404)
@@ -50,6 +52,10 @@ func main() {
 	}
 
 	log.Fatal(srv.ListenAndServe())
+}
+
+func handlerIndex(w http.ResponseWriter, r *http.Request) {
+	t.ExecuteTemplate(w, "index.html", nil)
 }
 
 func handlerStats(w http.ResponseWriter, r *http.Request) {
@@ -80,4 +86,8 @@ func handlerDetails(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	t.ExecuteTemplate(w, "404.html", nil)
+}
+
+func handlerImprint(w http.ResponseWriter, r *http.Request) {
+	t.ExecuteTemplate(w, "imprint.html", nil)
 }
