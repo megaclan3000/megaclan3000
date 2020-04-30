@@ -30,6 +30,7 @@ func main() {
 	r.HandleFunc("/contact", handlerContact)
 	r.HandleFunc("/faq", handlerFAQ)
 	r.HandleFunc("/player/{id}", handlerDetails)
+	r.HandleFunc("/imprint", handlerImprint)
 
 	// Set custom 404 page
 	r.NotFoundHandler = http.HandlerFunc(handler404)
@@ -85,4 +86,8 @@ func handlerDetails(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	t.ExecuteTemplate(w, "404.html", nil)
+}
+
+func handlerImprint(w http.ResponseWriter, r *http.Request) {
+	t.ExecuteTemplate(w, "imprint.html", nil)
 }
