@@ -90,3 +90,7 @@ a{
     bottom: 5px;
     right: 5px;
 }
+
+.inline-badge{
+    position: absolute;
+}
