@@ -84,13 +84,10 @@ func handler404(w http.ResponseWriter, r *http.Request) {
 
 func handlerDetails(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	players := config.GetAll()
 
-	for _, p := range players {
-		if vars["id"] == p.PlayerSummary.Steamid {
-			t.ExecuteTemplate(w, "details.html", p)
-			return
-		}
+	if p, err := datastorage.GetPlayerInfoBySteamID(vars["id"]); err == nil {
+		t.ExecuteTemplate(w, "details.html", p)
+		return
 	}
 	t.ExecuteTemplate(w, "404.html", nil)
 }

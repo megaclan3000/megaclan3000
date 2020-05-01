@@ -250,19 +250,20 @@ func (ds *DataStorage) getUpdatePreparedstatements() error {
 
 	// - update player_summary
 	ds.statements["update_player_summary"], err = ds.db.Prepare(
-		`UPDATE player_summary SET
-			communityvisibilitystate = ?,
-			profilestate = ?,
-			personaname = ?,
-			profileurl = ?,
-			avatar = ?,
-			avatarmedium = ?,
-			avatarfull = ?,
-			lastlogoff = ?,
-			personastate = ?,
-			primaryclanid = ?,
-			timecreated = ?
-			WHERE steamid = ?`)
+		`INSERT OR REPLACE INTO player_summary (
+				steamid,
+				communityvisibilitystate,
+				profilestate,
+				personaname,
+				profileurl,
+				avatar,
+				avatarmedium,
+				avatarfull,
+				lastlogoff,
+				personastate,
+				primaryclanid,
+				timecreated)
+			VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?) `)
 	if err != nil {
 		log.Println("Failed to prepare statement: update_player_summary")
 		return err

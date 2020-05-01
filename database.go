@@ -33,8 +33,8 @@ func (ds *DataStorage) GetPlayerSummary(steamID string) (PlayerSummary, error) {
 }
 
 func (ds *DataStorage) GetUserStatsForGame(steamID string) (UserStatsForGame, error) {
-	//TODO impletment
-	panic("not implemented yet!")
+	//TODO Implement this, using old function meanwhile!
+	return getUserStatsForGame(steamID), nil
 }
 
 func (ds *DataStorage) GetRecentlyPlayedGames(steamID string) (RecentlyPlayedGames, error) {
@@ -73,8 +73,10 @@ func (ds *DataStorage) GetPlayerHistory(steamID string, numPoints int) (PlayerHi
 func (ds *DataStorage) updatePlayerSummary(steamID string) {
 
 	ps := getPlayerSummary(steamID)
+	var result sql.Result
+	var err error
 
-	if _, err := ds.statements["update_player_summary"].Exec(
+	if result, err = ds.statements["update_player_summary"].Exec(
 		ps.Communityvisibilitystate,
 		ps.Profilestate,
 		ps.Personaname,
@@ -90,6 +92,9 @@ func (ds *DataStorage) updatePlayerSummary(steamID string) {
 	); err != nil {
 		log.Fatal(err)
 	}
+
+	rows, err := result.RowsAffected()
+	log.Println("Rows affected:", rows)
 }
 
 func (ds *DataStorage) updateUserStatsForGame(steamID string) {
@@ -302,6 +307,26 @@ type DataStorage struct {
 	statements map[string]*sql.Stmt
 }
 
+func (ds *DataStorage) GetPlayerInfoBySteamID(steamID string) (PlayerInfo, error) {
+
+	info := PlayerInfo{}
+	var err error
+
+	if info.PlayerSummary, err = ds.GetPlayerSummary(steamID); err != nil {
+		return info, err
+	}
+
+	if info.RecentlyPlayedGames, err = ds.GetRecentlyPlayedGames(steamID); err != nil {
+		return info, err
+	}
+
+	if info.UserStatsForGame, err = ds.GetUserStatsForGame(steamID); err != nil {
+		return info, err
+	}
+
+	return info, nil
+}
+
 func NewDataStorage(path string) (*DataStorage, error) {
 	var err error
 
@@ -314,56 +339,46 @@ func NewDataStorage(path string) (*DataStorage, error) {
 		log.Fatal("Failed to open sqlite file", err)
 	}
 
-	// Prepare all statements
-	log.Println("Preparing CREATE statements")
-
+	// Prepare CREATE statements
 	if err = storage.getCreatePreparedstatements(); err != nil {
 		log.Fatal("Failed to prepare CREATE statements", err)
 	}
 
 	// Create tables, if necessary
-	log.Println("Creating player_summary table")
 	if _, err = storage.statements["create_player_summary"].Exec(); err != nil {
 		log.Fatal("Failed to create table player_summary", err)
 	}
 
-	log.Println("Creating player_stats table")
 	if _, err = storage.statements["create_player_stats"].Exec(); err != nil {
 		log.Fatal("Failed to create table player_stats", err)
 	}
-	log.Println("Creating recetnly_played table")
 	if _, err = storage.statements["create_recently_played"].Exec(); err != nil {
 		log.Fatal("Failed to create table recently_played", err)
 	}
-	log.Println("Creating player_history table")
 	if _, err = storage.statements["create_player_history"].Exec(); err != nil {
 		log.Fatal("Failed to create table player_history", err)
 	}
 
-	log.Println("Preparing UPDATE statements")
+	// Prepare remaining statements
 	if err = storage.getUpdatePreparedstatements(); err != nil {
 		log.Fatal("Failed to prepare UPDATE statements", err)
 	}
 
-	log.Println("Preparing INSERT statements")
 	if err = storage.getInsertPreparedstatements(); err != nil {
 		log.Fatal("Failed to prepare INSERT statements", err)
 	}
 
-	log.Println("Preparing SELECT statements")
 	if err = storage.getSelectPreparedstatements(); err != nil {
 		log.Fatal("Failed to prepare SELECT statements", err)
 	}
 
 	for _, v := range config.SteamIDs {
-		log.Println("Updating PlayerSummary for ID:", v)
+		log.Println("Updating Data for ID:", v)
+
 		storage.updatePlayerSummary(v)
-
-		log.Println("Updating RecentlyPlayedGames for ID:", v)
 		storage.updateRecentlyPlayedGames(v)
-
-		log.Println("Updating UserStatsForGame for ID:", v)
 		storage.updateUserStatsForGame(v)
+
 	}
 
 	return storage, nil
