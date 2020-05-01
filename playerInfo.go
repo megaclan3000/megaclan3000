@@ -5,6 +5,7 @@ type PlayerInfo struct {
 	PlayerSummary       PlayerSummary
 	UserStatsForGame    UserStatsForGame
 	RecentlyPlayedGames RecentlyPlayedGames
+	PlayerHistory       PlayerHistory
 }
 
 func getPlayerInfo(steamID string) PlayerInfo {

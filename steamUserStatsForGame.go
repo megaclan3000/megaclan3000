@@ -10,24 +10,35 @@ import (
 
 type userStatsForGameData struct {
 	Playerstats struct {
-		SteamID  string `json:"steamID"`
-		GameName string `json:"gameName"`
-		Stats    []struct {
-			Name  string `json:"name"`
-			Value int    `json:"value"`
-		} `json:"stats"`
-		Achievements []struct {
-			Name     string `json:"name"`
-			Achieved int    `json:"achieved"`
-		} `json:"achievements"`
+		SteamID      string `json:"steamID"`
+		GameName     string `json:"gameName"`
+		Stats        []Stats
+		Achievements []Achievements `json:"achievements"`
 	} `json:"playerstats"`
+}
+
+type Stats struct {
+	Name  string `json:"name"`
+	Value int    `json:"value"`
+}
+type Achievements struct {
+	Name     string `json:"name"`
+	Achieved int    `json:"achieved"`
 }
 
 type UserStatsForGame struct {
 	SteamID      string
 	GameName     string
-	Stats        map[string]string
-	Archivements map[string]string
+	Stats        GameStats
+	Archivements GameArchievements
+	Extra        GameExtras
+}
+
+type GameExtras struct {
+	TotalKD     string
+	LastMatchKD string
+	HitRatio    string
+	PlayedHours string
 }
 
 func getUserStatsForGame(steamID string) UserStatsForGame {
@@ -36,43 +47,270 @@ func getUserStatsForGame(steamID string) UserStatsForGame {
 	data := userStatsForGameData{}
 	getJson(url, &data)
 
-	stats := make(map[string]string)
-	archivements := make(map[string]string)
+	//Create to maps for stats and archivements, so the search will be quicker afterwards
+	statsMap := make(map[string]string)
+	archivementsMap := make(map[string]string)
 
 	for _, v := range data.Playerstats.Stats {
-		stats[v.Name] = strconv.Itoa(v.Value)
-	}
-
-	if total_deaths, err := strconv.ParseFloat(stats["total_deaths"], 64); err == nil {
-		if total_kills, err := strconv.ParseFloat(stats["total_kills"], 64); err == nil {
-			stats["total_kd"] = fmt.Sprintf("%f", total_kills/total_deaths)
-		}
-	}
-
-	if last_deaths, err := strconv.ParseFloat(stats["last_match_deaths"], 64); err == nil {
-		if last_kills, err := strconv.ParseFloat(stats["last_match_kills"], 64); err == nil {
-			stats["last_match_kd"] = fmt.Sprintf("%f", last_kills/last_deaths)
-		}
-	}
-
-	if total_shots_fired, err := strconv.ParseFloat(stats["total_shots_fired"], 64); err == nil {
-		if total_shots_hit, err := strconv.ParseFloat(stats["total_shots_hit"], 64); err == nil {
-			stats["hit_ratio"] = fmt.Sprintf("%f", total_shots_hit/total_shots_fired)
-		}
-	}
-
-	if secI, err := strconv.Atoi(stats["total_time_played"]); err == nil {
-		stats["played_hours"] = strconv.Itoa(secI / 3600)
+		statsMap[v.Name] = strconv.Itoa(v.Value)
 	}
 
 	for _, v := range data.Playerstats.Achievements {
-		archivements[v.Name] = strconv.Itoa(v.Achieved)
+		archivementsMap[v.Name] = strconv.Itoa(v.Achieved)
+	}
+
+	extra := GameExtras{}
+
+	if total_deaths, err := strconv.ParseFloat(statsMap["total_deaths"], 64); err == nil {
+		if total_kills, err := strconv.ParseFloat(statsMap["total_kills"], 64); err == nil {
+			extra.TotalKD = fmt.Sprintf("%f", total_kills/total_deaths)
+		}
+	}
+
+	if last_deaths, err := strconv.ParseFloat(statsMap["last_match_deaths"], 64); err == nil {
+		if last_kills, err := strconv.ParseFloat(statsMap["last_match_kills"], 64); err == nil {
+			extra.LastMatchKD = fmt.Sprintf("%f", last_kills/last_deaths)
+		}
+	}
+
+	if total_shots_fired, err := strconv.ParseFloat(statsMap["total_shots_fired"], 64); err == nil {
+		if total_shots_hit, err := strconv.ParseFloat(statsMap["total_shots_hit"], 64); err == nil {
+			extra.HitRatio = fmt.Sprintf("%f", total_shots_hit/total_shots_fired)
+		}
+	}
+
+	if secI, err := strconv.Atoi(statsMap["total_time_played"]); err == nil {
+		extra.PlayedHours = strconv.Itoa(secI / 3600)
 	}
 
 	return UserStatsForGame{
-		SteamID:      data.Playerstats.SteamID,
-		GameName:     data.Playerstats.GameName,
-		Stats:        stats,
-		Archivements: archivements,
+		SteamID:  data.Playerstats.SteamID,
+		GameName: data.Playerstats.GameName,
+		Extra:    extra,
+		Stats: GameStats{
+			GILessonCsgoInstrExplainInspect:           statsMap["GI.lesson.csgo_instr_explain_inspect"],
+			GILessonBombSitesA:                        statsMap["GI.lesson.bomb_sites_a"],
+			GILessonBombSitesB:                        statsMap["GI.lesson.bomb_sites_b"],
+			GILessonCsgoCycleWeaponsKb:                statsMap["GI.lesson.csgo_cycle_weapons_kb"],
+			GILessonCsgoHostageLeadToHrz:              statsMap["GI.lesson.csgo_hostage_lead_to_hrz"],
+			GILessonCsgoInstrExplainBombCarrier:       statsMap["GI.lesson.csgo_instr_explain_bomb_carrier"],
+			GILessonCsgoInstrExplainBuyarmor:          statsMap["GI.lesson.csgo_instr_explain_buyarmor"],
+			GILessonCsgoInstrExplainBuymenu:           statsMap["GI.lesson.csgo_instr_explain_buymenu"],
+			GILessonCsgoInstrExplainFollowBomber:      statsMap["GI.lesson.csgo_instr_explain_follow_bomber"],
+			GILessonCsgoInstrExplainPickupBomb:        statsMap["GI.lesson.csgo_instr_explain_pickup_bomb"],
+			GILessonCsgoInstrExplainPlantBomb:         statsMap["GI.lesson.csgo_instr_explain_plant_bomb"],
+			GILessonCsgoInstrExplainPreventBombPickup: statsMap["GI.lesson.csgo_instr_explain_prevent_bomb_pickup"],
+			GILessonCsgoInstrExplainReload:            statsMap["GI.lesson.csgo_instr_explain_reload"],
+			GILessonCsgoInstrExplainZoom:              statsMap["GI.lesson.csgo_instr_explain_zoom"],
+			GILessonCsgoInstrRescueZone:               statsMap["GI.lesson.csgo_instr_rescue_zone"],
+			GILessonDefusePlantedBomb:                 statsMap["GI.lesson.defuse_planted_bomb"],
+			GILessonFindPlantedBomb:                   statsMap["GI.lesson.find_planted_bomb"],
+			GILessonTrExplainPlantBomb:                statsMap["GI.lesson.tr_explain_plant_bomb"],
+			GILessonVersionNumber:                     statsMap["GI.lesson.version_number"],
+			LastMatchContributionScore:                statsMap["last_match_contribution_score"],
+			LastMatchCtWins:                           statsMap["last_match_ct_wins"],
+			LastMatchDamage:                           statsMap["last_match_damage"],
+			LastMatchDeaths:                           statsMap["last_match_deaths"],
+			LastMatchDominations:                      statsMap["last_match_dominations"],
+			LastMatchFavweaponHits:                    statsMap["last_match_favweapon_hits"],
+			LastMatchFavweaponId:                      statsMap["last_match_favweapon_id"],
+			LastMatchFavweaponKills:                   statsMap["last_match_favweapon_kills"],
+			LastMatchFavweaponShots:                   statsMap["last_match_favweapon_shots"],
+			LastMatchGgContributionScore:              statsMap["last_match_gg_contribution_score"],
+			LastMatchKills:                            statsMap["last_match_kills"],
+			LastMatchMaxPlayers:                       statsMap["last_match_max_players"],
+			LastMatchMoneySpent:                       statsMap["last_match_money_spent"],
+			LastMatchMvps:                             statsMap["last_match_mvps"],
+			LastMatchRevenges:                         statsMap["last_match_revenges"],
+			LastMatchRounds:                           statsMap["last_match_rounds"],
+			LastMatchTWins:                            statsMap["last_match_t_wins"],
+			LastMatchWins:                             statsMap["last_match_wins"],
+			SteamStatMatchwinscomp:                    statsMap["steam_stat_matchwinscomp"],
+			SteamStatSurvivedz:                        statsMap["steam_stat_survivedz"],
+			SteamStatXpearnedgames:                    statsMap["steam_stat_xpearnedgames"],
+			TotalBrokenWindows:                        statsMap["total_broken_windows"],
+			TotalContributionScore:                    statsMap["total_contribution_score"],
+			TotalDamageDone:                           statsMap["total_damage_done"],
+			TotalDeaths:                               statsMap["total_deaths"],
+			TotalDefusedBombs:                         statsMap["total_defused_bombs"],
+			TotalDominationOverkills:                  statsMap["total_domination_overkills"],
+			TotalDominations:                          statsMap["total_dominations"],
+			TotalGgMatchesPlayed:                      statsMap["total_gg_matches_played"],
+			TotalGgMatchesWon:                         statsMap["total_gg_matches_won"],
+			TotalGunGameContributionScore:             statsMap["total_gun_game_contribution_score"],
+			TotalGunGameRoundsPlayed:                  statsMap["total_gun_game_rounds_played"],
+			TotalGunGameRoundsWon:                     statsMap["total_gun_game_rounds_won"],
+			TotalHitsAk47:                             statsMap["total_hits_ak_47"],
+			TotalHitsAug:                              statsMap["total_hits_aug"],
+			TotalHitsAwp:                              statsMap["total_hits_awp"],
+			TotalHitsBizon:                            statsMap["total_hits_bizon"],
+			TotalHitsDeagle:                           statsMap["total_hits_deagle"],
+			TotalHitsElite:                            statsMap["total_hits_elite"],
+			TotalHitsFamas:                            statsMap["total_hits_famas"],
+			TotalHitsFiveseven:                        statsMap["total_hits_fiveseven"],
+			TotalHitsG3sg1:                            statsMap["total_hits_g_3sg_1"],
+			TotalHitsGalilar:                          statsMap["total_hits_galilar"],
+			TotalHitsGlock:                            statsMap["total_hits_glock"],
+			TotalHitsHkp2000:                          statsMap["total_hits_hkp_2000"],
+			TotalHitsM249:                             statsMap["total_hits_m249"],
+			TotalHitsM4a1:                             statsMap["total_hits_m_4a_1"],
+			TotalHitsMac10:                            statsMap["total_hits_mac_10"],
+			TotalHitsMag7:                             statsMap["total_hits_mag_7"],
+			TotalHitsMp7:                              statsMap["total_hits_mp_7"],
+			TotalHitsMp9:                              statsMap["total_hits_mp_9"],
+			TotalHitsNegev:                            statsMap["total_hits_negev"],
+			TotalHitsNova:                             statsMap["total_hits_nova"],
+			TotalHitsP250:                             statsMap["total_hits_p250"],
+			TotalHitsP90:                              statsMap["total_hits_p90"],
+			TotalHitsSawedoff:                         statsMap["total_hits_sawedoff"],
+			TotalHitsScar20:                           statsMap["total_hits_scar_20"],
+			TotalHitsSg556:                            statsMap["total_hits_sg_556"],
+			TotalHitsSsg08:                            statsMap["total_hits_ssg_08"],
+			TotalHitsTec9:                             statsMap["total_hits_tec_9"],
+			TotalHitsUmp45:                            statsMap["total_hits_ump_45"],
+			TotalHitsXm1014:                           statsMap["total_hits_xm_1014"],
+			TotalKills:                                statsMap["total_kills"],
+			TotalKillsAgainstZoomedSniper:             statsMap["total_kills_against_zoomed_sniper"],
+			TotalKillsAk47:                            statsMap["total_kills_ak_47"],
+			TotalKillsAug:                             statsMap["total_kills_aug"],
+			TotalKillsAwp:                             statsMap["total_kills_awp"],
+			TotalKillsBizon:                           statsMap["total_kills_bizon"],
+			TotalKillsDeagle:                          statsMap["total_kills_deagle"],
+			TotalKillsElite:                           statsMap["total_kills_elite"],
+			TotalKillsEnemyBlinded:                    statsMap["total_kills_enemy_blinded"],
+			TotalKillsEnemyWeapon:                     statsMap["total_kills_enemy_weapon"],
+			TotalKillsFamas:                           statsMap["total_kills_famas"],
+			TotalKillsFiveseven:                       statsMap["total_kills_fiveseven"],
+			TotalKillsG3sg1:                           statsMap["total_kills_g_3sg_1"],
+			TotalKillsGalilar:                         statsMap["total_kills_galilar"],
+			TotalKillsGlock:                           statsMap["total_kills_glock"],
+			TotalKillsHeadshot:                        statsMap["total_kills_headshot"],
+			TotalKillsHegrenade:                       statsMap["total_kills_hegrenade"],
+			TotalKillsHkp2000:                         statsMap["total_kills_hkp_2000"],
+			TotalKillsKnife:                           statsMap["total_kills_knife"],
+			TotalKillsKnifeFight:                      statsMap["total_kills_knife_fight"],
+			TotalKillsM249:                            statsMap["total_kills_m249"],
+			TotalKillsM4a1:                            statsMap["total_kills_m_4a_1"],
+			TotalKillsMac10:                           statsMap["total_kills_mac_10"],
+			TotalKillsMag7:                            statsMap["total_kills_mag_7"],
+			TotalKillsMolotov:                         statsMap["total_kills_molotov"],
+			TotalKillsMp7:                             statsMap["total_kills_mp_7"],
+			TotalKillsMp9:                             statsMap["total_kills_mp_9"],
+			TotalKillsNegev:                           statsMap["total_kills_negev"],
+			TotalKillsNova:                            statsMap["total_kills_nova"],
+			TotalKillsP250:                            statsMap["total_kills_p250"],
+			TotalKillsP90:                             statsMap["total_kills_p90"],
+			TotalKillsSawedoff:                        statsMap["total_kills_sawedoff"],
+			TotalKillsScar20:                          statsMap["total_kills_scar_20"],
+			TotalKillsSg556:                           statsMap["total_kills_sg_556"],
+			TotalKillsSsg08:                           statsMap["total_kills_ssg_08"],
+			TotalKillsTaser:                           statsMap["total_kills_taser"],
+			TotalKillsTec9:                            statsMap["total_kills_tec_9"],
+			TotalKillsUmp45:                           statsMap["total_kills_ump_45"],
+			TotalKillsXm1014:                          statsMap["total_kills_xm_1014"],
+			TotalMatchesPlayed:                        statsMap["total_matches_played"],
+			TotalMatchesWon:                           statsMap["total_matches_won"],
+			TotalMatchesWonBaggage:                    statsMap["total_matches_won_baggage"],
+			TotalMatchesWonBank:                       statsMap["total_matches_won_bank"],
+			TotalMatchesWonLake:                       statsMap["total_matches_won_lake"],
+			TotalMatchesWonSafehouse:                  statsMap["total_matches_won_safehouse"],
+			TotalMatchesWonShoots:                     statsMap["total_matches_won_shoots"],
+			TotalMatchesWonStmarc:                     statsMap["total_matches_won_stmarc"],
+			TotalMatchesWonSugarcane:                  statsMap["total_matches_won_sugarcane"],
+			TotalMatchesWonTrain:                      statsMap["total_matches_won_train"],
+			TotalMoneyEarned:                          statsMap["total_money_earned"],
+			TotalMvps:                                 statsMap["total_mvps"],
+			TotalPlantedBombs:                         statsMap["total_planted_bombs"],
+			TotalProgressiveMatchesWon:                statsMap["total_progressive_matches_won"],
+			TotalRescuedHostages:                      statsMap["total_rescued_hostages"],
+			TotalRevenges:                             statsMap["total_revenges"],
+			TotalRoundsMapArBaggage:                   statsMap["total_rounds_map_ar_baggage"],
+			TotalRoundsMapArMonastery:                 statsMap["total_rounds_map_ar_monastery"],
+			TotalRoundsMapArShoots:                    statsMap["total_rounds_map_ar_shoots"],
+			TotalRoundsMapCsAssault:                   statsMap["total_rounds_map_cs_assault"],
+			TotalRoundsMapCsItaly:                     statsMap["total_rounds_map_cs_italy"],
+			TotalRoundsMapCsMilitia:                   statsMap["total_rounds_map_cs_militia"],
+			TotalRoundsMapCsOffice:                    statsMap["total_rounds_map_cs_office"],
+			TotalRoundsMapDeAztec:                     statsMap["total_rounds_map_de_aztec"],
+			TotalRoundsMapDeBank:                      statsMap["total_rounds_map_de_bank"],
+			TotalRoundsMapDeCbble:                     statsMap["total_rounds_map_de_cbble"],
+			TotalRoundsMapDeDust:                      statsMap["total_rounds_map_de_dust"],
+			TotalRoundsMapDeDust2:                     statsMap["total_rounds_map_de_dust_2"],
+			TotalRoundsMapDeInferno:                   statsMap["total_rounds_map_de_inferno"],
+			TotalRoundsMapDeLake:                      statsMap["total_rounds_map_de_lake"],
+			TotalRoundsMapDeNuke:                      statsMap["total_rounds_map_de_nuke"],
+			TotalRoundsMapDeSafehouse:                 statsMap["total_rounds_map_de_safehouse"],
+			TotalRoundsMapDeShorttrain:                statsMap["total_rounds_map_de_shorttrain"],
+			TotalRoundsMapDeStmarc:                    statsMap["total_rounds_map_de_stmarc"],
+			TotalRoundsMapDeSugarcane:                 statsMap["total_rounds_map_de_sugarcane"],
+			TotalRoundsMapDeTrain:                     statsMap["total_rounds_map_de_train"],
+			TotalRoundsMapDeVertigo:                   statsMap["total_rounds_map_de_vertigo"],
+			TotalRoundsPlayed:                         statsMap["total_rounds_played"],
+			TotalShotsAk47:                            statsMap["total_shots_ak_47"],
+			TotalShotsAug:                             statsMap["total_shots_aug"],
+			TotalShotsAwp:                             statsMap["total_shots_awp"],
+			TotalShotsBizon:                           statsMap["total_shots_bizon"],
+			TotalShotsDeagle:                          statsMap["total_shots_deagle"],
+			TotalShotsElite:                           statsMap["total_shots_elite"],
+			TotalShotsFamas:                           statsMap["total_shots_famas"],
+			TotalShotsFired:                           statsMap["total_shots_fired"],
+			TotalShotsFiveseven:                       statsMap["total_shots_fiveseven"],
+			TotalShotsG3sg1:                           statsMap["total_shots_g_3sg_1"],
+			TotalShotsGalilar:                         statsMap["total_shots_galilar"],
+			TotalShotsGlock:                           statsMap["total_shots_glock"],
+			TotalShotsHit:                             statsMap["total_shots_hit"],
+			TotalShotsHkp2000:                         statsMap["total_shots_hkp_2000"],
+			TotalShotsM249:                            statsMap["total_shots_m249"],
+			TotalShotsM4a1:                            statsMap["total_shots_m_4a_1"],
+			TotalShotsMac10:                           statsMap["total_shots_mac_10"],
+			TotalShotsMag7:                            statsMap["total_shots_mag_7"],
+			TotalShotsMp7:                             statsMap["total_shots_mp_7"],
+			TotalShotsMp9:                             statsMap["total_shots_mp_9"],
+			TotalShotsNegev:                           statsMap["total_shots_negev"],
+			TotalShotsNova:                            statsMap["total_shots_nova"],
+			TotalShotsP250:                            statsMap["total_shots_p250"],
+			TotalShotsP90:                             statsMap["total_shots_p90"],
+			TotalShotsSawedoff:                        statsMap["total_shots_sawedoff"],
+			TotalShotsScar20:                          statsMap["total_shots_scar_20"],
+			TotalShotsSg556:                           statsMap["total_shots_sg_556"],
+			TotalShotsSsg08:                           statsMap["total_shots_ssg_08"],
+			TotalShotsTaser:                           statsMap["total_shots_taser"],
+			TotalShotsTec9:                            statsMap["total_shots_tec_9"],
+			TotalShotsUmp45:                           statsMap["total_shots_ump_45"],
+			TotalShotsXm1014:                          statsMap["total_shots_xm_1014"],
+			TotalTRDefusedBombs:                       statsMap["total_tr_defused_bombs"],
+			TotalTRPlantedBombs:                       statsMap["total_tr_planted_bombs"],
+			TotalTimePlayed:                           statsMap["total_time_played"],
+			TotalTrbombMatchesWon:                     statsMap["total_trbomb_matches_won"],
+			TotalWeaponsDonated:                       statsMap["total_weapons_donated"],
+			TotalWins:                                 statsMap["total_wins"],
+			TotalWinsMapArBaggage:                     statsMap["total_wins_map_ar_baggage"],
+			TotalWinsMapArMonastery:                   statsMap["total_wins_map_ar_monastery"],
+			TotalWinsMapArShoots:                      statsMap["total_wins_map_ar_shoots"],
+			TotalWinsMapCsAssault:                     statsMap["total_wins_map_cs_assault"],
+			TotalWinsMapCsItaly:                       statsMap["total_wins_map_cs_italy"],
+			TotalWinsMapCsMilitia:                     statsMap["total_wins_map_cs_militia"],
+			TotalWinsMapCsOffice:                      statsMap["total_wins_map_cs_office"],
+			TotalWinsMapDeAztec:                       statsMap["total_wins_map_de_aztec"],
+			TotalWinsMapDeBank:                        statsMap["total_wins_map_de_bank"],
+			TotalWinsMapDeCbble:                       statsMap["total_wins_map_de_cbble"],
+			TotalWinsMapDeDust:                        statsMap["total_wins_map_de_dust"],
+			TotalWinsMapDeDust2:                       statsMap["total_wins_map_de_dust_2"],
+			TotalWinsMapDeHouse:                       statsMap["total_wins_map_de_house"],
+			TotalWinsMapDeInferno:                     statsMap["total_wins_map_de_inferno"],
+			TotalWinsMapDeLake:                        statsMap["total_wins_map_de_lake"],
+			TotalWinsMapDeNuke:                        statsMap["total_wins_map_de_nuke"],
+			TotalWinsMapDeSafehouse:                   statsMap["total_wins_map_de_safehouse"],
+			TotalWinsMapDeShorttrain:                  statsMap["total_wins_map_de_shorttrain"],
+			TotalWinsMapDeStmarc:                      statsMap["total_wins_map_de_stmarc"],
+			TotalWinsMapDeSugarcane:                   statsMap["total_wins_map_de_sugarcane"],
+			TotalWinsMapDeTrain:                       statsMap["total_wins_map_de_train"],
+			TotalWinsMapDeVertigo:                     statsMap["total_wins_map_de_vertigo"],
+			TotalWinsPistolround:                      statsMap["total_wins_pistolround"],
+		},
+		Archivements: GameArchievements{
+			//TODO implement achievements, if ever needed
+		},
 	}
+
 }
