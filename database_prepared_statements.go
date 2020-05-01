@@ -1,16 +1,11 @@
 package main
 
-import (
-	"database/sql"
-	"log"
-)
+import "log"
 
-func (ds *DataStorage) getPreparedstatements() (map[string]*sql.Stmt, error) {
-	// Prepare all statements
-	statements := make(map[string]*sql.Stmt)
+func (ds *DataStorage) getCreatePreparedstatements() error {
 	var err error
 
-	if statements["create_player_summary"], err = ds.db.Prepare(
+	ds.statements["create_player_summary"], err = ds.db.Prepare(
 		`CREATE TABLE IF NOT EXISTS player_summary (
 			steamid INTEGER PRIMARY KEY,
 			communityvisibilitystate INTEGER,
@@ -23,11 +18,13 @@ func (ds *DataStorage) getPreparedstatements() (map[string]*sql.Stmt, error) {
 			lastlogoff INTEGER,
 			personastate INTEGER,
 			primaryclanid INTEGER,
-			timecreated INTEGER)`); err != nil {
-		return nil, err
+			timecreated INTEGER)`)
+
+	if err != nil {
+		return err
 	}
 
-	if statements["create_player_stats"], err = ds.db.Prepare(
+	ds.statements["create_player_stats"], err = ds.db.Prepare(
 		`CREATE TABLE IF NOT EXISTS player_stats (
 			steamid INTEGER PRIMARY KEY,
 			total_kills INTEGER,
@@ -208,54 +205,51 @@ func (ds *DataStorage) getPreparedstatements() (map[string]*sql.Stmt, error) {
 			GI_lesson_csgo_hostage_lead_to_hrz INTEGER,
 			GI_lesson_csgo_instr_rescue_zone INTEGER,
 			GI_lesson_csgo_instr_explain_inspect INTEGER,
-			steam_stat_xpearnedgames INTEGER)`); err != nil {
-		log.Fatal(err)
+			steam_stat_xpearnedgames INTEGER)`)
+	if err != nil {
+		return err
 	}
 
-	if statements["create_recently_played"], err = ds.db.Prepare(
+	ds.statements["create_recently_played"], err = ds.db.Prepare(
 		`CREATE TABLE IF NOT EXISTS recently_played (
 			steamid INTEGER PRIMARY KEY,
 			playtime_2weeks INTEGER,
 			playtime_forever INTEGER,
 			playtime_windows_forever INTEGER,
 			playtime_mac_forever INTEGER,
-			playtime_linux_forever INTEGER)`); err != nil {
-		log.Fatal(err)
+			playtime_linux_forever INTEGER)`)
+	if err != nil {
+		return err
 	}
 
 	// TODO add all fields for which we want historical info
-	if statements["create_player_history"], err = ds.db.Prepare(
+	ds.statements["create_player_history"], err = ds.db.Prepare(
 		`CREATE TABLE IF NOT EXISTS player_history (
 			steamid INTEGER,
 			time INTEGER,
-			total_kills INTEGER)`); err != nil {
-		log.Fatal(err)
-	}
+			total_kills INTEGER)`)
 
-	// - update recently_played
-	if statements["update_recently_played"], err = ds.db.Prepare(
+	return err
+}
+func (ds *DataStorage) getUpdatePreparedstatements() error {
+	var err error
+
+	ds.statements["update_recently_played"], err = ds.db.Prepare(
 		`UPDATE recently_played SET
 			playtime_2weeks = ?,
 			playtime_forever= ?,
 			playtime_windows_forever= ?,
 			playtime_mac_forever = ?,
 			playtime_linux_forever = ?
-			WHERE steamid = ?`); err != nil {
-		log.Fatal(err)
-	}
+			WHERE steamid = ?`)
 
-	// - insert history
-	if statements["insert_history"], err = ds.db.Prepare(
-		`INSERT INTO player_history (
-			steamid,
-			time,
-			total_kills
-		) VALUES (?, ?, ?)`); err != nil {
-		log.Fatal(err)
+	if err != nil {
+		log.Println("Failed to prepare statement: update_recently_played")
+		return err
 	}
 
 	// - update player_summary
-	if statements["update_player_summary"], err = ds.db.Prepare(
+	ds.statements["update_player_summary"], err = ds.db.Prepare(
 		`UPDATE player_summary SET
 			communityvisibilitystate = ?,
 			profilestate = ?,
@@ -267,24 +261,14 @@ func (ds *DataStorage) getPreparedstatements() (map[string]*sql.Stmt, error) {
 			lastlogoff = ?,
 			personastate = ?,
 			primaryclanid = ?,
-			timecreated = ?,
-			WHERE steamid = ?`); err != nil {
-		log.Fatal(err)
+			timecreated = ?
+			WHERE steamid = ?`)
+	if err != nil {
+		log.Println("Failed to prepare statement: update_player_summary")
+		return err
 	}
 
-	// May not be needed
-	// // - TODO update history time (if everything else is unchanged)
-	// if statements["update_history_time"], err =ds.db.Prepare(
-	// 	`UPDATE history SET
-	// 		time = ?
-	// 		WHERE steamid = ?
-	// 		ORDER BY time desc
-	// 		LIMIT 1`); err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// - TODO update player_stats
-	if statements["update_player_stats"], err = ds.db.Prepare(
+	ds.statements["update_player_stats"], err = ds.db.Prepare(
 		`UPDATE player_stats SET
 			total_kills  = ?,
 			total_deaths  = ?,
@@ -465,40 +449,50 @@ func (ds *DataStorage) getPreparedstatements() (map[string]*sql.Stmt, error) {
 			GI_lesson_csgo_instr_rescue_zone  = ?,
 			GI_lesson_csgo_instr_explain_inspect  = ?,
 			steam_stat_xpearnedgames  = ?
-			WHERE steamid = ?`); err != nil {
-		log.Fatal(err)
-	}
+			WHERE steamid = ?`)
 
-	// - query player_summary for player
-	if statements["select_player_summary"], err = ds.db.Prepare(`
+	if err != nil {
+		log.Println("Failed to prepare statement: update_player_stats")
+	}
+	return err
+}
+func (ds *DataStorage) getInsertPreparedstatements() error {
+	var err error
+	ds.statements["insert_history"], err = ds.db.Prepare(
+		`INSERT INTO player_history (
+			steamid,
+			time,
+			total_kills
+		) VALUES (?, ?, ?)`)
+	return err
+}
+
+func (ds *DataStorage) getSelectPreparedstatements() error {
+	// Prepare all statements
+	var err error
+
+	// - insert histor	// - query player_summary for player
+	ds.statements["select_player_summary"], err = ds.db.Prepare(`
 			SELECT * FROM player_summary
 			WHERE steamid = ?
-			LIMIT 1`); err != nil {
-		log.Fatal(err)
-	}
+			LIMIT 1`)
 
 	// - query player_stats
-	if statements["select_player_stats"], err = ds.db.Prepare(`
+	ds.statements["select_player_stats"], err = ds.db.Prepare(`
 			SELECT * FROM player_stats
 			WHERE steamid = ?
-			LIMIT 1`); err != nil {
-		log.Fatal(err)
-	}
+			LIMIT 1`)
 	// - query recently_played
-	if statements["select_recently_played"], err = ds.db.Prepare(`
+	ds.statements["select_recently_played"], err = ds.db.Prepare(`
 			SELECT * FROM recently_played
 			WHERE steamid = ?
-			LIMIT 1`); err != nil {
-		log.Fatal(err)
-	}
+			LIMIT 1`)
 	// - query history for last n entries of player
-	if statements["select_player_history"], err = ds.db.Prepare(`
+	ds.statements["select_player_history"], err = ds.db.Prepare(`
 			SELECT * FROM player_history
 			WHERE steamid = ?
 			ORDER BY time DESC
-			LIMIT ?`); err != nil {
-		log.Fatal(err)
-	}
+			LIMIT ?`)
 
-	return statements, nil
+	return err
 }

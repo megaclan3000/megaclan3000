@@ -12,12 +12,20 @@ import (
 
 var config SteamConfig
 var t *template.Template
+var datastorage *DataStorage
 
 func main() {
+	log.Println("main")
 
+	var err error
 	// Read config and pull initial data
 	config = readConfig()
 	config.Refresh()
+
+	log.Println("Creating datastorage")
+	if datastorage, err = NewDataStorage("./data.db"); err != nil {
+		log.Fatal("Failed to open database", err)
+	}
 
 	r := mux.NewRouter()
 
@@ -36,7 +44,6 @@ func main() {
 	r.NotFoundHandler = http.HandlerFunc(handler404)
 
 	// Parse all templates
-	var err error
 	t, err = template.ParseGlob("./templates/*")
 	if err != nil {
 		log.Println("Cannot parse templates:", err)
