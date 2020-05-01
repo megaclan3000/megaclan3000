@@ -1,5 +1,7 @@
 package main
 
 type PlayerHistory struct {
-	KD map[string]int
+	steamID    int
+	time       int
+	TotalKills int
 }

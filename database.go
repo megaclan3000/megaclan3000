@@ -8,33 +8,65 @@ import (
 )
 
 // Public data query methods
-
 func (ds *DataStorage) GetPlayerSummary(steamID string) (PlayerSummary, error) {
-	//TODO implement
-	// rows, _ := database.Query("SELECT id, firstname, lastname FROM people")
-	// var id int
-	// var firstname string
-	// var lastname string
-	// for rows.Next() {
-	// 	rows.Scan(&id, &firstname, &lastname)
-	// 	fmt.Println(strconv.Itoa(id) + ": " + firstname + " " + lastname)
-	// }
-	return PlayerSummary{}, nil
+
+	ps := PlayerSummary{}
+	var err error
+
+	if rows, err := ds.statements["select_player_summary"].Query(); err == nil {
+		rows.Scan(
+			&ps.Steamid,
+			&ps.Communityvisibilitystate,
+			&ps.Profilestate,
+			&ps.Personaname,
+			&ps.Profileurl,
+			&ps.Avatar,
+			&ps.Avatarmedium,
+			&ps.Avatarfull,
+			&ps.Lastlogoff,
+			&ps.Personastate,
+			&ps.Primaryclanid,
+			&ps.Timecreated,
+		)
+	}
+	return ps, err
 }
 
 func (ds *DataStorage) GetUserStatsForGame(steamID string) (UserStatsForGame, error) {
-	//TODO implement
-	return UserStatsForGame{}, nil
+	//TODO impletment
+	panic("not implemented yet!")
 }
 
 func (ds *DataStorage) GetRecentlyPlayedGames(steamID string) (RecentlyPlayedGames, error) {
-	//TODO implement
-	return RecentlyPlayedGames{}, nil
+	rpg := RecentlyPlayedGames{}
+	var err error
+	var id int
+
+	if rows, err := ds.statements["select_player_stats"].Query(); err == nil {
+		rows.Scan(
+			&id,
+			&rpg.Playtime2Weeks,
+			&rpg.PlaytimeForever,
+			&rpg.PlaytimeWindowsForever,
+			&rpg.PlaytimeMacForever,
+			&rpg.PlaytimeLinuxForever,
+		)
+	}
+	return rpg, err
 }
 
 func (ds *DataStorage) GetPlayerHistory(steamID string, numPoints int) (PlayerHistory, error) {
-	//TODO implement
-	return PlayerHistory{}, nil
+	ph := PlayerHistory{}
+	var err error
+
+	if rows, err := ds.statements["select_player_history"].Query(); err == nil {
+		rows.Scan(
+			&ph.steamID,
+			&ph.time,
+			&ph.TotalKills,
+		)
+	}
+	return ph, err
 }
 
 // Private data retrieval methods
