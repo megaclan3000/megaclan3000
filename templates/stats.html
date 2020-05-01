@@ -30,7 +30,7 @@
 							<td>
 								<i class="medium material-icons stats-icon" title="number of wins">beenhere</i>
 								&nbsp;&nbsp;
-								{{index $val.UserStatsForGame.Stats "total_wins"}}
+								{{$val.UserStatsForGame.Stats.TotalWins}}
 							</td>
 							<td>
 								<i class="medium material-icons stats-icon" title="number of played hours">timer</i>
@@ -43,18 +43,18 @@
 					<table class="centered white-text">
 						<tr>
 							<th>K / D</th>
-							<td> {{index $val.UserStatsForGame.Stats "total_kills"}} / {{index $val.UserStatsForGame.Stats "total_deaths"}}</td>
-							<td>{{index $val.UserStatsForGame.Stats "total_kd"}}</td>
+							<td> {{$val.UserStatsForGame.Stats.TotalKills}} / {{$val.UserStatsForGame.Stats.TotalDeaths}}</td>
+							<td>{{$val.UserStatsForGame.Extra.TotalKD}}</td>
 						</tr>
 						<tr>
 							<th>K / D (Last Match)</th>
-							<td> {{index $val.UserStatsForGame.Stats "last_match_kills"}} / {{index $val.UserStatsForGame.Stats "last_match_deaths"}}</td>
-							<td>{{index $val.UserStatsForGame.Stats "last_match_kd"}}</td>
+							<td> {{$val.UserStatsForGame.Stats.LastMatchKills}} / {{$val.UserStatsForGame.Stats.LastMatchDeaths}}</td>
+							<td>{{$val.UserStatsForGame.Extra.LastMatchKD}}</td>
 						</tr>
 						<tr>
 							<th>shots hit / fired</th>
-							<td>{{index $val.UserStatsForGame.Stats "total_shots_hit"}} / {{index $val.UserStatsForGame.Stats "total_shots_fired"}}</td>
-							<td>{{index $val.UserStatsForGame.Stats "hit_ratio"}}</td>
+							<td>{{$val.UserStatsForGame.Stats.TotalShotsHit}} / {{$val.UserStatsForGame.Stats.TotalShotsFired}}</td>
+							<td>{{$val.UserStatsForGame.Extra.HitRatio}}</td>
 						</tr>
 					</table>
 				</div>
