@@ -26,7 +26,7 @@ type GameStats struct {
 	LastMatchDeaths                           string
 	LastMatchDominations                      string
 	LastMatchFavweaponHits                    string
-	LastMatchFavweaponId                      string
+	LastMatchFavweaponID                      string
 	LastMatchFavweaponKills                   string
 	LastMatchFavweaponShots                   string
 	LastMatchGgContributionScore              string

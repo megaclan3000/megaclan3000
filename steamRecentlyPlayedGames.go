@@ -60,7 +60,7 @@ func getRecentlyPlayedGames(steamID string) RecentlyPlayedGames {
 	url := "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=" + config.SteamAPIKey + "&steamid=" + steamID
 
 	data := recentlyPlayedGamesData{}
-	getJson(url, &data)
+	getJSON(url, &data)
 
 	for _, v := range data.Response.Games {
 		if v.Appid == 730 {

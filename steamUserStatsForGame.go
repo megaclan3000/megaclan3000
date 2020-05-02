@@ -45,7 +45,7 @@ func getUserStatsForGame(steamID string) UserStatsForGame {
 
 	url := "https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=730&key=" + config.SteamAPIKey + "&steamid=" + steamID
 	data := userStatsForGameData{}
-	getJson(url, &data)
+	getJSON(url, &data)
 
 	//Create to maps for stats and archivements, so the search will be quicker afterwards
 	statsMap := make(map[string]string)
@@ -113,7 +113,7 @@ func getUserStatsForGame(steamID string) UserStatsForGame {
 			LastMatchDeaths:                           statsMap["last_match_deaths"],
 			LastMatchDominations:                      statsMap["last_match_dominations"],
 			LastMatchFavweaponHits:                    statsMap["last_match_favweapon_hits"],
-			LastMatchFavweaponId:                      statsMap["last_match_favweapon_id"],
+			LastMatchFavweaponID:                      statsMap["last_match_favweapon_id"],
 			LastMatchFavweaponKills:                   statsMap["last_match_favweapon_kills"],
 			LastMatchFavweaponShots:                   statsMap["last_match_favweapon_shots"],
 			LastMatchGgContributionScore:              statsMap["last_match_gg_contribution_score"],

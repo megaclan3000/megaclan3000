@@ -149,7 +149,7 @@ func getPlayerSummary(steamID string) PlayerSummary {
 	url := "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=" + config.SteamAPIKey + "&steamids=" + steamID
 
 	data := playerSummariesData{}
-	getJson(url, &data)
+	getJSON(url, &data)
 
 	return PlayerSummary{
 		Avatar:                   data.Response.Players[0].Avatar,
