@@ -34,6 +34,8 @@ type playerSummariesData struct {
 	} `json:"response"`
 }
 
+// PlayerSummary holds the players summary data from the steam API
+// endpoint GetPlayerSummaries
 type PlayerSummary struct {
 
 	// Public Data

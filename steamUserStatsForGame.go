@@ -17,15 +17,22 @@ type userStatsForGameData struct {
 	} `json:"playerstats"`
 }
 
+// Stats is the nested struct to hold the "stats" array returned by the steam
+// API endopint GetUserStatsForGame
 type Stats struct {
 	Name  string `json:"name"`
 	Value int    `json:"value"`
 }
+
+// Achievements is the nested struct to hold the "archivements" array returned
+// by the steam API endopint GetUserStatsForGame
 type Achievements struct {
 	Name     string `json:"name"`
 	Achieved int    `json:"achieved"`
 }
 
+// UserStatsForGame holds the players summary data from the steam API
+// endpoint GetUserStatsForGame
 type UserStatsForGame struct {
 	SteamID      string
 	GameName     string
@@ -34,6 +41,8 @@ type UserStatsForGame struct {
 	Extra        GameExtras
 }
 
+// GameExtras holds data in the same way as the other nested structs. This data
+// is not fetched from an endpoint but calculated based on other values locally
 type GameExtras struct {
 	TotalKD     string
 	LastMatchKD string
@@ -43,7 +52,10 @@ type GameExtras struct {
 
 func getUserStatsForGame(steamID string) UserStatsForGame {
 
-	url := "https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=730&key=" + config.SteamAPIKey + "&steamid=" + steamID
+	url :=
+		"https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=730&key=" +
+			config.SteamAPIKey + "&steamid=" + steamID
+
 	data := userStatsForGameData{}
 	getJSON(url, &data)
 

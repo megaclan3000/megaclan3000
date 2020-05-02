@@ -43,6 +43,8 @@ type recentlyPlayedGamesData struct {
 	} `json:"response"`
 }
 
+// RecentlyPlayedGames holds the players summary data from the steam API
+// endpoint GetRecentlyPlayedGames
 type RecentlyPlayedGames struct {
 	Appid                  string
 	Name                   string

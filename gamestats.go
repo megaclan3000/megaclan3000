@@ -1,5 +1,7 @@
 package main
 
+// GameStats holds the players stats data from the steam API
+// endpoint UserStatsForGame
 type GameStats struct {
 	GILessonCsgoInstrExplainInspect           string
 	GILessonBombSitesA                        string
