@@ -1,3 +1,6 @@
+# megaclan3000
+Our custom CS:GO stats page
+
 [![Build Status](https://travis-ci.org/pinpox/megaclan3000.svg?branch=master)](https://travis-ci.org/pinpox/megaclan3000)
 [![GoDoc](https://godoc.org/github.com/pinpox/megaclan3000?status.svg)](https://godoc.org/github.com/pinpox/megaclan3000)
 [![Go Report Card](https://goreportcard.com/badge/github.com/pinpox/megaclan3000)](https://goreportcard.com/report/github.com/pinpox/megaclan3000)
@@ -7,7 +10,6 @@
 
 ![](https://i.imgur.com/tQzdzAd.png)
 
-CS:GO Stats page for megaclan3000
 
 ## Configuration `config.json`
 
