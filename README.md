@@ -1,5 +1,5 @@
 # megaclan3000
-Our custom CS:GO stats page
+Our custom CS:GO stats page: https://megaclan3000.de
 
 [![Build Status](https://travis-ci.org/pinpox/megaclan3000.svg?branch=master)](https://travis-ci.org/pinpox/megaclan3000)
 [![GoDoc](https://godoc.org/github.com/pinpox/megaclan3000?status.svg)](https://godoc.org/github.com/pinpox/megaclan3000)
