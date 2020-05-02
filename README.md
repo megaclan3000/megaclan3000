@@ -6,6 +6,9 @@ Our custom CS:GO stats page
 [![Go Report Card](https://goreportcard.com/badge/github.com/pinpox/megaclan3000)](https://goreportcard.com/report/github.com/pinpox/megaclan3000)
 [![codecov](https://codecov.io/gh/pinpox/megaclan3000/branch/master/graph/badge.svg)](https://codecov.io/gh/pinpox/megaclan3000)
 [![HitCount](http://hits.dwyl.com/pinpox/megaclan3000.svg)](http://hits.dwyl.com/pinpox/megaclan3000)
+[![Maintainability](https://api.codeclimate.com/v1/badges/994620bcbe906b069ef0/maintainability)](https://codeclimate.com/github/pinpox/megaclan3000/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/994620bcbe906b069ef0/test_coverage)](https://codeclimate.com/github/pinpox/megaclan3000/test_coverage)
+![GitHub issues](https://img.shields.io/github/issues/pinpox/megaclan3000?style=plastic)
 
 
 ![](https://i.imgur.com/tQzdzAd.png)
