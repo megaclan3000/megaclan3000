@@ -1,5 +1,7 @@
 package main
 
+// GameStats holds the players stats data from the steam API
+// endpoint UserStatsForGame
 type GameStats struct {
 	GILessonCsgoInstrExplainInspect           string
 	GILessonBombSitesA                        string
@@ -26,7 +28,7 @@ type GameStats struct {
 	LastMatchDeaths                           string
 	LastMatchDominations                      string
 	LastMatchFavweaponHits                    string
-	LastMatchFavweaponId                      string
+	LastMatchFavweaponID                      string
 	LastMatchFavweaponKills                   string
 	LastMatchFavweaponShots                   string
 	LastMatchGgContributionScore              string

@@ -17,15 +17,22 @@ type userStatsForGameData struct {
 	} `json:"playerstats"`
 }
 
+// Stats is the nested struct to hold the "stats" array returned by the steam
+// API endopint GetUserStatsForGame
 type Stats struct {
 	Name  string `json:"name"`
 	Value int    `json:"value"`
 }
+
+// Achievements is the nested struct to hold the "archivements" array returned
+// by the steam API endopint GetUserStatsForGame
 type Achievements struct {
 	Name     string `json:"name"`
 	Achieved int    `json:"achieved"`
 }
 
+// UserStatsForGame holds the players summary data from the steam API
+// endpoint GetUserStatsForGame
 type UserStatsForGame struct {
 	SteamID      string
 	GameName     string
@@ -34,6 +41,8 @@ type UserStatsForGame struct {
 	Extra        GameExtras
 }
 
+// GameExtras holds data in the same way as the other nested structs. This data
+// is not fetched from an endpoint but calculated based on other values locally
 type GameExtras struct {
 	TotalKD     string
 	LastMatchKD string
@@ -43,9 +52,12 @@ type GameExtras struct {
 
 func getUserStatsForGame(steamID string) UserStatsForGame {
 
-	url := "https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=730&key=" + config.SteamAPIKey + "&steamid=" + steamID
+	url :=
+		"https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=730&key=" +
+			config.SteamAPIKey + "&steamid=" + steamID
+
 	data := userStatsForGameData{}
-	getJson(url, &data)
+	getJSON(url, &data)
 
 	//Create to maps for stats and archivements, so the search will be quicker afterwards
 	statsMap := make(map[string]string)
@@ -61,21 +73,21 @@ func getUserStatsForGame(steamID string) UserStatsForGame {
 
 	extra := GameExtras{}
 
-	if total_deaths, err := strconv.ParseFloat(statsMap["total_deaths"], 64); err == nil {
-		if total_kills, err := strconv.ParseFloat(statsMap["total_kills"], 64); err == nil {
-			extra.TotalKD = fmt.Sprintf("%f", total_kills/total_deaths)
+	if totalDeaths, err := strconv.ParseFloat(statsMap["total_deaths"], 64); err == nil {
+		if totalKills, err := strconv.ParseFloat(statsMap["total_kills"], 64); err == nil {
+			extra.TotalKD = fmt.Sprintf("%f", totalKills/totalDeaths)
 		}
 	}
 
-	if last_deaths, err := strconv.ParseFloat(statsMap["last_match_deaths"], 64); err == nil {
-		if last_kills, err := strconv.ParseFloat(statsMap["last_match_kills"], 64); err == nil {
-			extra.LastMatchKD = fmt.Sprintf("%f", last_kills/last_deaths)
+	if lastDeaths, err := strconv.ParseFloat(statsMap["last_match_deaths"], 64); err == nil {
+		if lastKills, err := strconv.ParseFloat(statsMap["last_match_kills"], 64); err == nil {
+			extra.LastMatchKD = fmt.Sprintf("%f", lastKills/lastDeaths)
 		}
 	}
 
-	if total_shots_fired, err := strconv.ParseFloat(statsMap["total_shots_fired"], 64); err == nil {
-		if total_shots_hit, err := strconv.ParseFloat(statsMap["total_shots_hit"], 64); err == nil {
-			extra.HitRatio = fmt.Sprintf("%f", total_shots_hit/total_shots_fired)
+	if totalShotsFired, err := strconv.ParseFloat(statsMap["total_shots_fired"], 64); err == nil {
+		if totalShotsHit, err := strconv.ParseFloat(statsMap["total_shots_hit"], 64); err == nil {
+			extra.HitRatio = fmt.Sprintf("%f", totalShotsHit/totalShotsFired)
 		}
 	}
 
@@ -113,7 +125,7 @@ func getUserStatsForGame(steamID string) UserStatsForGame {
 			LastMatchDeaths:                           statsMap["last_match_deaths"],
 			LastMatchDominations:                      statsMap["last_match_dominations"],
 			LastMatchFavweaponHits:                    statsMap["last_match_favweapon_hits"],
-			LastMatchFavweaponId:                      statsMap["last_match_favweapon_id"],
+			LastMatchFavweaponID:                      statsMap["last_match_favweapon_id"],
 			LastMatchFavweaponKills:                   statsMap["last_match_favweapon_kills"],
 			LastMatchFavweaponShots:                   statsMap["last_match_favweapon_shots"],
 			LastMatchGgContributionScore:              statsMap["last_match_gg_contribution_score"],

@@ -8,6 +8,9 @@ import (
 )
 
 // Public data query methods
+
+// GetPlayerSummary returns a PlayerSummary object by fetching the values from
+// the database using a prepared statement.
 func (ds *DataStorage) GetPlayerSummary(steamID string) (PlayerSummary, error) {
 
 	ps := PlayerSummary{}
@@ -32,6 +35,8 @@ func (ds *DataStorage) GetPlayerSummary(steamID string) (PlayerSummary, error) {
 	return ps, err
 }
 
+// GetUserStatsForGame returns a UserStatsForGame object by fetching the values from
+// the database using a prepared statement.
 func (ds *DataStorage) GetUserStatsForGame(steamID string) (UserStatsForGame, error) {
 
 	usfg := UserStatsForGame{}
@@ -121,7 +126,7 @@ func (ds *DataStorage) GetUserStatsForGame(steamID string) (UserStatsForGame, er
 			&usfg.Stats.LastMatchKills,
 			&usfg.Stats.LastMatchDeaths,
 			&usfg.Stats.LastMatchMvps,
-			&usfg.Stats.LastMatchFavweaponId,
+			&usfg.Stats.LastMatchFavweaponID,
 			&usfg.Stats.LastMatchFavweaponShots,
 			&usfg.Stats.LastMatchFavweaponHits,
 			&usfg.Stats.LastMatchFavweaponKills,
@@ -225,6 +230,8 @@ func (ds *DataStorage) GetUserStatsForGame(steamID string) (UserStatsForGame, er
 	return usfg, err
 }
 
+// GetRecentlyPlayedGames returns a RecentlyPlayedGames object by fetching the values from
+// the database using a prepared statement.
 func (ds *DataStorage) GetRecentlyPlayedGames(steamID string) (RecentlyPlayedGames, error) {
 	rpg := RecentlyPlayedGames{}
 	var err error
@@ -243,6 +250,8 @@ func (ds *DataStorage) GetRecentlyPlayedGames(steamID string) (RecentlyPlayedGam
 	return rpg, err
 }
 
+// GetPlayerHistory returns a PlayerHistory object by fetching the values from
+// the database using a prepared statement.
 func (ds *DataStorage) GetPlayerHistory(steamID string) (PlayerHistory, error) {
 	ph := PlayerHistory{}
 	var err error
@@ -372,7 +381,7 @@ func (ds *DataStorage) updateUserStatsForGame(steamID string) {
 		stats.Stats.LastMatchKills,
 		stats.Stats.LastMatchDeaths,
 		stats.Stats.LastMatchMvps,
-		stats.Stats.LastMatchFavweaponId,
+		stats.Stats.LastMatchFavweaponID,
 		stats.Stats.LastMatchFavweaponShots,
 		stats.Stats.LastMatchFavweaponHits,
 		stats.Stats.LastMatchFavweaponKills,
@@ -496,11 +505,17 @@ func (ds *DataStorage) updateRecentlyPlayedGames(steamID string) {
 	}
 }
 
+// DataStorage is the main interface to the saved data. It provides methods for
+// retrieval as well as methods to ingress new data from the API or update
+// existing values
 type DataStorage struct {
 	db         *sql.DB
 	statements map[string]*sql.Stmt
 }
 
+// GetPlayerInfoBySteamID returns a PlayerInfo from a steamID. It will try to
+// get the needed values from the database and return an error if steamID
+// cannot be found in it.
 func (ds *DataStorage) GetPlayerInfoBySteamID(steamID string) (PlayerInfo, error) {
 
 	info := PlayerInfo{}
@@ -525,6 +540,7 @@ func (ds *DataStorage) GetPlayerInfoBySteamID(steamID string) (PlayerInfo, error
 	return info, nil
 }
 
+// NewDataStorage creates a new DataStorage for a given sqlite database filepath
 func NewDataStorage(path string) (*DataStorage, error) {
 	var err error
 

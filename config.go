@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+// SteamConfig struct holds the values as read from the configuration file
+// config.json on startup
 type SteamConfig struct {
 	SteamAPIKey string   `json:"SteamAPIKey"`
 	SteamIDs    []string `json:"SteamIDs"`
@@ -30,6 +32,8 @@ func readConfig() SteamConfig {
 	return conf
 }
 
+// Refresh will get new data from the steam API and update the in-memory
+// players information
 func (conf *SteamConfig) Refresh() {
 	log.Println("Cache outdated, refreshing...")
 
@@ -45,6 +49,8 @@ func (conf *SteamConfig) Refresh() {
 	conf.players = players
 }
 
+// GetAll returns all the player objects. After a specified time these will be
+// fetched from the steam API, otherwise returned as already in memory
 func (conf *SteamConfig) GetAll() []PlayerInfo {
 	if time.Since(conf.lastUpdate) > 6*time.Minute {
 		conf.Refresh()

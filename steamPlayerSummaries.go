@@ -34,6 +34,8 @@ type playerSummariesData struct {
 	} `json:"response"`
 }
 
+// PlayerSummary holds the players summary data from the steam API
+// endpoint GetPlayerSummaries
 type PlayerSummary struct {
 
 	// Public Data
@@ -149,7 +151,7 @@ func getPlayerSummary(steamID string) PlayerSummary {
 	url := "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=" + config.SteamAPIKey + "&steamids=" + steamID
 
 	data := playerSummariesData{}
-	getJson(url, &data)
+	getJSON(url, &data)
 
 	return PlayerSummary{
 		Avatar:                   data.Response.Players[0].Avatar,
