@@ -11,6 +11,19 @@
 
 CS:GO Stats page for megaclan3000
 
+## Configuratin `config.json`
+
+```json
+{
+    "SteamAPIKey": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "SteamIDs": [
+        "XXXXXXXXXXXXXXXXX",
+        "XXXXXXXXXXXXXXXXX",
+        "XXXXXXXXXXXXXXXXX",
+        "XXXXXXXXXXXXXXXXX"
+    ]
+}
+```
 
 ## Service file
 
