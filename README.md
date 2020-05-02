@@ -4,6 +4,8 @@
 [![GoDoc](https://godoc.org/github.com/pinpox/megaclan3000?status.svg)](https://godoc.org/github.com/pinpox/megaclan3000)
 [![Go Report Card](https://goreportcard.com/badge/github.com/pinpox/megaclan3000)](https://goreportcard.com/report/github.com/pinpox/megaclan3000)
 [![codecov](https://codecov.io/gh/pinpox/megaclan3000/branch/master/graph/badge.svg)](https://codecov.io/gh/pinpox/megaclan3000)
+[![HitCount](http://hits.dwyl.com/pinpox/megaclan3000.svg)](http://hits.dwyl.com/pinpox/megaclan3000)
+
 
 ![](https://i.imgur.com/tQzdzAd.png)
 
