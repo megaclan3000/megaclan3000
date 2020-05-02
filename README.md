@@ -11,7 +11,7 @@
 
 CS:GO Stats page for megaclan3000
 
-## Configuratin `config.json`
+## Configuration `config.json`
 
 ```json
 {
