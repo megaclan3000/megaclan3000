@@ -6,6 +6,8 @@
 [![codecov](https://codecov.io/gh/pinpox/megaclan3000/branch/master/graph/badge.svg)](https://codecov.io/gh/pinpox/megaclan3000)
 
 CS:GO Stats page for megaclan3000
+![](https://i.imgur.com/tQzdzAd.png)
+
 
 ## Service file
 
