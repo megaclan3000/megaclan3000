@@ -62,20 +62,20 @@ func getUserStatsForGame(steamID string) UserStatsForGame {
 	extra := GameExtras{}
 
 	if total_deaths, err := strconv.ParseFloat(statsMap["total_deaths"], 64); err == nil {
-		if total_kills, err := strconv.ParseFloat(statsMap["total_kills"], 64); err == nil {
-			extra.TotalKD = fmt.Sprintf("%f", total_kills/total_deaths)
+		if totalKills, err := strconv.ParseFloat(statsMap["total_kills"], 64); err == nil {
+			extra.TotalKD = fmt.Sprintf("%f", totalKills/total_deaths)
 		}
 	}
 
 	if last_deaths, err := strconv.ParseFloat(statsMap["last_match_deaths"], 64); err == nil {
-		if last_kills, err := strconv.ParseFloat(statsMap["last_match_kills"], 64); err == nil {
-			extra.LastMatchKD = fmt.Sprintf("%f", last_kills/last_deaths)
+		if lastKills, err := strconv.ParseFloat(statsMap["last_match_kills"], 64); err == nil {
+			extra.LastMatchKD = fmt.Sprintf("%f", lastKills/last_deaths)
 		}
 	}
 
 	if total_shots_fired, err := strconv.ParseFloat(statsMap["total_shots_fired"], 64); err == nil {
-		if total_shots_hit, err := strconv.ParseFloat(statsMap["total_shots_hit"], 64); err == nil {
-			extra.HitRatio = fmt.Sprintf("%f", total_shots_hit/total_shots_fired)
+		if totalShotsHit, err := strconv.ParseFloat(statsMap["total_shots_hit"], 64); err == nil {
+			extra.HitRatio = fmt.Sprintf("%f", totalShotsHit/total_shots_fired)
 		}
 	}
 
