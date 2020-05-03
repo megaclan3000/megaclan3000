@@ -1,4 +1,4 @@
-package main
+package steamclient
 
 // PlayerInfo contains the information to be shown of a given player
 type PlayerInfo struct {
@@ -8,13 +8,13 @@ type PlayerInfo struct {
 	PlayerHistory       PlayerHistory
 }
 
-func getPlayerInfo(steamID string) PlayerInfo {
+func (sc *SteamClient) getPlayerInfo(steamID string) PlayerInfo {
 
 	info := PlayerInfo{}
 
-	info.PlayerSummary = getPlayerSummary(steamID)
-	info.UserStatsForGame = getUserStatsForGame(steamID)
-	info.RecentlyPlayedGames = getRecentlyPlayedGames(steamID)
+	info.PlayerSummary = sc.GetPlayerSummary(steamID)
+	info.UserStatsForGame = sc.GetUserStatsForGame(steamID)
+	info.RecentlyPlayedGames = sc.GetRecentlyPlayedGames(steamID)
 
 	return info
 }

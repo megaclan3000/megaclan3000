@@ -1,4 +1,4 @@
-package main
+package steamclient
 
 // GameArchievements holds the players archievement data from the steam API
 // endpoint UserStatsForGame

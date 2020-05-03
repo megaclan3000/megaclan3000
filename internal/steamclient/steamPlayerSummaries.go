@@ -1,4 +1,4 @@
-package main
+package steamclient
 
 import (
 	"strconv"
@@ -30,6 +30,7 @@ type playerSummariesData struct {
 			Realname                 string `json:"realname"`
 			Steamid                  string `json:"steamid"`
 			Timecreated              int    `json:"timecreated"`
+			SteamID                  string
 		} `json:"players"`
 	} `json:"response"`
 }
@@ -41,7 +42,7 @@ type PlayerSummary struct {
 	// Public Data
 
 	// 64bit SteamID of the user
-	Steamid string
+	SteamID string
 
 	// The player's persona name (display name)
 	Personaname string
@@ -146,9 +147,9 @@ type PlayerSummary struct {
 	Timecreated string
 }
 
-func getPlayerSummary(steamID string) PlayerSummary {
+func (sc *SteamClient) GetPlayerSummary(steamID string) PlayerSummary {
 
-	url := "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=" + config.SteamAPIKey + "&steamids=" + steamID
+	url := "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=" + sc.config.SteamAPIKey + "&steamids=" + steamID
 
 	data := playerSummariesData{}
 	getJSON(url, &data)
@@ -173,7 +174,7 @@ func getPlayerSummary(steamID string) PlayerSummary {
 		Profilestate:             strconv.Itoa(data.Response.Players[0].Profilestate),
 		Profileurl:               data.Response.Players[0].Profileurl,
 		Realname:                 data.Response.Players[0].Realname,
-		Steamid:                  data.Response.Players[0].Steamid,
+		SteamID:                  data.Response.Players[0].Steamid,
 		Timecreated:              strconv.Itoa(data.Response.Players[0].Timecreated),
 	}
 

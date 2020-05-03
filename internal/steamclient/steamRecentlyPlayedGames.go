@@ -1,4 +1,4 @@
-package main
+package steamclient
 
 import "strconv"
 
@@ -46,6 +46,7 @@ type recentlyPlayedGamesData struct {
 // RecentlyPlayedGames holds the players summary data from the steam API
 // endpoint GetRecentlyPlayedGames
 type RecentlyPlayedGames struct {
+	SteamID                string
 	Appid                  string
 	Name                   string
 	Playtime2Weeks         string
@@ -57,9 +58,9 @@ type RecentlyPlayedGames struct {
 	PlaytimeLinuxForever   string
 }
 
-func getRecentlyPlayedGames(steamID string) RecentlyPlayedGames {
+func (sc *SteamClient) GetRecentlyPlayedGames(steamID string) RecentlyPlayedGames {
 
-	url := "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=" + config.SteamAPIKey + "&steamid=" + steamID
+	url := "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=" + sc.config.SteamAPIKey + "&steamid=" + steamID
 
 	data := recentlyPlayedGamesData{}
 	getJSON(url, &data)

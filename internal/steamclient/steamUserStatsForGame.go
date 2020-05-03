@@ -1,4 +1,4 @@
-package main
+package steamclient
 
 import (
 	"fmt"
@@ -50,11 +50,11 @@ type GameExtras struct {
 	PlayedHours string
 }
 
-func getUserStatsForGame(steamID string) UserStatsForGame {
+func (sc *SteamClient) GetUserStatsForGame(steamID string) UserStatsForGame {
 
 	url :=
 		"https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=730&key=" +
-			config.SteamAPIKey + "&steamid=" + steamID
+			sc.config.SteamAPIKey + "&steamid=" + steamID
 
 	data := userStatsForGameData{}
 	getJSON(url, &data)

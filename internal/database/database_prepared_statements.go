@@ -1,4 +1,4 @@
-package main
+package database
 
 import "log"
 
@@ -503,5 +503,8 @@ func (ds *DataStorage) getSelectPreparedstatements() error {
 			ORDER BY time DESC
 			LIMIT ?`)
 
+	// - insert histor	// - query player_summary for player
+	ds.statements["select_all_player_ids"], err = ds.db.Prepare(`
+			SELECT steamid FROM player_stats`)
 	return err
 }

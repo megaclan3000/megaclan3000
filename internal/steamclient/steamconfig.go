@@ -1,4 +1,4 @@
-package main
+package steamclient
 
 import (
 	"encoding/json"
@@ -39,21 +39,13 @@ func (conf *SteamConfig) Refresh() {
 
 	players := []PlayerInfo{}
 
-	for _, v := range config.SteamIDs {
+	for _, v := range conf.SteamIDs {
 		log.Println("")
 		log.Println("Fetching data for ID:", v)
 
-		players = append(players, getPlayerInfo(v))
+		//TODO FIX THIS
+		// players = append(players, getPlayerInfo(v))
 	}
 	conf.lastUpdate = time.Now()
 	conf.players = players
-}
-
-// GetAll returns all the player objects. After a specified time these will be
-// fetched from the steam API, otherwise returned as already in memory
-func (conf *SteamConfig) GetAll() []PlayerInfo {
-	if time.Since(conf.lastUpdate) > 6*time.Minute {
-		conf.Refresh()
-	}
-	return conf.players
 }

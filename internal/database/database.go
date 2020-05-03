@@ -1,24 +1,25 @@
-package main
+package database
 
 import (
 	"database/sql"
 	"log"
 
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
 
 // Public data query methods
 
 // GetPlayerSummary returns a PlayerSummary object by fetching the values from
 // the database using a prepared statement.
-func (ds *DataStorage) GetPlayerSummary(steamID string) (PlayerSummary, error) {
+func (ds *DataStorage) GetPlayerSummary(steamID string) (steamclient.PlayerSummary, error) {
 
-	ps := PlayerSummary{}
+	ps := steamclient.PlayerSummary{}
 	var err error
 
 	if rows, err := ds.statements["select_player_summary"].Query(); err == nil {
 		rows.Scan(
-			&ps.Steamid,
+			&ps.SteamID,
 			&ps.Communityvisibilitystate,
 			&ps.Profilestate,
 			&ps.Personaname,
@@ -35,11 +36,35 @@ func (ds *DataStorage) GetPlayerSummary(steamID string) (PlayerSummary, error) {
 	return ps, err
 }
 
+func (ds *DataStorage) GetAllPlayers() ([]steamclient.PlayerInfo, error) {
+	//TODO get all players in database and create an array of PlayerInfo objects
+	var players []steamclient.PlayerInfo
+	var rows *sql.Rows
+	var err error
+
+	if rows, err = ds.statements["select_all_player_ids"].Query(); err != nil {
+		return players, err
+	}
+
+	var steamID string
+
+	for rows.Next() {
+		if err = rows.Scan(&steamID); err == nil {
+			if pi, err := ds.GetPlayerInfoBySteamID(steamID); err == nil {
+				players = append(players, pi)
+			}
+		}
+	}
+
+	rows.Close() //good habit to close
+	return players, nil
+}
+
 // GetUserStatsForGame returns a UserStatsForGame object by fetching the values from
 // the database using a prepared statement.
-func (ds *DataStorage) GetUserStatsForGame(steamID string) (UserStatsForGame, error) {
+func (ds *DataStorage) GetUserStatsForGame(steamID string) (steamclient.UserStatsForGame, error) {
 
-	usfg := UserStatsForGame{}
+	usfg := steamclient.UserStatsForGame{}
 	var err error
 
 	if rows, err := ds.statements["select_player_stats"].Query(steamID); err == nil {
@@ -232,8 +257,8 @@ func (ds *DataStorage) GetUserStatsForGame(steamID string) (UserStatsForGame, er
 
 // GetRecentlyPlayedGames returns a RecentlyPlayedGames object by fetching the values from
 // the database using a prepared statement.
-func (ds *DataStorage) GetRecentlyPlayedGames(steamID string) (RecentlyPlayedGames, error) {
-	rpg := RecentlyPlayedGames{}
+func (ds *DataStorage) GetRecentlyPlayedGames(steamID string) (steamclient.RecentlyPlayedGames, error) {
+	rpg := steamclient.RecentlyPlayedGames{}
 	var err error
 	var id int
 
@@ -252,14 +277,14 @@ func (ds *DataStorage) GetRecentlyPlayedGames(steamID string) (RecentlyPlayedGam
 
 // GetPlayerHistory returns a PlayerHistory object by fetching the values from
 // the database using a prepared statement.
-func (ds *DataStorage) GetPlayerHistory(steamID string) (PlayerHistory, error) {
-	ph := PlayerHistory{}
+func (ds *DataStorage) GetPlayerHistory(steamID string) (steamclient.PlayerHistory, error) {
+	ph := steamclient.PlayerHistory{}
 	var err error
 
 	if rows, err := ds.statements["select_player_history"].Query(steamID); err == nil {
 		rows.Scan(
-			&ph.steamID,
-			&ph.time,
+			&ph.SteamID,
+			&ph.Time,
 			&ph.TotalKills,
 		)
 	}
@@ -267,9 +292,8 @@ func (ds *DataStorage) GetPlayerHistory(steamID string) (PlayerHistory, error) {
 }
 
 // Private data retrieval methods
-func (ds *DataStorage) updatePlayerSummary(steamID string) {
+func (ds *DataStorage) UpdatePlayerSummary(ps steamclient.PlayerSummary) {
 
-	ps := getPlayerSummary(steamID)
 	var result sql.Result
 	var err error
 
@@ -285,7 +309,7 @@ func (ds *DataStorage) updatePlayerSummary(steamID string) {
 		ps.Personastate,
 		ps.Primaryclanid,
 		ps.Timecreated,
-		steamID,
+		ps.SteamID,
 	); err != nil {
 		log.Fatal(err)
 	}
@@ -294,13 +318,13 @@ func (ds *DataStorage) updatePlayerSummary(steamID string) {
 	log.Println("Rows affected:", rows)
 }
 
-func (ds *DataStorage) updateUserStatsForGame(steamID string) {
-	stats := getUserStatsForGame(steamID)
+func (ds *DataStorage) UpdateUserStatsForGame(stats steamclient.UserStatsForGame) {
+
 	var result sql.Result
 	var err error
 
 	if result, err = ds.statements["update_player_stats"].Exec(
-		steamID,
+		stats.SteamID,
 		stats.Stats.TotalKills,
 		stats.Stats.TotalDeaths,
 		stats.Stats.TotalTimePlayed,
@@ -489,17 +513,15 @@ func (ds *DataStorage) updateUserStatsForGame(steamID string) {
 
 }
 
-func (ds *DataStorage) updateRecentlyPlayedGames(steamID string) {
-
-	rp := getRecentlyPlayedGames(steamID)
+func (ds *DataStorage) UpdateRecentlyPlayedGames(rpg steamclient.RecentlyPlayedGames) {
 
 	if _, err := ds.statements["update_recently_played"].Exec(
-		rp.Playtime2Weeks,
-		rp.PlaytimeForever,
-		rp.PlaytimeWindowsForever,
-		rp.PlaytimeMacForever,
-		rp.PlaytimeLinuxForever,
-		steamID,
+		rpg.Playtime2Weeks,
+		rpg.PlaytimeForever,
+		rpg.PlaytimeWindowsForever,
+		rpg.PlaytimeMacForever,
+		rpg.PlaytimeLinuxForever,
+		rpg.SteamID,
 	); err != nil {
 		log.Fatal(err)
 	}
@@ -516,9 +538,9 @@ type DataStorage struct {
 // GetPlayerInfoBySteamID returns a PlayerInfo from a steamID. It will try to
 // get the needed values from the database and return an error if steamID
 // cannot be found in it.
-func (ds *DataStorage) GetPlayerInfoBySteamID(steamID string) (PlayerInfo, error) {
+func (ds *DataStorage) GetPlayerInfoBySteamID(steamID string) (steamclient.PlayerInfo, error) {
 
-	info := PlayerInfo{}
+	info := steamclient.PlayerInfo{}
 	var err error
 
 	if info.PlayerSummary, err = ds.GetPlayerSummary(steamID); err != nil {
@@ -586,14 +608,16 @@ func NewDataStorage(path string) (*DataStorage, error) {
 		log.Fatal("Failed to prepare SELECT statements", err)
 	}
 
-	for _, v := range config.SteamIDs {
-		log.Println("Updating Data for ID:", v)
+	// TODO fix this
+	// for _, v := range config.SteamIDs {
+	// 	log.Println("Updating Data for ID:", v)
 
-		storage.updatePlayerSummary(v)
-		storage.updateRecentlyPlayedGames(v)
-		storage.updateUserStatsForGame(v)
+	//TODO functions changed to accept data and NOT neeed a client themselves
+	// 	storage.updatePlayerSummary(v)
+	// 	storage.updateRecentlyPlayedGames(v)
+	// 	storage.updateUserStatsForGame(v)
 
-	}
+	// }
 
 	return storage, nil
 }

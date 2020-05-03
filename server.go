@@ -8,22 +8,23 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/pinpox/megaclan3000/internal/database"
+	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
 
-var config SteamConfig
 var t *template.Template
-var datastorage *DataStorage
+var datastorage *database.DataStorage
+var steamClient *steamclient.SteamClient
 
 func main() {
 	log.Println("main")
 
 	var err error
 	// Read config and pull initial data
-	config = readConfig()
-	config.Refresh()
+	steamClient = steamclient.NewSteamClient()
 
 	log.Println("Creating datastorage")
-	if datastorage, err = NewDataStorage("./data.db"); err != nil {
+	if datastorage, err = database.NewDataStorage("./data.db"); err != nil {
 		log.Fatal("Failed to open database", err)
 	}
 
@@ -66,7 +67,8 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlerStats(w http.ResponseWriter, r *http.Request) {
-	data := config.GetAll()
+	//TODO do something with this error
+	data, _ := datastorage.GetAllPlayers()
 	t.ExecuteTemplate(w, "stats.html", data)
 }
 
