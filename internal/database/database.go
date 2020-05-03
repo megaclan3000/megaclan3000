@@ -37,7 +37,6 @@ func (ds *DataStorage) GetPlayerSummary(steamID string) (steamclient.PlayerSumma
 }
 
 func (ds *DataStorage) GetAllPlayers() ([]steamclient.PlayerInfo, error) {
-	//TODO get all players in database and create an array of PlayerInfo objects
 	var players []steamclient.PlayerInfo
 	var rows *sql.Rows
 	var err error

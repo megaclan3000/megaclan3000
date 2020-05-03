@@ -59,7 +59,21 @@ func main() {
 		ReadTimeout:  15 * time.Second,
 	}
 
+	//start updating data every 5 minutes asynchroniusly
+	go updateData(5)
 	log.Fatal(srv.ListenAndServe())
+}
+
+func updateData(minutes int) {
+	for {
+		time.Sleep(time.Duration(minutes) * time.Minute)
+		//TODO update the datastorage
+		// - Get from client
+
+		// - Put into db
+		// - Check errors
+	}
+
 }
 
 func handlerIndex(w http.ResponseWriter, r *http.Request) {
@@ -67,9 +81,12 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlerStats(w http.ResponseWriter, r *http.Request) {
-	//TODO do something with this error
-	data, _ := datastorage.GetAllPlayers()
-	t.ExecuteTemplate(w, "stats.html", data)
+	if players, err := datastorage.GetAllPlayers(); err == nil {
+		t.ExecuteTemplate(w, "stats.html", players)
+		return
+	}
+
+	t.ExecuteTemplate(w, "404.html", nil)
 }
 
 func handlerContact(w http.ResponseWriter, r *http.Request) {
