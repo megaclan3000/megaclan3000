@@ -13,8 +13,9 @@ Our custom CS:GO stats page: https://megaclan3000.de
 
 ![](https://i.imgur.com/tQzdzAd.png)
 
+## Setup
 
-## Configuration `config.json`
+### Configuration `config.json`
 
 ```json
 {
@@ -28,7 +29,7 @@ Our custom CS:GO stats page: https://megaclan3000.de
 }
 ```
 
-## Service file
+### Service file
 
 ```dosini
 # /etc/systemd/system/megaclan3000.service
@@ -49,3 +50,15 @@ ExecStart=/var/www/megaclan3000/megaclan3000
 [Install]
 WantedBy=multi-user.target
 ```
+
+## Available data (e.g. for the Frontend)
+
+All data on a player can be accessed through the `PlayerInfo` object documented [here](https://godoc.org/github.com/pinpox/megaclan3000/internal/steamclient#PlayerInfo)
+It contains four object with different classes of data obtained through four API endpoint from the steam API.
+Their respective fields are documented in godoc.
+- [PlayerSummary](https://godoc.org/github.com/pinpox/megaclan3000/internal/steamclient#PlayerSummary)
+- [UserStatsForGame](https://godoc.org/github.com/pinpox/megaclan3000/internal/steamclient#UserStatsForGame)
+- [RecentlyPlayedGames](https://godoc.org/github.com/pinpox/megaclan3000/internal/steamclient#RecentlyPlayedGames)
+- [PlayerHistory](https://godoc.org/github.com/pinpox/megaclan3000/internal/steamclient#PlayerHistory)
+
+The `PlayerInfo`'s fields can be accessed in the `{{ template markers }}` as the object is passed to them.
