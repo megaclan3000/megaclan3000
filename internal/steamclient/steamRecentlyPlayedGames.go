@@ -70,6 +70,7 @@ func (sc *SteamClient) GetRecentlyPlayedGames(steamID string) RecentlyPlayedGame
 
 			return RecentlyPlayedGames{
 
+				SteamID:                steamID,
 				Appid:                  strconv.Itoa(v.Appid),
 				Name:                   v.Name,
 				Playtime2Weeks:         strconv.Itoa(v.Playtime2Weeks / 60),

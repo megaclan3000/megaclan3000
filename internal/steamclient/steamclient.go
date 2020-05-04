@@ -12,7 +12,7 @@ func NewSteamClient() *SteamClient {
 
 	var config SteamConfig
 
-	config = readConfig()
+	config = getData()
 	return &SteamClient{config}
 }
 

@@ -16,7 +16,7 @@ type SteamConfig struct {
 	lastUpdate  time.Time
 }
 
-func readConfig() SteamConfig {
+func getData() SteamConfig {
 
 	conf := SteamConfig{}
 
