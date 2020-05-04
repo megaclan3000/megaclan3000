@@ -1,7 +1,6 @@
 package database
 
 import (
-	"database/sql"
 	"reflect"
 	"testing"
 
@@ -17,7 +16,6 @@ func TestDataStorage_GetUserStatsForGame(t *testing.T) {
 		want    steamclient.UserStatsForGame
 		wantErr bool
 	}{
-		// TODO: Add test cases.
 		{
 			name:    "Retrieval of UserStatsForGame from fixtures",
 			steamID: "123456789",
@@ -225,29 +223,40 @@ func TestDataStorage_GetUserStatsForGame(t *testing.T) {
 }
 
 func TestDataStorage_UpdateUserStatsForGame(t *testing.T) {
-	type fields struct {
-		db         *sql.DB
-		statements map[string]*sql.Stmt
-	}
-	type args struct {
-		stats steamclient.UserStatsForGame
-	}
 	tests := []struct {
 		name    string
-		fields  fields
-		args    args
+		stats   steamclient.UserStatsForGame
+		want    steamclient.UserStatsForGame
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "Update UserStatsForGame for one ID",
+			stats: steamclient.UserStatsForGame{
+				SteamID:  "123456789",
+				GameName: "1",
+				Stats: steamclient.GameStats{
+					TotalKills: "9999",
+				},
+			},
+			want: steamclient.UserStatsForGame{
+				SteamID:  "123456789",
+				GameName: "1",
+				Stats: steamclient.GameStats{
+					TotalKills: "9999",
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ds := &DataStorage{
-				db:         tt.fields.db,
-				statements: tt.fields.statements,
-			}
-			if err := ds.UpdateUserStatsForGame(tt.args.stats); (err != nil) != tt.wantErr {
+			prepareDB()
+
+			if err := db.UpdateUserStatsForGame(tt.stats); (err != nil) != tt.wantErr {
 				t.Errorf("DataStorage.UpdateUserStatsForGame() error = %v, wantErr %v", err, tt.wantErr)
+			}
+
+			if !reflect.DeepEqual(tt.stats, tt.want) {
+				t.Errorf("DataStorage.UpdateStatsForgame() = %v, want %v", tt.stats, tt.want)
 			}
 		})
 	}
