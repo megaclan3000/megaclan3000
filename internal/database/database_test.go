@@ -5,9 +5,37 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/go-testfixtures/testfixtures/v3"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
+
+var (
+	db       *DataStorage
+	fixtures *testfixtures.Loader
+)
+
+func prepareDB() {
+
+	var err error
+	db, err = NewDataStorage("../../test/database/test.db")
+
+	if err != nil {
+		panic(err)
+	}
+
+	fixtures, err := testfixtures.New(
+		testfixtures.Database(db.db),
+		testfixtures.Dialect("sqlite"),
+		testfixtures.Directory(
+			"../../test/database/fixtures",
+		),
+	)
+
+	if err := fixtures.Load(); err != nil {
+		panic(err)
+	}
+}
 
 func TestDataStorage_GetPlayerInfoBySteamID(t *testing.T) {
 	type fields struct {
