@@ -501,8 +501,7 @@ func (ds *DataStorage) getSelectPreparedstatements() error {
 	ds.statements["select_player_history"], err = ds.db.Prepare(`
 			SELECT * FROM player_history
 			WHERE steamid = ?
-			ORDER BY time DESC
-			LIMIT ?`)
+			ORDER BY time DESC`)
 
 	// - insert histor	// - query player_summary for player
 	ds.statements["select_all_player_ids"], err = ds.db.Prepare(`
