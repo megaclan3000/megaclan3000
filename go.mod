@@ -70,6 +70,7 @@ require (
 	github.com/go-gl/mathgl v0.0.0-20190713194549-592312d8590a // indirect
 	github.com/go-ini/ini v1.55.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0 // indirect
+	github.com/go-testfixtures/testfixtures/v3 v3.1.2
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
