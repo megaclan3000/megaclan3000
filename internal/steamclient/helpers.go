@@ -31,7 +31,7 @@ func divideStringFloats(a, b string) string {
 
 	if aF, err := strconv.ParseFloat(a, 64); err == nil {
 		if bF, err := strconv.ParseFloat(b, 64); err == nil {
-			return fmt.Sprintf("%f", aF/bF)
+			return fmt.Sprintf("%.4f", aF/bF)
 		}
 	}
 	return ""
