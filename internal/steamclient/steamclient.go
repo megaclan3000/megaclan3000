@@ -4,10 +4,13 @@ import (
 	"log"
 )
 
+// SteamClient acts as main interface to interact with the steam API and gather
+// data
 type SteamClient struct {
 	config SteamConfig
 }
 
+// NewSteamClient returrns a new SteamClient
 func NewSteamClient() *SteamClient {
 
 	var config SteamConfig
@@ -16,6 +19,8 @@ func NewSteamClient() *SteamClient {
 	return &SteamClient{config}
 }
 
+// GetPlayers returns info for all players fetched from the API using the
+// steamIDs in it's config
 func (sc SteamClient) GetPlayers() []PlayerInfo {
 
 	players := []PlayerInfo{}

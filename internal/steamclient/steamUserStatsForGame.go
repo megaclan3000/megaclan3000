@@ -50,6 +50,8 @@ type GameExtras struct {
 	PlayedHours string
 }
 
+// GetUserStatsForGame fetches information for the given steamID from the API
+// endpoint GetUserStatsForGame and returns a PlayerSummary object
 func (sc *SteamClient) GetUserStatsForGame(steamID string) UserStatsForGame {
 
 	url :=

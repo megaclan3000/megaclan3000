@@ -35,6 +35,8 @@ func (ds *DataStorage) GetPlayerSummary(steamID string) (steamclient.PlayerSumma
 	return ps, err
 }
 
+// UpdatePlayerSummary receives a PlayerSummary and updates the database entry
+// for that steamID
 func (ds *DataStorage) UpdatePlayerSummary(ps steamclient.PlayerSummary) error {
 
 	var result sql.Result

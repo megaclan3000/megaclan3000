@@ -147,6 +147,8 @@ type PlayerSummary struct {
 	Timecreated string
 }
 
+// GetPlayerSummary fetches information for the given steamID from the API
+// endpoint GetPlayerSummary and returns a PlayerSummary object
 func (sc *SteamClient) GetPlayerSummary(steamID string) PlayerSummary {
 
 	url := "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=" + sc.config.SteamAPIKey + "&steamids=" + steamID

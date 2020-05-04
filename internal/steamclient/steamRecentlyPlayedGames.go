@@ -58,6 +58,8 @@ type RecentlyPlayedGames struct {
 	PlaytimeLinuxForever   string
 }
 
+// GetRecentlyPlayedGames fetches information for the given steamID from the API
+// endpoint GetRecentlyPlayedGames and returns a RecentlyPlayedGames object
 func (sc *SteamClient) GetRecentlyPlayedGames(steamID string) RecentlyPlayedGames {
 
 	url := "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=" + sc.config.SteamAPIKey + "&steamid=" + steamID
