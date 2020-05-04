@@ -1,4 +1,4 @@
-package main
+package database
 
 import "log"
 
@@ -212,12 +212,12 @@ func (ds *DataStorage) getCreatePreparedstatements() error {
 
 	ds.statements["create_recently_played"], err = ds.db.Prepare(
 		`CREATE TABLE IF NOT EXISTS recently_played (
-			steamid INTEGER PRIMARY KEY,
-			playtime_2weeks INTEGER,
-			playtime_forever INTEGER,
-			playtime_windows_forever INTEGER,
-			playtime_mac_forever INTEGER,
-			playtime_linux_forever INTEGER)`)
+			steamid TEXT PRIMARY KEY,
+			playtime_2weeks TEXT,
+			playtime_forever TEXT,
+			playtime_windows_forever TEXT,
+			playtime_mac_forever TEXT,
+			playtime_linux_forever TEXT)`)
 	if err != nil {
 		return err
 	}
@@ -235,13 +235,14 @@ func (ds *DataStorage) getUpdatePreparedstatements() error {
 	var err error
 
 	ds.statements["update_recently_played"], err = ds.db.Prepare(
-		`UPDATE recently_played SET
-			playtime_2weeks = ?,
-			playtime_forever= ?,
-			playtime_windows_forever= ?,
-			playtime_mac_forever = ?,
-			playtime_linux_forever = ?
-			WHERE steamid = ?`)
+		`INSERT OR REPLACE INTO recently_played (
+			steamid,
+			playtime_2weeks,
+			playtime_forever,
+			playtime_windows_forever,
+			playtime_mac_forever,
+			playtime_linux_forever)
+		VALUES (?,?,?,?,?,?)`)
 
 	if err != nil {
 		log.Println("Failed to prepare statement: update_recently_played")
@@ -503,5 +504,8 @@ func (ds *DataStorage) getSelectPreparedstatements() error {
 			ORDER BY time DESC
 			LIMIT ?`)
 
+	// - insert histor	// - query player_summary for player
+	ds.statements["select_all_player_ids"], err = ds.db.Prepare(`
+			SELECT steamid FROM player_stats`)
 	return err
 }

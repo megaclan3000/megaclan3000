@@ -11,17 +11,17 @@
 <div class="row">
 	{{range $val := .}}
 	<div class="col s12 m12 l6">
-		<a href="player/{{$val.PlayerSummary.Steamid}}" class="clickable-card">
+		<a href="player/{{$val.PlayerSummary.SteamID}}" class="clickable-card">
 			<div class="card blue-grey darken-2">
 				<div class="card-content">
 					<p class="card-title white-text">
-						<img src="{{$val.PlayerSummary.Avatarfull}}" class="stats-profile-pic" alt="">&nbsp;&nbsp;{{$val.PlayerSummary.Personaname}}
-						
-						{{if eq $val.PlayerSummary.Personastate "0"}} 
-							<span class="new badge red" data-badge-caption="">offline</span>
-						{{else}} 
-							<span class="new badge green" data-badge-caption="">online</span>
-						{{end}}
+					<img src="{{$val.PlayerSummary.Avatarfull}}" class="stats-profile-pic" alt="">&nbsp;&nbsp;{{$val.PlayerSummary.Personaname}}
+
+					{{if eq $val.PlayerSummary.Personastate "0"}}
+					<span class="new badge red" data-badge-caption="">offline</span>
+					{{else}}
+					<span class="new badge green" data-badge-caption="">online</span>
+					{{end}}
 
 					</p>
 					<br>
@@ -58,7 +58,7 @@
 						</tr>
 					</table>
 				</div>
-			</div>	
+			</div>
 		</a>
 	</div>
 

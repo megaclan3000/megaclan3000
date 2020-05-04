@@ -1,279 +1,326 @@
-package main
+package database
 
 import (
 	"database/sql"
 	"log"
 
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
 
 // Public data query methods
 
 // GetPlayerSummary returns a PlayerSummary object by fetching the values from
 // the database using a prepared statement.
-func (ds *DataStorage) GetPlayerSummary(steamID string) (PlayerSummary, error) {
+func (ds *DataStorage) GetPlayerSummary(steamID string) (steamclient.PlayerSummary, error) {
 
-	ps := PlayerSummary{}
+	ps := steamclient.PlayerSummary{}
 	var err error
 
-	if rows, err := ds.statements["select_player_summary"].Query(); err == nil {
-		rows.Scan(
-			&ps.Steamid,
-			&ps.Communityvisibilitystate,
-			&ps.Profilestate,
-			&ps.Personaname,
-			&ps.Profileurl,
-			&ps.Avatar,
-			&ps.Avatarmedium,
-			&ps.Avatarfull,
-			&ps.Lastlogoff,
-			&ps.Personastate,
-			&ps.Primaryclanid,
-			&ps.Timecreated,
-		)
+	if rows, err := ds.statements["select_player_summary"].Query(steamID); err == nil {
+		for rows.Next() {
+			rows.Scan(
+				&ps.SteamID,
+				&ps.Communityvisibilitystate,
+				&ps.Profilestate,
+				&ps.Personaname,
+				&ps.Profileurl,
+				&ps.Avatar,
+				&ps.Avatarmedium,
+				&ps.Avatarfull,
+				&ps.Lastlogoff,
+				&ps.Personastate,
+				&ps.Primaryclanid,
+				&ps.Timecreated,
+			)
+		}
 	}
 	return ps, err
 }
 
+func (ds *DataStorage) GetAllPlayers() ([]steamclient.PlayerInfo, error) {
+	var players []steamclient.PlayerInfo
+	var rows *sql.Rows
+	var err error
+
+	if rows, err = ds.statements["select_all_player_ids"].Query(); err != nil {
+		return players, err
+	}
+
+	var steamID string
+
+	for rows.Next() {
+		if err = rows.Scan(&steamID); err == nil {
+			log.Println("Got ID from database:", steamID)
+			if pi, err := ds.GetPlayerInfoBySteamID(steamID); err == nil {
+				players = append(players, pi)
+			} else {
+				log.Fatal(err)
+			}
+		}
+	}
+
+	rows.Close() //good habit to close
+	return players, nil
+}
+
 // GetUserStatsForGame returns a UserStatsForGame object by fetching the values from
 // the database using a prepared statement.
-func (ds *DataStorage) GetUserStatsForGame(steamID string) (UserStatsForGame, error) {
+func (ds *DataStorage) GetUserStatsForGame(steamID string) (steamclient.UserStatsForGame, error) {
 
-	usfg := UserStatsForGame{}
+	usfg := steamclient.UserStatsForGame{}
 	var err error
 
 	if rows, err := ds.statements["select_player_stats"].Query(steamID); err == nil {
-		rows.Scan(
+		for rows.Next() {
+			rows.Scan(
 
-			&usfg.SteamID,
-			&usfg.Stats.TotalKills,
-			&usfg.Stats.TotalDeaths,
-			&usfg.Stats.TotalTimePlayed,
-			&usfg.Stats.TotalPlantedBombs,
-			&usfg.Stats.TotalDefusedBombs,
-			&usfg.Stats.TotalWins,
-			&usfg.Stats.TotalDamageDone,
-			&usfg.Stats.TotalMoneyEarned,
-			&usfg.Stats.TotalKillsKnife,
-			&usfg.Stats.TotalKillsHegrenade,
-			&usfg.Stats.TotalKillsGlock,
-			&usfg.Stats.TotalKillsDeagle,
-			&usfg.Stats.TotalKillsElite,
-			&usfg.Stats.TotalKillsFiveseven,
-			&usfg.Stats.TotalKillsXm1014,
-			&usfg.Stats.TotalKillsMac10,
-			&usfg.Stats.TotalKillsUmp45,
-			&usfg.Stats.TotalKillsP90,
-			&usfg.Stats.TotalKillsAwp,
-			&usfg.Stats.TotalKillsAk47,
-			&usfg.Stats.TotalKillsAug,
-			&usfg.Stats.TotalKillsFamas,
-			&usfg.Stats.TotalKillsG3sg1,
-			&usfg.Stats.TotalKillsM249,
-			&usfg.Stats.TotalKillsHeadshot,
-			&usfg.Stats.TotalKillsEnemyWeapon,
-			&usfg.Stats.TotalWinsPistolround,
-			&usfg.Stats.TotalWinsMapCsAssault,
-			&usfg.Stats.TotalWinsMapDeDust2,
-			&usfg.Stats.TotalWinsMapDeInferno,
-			&usfg.Stats.TotalWinsMapDeTrain,
-			&usfg.Stats.TotalWeaponsDonated,
-			&usfg.Stats.TotalKillsEnemyBlinded,
-			&usfg.Stats.TotalKillsKnifeFight,
-			&usfg.Stats.TotalKillsAgainstZoomedSniper,
-			&usfg.Stats.TotalDominations,
-			&usfg.Stats.TotalDominationOverkills,
-			&usfg.Stats.TotalRevenges,
-			&usfg.Stats.TotalShotsHit,
-			&usfg.Stats.TotalShotsFired,
-			&usfg.Stats.TotalRoundsPlayed,
-			&usfg.Stats.TotalShotsDeagle,
-			&usfg.Stats.TotalShotsGlock,
-			&usfg.Stats.TotalShotsElite,
-			&usfg.Stats.TotalShotsFiveseven,
-			&usfg.Stats.TotalShotsAwp,
-			&usfg.Stats.TotalShotsAk47,
-			&usfg.Stats.TotalShotsAug,
-			&usfg.Stats.TotalShotsFamas,
-			&usfg.Stats.TotalShotsG3sg1,
-			&usfg.Stats.TotalShotsP90,
-			&usfg.Stats.TotalShotsMac10,
-			&usfg.Stats.TotalShotsUmp45,
-			&usfg.Stats.TotalShotsXm1014,
-			&usfg.Stats.TotalShotsM249,
-			&usfg.Stats.TotalHitsDeagle,
-			&usfg.Stats.TotalHitsGlock,
-			&usfg.Stats.TotalHitsElite,
-			&usfg.Stats.TotalHitsFiveseven,
-			&usfg.Stats.TotalHitsAwp,
-			&usfg.Stats.TotalHitsAk47,
-			&usfg.Stats.TotalHitsAug,
-			&usfg.Stats.TotalHitsFamas,
-			&usfg.Stats.TotalHitsG3sg1,
-			&usfg.Stats.TotalHitsP90,
-			&usfg.Stats.TotalHitsMac10,
-			&usfg.Stats.TotalHitsUmp45,
-			&usfg.Stats.TotalHitsXm1014,
-			&usfg.Stats.TotalHitsM249,
-			&usfg.Stats.TotalRoundsMapCsAssault,
-			&usfg.Stats.TotalRoundsMapDeDust2,
-			&usfg.Stats.TotalRoundsMapDeInferno,
-			&usfg.Stats.TotalRoundsMapDeTrain,
-			&usfg.Stats.LastMatchTWins,
-			&usfg.Stats.LastMatchCtWins,
-			&usfg.Stats.LastMatchWins,
-			&usfg.Stats.LastMatchMaxPlayers,
-			&usfg.Stats.LastMatchKills,
-			&usfg.Stats.LastMatchDeaths,
-			&usfg.Stats.LastMatchMvps,
-			&usfg.Stats.LastMatchFavweaponID,
-			&usfg.Stats.LastMatchFavweaponShots,
-			&usfg.Stats.LastMatchFavweaponHits,
-			&usfg.Stats.LastMatchFavweaponKills,
-			&usfg.Stats.LastMatchDamage,
-			&usfg.Stats.LastMatchMoneySpent,
-			&usfg.Stats.LastMatchDominations,
-			&usfg.Stats.LastMatchRevenges,
-			&usfg.Stats.TotalMvps,
-			&usfg.Stats.TotalRoundsMapDeLake,
-			&usfg.Stats.TotalRoundsMapDeSafehouse,
-			&usfg.Stats.TotalRoundsMapDeBank,
-			&usfg.Stats.TotalTRPlantedBombs,
-			&usfg.Stats.TotalGunGameRoundsWon,
-			&usfg.Stats.TotalGunGameRoundsPlayed,
-			&usfg.Stats.TotalWinsMapDeBank,
-			&usfg.Stats.TotalWinsMapDeLake,
-			&usfg.Stats.TotalMatchesWonBank,
-			&usfg.Stats.TotalMatchesWon,
-			&usfg.Stats.TotalMatchesPlayed,
-			&usfg.Stats.TotalGgMatchesWon,
-			&usfg.Stats.TotalGgMatchesPlayed,
-			&usfg.Stats.TotalProgressiveMatchesWon,
-			&usfg.Stats.TotalTrbombMatchesWon,
-			&usfg.Stats.TotalContributionScore,
-			&usfg.Stats.LastMatchContributionScore,
-			&usfg.Stats.LastMatchRounds,
-			&usfg.Stats.TotalKillsHkp2000,
-			&usfg.Stats.TotalShotsHkp2000,
-			&usfg.Stats.TotalHitsHkp2000,
-			&usfg.Stats.TotalHitsP250,
-			&usfg.Stats.TotalKillsP250,
-			&usfg.Stats.TotalShotsP250,
-			&usfg.Stats.TotalKillsSg556,
-			&usfg.Stats.TotalShotsSg556,
-			&usfg.Stats.TotalHitsSg556,
-			&usfg.Stats.TotalHitsScar20,
-			&usfg.Stats.TotalKillsScar20,
-			&usfg.Stats.TotalShotsScar20,
-			&usfg.Stats.TotalShotsSsg08,
-			&usfg.Stats.TotalHitsSsg08,
-			&usfg.Stats.TotalKillsSsg08,
-			&usfg.Stats.TotalShotsMp7,
-			&usfg.Stats.TotalHitsMp7,
-			&usfg.Stats.TotalKillsMp7,
-			&usfg.Stats.TotalKillsMp9,
-			&usfg.Stats.TotalShotsMp9,
-			&usfg.Stats.TotalHitsMp9,
-			&usfg.Stats.TotalHitsNova,
-			&usfg.Stats.TotalKillsNova,
-			&usfg.Stats.TotalShotsNova,
-			&usfg.Stats.TotalHitsNegev,
-			&usfg.Stats.TotalKillsNegev,
-			&usfg.Stats.TotalShotsNegev,
-			&usfg.Stats.TotalShotsSawedoff,
-			&usfg.Stats.TotalHitsSawedoff,
-			&usfg.Stats.TotalKillsSawedoff,
-			&usfg.Stats.TotalShotsBizon,
-			&usfg.Stats.TotalHitsBizon,
-			&usfg.Stats.TotalKillsBizon,
-			&usfg.Stats.TotalKillsTec9,
-			&usfg.Stats.TotalShotsTec9,
-			&usfg.Stats.TotalHitsTec9,
-			&usfg.Stats.TotalShotsMag7,
-			&usfg.Stats.TotalHitsMag7,
-			&usfg.Stats.TotalKillsMag7,
-			&usfg.Stats.TotalGunGameContributionScore,
-			&usfg.Stats.LastMatchGgContributionScore,
-			&usfg.Stats.TotalKillsM4a1,
-			&usfg.Stats.TotalKillsGalilar,
-			&usfg.Stats.TotalKillsMolotov,
-			&usfg.Stats.TotalKillsTaser,
-			&usfg.Stats.TotalShotsM4a1,
-			&usfg.Stats.TotalShotsGalilar,
-			&usfg.Stats.TotalShotsTaser,
-			&usfg.Stats.TotalHitsM4a1,
-			&usfg.Stats.TotalHitsGalilar,
-			&usfg.Stats.TotalMatchesWonTrain,
-			&usfg.Stats.TotalMatchesWonLake,
-			&usfg.Stats.GILessonCsgoInstrExplainBuymenu,
-			&usfg.Stats.GILessonCsgoInstrExplainBuyarmor,
-			&usfg.Stats.GILessonCsgoInstrExplainPlantBomb,
-			&usfg.Stats.GILessonCsgoInstrExplainBombCarrier,
-			&usfg.Stats.GILessonBombSitesA,
-			&usfg.Stats.GILessonDefusePlantedBomb,
-			&usfg.Stats.GILessonCsgoInstrExplainFollowBomber,
-			&usfg.Stats.GILessonCsgoInstrExplainPickupBomb,
-			&usfg.Stats.GILessonCsgoInstrExplainPreventBombPickup,
-			&usfg.Stats.GILessonCsgoCycleWeaponsKb,
-			&usfg.Stats.GILessonCsgoInstrExplainZoom,
-			&usfg.Stats.GILessonCsgoInstrExplainReload,
-			&usfg.Stats.GILessonTrExplainPlantBomb,
-			&usfg.Stats.GILessonBombSitesB,
-			&usfg.Stats.GILessonVersionNumber,
-			&usfg.Stats.GILessonFindPlantedBomb,
-			&usfg.Stats.GILessonCsgoHostageLeadToHrz,
-			&usfg.Stats.GILessonCsgoInstrRescueZone,
-			&usfg.Stats.GILessonCsgoInstrExplainInspect,
-			&usfg.Stats.SteamStatXpearnedgames,
-		)
+				&usfg.SteamID,
+				&usfg.Stats.TotalKills,
+				&usfg.Stats.TotalDeaths,
+				&usfg.Stats.TotalTimePlayed,
+				&usfg.Stats.TotalPlantedBombs,
+				&usfg.Stats.TotalDefusedBombs,
+				&usfg.Stats.TotalWins,
+				&usfg.Stats.TotalDamageDone,
+				&usfg.Stats.TotalMoneyEarned,
+				&usfg.Stats.TotalKillsKnife,
+				&usfg.Stats.TotalKillsHegrenade,
+				&usfg.Stats.TotalKillsGlock,
+				&usfg.Stats.TotalKillsDeagle,
+				&usfg.Stats.TotalKillsElite,
+				&usfg.Stats.TotalKillsFiveseven,
+				&usfg.Stats.TotalKillsXm1014,
+				&usfg.Stats.TotalKillsMac10,
+				&usfg.Stats.TotalKillsUmp45,
+				&usfg.Stats.TotalKillsP90,
+				&usfg.Stats.TotalKillsAwp,
+				&usfg.Stats.TotalKillsAk47,
+				&usfg.Stats.TotalKillsAug,
+				&usfg.Stats.TotalKillsFamas,
+				&usfg.Stats.TotalKillsG3sg1,
+				&usfg.Stats.TotalKillsM249,
+				&usfg.Stats.TotalKillsHeadshot,
+				&usfg.Stats.TotalKillsEnemyWeapon,
+				&usfg.Stats.TotalWinsPistolround,
+				&usfg.Stats.TotalWinsMapCsAssault,
+				&usfg.Stats.TotalWinsMapDeDust2,
+				&usfg.Stats.TotalWinsMapDeInferno,
+				&usfg.Stats.TotalWinsMapDeTrain,
+				&usfg.Stats.TotalWeaponsDonated,
+				&usfg.Stats.TotalKillsEnemyBlinded,
+				&usfg.Stats.TotalKillsKnifeFight,
+				&usfg.Stats.TotalKillsAgainstZoomedSniper,
+				&usfg.Stats.TotalDominations,
+				&usfg.Stats.TotalDominationOverkills,
+				&usfg.Stats.TotalRevenges,
+				&usfg.Stats.TotalShotsHit,
+				&usfg.Stats.TotalShotsFired,
+				&usfg.Stats.TotalRoundsPlayed,
+				&usfg.Stats.TotalShotsDeagle,
+				&usfg.Stats.TotalShotsGlock,
+				&usfg.Stats.TotalShotsElite,
+				&usfg.Stats.TotalShotsFiveseven,
+				&usfg.Stats.TotalShotsAwp,
+				&usfg.Stats.TotalShotsAk47,
+				&usfg.Stats.TotalShotsAug,
+				&usfg.Stats.TotalShotsFamas,
+				&usfg.Stats.TotalShotsG3sg1,
+				&usfg.Stats.TotalShotsP90,
+				&usfg.Stats.TotalShotsMac10,
+				&usfg.Stats.TotalShotsUmp45,
+				&usfg.Stats.TotalShotsXm1014,
+				&usfg.Stats.TotalShotsM249,
+				&usfg.Stats.TotalHitsDeagle,
+				&usfg.Stats.TotalHitsGlock,
+				&usfg.Stats.TotalHitsElite,
+				&usfg.Stats.TotalHitsFiveseven,
+				&usfg.Stats.TotalHitsAwp,
+				&usfg.Stats.TotalHitsAk47,
+				&usfg.Stats.TotalHitsAug,
+				&usfg.Stats.TotalHitsFamas,
+				&usfg.Stats.TotalHitsG3sg1,
+				&usfg.Stats.TotalHitsP90,
+				&usfg.Stats.TotalHitsMac10,
+				&usfg.Stats.TotalHitsUmp45,
+				&usfg.Stats.TotalHitsXm1014,
+				&usfg.Stats.TotalHitsM249,
+				&usfg.Stats.TotalRoundsMapCsAssault,
+				&usfg.Stats.TotalRoundsMapDeDust2,
+				&usfg.Stats.TotalRoundsMapDeInferno,
+				&usfg.Stats.TotalRoundsMapDeTrain,
+				&usfg.Stats.LastMatchTWins,
+				&usfg.Stats.LastMatchCtWins,
+				&usfg.Stats.LastMatchWins,
+				&usfg.Stats.LastMatchMaxPlayers,
+				&usfg.Stats.LastMatchKills,
+				&usfg.Stats.LastMatchDeaths,
+				&usfg.Stats.LastMatchMvps,
+				&usfg.Stats.LastMatchFavweaponID,
+				&usfg.Stats.LastMatchFavweaponShots,
+				&usfg.Stats.LastMatchFavweaponHits,
+				&usfg.Stats.LastMatchFavweaponKills,
+				&usfg.Stats.LastMatchDamage,
+				&usfg.Stats.LastMatchMoneySpent,
+				&usfg.Stats.LastMatchDominations,
+				&usfg.Stats.LastMatchRevenges,
+				&usfg.Stats.TotalMvps,
+				&usfg.Stats.TotalRoundsMapDeLake,
+				&usfg.Stats.TotalRoundsMapDeSafehouse,
+				&usfg.Stats.TotalRoundsMapDeBank,
+				&usfg.Stats.TotalTRPlantedBombs,
+				&usfg.Stats.TotalGunGameRoundsWon,
+				&usfg.Stats.TotalGunGameRoundsPlayed,
+				&usfg.Stats.TotalWinsMapDeBank,
+				&usfg.Stats.TotalWinsMapDeLake,
+				&usfg.Stats.TotalMatchesWonBank,
+				&usfg.Stats.TotalMatchesWon,
+				&usfg.Stats.TotalMatchesPlayed,
+				&usfg.Stats.TotalGgMatchesWon,
+				&usfg.Stats.TotalGgMatchesPlayed,
+				&usfg.Stats.TotalProgressiveMatchesWon,
+				&usfg.Stats.TotalTrbombMatchesWon,
+				&usfg.Stats.TotalContributionScore,
+				&usfg.Stats.LastMatchContributionScore,
+				&usfg.Stats.LastMatchRounds,
+				&usfg.Stats.TotalKillsHkp2000,
+				&usfg.Stats.TotalShotsHkp2000,
+				&usfg.Stats.TotalHitsHkp2000,
+				&usfg.Stats.TotalHitsP250,
+				&usfg.Stats.TotalKillsP250,
+				&usfg.Stats.TotalShotsP250,
+				&usfg.Stats.TotalKillsSg556,
+				&usfg.Stats.TotalShotsSg556,
+				&usfg.Stats.TotalHitsSg556,
+				&usfg.Stats.TotalHitsScar20,
+				&usfg.Stats.TotalKillsScar20,
+				&usfg.Stats.TotalShotsScar20,
+				&usfg.Stats.TotalShotsSsg08,
+				&usfg.Stats.TotalHitsSsg08,
+				&usfg.Stats.TotalKillsSsg08,
+				&usfg.Stats.TotalShotsMp7,
+				&usfg.Stats.TotalHitsMp7,
+				&usfg.Stats.TotalKillsMp7,
+				&usfg.Stats.TotalKillsMp9,
+				&usfg.Stats.TotalShotsMp9,
+				&usfg.Stats.TotalHitsMp9,
+				&usfg.Stats.TotalHitsNova,
+				&usfg.Stats.TotalKillsNova,
+				&usfg.Stats.TotalShotsNova,
+				&usfg.Stats.TotalHitsNegev,
+				&usfg.Stats.TotalKillsNegev,
+				&usfg.Stats.TotalShotsNegev,
+				&usfg.Stats.TotalShotsSawedoff,
+				&usfg.Stats.TotalHitsSawedoff,
+				&usfg.Stats.TotalKillsSawedoff,
+				&usfg.Stats.TotalShotsBizon,
+				&usfg.Stats.TotalHitsBizon,
+				&usfg.Stats.TotalKillsBizon,
+				&usfg.Stats.TotalKillsTec9,
+				&usfg.Stats.TotalShotsTec9,
+				&usfg.Stats.TotalHitsTec9,
+				&usfg.Stats.TotalShotsMag7,
+				&usfg.Stats.TotalHitsMag7,
+				&usfg.Stats.TotalKillsMag7,
+				&usfg.Stats.TotalGunGameContributionScore,
+				&usfg.Stats.LastMatchGgContributionScore,
+				&usfg.Stats.TotalKillsM4a1,
+				&usfg.Stats.TotalKillsGalilar,
+				&usfg.Stats.TotalKillsMolotov,
+				&usfg.Stats.TotalKillsTaser,
+				&usfg.Stats.TotalShotsM4a1,
+				&usfg.Stats.TotalShotsGalilar,
+				&usfg.Stats.TotalShotsTaser,
+				&usfg.Stats.TotalHitsM4a1,
+				&usfg.Stats.TotalHitsGalilar,
+				&usfg.Stats.TotalMatchesWonTrain,
+				&usfg.Stats.TotalMatchesWonLake,
+				&usfg.Stats.GILessonCsgoInstrExplainBuymenu,
+				&usfg.Stats.GILessonCsgoInstrExplainBuyarmor,
+				&usfg.Stats.GILessonCsgoInstrExplainPlantBomb,
+				&usfg.Stats.GILessonCsgoInstrExplainBombCarrier,
+				&usfg.Stats.GILessonBombSitesA,
+				&usfg.Stats.GILessonDefusePlantedBomb,
+				&usfg.Stats.GILessonCsgoInstrExplainFollowBomber,
+				&usfg.Stats.GILessonCsgoInstrExplainPickupBomb,
+				&usfg.Stats.GILessonCsgoInstrExplainPreventBombPickup,
+				&usfg.Stats.GILessonCsgoCycleWeaponsKb,
+				&usfg.Stats.GILessonCsgoInstrExplainZoom,
+				&usfg.Stats.GILessonCsgoInstrExplainReload,
+				&usfg.Stats.GILessonTrExplainPlantBomb,
+				&usfg.Stats.GILessonBombSitesB,
+				&usfg.Stats.GILessonVersionNumber,
+				&usfg.Stats.GILessonFindPlantedBomb,
+				&usfg.Stats.GILessonCsgoHostageLeadToHrz,
+				&usfg.Stats.GILessonCsgoInstrRescueZone,
+				&usfg.Stats.GILessonCsgoInstrExplainInspect,
+				&usfg.Stats.SteamStatXpearnedgames,
+			)
+		}
 	}
 	return usfg, err
 }
 
 // GetRecentlyPlayedGames returns a RecentlyPlayedGames object by fetching the values from
 // the database using a prepared statement.
-func (ds *DataStorage) GetRecentlyPlayedGames(steamID string) (RecentlyPlayedGames, error) {
-	rpg := RecentlyPlayedGames{}
+func (ds *DataStorage) GetRecentlyPlayedGames(steamID string) (steamclient.RecentlyPlayedGames, error) {
+	rpg := steamclient.RecentlyPlayedGames{}
 	var err error
-	var id int
 
 	if rows, err := ds.statements["select_recently_played"].Query(steamID); err == nil {
-		rows.Scan(
-			&id,
-			&rpg.Playtime2Weeks,
-			&rpg.PlaytimeForever,
-			&rpg.PlaytimeWindowsForever,
-			&rpg.PlaytimeMacForever,
-			&rpg.PlaytimeLinuxForever,
-		)
+
+		for rows.Next() {
+			rows.Scan(
+				&rpg.SteamID,
+				&rpg.Playtime2Weeks,
+				&rpg.PlaytimeForever,
+				&rpg.PlaytimeWindowsForever,
+				&rpg.PlaytimeMacForever,
+				&rpg.PlaytimeLinuxForever,
+			)
+		}
 	}
 	return rpg, err
 }
 
 // GetPlayerHistory returns a PlayerHistory object by fetching the values from
 // the database using a prepared statement.
-func (ds *DataStorage) GetPlayerHistory(steamID string) (PlayerHistory, error) {
-	ph := PlayerHistory{}
+func (ds *DataStorage) GetPlayerHistory(steamID string) (steamclient.PlayerHistory, error) {
+	ph := steamclient.PlayerHistory{}
 	var err error
 
 	if rows, err := ds.statements["select_player_history"].Query(steamID); err == nil {
 		rows.Scan(
-			&ph.steamID,
-			&ph.time,
+			&ph.SteamID,
+			&ph.Time,
 			&ph.TotalKills,
 		)
 	}
 	return ph, err
 }
+func (ds *DataStorage) UpdatePlayerInfo(pi steamclient.PlayerInfo) error {
+	var err error
 
-// Private data retrieval methods
-func (ds *DataStorage) updatePlayerSummary(steamID string) {
+	if err = ds.UpdatePlayerSummary(pi.PlayerSummary); err != nil {
+		return err
+	}
+	if err = ds.UpdateRecentlyPlayedGames(pi.RecentlyPlayedGames); err != nil {
+		return err
+	}
+	if err = ds.UpdateUserStatsForGame(pi.UserStatsForGame); err != nil {
+		return err
+	}
 
-	ps := getPlayerSummary(steamID)
+	return nil
+}
+
+func (ds *DataStorage) UpdatePlayerSummary(ps steamclient.PlayerSummary) error {
+
 	var result sql.Result
 	var err error
 
 	if result, err = ds.statements["update_player_summary"].Exec(
+		ps.SteamID,
 		ps.Communityvisibilitystate,
 		ps.Profilestate,
 		ps.Personaname,
@@ -285,22 +332,23 @@ func (ds *DataStorage) updatePlayerSummary(steamID string) {
 		ps.Personastate,
 		ps.Primaryclanid,
 		ps.Timecreated,
-		steamID,
 	); err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	rows, err := result.RowsAffected()
 	log.Println("Rows affected:", rows)
+	log.Println("Added", ps.SteamID, ps.Personaname, "to player_summary table")
+	return err
 }
 
-func (ds *DataStorage) updateUserStatsForGame(steamID string) {
-	stats := getUserStatsForGame(steamID)
+func (ds *DataStorage) UpdateUserStatsForGame(stats steamclient.UserStatsForGame) error {
+
 	var result sql.Result
 	var err error
 
 	if result, err = ds.statements["update_player_stats"].Exec(
-		steamID,
+		stats.SteamID,
 		stats.Stats.TotalKills,
 		stats.Stats.TotalDeaths,
 		stats.Stats.TotalTimePlayed,
@@ -481,28 +529,35 @@ func (ds *DataStorage) updateUserStatsForGame(steamID string) {
 		stats.Stats.GILessonCsgoInstrExplainInspect,
 		stats.Stats.SteamStatXpearnedgames,
 	); err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	rows, err := result.RowsAffected()
 	log.Println("Rows affected:", rows)
+	log.Println("Added", stats.SteamID, "to player_stats table")
+	return err
 
 }
 
-func (ds *DataStorage) updateRecentlyPlayedGames(steamID string) {
+func (ds *DataStorage) UpdateRecentlyPlayedGames(rpg steamclient.RecentlyPlayedGames) error {
+	var result sql.Result
+	var err error
 
-	rp := getRecentlyPlayedGames(steamID)
-
-	if _, err := ds.statements["update_recently_played"].Exec(
-		rp.Playtime2Weeks,
-		rp.PlaytimeForever,
-		rp.PlaytimeWindowsForever,
-		rp.PlaytimeMacForever,
-		rp.PlaytimeLinuxForever,
-		steamID,
+	if result, err = ds.statements["update_recently_played"].Exec(
+		rpg.SteamID,
+		rpg.Playtime2Weeks,
+		rpg.PlaytimeForever,
+		rpg.PlaytimeWindowsForever,
+		rpg.PlaytimeMacForever,
+		rpg.PlaytimeLinuxForever,
 	); err != nil {
-		log.Fatal(err)
+		return err
 	}
+
+	rows, err := result.RowsAffected()
+	log.Println("Rows affected:", rows)
+	log.Println("Added", rpg.SteamID, "to recently_played table")
+	return nil
 }
 
 // DataStorage is the main interface to the saved data. It provides methods for
@@ -516,9 +571,9 @@ type DataStorage struct {
 // GetPlayerInfoBySteamID returns a PlayerInfo from a steamID. It will try to
 // get the needed values from the database and return an error if steamID
 // cannot be found in it.
-func (ds *DataStorage) GetPlayerInfoBySteamID(steamID string) (PlayerInfo, error) {
+func (ds *DataStorage) GetPlayerInfoBySteamID(steamID string) (steamclient.PlayerInfo, error) {
 
-	info := PlayerInfo{}
+	info := steamclient.PlayerInfo{}
 	var err error
 
 	if info.PlayerSummary, err = ds.GetPlayerSummary(steamID); err != nil {
@@ -566,9 +621,11 @@ func NewDataStorage(path string) (*DataStorage, error) {
 	if _, err = storage.statements["create_player_stats"].Exec(); err != nil {
 		log.Fatal("Failed to create table player_stats", err)
 	}
+
 	if _, err = storage.statements["create_recently_played"].Exec(); err != nil {
 		log.Fatal("Failed to create table recently_played", err)
 	}
+
 	if _, err = storage.statements["create_player_history"].Exec(); err != nil {
 		log.Fatal("Failed to create table player_history", err)
 	}
@@ -584,15 +641,6 @@ func NewDataStorage(path string) (*DataStorage, error) {
 
 	if err = storage.getSelectPreparedstatements(); err != nil {
 		log.Fatal("Failed to prepare SELECT statements", err)
-	}
-
-	for _, v := range config.SteamIDs {
-		log.Println("Updating Data for ID:", v)
-
-		storage.updatePlayerSummary(v)
-		storage.updateRecentlyPlayedGames(v)
-		storage.updateUserStatsForGame(v)
-
 	}
 
 	return storage, nil

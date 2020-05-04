@@ -1,4 +1,4 @@
-package main
+package steamclient
 
 // GameStats holds the players stats data from the steam API
 // endpoint UserStatsForGame

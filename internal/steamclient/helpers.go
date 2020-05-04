@@ -1,4 +1,4 @@
-package main
+package steamclient
 
 import (
 	"encoding/json"

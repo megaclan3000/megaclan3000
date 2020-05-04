@@ -8,22 +8,24 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/pinpox/megaclan3000/internal/database"
+	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
 
-var config SteamConfig
 var t *template.Template
-var datastorage *DataStorage
+var datastorage *database.DataStorage
+var steamClient *steamclient.SteamClient
 
 func main() {
-	log.Println("main")
+
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	var err error
 	// Read config and pull initial data
-	config = readConfig()
-	config.Refresh()
+	steamClient = steamclient.NewSteamClient()
 
 	log.Println("Creating datastorage")
-	if datastorage, err = NewDataStorage("./data.db"); err != nil {
+	if datastorage, err = database.NewDataStorage("./data.db"); err != nil {
 		log.Fatal("Failed to open database", err)
 	}
 
@@ -58,7 +60,27 @@ func main() {
 		ReadTimeout:  15 * time.Second,
 	}
 
+	//start updating data every 5 minutes asynchroniusly
+	go updateData(5)
 	log.Fatal(srv.ListenAndServe())
+}
+
+func updateData(minutes int) {
+	for {
+
+		// Get PlayerInfo for all players
+		players := steamClient.GetPlayers()
+
+		// Save to db
+		for _, v := range players {
+			if err := datastorage.UpdatePlayerInfo(v); err != nil {
+				log.Fatal(err)
+			}
+		}
+
+		// Sleep for a predefined duration (in minutes), then fetch again
+		time.Sleep(time.Duration(minutes) * time.Minute)
+	}
 }
 
 func handlerIndex(w http.ResponseWriter, r *http.Request) {
@@ -66,8 +88,17 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlerStats(w http.ResponseWriter, r *http.Request) {
-	data := config.GetAll()
-	t.ExecuteTemplate(w, "stats.html", data)
+
+	var players []steamclient.PlayerInfo
+	var err error
+
+	if players, err = datastorage.GetAllPlayers(); err != nil {
+		log.Println("Error getting stats from database")
+		t.ExecuteTemplate(w, "404.html", nil)
+		return
+	}
+
+	t.ExecuteTemplate(w, "stats.html", players)
 }
 
 func handlerContact(w http.ResponseWriter, r *http.Request) {
