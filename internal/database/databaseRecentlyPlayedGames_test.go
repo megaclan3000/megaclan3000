@@ -9,29 +9,30 @@ import (
 )
 
 func TestDataStorage_GetRecentlyPlayedGames(t *testing.T) {
-	type fields struct {
-		db         *sql.DB
-		statements map[string]*sql.Stmt
-	}
-	type args struct {
-		steamID string
-	}
 	tests := []struct {
 		name    string
-		fields  fields
-		args    args
+		steamID string
 		want    steamclient.RecentlyPlayedGames
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name:    "Test retrieval of RecentlyPlayedGames from fixtures",
+			steamID: "123456789",
+			want: steamclient.RecentlyPlayedGames{
+				SteamID:                "123456789",
+				Playtime2Weeks:         "1",
+				PlaytimeForever:        "2",
+				PlaytimeWindowsForever: "3",
+				PlaytimeMacForever:     "4",
+				PlaytimeLinuxForever:   "5",
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ds := &DataStorage{
-				db:         tt.fields.db,
-				statements: tt.fields.statements,
-			}
-			got, err := ds.GetRecentlyPlayedGames(tt.args.steamID)
+			prepareDB()
+			got, err := db.GetRecentlyPlayedGames(tt.steamID)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("DataStorage.GetRecentlyPlayedGames() error = %v, wantErr %v", err, tt.wantErr)
 				return
