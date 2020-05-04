@@ -204,6 +204,8 @@ func (ds *DataStorage) GetUserStatsForGame(steamID string) (steamclient.UserStat
 	return usfg, err
 }
 
+// UpdateUserStatsForGame receives a UserStatsForGame object and updates the
+// corresponding entry in the database for the steamID
 func (ds *DataStorage) UpdateUserStatsForGame(stats steamclient.UserStatsForGame) error {
 
 	var result sql.Result

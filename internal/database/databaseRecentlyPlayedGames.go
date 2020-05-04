@@ -29,6 +29,8 @@ func (ds *DataStorage) GetRecentlyPlayedGames(steamID string) (steamclient.Recen
 	return rpg, err
 }
 
+// UpdateRecentlyPlayedGames receives a RecentlyPlayedGames from a PlayerInfo
+// object and updates the databaes for this steamID
 func (ds *DataStorage) UpdateRecentlyPlayedGames(rpg steamclient.RecentlyPlayedGames) error {
 	var result sql.Result
 	var err error

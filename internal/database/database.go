@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 
+	// Use sqlite backend
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
@@ -94,6 +95,8 @@ func NewDataStorage(path string) (*DataStorage, error) {
 	return storage, nil
 }
 
+// GetAllPlayers returns a PlayerInfo object for all players known to the
+// database
 func (ds *DataStorage) GetAllPlayers() ([]steamclient.PlayerInfo, error) {
 	var players []steamclient.PlayerInfo
 	var rows *sql.Rows
@@ -120,6 +123,8 @@ func (ds *DataStorage) GetAllPlayers() ([]steamclient.PlayerInfo, error) {
 	return players, nil
 }
 
+// UpdatePlayerInfo receives a PlayerInfo object and updates the database entry
+// for it's steamID
 func (ds *DataStorage) UpdatePlayerInfo(pi steamclient.PlayerInfo) error {
 	var err error
 
