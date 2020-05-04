@@ -12,9 +12,31 @@ import (
 )
 
 var (
-	db       DataStorage
+	db       *DataStorage
 	fixtures *testfixtures.Loader
 )
+
+func prepareDB() {
+
+	var err error
+	db, err = NewDataStorage("../../test/database/test.db")
+
+	if err != nil {
+		panic(err)
+	}
+
+	fixtures, err := testfixtures.New(
+		testfixtures.Database(db.db),
+		testfixtures.Dialect("sqlite"),
+		testfixtures.Directory(
+			"../../test/database/fixtures",
+		),
+	)
+
+	if err := fixtures.Load(); err != nil {
+		panic(err)
+	}
+}
 
 func TestDataStorage_GetPlayerSummary(t *testing.T) {
 
@@ -48,24 +70,7 @@ func TestDataStorage_GetPlayerSummary(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 
-			db, err := NewDataStorage("../../test/database/test.db")
-
-			if err != nil {
-				panic(err)
-			}
-
-			fixtures, err := testfixtures.New(
-				testfixtures.Database(db.db),
-				testfixtures.Dialect("sqlite"),
-				testfixtures.Directory(
-					"../../test/database/fixtures",
-				),
-			)
-
-			if err := fixtures.Load(); err != nil {
-				t.Error(err)
-			}
-
+			prepareDB()
 			got, err := db.GetPlayerSummary(tt.steamID)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("DataStorage.GetPlayerSummary() error = %v, wantErr %v", err, tt.wantErr)
