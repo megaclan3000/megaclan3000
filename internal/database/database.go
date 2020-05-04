@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 
+	"github.com/davecgh/go-spew/spew"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
@@ -17,21 +18,23 @@ func (ds *DataStorage) GetPlayerSummary(steamID string) (steamclient.PlayerSumma
 	ps := steamclient.PlayerSummary{}
 	var err error
 
-	if rows, err := ds.statements["select_player_summary"].Query(); err == nil {
-		rows.Scan(
-			&ps.SteamID,
-			&ps.Communityvisibilitystate,
-			&ps.Profilestate,
-			&ps.Personaname,
-			&ps.Profileurl,
-			&ps.Avatar,
-			&ps.Avatarmedium,
-			&ps.Avatarfull,
-			&ps.Lastlogoff,
-			&ps.Personastate,
-			&ps.Primaryclanid,
-			&ps.Timecreated,
-		)
+	if rows, err := ds.statements["select_player_summary"].Query(steamID); err == nil {
+		for rows.Next() {
+			rows.Scan(
+				&ps.SteamID,
+				&ps.Communityvisibilitystate,
+				&ps.Profilestate,
+				&ps.Personaname,
+				&ps.Profileurl,
+				&ps.Avatar,
+				&ps.Avatarmedium,
+				&ps.Avatarfull,
+				&ps.Lastlogoff,
+				&ps.Personastate,
+				&ps.Primaryclanid,
+				&ps.Timecreated,
+			)
+		}
 	}
 	return ps, err
 }
@@ -49,8 +52,11 @@ func (ds *DataStorage) GetAllPlayers() ([]steamclient.PlayerInfo, error) {
 
 	for rows.Next() {
 		if err = rows.Scan(&steamID); err == nil {
+			log.Println("Got ID from database:", steamID)
 			if pi, err := ds.GetPlayerInfoBySteamID(steamID); err == nil {
 				players = append(players, pi)
+			} else {
+				log.Fatal(err)
 			}
 		}
 	}
@@ -259,18 +265,22 @@ func (ds *DataStorage) GetUserStatsForGame(steamID string) (steamclient.UserStat
 func (ds *DataStorage) GetRecentlyPlayedGames(steamID string) (steamclient.RecentlyPlayedGames, error) {
 	rpg := steamclient.RecentlyPlayedGames{}
 	var err error
-	var id int
 
 	if rows, err := ds.statements["select_recently_played"].Query(steamID); err == nil {
-		rows.Scan(
-			&id,
-			&rpg.Playtime2Weeks,
-			&rpg.PlaytimeForever,
-			&rpg.PlaytimeWindowsForever,
-			&rpg.PlaytimeMacForever,
-			&rpg.PlaytimeLinuxForever,
-		)
+
+		for rows.Next() {
+			rows.Scan(
+				&rpg.SteamID,
+				&rpg.Playtime2Weeks,
+				&rpg.PlaytimeForever,
+				&rpg.PlaytimeWindowsForever,
+				&rpg.PlaytimeMacForever,
+				&rpg.PlaytimeLinuxForever,
+			)
+		}
 	}
+
+	spew.Dump(rpg)
 	return rpg, err
 }
 
@@ -289,14 +299,29 @@ func (ds *DataStorage) GetPlayerHistory(steamID string) (steamclient.PlayerHisto
 	}
 	return ph, err
 }
+func (ds *DataStorage) UpdatePlayerInfo(pi steamclient.PlayerInfo) error {
+	var err error
 
-// Private data retrieval methods
-func (ds *DataStorage) UpdatePlayerSummary(ps steamclient.PlayerSummary) {
+	if err = ds.UpdatePlayerSummary(pi.PlayerSummary); err != nil {
+		return err
+	}
+	if err = ds.UpdateRecentlyPlayedGames(pi.RecentlyPlayedGames); err != nil {
+		return err
+	}
+	if err = ds.UpdateUserStatsForGame(pi.UserStatsForGame); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (ds *DataStorage) UpdatePlayerSummary(ps steamclient.PlayerSummary) error {
 
 	var result sql.Result
 	var err error
 
 	if result, err = ds.statements["update_player_summary"].Exec(
+		ps.SteamID,
 		ps.Communityvisibilitystate,
 		ps.Profilestate,
 		ps.Personaname,
@@ -308,16 +333,17 @@ func (ds *DataStorage) UpdatePlayerSummary(ps steamclient.PlayerSummary) {
 		ps.Personastate,
 		ps.Primaryclanid,
 		ps.Timecreated,
-		ps.SteamID,
 	); err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	rows, err := result.RowsAffected()
 	log.Println("Rows affected:", rows)
+	log.Println("Added", ps.SteamID, ps.Personaname, "to player_summary table")
+	return err
 }
 
-func (ds *DataStorage) UpdateUserStatsForGame(stats steamclient.UserStatsForGame) {
+func (ds *DataStorage) UpdateUserStatsForGame(stats steamclient.UserStatsForGame) error {
 
 	var result sql.Result
 	var err error
@@ -504,26 +530,35 @@ func (ds *DataStorage) UpdateUserStatsForGame(stats steamclient.UserStatsForGame
 		stats.Stats.GILessonCsgoInstrExplainInspect,
 		stats.Stats.SteamStatXpearnedgames,
 	); err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	rows, err := result.RowsAffected()
 	log.Println("Rows affected:", rows)
+	log.Println("Added", stats.SteamID, "to player_stats table")
+	return err
 
 }
 
-func (ds *DataStorage) UpdateRecentlyPlayedGames(rpg steamclient.RecentlyPlayedGames) {
+func (ds *DataStorage) UpdateRecentlyPlayedGames(rpg steamclient.RecentlyPlayedGames) error {
+	var result sql.Result
+	var err error
 
-	if _, err := ds.statements["update_recently_played"].Exec(
+	if result, err = ds.statements["update_recently_played"].Exec(
+		rpg.SteamID,
 		rpg.Playtime2Weeks,
 		rpg.PlaytimeForever,
 		rpg.PlaytimeWindowsForever,
 		rpg.PlaytimeMacForever,
 		rpg.PlaytimeLinuxForever,
-		rpg.SteamID,
 	); err != nil {
-		log.Fatal(err)
+		return err
 	}
+
+	rows, err := result.RowsAffected()
+	log.Println("Rows affected:", rows)
+	log.Println("Added", rpg.SteamID, "to recently_played table")
+	return nil
 }
 
 // DataStorage is the main interface to the saved data. It provides methods for
@@ -587,9 +622,11 @@ func NewDataStorage(path string) (*DataStorage, error) {
 	if _, err = storage.statements["create_player_stats"].Exec(); err != nil {
 		log.Fatal("Failed to create table player_stats", err)
 	}
+
 	if _, err = storage.statements["create_recently_played"].Exec(); err != nil {
 		log.Fatal("Failed to create table recently_played", err)
 	}
+
 	if _, err = storage.statements["create_player_history"].Exec(); err != nil {
 		log.Fatal("Failed to create table player_history", err)
 	}
@@ -606,17 +643,6 @@ func NewDataStorage(path string) (*DataStorage, error) {
 	if err = storage.getSelectPreparedstatements(); err != nil {
 		log.Fatal("Failed to prepare SELECT statements", err)
 	}
-
-	// TODO fix this
-	// for _, v := range config.SteamIDs {
-	// 	log.Println("Updating Data for ID:", v)
-
-	//TODO functions changed to accept data and NOT neeed a client themselves
-	// 	storage.updatePlayerSummary(v)
-	// 	storage.updateRecentlyPlayedGames(v)
-	// 	storage.updateUserStatsForGame(v)
-
-	// }
 
 	return storage, nil
 }
