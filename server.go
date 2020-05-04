@@ -17,7 +17,8 @@ var datastorage *database.DataStorage
 var steamClient *steamclient.SteamClient
 
 func main() {
-	log.Println("main")
+
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	var err error
 	// Read config and pull initial data
@@ -66,14 +67,20 @@ func main() {
 
 func updateData(minutes int) {
 	for {
+
+		// Get PlayerInfo for all players
+		players := steamClient.GetPlayers()
+
+		// Save to db
+		for _, v := range players {
+			if err := datastorage.UpdatePlayerInfo(v); err != nil {
+				log.Fatal(err)
+			}
+		}
+
+		// Sleep for a predefined duration (in minutes), then fetch again
 		time.Sleep(time.Duration(minutes) * time.Minute)
-		//TODO update the datastorage
-		// - Get from client
-
-		// - Put into db
-		// - Check errors
 	}
-
 }
 
 func handlerIndex(w http.ResponseWriter, r *http.Request) {
@@ -81,12 +88,17 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlerStats(w http.ResponseWriter, r *http.Request) {
-	if players, err := datastorage.GetAllPlayers(); err == nil {
-		t.ExecuteTemplate(w, "stats.html", players)
+
+	var players []steamclient.PlayerInfo
+	var err error
+
+	if players, err = datastorage.GetAllPlayers(); err != nil {
+		log.Println("Error getting stats from database")
+		t.ExecuteTemplate(w, "404.html", nil)
 		return
 	}
 
-	t.ExecuteTemplate(w, "404.html", nil)
+	t.ExecuteTemplate(w, "stats.html", players)
 }
 
 func handlerContact(w http.ResponseWriter, r *http.Request) {
