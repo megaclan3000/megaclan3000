@@ -11,11 +11,13 @@ func (ds *DataStorage) GetPlayerHistory(steamID string) (steamclient.PlayerHisto
 	var err error
 
 	if rows, err := ds.statements["select_player_history"].Query(steamID); err == nil {
-		rows.Scan(
-			&ph.SteamID,
-			&ph.Time,
-			&ph.TotalKills,
-		)
+		for rows.Next() {
+			rows.Scan(
+				&ph.SteamID,
+				&ph.Time,
+				&ph.TotalKills,
+			)
+		}
 	}
 	return ph, err
 }

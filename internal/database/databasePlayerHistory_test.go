@@ -1,7 +1,6 @@
 package database
 
 import (
-	"database/sql"
 	"reflect"
 	"testing"
 
@@ -9,29 +8,28 @@ import (
 )
 
 func TestDataStorage_GetPlayerHistory(t *testing.T) {
-	type fields struct {
-		db         *sql.DB
-		statements map[string]*sql.Stmt
-	}
-	type args struct {
-		steamID string
-	}
 	tests := []struct {
 		name    string
-		fields  fields
-		args    args
+		steamID string
 		want    steamclient.PlayerHistory
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name:    "Retrieve PlayerHistory from fixtures",
+			steamID: "123456789",
+			want: steamclient.PlayerHistory{
+				SteamID:    123456789,
+				Time:       1,
+				TotalKills: 2,
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ds := &DataStorage{
-				db:         tt.fields.db,
-				statements: tt.fields.statements,
-			}
-			got, err := ds.GetPlayerHistory(tt.args.steamID)
+
+			prepareDB()
+			got, err := db.GetPlayerHistory(tt.steamID)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("DataStorage.GetPlayerHistory() error = %v, wantErr %v", err, tt.wantErr)
 				return

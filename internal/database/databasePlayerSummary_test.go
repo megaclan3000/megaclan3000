@@ -17,7 +17,6 @@ func TestDataStorage_GetPlayerSummary(t *testing.T) {
 		want    steamclient.PlayerSummary
 		wantErr bool
 	}{
-		// TODO: Add test cases.
 		{
 			name:    "Test retrieval of PlayerSummary from fixtures",
 			steamID: "123456789",
