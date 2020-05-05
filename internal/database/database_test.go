@@ -31,6 +31,10 @@ func prepareDB() {
 	); err != nil {
 		panic(err)
 	}
+
+	if err = fixtures.Load(); err != nil {
+		panic(err)
+	}
 }
 
 func TestDataStorage_GetPlayerInfoBySteamID(t *testing.T) {
