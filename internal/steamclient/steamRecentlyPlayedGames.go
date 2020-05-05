@@ -46,16 +46,36 @@ type recentlyPlayedGamesData struct {
 // RecentlyPlayedGames holds the players summary data from the steam API
 // endpoint GetRecentlyPlayedGames
 type RecentlyPlayedGames struct {
-	SteamID                string
-	Appid                  string
-	Name                   string
-	Playtime2Weeks         string
-	PlaytimeForever        string
-	ImgIconURL             string
-	ImgLogoURL             string
+
+	// SteamID of the player
+	SteamID string
+
+	// AppID for the game, 730 for CS:GO
+	Appid string
+
+	// Name of the game played
+	Name string
+
+	// Playtime in the last two weeks
+	Playtime2Weeks string
+
+	// Total playtime
+	PlaytimeForever string
+
+	// URL to the icon of the game
+	ImgIconURL string
+
+	// URL to the logo of the game
+	ImgLogoURL string
+
+	// Total playtime on windows
 	PlaytimeWindowsForever string
-	PlaytimeMacForever     string
-	PlaytimeLinuxForever   string
+
+	// Total playtime on mac
+	PlaytimeMacForever string
+
+	// Total playtime on linux
+	PlaytimeLinuxForever string
 }
 
 // GetRecentlyPlayedGames fetches information for the given steamID from the API
