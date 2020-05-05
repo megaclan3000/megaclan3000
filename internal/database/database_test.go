@@ -18,21 +18,17 @@ var (
 func prepareDB() {
 
 	var err error
-	db, err = NewDataStorage("../../test/database/test.db")
-
-	if err != nil {
+	if db, err = NewDataStorage("../../test/database/test.db"); err != nil {
 		panic(err)
 	}
 
-	fixtures, err := testfixtures.New(
+	if fixtures, err = testfixtures.New(
 		testfixtures.Database(db.db),
 		testfixtures.Dialect("sqlite"),
 		testfixtures.Directory(
 			"../../test/database/fixtures",
 		),
-	)
-
-	if err := fixtures.Load(); err != nil {
+	); err != nil {
 		panic(err)
 	}
 }

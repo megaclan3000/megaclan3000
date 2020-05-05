@@ -482,29 +482,39 @@ func (ds *DataStorage) getSelectPreparedstatements() error {
 	var err error
 
 	// - insert histor	// - query player_summary for player
-	ds.statements["select_player_summary"], err = ds.db.Prepare(`
+	if ds.statements["select_player_summary"], err = ds.db.Prepare(`
 			SELECT * FROM player_summary
 			WHERE steamid = ?
-			LIMIT 1`)
+			LIMIT 1`); err != nil {
+		return err
+	}
 
 	// - query player_stats
-	ds.statements["select_player_stats"], err = ds.db.Prepare(`
+	if ds.statements["select_player_stats"], err = ds.db.Prepare(`
 			SELECT * FROM player_stats
 			WHERE steamid = ?
-			LIMIT 1`)
+			LIMIT 1`); err != nil {
+		return err
+	}
 	// - query recently_played
-	ds.statements["select_recently_played"], err = ds.db.Prepare(`
+	if ds.statements["select_recently_played"], err = ds.db.Prepare(`
 			SELECT * FROM recently_played
 			WHERE steamid = ?
-			LIMIT 1`)
+			LIMIT 1`); err != nil {
+		return err
+	}
 	// - query history for last n entries of player
-	ds.statements["select_player_history"], err = ds.db.Prepare(`
+	if ds.statements["select_player_history"], err = ds.db.Prepare(`
 			SELECT * FROM player_history
 			WHERE steamid = ?
-			ORDER BY time DESC`)
+			ORDER BY time DESC`); err != nil {
+		return err
+	}
 
 	// - insert histor	// - query player_summary for player
-	ds.statements["select_all_player_ids"], err = ds.db.Prepare(`
-			SELECT steamid FROM player_stats`)
-	return err
+	if ds.statements["select_all_player_ids"], err = ds.db.Prepare(`
+			SELECT steamid FROM player_stats`); err != nil {
+		return err
+	}
+	return nil
 }
