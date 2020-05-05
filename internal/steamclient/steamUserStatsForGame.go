@@ -34,19 +34,37 @@ type Achievements struct {
 // UserStatsForGame holds the players summary data from the steam API
 // endpoint GetUserStatsForGame
 type UserStatsForGame struct {
-	SteamID      string
-	GameName     string
-	Stats        GameStats
+
+	// SteamID of the player
+	SteamID string
+
+	// Name of the game
+	GameName string
+
+	// GamesStats object containing stats for the game
+	Stats GameStats
+
+	// GameArchievements object containing archievements for the game
 	Archivements GameArchievements
-	Extra        GameExtras
+
+	// GameExtras object containig additional, calculated information
+	Extra GameExtras
 }
 
 // GameExtras holds data in the same way as the other nested structs. This data
 // is not fetched from an endpoint but calculated based on other values locally
 type GameExtras struct {
-	TotalKD     string
+
+	// Total KD ratio
+	TotalKD string
+
+	// KD ratio of the last match
 	LastMatchKD string
-	HitRatio    string
+
+	// Total hit ratio
+	HitRatio string
+
+	// Total played hours
 	PlayedHours string
 }
 
