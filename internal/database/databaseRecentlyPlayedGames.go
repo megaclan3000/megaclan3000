@@ -46,8 +46,10 @@ func (ds *DataStorage) UpdateRecentlyPlayedGames(rpg steamclient.RecentlyPlayedG
 		return err
 	}
 
-	rows, err := result.RowsAffected()
-	log.Println("Rows affected:", rows)
-	log.Println("Added", rpg.SteamID, "to recently_played table")
-	return nil
+	if rows, err := result.RowsAffected(); err == nil {
+		log.Println("Rows affected:", rows)
+		log.Println("Added", rpg.SteamID, "to recently_played table")
+		return nil
+	}
+	return err
 }

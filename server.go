@@ -73,6 +73,7 @@ func updateData(minutes int) {
 
 		// Save to db
 		for _, v := range players {
+			log.Println("Updating data for ID:", v)
 			if err := datastorage.UpdatePlayerInfo(v); err != nil {
 				log.Fatal(err)
 			}
