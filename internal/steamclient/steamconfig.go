@@ -3,7 +3,6 @@ package steamclient
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"os"
 	"time"
 )
@@ -14,19 +13,21 @@ type SteamConfig struct {
 	SteamAPIKey string   `json:"SteamAPIKey"`
 	SteamIDs    []string `json:"SteamIDs"`
 	lastUpdate  time.Time
+	configPath  string
 }
 
-func getData() SteamConfig {
+func NewSteamConfig(configPath string) (SteamConfig, error) {
 
 	conf := SteamConfig{}
 
-	jsonFile, err := os.Open("./config.json")
-	if err != nil {
-		log.Fatal(err)
-	}
+	jsonFile, err := os.Open(configPath)
 	defer jsonFile.Close()
+	if err != nil {
+		return conf, err
+	}
+
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	json.Unmarshal(byteValue, &conf)
 
-	return conf
+	return conf, nil
 }
