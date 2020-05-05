@@ -11,11 +11,16 @@ type SteamClient struct {
 }
 
 // NewSteamClient returrns a new SteamClient
-func NewSteamClient() *SteamClient {
+func NewSteamClient(configPath string) *SteamClient {
 
-	var config SteamConfig
+	// var config SteamConfig{
+	// 	configPath: configconfigPath,
+	// }
+	config, err := NewSteamConfig(configPath)
+	if err != nil {
+		panic(err)
+	}
 
-	config = getData()
 	return &SteamClient{config}
 }
 

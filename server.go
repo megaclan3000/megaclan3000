@@ -22,7 +22,7 @@ func main() {
 
 	var err error
 	// Read config and pull initial data
-	steamClient = steamclient.NewSteamClient()
+	steamClient = steamclient.NewSteamClient("./config.json")
 
 	log.Println("Creating datastorage")
 	if datastorage, err = database.NewDataStorage("./data.db"); err != nil {
