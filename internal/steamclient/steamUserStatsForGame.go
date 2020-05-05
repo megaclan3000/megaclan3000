@@ -54,9 +54,17 @@ type UserStatsForGame struct {
 // GameExtras holds data in the same way as the other nested structs. This data
 // is not fetched from an endpoint but calculated based on other values locally
 type GameExtras struct {
-	TotalKD     string
+
+	// Total KD ratio
+	TotalKD string
+
+	// KD ratio of the last match
 	LastMatchKD string
-	HitRatio    string
+
+	// Total hit ratio
+	HitRatio string
+
+	// Total played hours
 	PlayedHours string
 }
 
