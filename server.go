@@ -2,10 +2,12 @@ package main
 
 import (
 	"html/template"
-	"log"
+
 	"net/http"
 	"os"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
 	"github.com/pinpox/megaclan3000/internal/database"
@@ -17,8 +19,16 @@ var datastorage *database.DataStorage
 var steamClient *steamclient.SteamClient
 
 func main() {
+	// Output to stdout instead of the default stderr
+	// log.SetOutput(os.Stdout)
 
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	// Only log the warning severity or above.
+	// log.SetLevel(log.WarnLevel)
+
+	Formatter := new(log.TextFormatter)
+	Formatter.TimestampFormat = "02-01-2006 15:04:05"
+	Formatter.FullTimestamp = true
+	log.SetFormatter(Formatter)
 
 	var err error
 	// Read config and pull initial data
