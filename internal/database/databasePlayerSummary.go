@@ -61,7 +61,6 @@ func (ds *DataStorage) UpdatePlayerSummary(ps steamclient.PlayerSummary) error {
 	}
 
 	rows, err := result.RowsAffected()
-	log.Println("Rows affected:", rows)
-	log.Println("Added", ps.SteamID, ps.Personaname, "to player_summary table")
+	log.Println("Added", ps.SteamID, ps.Personaname, "to player_summary table", rows, "rows affected")
 	return err
 }
