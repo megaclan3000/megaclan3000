@@ -1,6 +1,8 @@
 package steamclient
 
-import "log"
+import (
+	log "github.com/Sirupsen/logrus"
+)
 
 // PlayerInfo contains the information to be shown of a given player
 type PlayerInfo struct {

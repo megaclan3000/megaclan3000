@@ -3,7 +3,9 @@ package steamclient
 import (
 	"encoding/json"
 	"fmt"
-	"log"
+
+	log "github.com/Sirupsen/logrus"
+
 	"net/http"
 	"strconv"
 	"time"

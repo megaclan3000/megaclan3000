@@ -1,7 +1,7 @@
 package steamclient
 
 import (
-	"log"
+	log "github.com/Sirupsen/logrus"
 )
 
 // SteamClient acts as main interface to interact with the steam API and gather
