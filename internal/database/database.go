@@ -3,7 +3,7 @@ package database
 import (
 	"database/sql"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 
 	// Use sqlite backend
 	_ "github.com/mattn/go-sqlite3"

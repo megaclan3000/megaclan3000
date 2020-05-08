@@ -1,7 +1,7 @@
 package database
 
 import (
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 func (ds *DataStorage) getCreatePreparedstatements() error {

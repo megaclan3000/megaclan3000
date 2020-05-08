@@ -1,7 +1,7 @@
 package steamclient
 
 import (
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 // PlayerInfo contains the information to be shown of a given player

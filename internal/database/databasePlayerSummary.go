@@ -3,7 +3,7 @@ package database
 import (
 	"database/sql"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
