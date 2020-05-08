@@ -1,6 +1,8 @@
 package database
 
-import "log"
+import (
+	log "github.com/Sirupsen/logrus"
+)
 
 func (ds *DataStorage) getCreatePreparedstatements() error {
 	var err error
