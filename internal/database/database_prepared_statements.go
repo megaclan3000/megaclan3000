@@ -247,7 +247,7 @@ func (ds *DataStorage) getUpdatePreparedstatements() error {
 		VALUES (?,?,?,?,?,?)`)
 
 	if err != nil {
-		log.Println("Failed to prepare statement: update_recently_played")
+		log.Fatal("Failed to prepare statement: update_recently_played")
 		return err
 	}
 
@@ -268,7 +268,7 @@ func (ds *DataStorage) getUpdatePreparedstatements() error {
 				timecreated)
 			VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?) `)
 	if err != nil {
-		log.Println("Failed to prepare statement: update_player_summary")
+		log.Fatal("Failed to prepare statement: update_player_summary")
 		return err
 	}
 
@@ -464,7 +464,7 @@ func (ds *DataStorage) getUpdatePreparedstatements() error {
 		?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
 
 	if err != nil {
-		log.Println("Failed to prepare statement: update_player_stats")
+		log.Fatal("Failed to prepare statement: update_player_stats")
 	}
 	return err
 }

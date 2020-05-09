@@ -398,7 +398,8 @@ func (ds *DataStorage) UpdateUserStatsForGame(stats steamclient.UserStatsForGame
 	}
 
 	rows, err := result.RowsAffected()
-	log.Println("Added", stats.SteamID, "to player_stats table", rows, "rows affected")
+	log.Debugf("Added %v to player_stats table. %v rows affected", stats.SteamID, rows)
+
 	return err
 
 }

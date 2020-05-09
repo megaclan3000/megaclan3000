@@ -53,7 +53,7 @@ func NewDataStorage(path string) (*DataStorage, error) {
 	storage := new(DataStorage)
 	storage.statements = make(map[string]*sql.Stmt)
 
-	log.Println("Reading", path)
+	log.Debugf("Reading %v", path)
 	if storage.db, err = sql.Open("sqlite3", path); err != nil {
 		log.Fatal("Failed to open sqlite file", err)
 	}
@@ -111,7 +111,7 @@ func (ds *DataStorage) GetAllPlayers() ([]steamclient.PlayerInfo, error) {
 
 	for rows.Next() {
 		if err = rows.Scan(&steamID); err == nil {
-			log.Println("Got ID from database:", steamID)
+			log.Debugf("Got ID from database: %v", steamID)
 			if pi, err := ds.GetPlayerInfoBySteamID(steamID); err == nil {
 				players = append(players, pi)
 			} else {
@@ -130,15 +130,15 @@ func (ds *DataStorage) UpdatePlayerInfo(pi steamclient.PlayerInfo) error {
 	var err error
 
 	if err = ds.UpdatePlayerSummary(pi.PlayerSummary); err != nil {
-		log.Println("Error saving PlayerSummary")
+		log.Fatalf("Error saving PlayerSummary for %v (%v)", pi.PlayerSummary.SteamID, pi.PlayerSummary.Personaname)
 		return err
 	}
 	if err = ds.UpdateRecentlyPlayedGames(pi.RecentlyPlayedGames); err != nil {
-		log.Println("Error saving RecentlyPlayedGames")
+		log.Fatalf("Error saving RecentlyPlayedGames for %v (%v)", pi.PlayerSummary.SteamID, pi.PlayerSummary.Personaname)
 		return err
 	}
 	if err = ds.UpdateUserStatsForGame(pi.UserStatsForGame); err != nil {
-		log.Println("Error saving UserStatsForGame")
+		log.Fatalf("Error saving UserStatsForGame for %v (%v)", pi.PlayerSummary.SteamID, pi.PlayerSummary.Personaname)
 		return err
 	}
 
