@@ -113,7 +113,6 @@ func handlerStats(w http.ResponseWriter, r *http.Request) {
 		t.ExecuteTemplate(w, "404.html", nil)
 		return
 	}
-
 	t.ExecuteTemplate(w, "stats.html", players)
 }
 
