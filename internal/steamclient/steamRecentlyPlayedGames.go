@@ -80,12 +80,14 @@ type RecentlyPlayedGames struct {
 
 // GetRecentlyPlayedGames fetches information for the given steamID from the API
 // endpoint GetRecentlyPlayedGames and returns a RecentlyPlayedGames object
-func (sc *SteamClient) GetRecentlyPlayedGames(steamID string) RecentlyPlayedGames {
+func (sc *SteamClient) GetRecentlyPlayedGames(steamID string) (RecentlyPlayedGames, error) {
 
 	url := "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=" + sc.config.SteamAPIKey + "&steamid=" + steamID
 
 	data := recentlyPlayedGamesData{}
-	getJSON(url, &data)
+	if err := getJSON(url, &data); err != nil {
+		return RecentlyPlayedGames{}, err
+	}
 
 	for _, v := range data.Response.Games {
 		if v.Appid == 730 {
@@ -102,8 +104,8 @@ func (sc *SteamClient) GetRecentlyPlayedGames(steamID string) RecentlyPlayedGame
 				PlaytimeWindowsForever: strconv.Itoa(v.PlaytimeWindowsForever / 60),
 				PlaytimeMacForever:     strconv.Itoa(v.PlaytimeMacForever / 60),
 				PlaytimeLinuxForever:   strconv.Itoa(v.PlaytimeLinuxForever / 60),
-			}
+			}, nil
 		}
 	}
-	return RecentlyPlayedGames{}
+	return RecentlyPlayedGames{}, nil
 }

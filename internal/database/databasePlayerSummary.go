@@ -2,7 +2,8 @@ package database
 
 import (
 	"database/sql"
-	"log"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
@@ -60,7 +61,6 @@ func (ds *DataStorage) UpdatePlayerSummary(ps steamclient.PlayerSummary) error {
 	}
 
 	rows, err := result.RowsAffected()
-	log.Println("Rows affected:", rows)
-	log.Println("Added", ps.SteamID, ps.Personaname, "to player_summary table")
+	log.Debugf("Added %v (%v) to player_summary table. %v rows affected", ps.SteamID, ps.Personaname, rows)
 	return err
 }

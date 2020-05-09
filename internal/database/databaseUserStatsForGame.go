@@ -2,7 +2,8 @@ package database
 
 import (
 	"database/sql"
-	"log"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
@@ -397,8 +398,8 @@ func (ds *DataStorage) UpdateUserStatsForGame(stats steamclient.UserStatsForGame
 	}
 
 	rows, err := result.RowsAffected()
-	log.Println("Rows affected:", rows)
-	log.Println("Added", stats.SteamID, "to player_stats table")
+	log.Debugf("Added %v to player_stats table. %v rows affected", stats.SteamID, rows)
+
 	return err
 
 }

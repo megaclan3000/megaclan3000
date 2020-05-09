@@ -1,11 +1,13 @@
 package main
 
 import (
+	"flag"
 	"html/template"
-	"log"
+
 	"net/http"
-	"os"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
 	"github.com/pinpox/megaclan3000/internal/database"
@@ -18,15 +20,29 @@ var steamClient *steamclient.SteamClient
 
 func main() {
 
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	// -verbose flag to set logging level to DebugLevel
+	flagVerbose := flag.Bool("verbose", false, "Enable verbose output")
+	flag.Parse()
+
+	if *flagVerbose {
+		log.SetLevel(log.DebugLevel)
+	}
+
+	// Output to stdout instead of the default stderr
+	// log.SetOutput(os.Stdout)
+
+	Formatter := new(log.TextFormatter)
+	Formatter.TimestampFormat = "02-01-2006 15:04:05"
+	Formatter.FullTimestamp = true
+	log.SetFormatter(Formatter)
 
 	var err error
 	// Read config and pull initial data
 	steamClient = steamclient.NewSteamClient("./config.json")
 
-	log.Println("Creating datastorage")
+	log.Info("Creating datastorage")
 	if datastorage, err = database.NewDataStorage("./data.db"); err != nil {
-		log.Fatal("Failed to open database", err)
+		log.Fatal("Failed to open database:", err)
 	}
 
 	r := mux.NewRouter()
@@ -48,8 +64,7 @@ func main() {
 	// Parse all templates
 	t, err = template.ParseGlob("./templates/*")
 	if err != nil {
-		log.Println("Cannot parse templates:", err)
-		os.Exit(-1)
+		log.Panic("Cannot parse templates", err)
 	}
 
 	// Set up the HTTP-server
@@ -73,7 +88,7 @@ func updateData(minutes int) {
 
 		// Save to db
 		for _, v := range players {
-			log.Println("Updating data for ID:", v)
+			log.Infof("Updating data for %v (%v)", v.PlayerSummary.Personaname, v.PlayerSummary.SteamID)
 			if err := datastorage.UpdatePlayerInfo(v); err != nil {
 				log.Fatal(err)
 			}
@@ -94,7 +109,7 @@ func handlerStats(w http.ResponseWriter, r *http.Request) {
 	var err error
 
 	if players, err = datastorage.GetAllPlayers(); err != nil {
-		log.Println("Error getting stats from database")
+		log.Error("Error getting stats from database:", err)
 		t.ExecuteTemplate(w, "404.html", nil)
 		return
 	}

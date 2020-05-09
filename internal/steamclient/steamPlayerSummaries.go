@@ -1,6 +1,7 @@
 package steamclient
 
 import (
+	"errors"
 	"strconv"
 )
 
@@ -149,12 +150,16 @@ type PlayerSummary struct {
 
 // GetPlayerSummary fetches information for the given steamID from the API
 // endpoint GetPlayerSummary and returns a PlayerSummary object
-func (sc *SteamClient) GetPlayerSummary(steamID string) PlayerSummary {
+func (sc *SteamClient) GetPlayerSummary(steamID string) (PlayerSummary, error) {
 
 	url := "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=" + sc.config.SteamAPIKey + "&steamids=" + steamID
 
+	var err error
+
 	data := playerSummariesData{}
-	getJSON(url, &data)
+	if getJSON(url, &data); err != nil {
+		return PlayerSummary{}, errors.New("Unable to get PlayerSummary for: " + steamID)
+	}
 
 	return PlayerSummary{
 		Avatar:                   data.Response.Players[0].Avatar,
@@ -178,6 +183,5 @@ func (sc *SteamClient) GetPlayerSummary(steamID string) PlayerSummary {
 		Realname:                 data.Response.Players[0].Realname,
 		SteamID:                  data.Response.Players[0].Steamid,
 		Timecreated:              strconv.Itoa(data.Response.Players[0].Timecreated),
-	}
-
+	}, nil
 }

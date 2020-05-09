@@ -2,8 +2,11 @@ package steamclient
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
-	"log"
+
+	log "github.com/sirupsen/logrus"
+
 	"net/http"
 	"strconv"
 	"time"
@@ -15,13 +18,14 @@ func getJSON(url string, target interface{}) error {
 	// log.Println("Downloading:", url)
 	r, err := myClient.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	if r.StatusCode != 200 {
-		log.Println("Failed to get data from:")
-		log.Println("'" + url + "'")
-		log.Println(r.StatusCode, http.StatusText(r.StatusCode))
+		log.Warn("Failed to get data from:")
+		log.Warn("'" + url + "'")
+		log.Warn(r.StatusCode, http.StatusText(r.StatusCode))
+		return errors.New("Failed to fetch from URL")
 	}
 	defer r.Body.Close()
 	return json.NewDecoder(r.Body).Decode(target)

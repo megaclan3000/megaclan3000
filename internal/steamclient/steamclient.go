@@ -1,7 +1,7 @@
 package steamclient
 
 import (
-	"log"
+	log "github.com/sirupsen/logrus"
 )
 
 // SteamClient acts as main interface to interact with the steam API and gather
@@ -31,8 +31,14 @@ func (sc SteamClient) GetPlayers() []PlayerInfo {
 	players := []PlayerInfo{}
 
 	for _, v := range sc.config.SteamIDs {
-		log.Println("Fetching data for ID:", v)
-		players = append(players, sc.getPlayerInfo(v))
+		log.Debugf("Fetching data for ID: %v", v)
+		if pi, err := sc.getPlayerInfo(v); err == nil {
+			log.Println("adding player", v)
+			players = append(players, pi)
+		} else {
+			log.Println("skipping player", v)
+			log.Warningf("Failed to get data for ID: %v", v)
+		}
 	}
 	return players
 }

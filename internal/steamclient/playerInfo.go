@@ -8,13 +8,22 @@ type PlayerInfo struct {
 	PlayerHistory       PlayerHistory
 }
 
-func (sc *SteamClient) getPlayerInfo(steamID string) PlayerInfo {
+func (sc *SteamClient) getPlayerInfo(steamID string) (PlayerInfo, error) {
 
 	info := PlayerInfo{}
+	var err error
 
-	info.PlayerSummary = sc.GetPlayerSummary(steamID)
-	info.UserStatsForGame = sc.GetUserStatsForGame(steamID)
-	info.RecentlyPlayedGames = sc.GetRecentlyPlayedGames(steamID)
+	if info.PlayerSummary, err = sc.GetPlayerSummary(steamID); err != nil {
+		return info, err
+	}
 
-	return info
+	if info.UserStatsForGame, err = sc.GetUserStatsForGame(steamID); err != nil {
+		return info, err
+	}
+
+	if info.RecentlyPlayedGames, err = sc.GetRecentlyPlayedGames(steamID); err != nil {
+		return info, err
+	}
+
+	return info, nil
 }

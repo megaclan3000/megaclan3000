@@ -2,7 +2,8 @@ package database
 
 import (
 	"database/sql"
-	"log"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
@@ -47,8 +48,7 @@ func (ds *DataStorage) UpdateRecentlyPlayedGames(rpg steamclient.RecentlyPlayedG
 	}
 
 	if rows, err := result.RowsAffected(); err == nil {
-		log.Println("Rows affected:", rows)
-		log.Println("Added", rpg.SteamID, "to recently_played table")
+		log.Debugf("Added %v to recently_played table. %v rows affected", rpg.SteamID, rows)
 		return nil
 	}
 	return err
