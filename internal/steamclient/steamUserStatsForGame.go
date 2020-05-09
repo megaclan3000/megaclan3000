@@ -70,14 +70,17 @@ type GameExtras struct {
 
 // GetUserStatsForGame fetches information for the given steamID from the API
 // endpoint GetUserStatsForGame and returns a PlayerSummary object
-func (sc *SteamClient) GetUserStatsForGame(steamID string) UserStatsForGame {
+func (sc *SteamClient) GetUserStatsForGame(steamID string) (UserStatsForGame, error) {
 
 	url :=
 		"https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=730&key=" +
 			sc.config.SteamAPIKey + "&steamid=" + steamID
 
 	data := userStatsForGameData{}
-	getJSON(url, &data)
+
+	if err := getJSON(url, &data); err != nil {
+		return UserStatsForGame{}, err
+	}
 
 	//Create to maps for stats and archivements, so the search will be quicker afterwards
 	statsMap := make(map[string]string)
@@ -343,6 +346,6 @@ func (sc *SteamClient) GetUserStatsForGame(steamID string) UserStatsForGame {
 		Archivements: GameArchievements{
 			//TODO implement achievements, if ever needed
 		},
-	}
+	}, nil
 
 }

@@ -31,8 +31,10 @@ func (sc SteamClient) GetPlayers() []PlayerInfo {
 	players := []PlayerInfo{}
 
 	for _, v := range sc.config.SteamIDs {
-		log.Println("Fetching data for ID:", v)
-		players = append(players, sc.getPlayerInfo(v))
+		log.Debugf("Fetching data for ID: %v", v)
+		if pi, err := sc.getPlayerInfo(v); err != nil {
+			players = append(players, pi)
+		}
 	}
 	return players
 }

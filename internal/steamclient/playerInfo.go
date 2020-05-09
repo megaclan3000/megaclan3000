@@ -1,9 +1,5 @@
 package steamclient
 
-import (
-	log "github.com/sirupsen/logrus"
-)
-
 // PlayerInfo contains the information to be shown of a given player
 type PlayerInfo struct {
 	PlayerSummary       PlayerSummary
@@ -12,14 +8,22 @@ type PlayerInfo struct {
 	PlayerHistory       PlayerHistory
 }
 
-func (sc *SteamClient) getPlayerInfo(steamID string) PlayerInfo {
+func (sc *SteamClient) getPlayerInfo(steamID string) (PlayerInfo, error) {
 
 	info := PlayerInfo{}
+	var err error
 
-	info.PlayerSummary = sc.GetPlayerSummary(steamID)
-	info.UserStatsForGame = sc.GetUserStatsForGame(steamID)
-	log.Println("calculated", info.UserStatsForGame.Extra)
-	info.RecentlyPlayedGames = sc.GetRecentlyPlayedGames(steamID)
+	if info.PlayerSummary, err = sc.GetPlayerSummary(steamID); err != nil {
+		return info, err
+	}
 
-	return info
+	if info.UserStatsForGame, err = sc.GetUserStatsForGame(steamID); err != nil {
+		return info, err
+	}
+
+	if info.RecentlyPlayedGames, err = sc.GetRecentlyPlayedGames(steamID); err != nil {
+		return info, err
+	}
+
+	return info, nil
 }
