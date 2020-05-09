@@ -15,6 +15,20 @@ func (ds *DataStorage) GetUserStatsForGame(steamID string) (steamclient.UserStat
 	usfg := steamclient.UserStatsForGame{}
 	var err error
 
+	if rows, err := ds.statements["select_player_extra"].Query(steamID); err == nil {
+		for rows.Next() {
+			rows.Scan(
+				&usfg.SteamID,
+				&usfg.Extra.TotalKD,
+				&usfg.Extra.LastMatchKD,
+				&usfg.Extra.HitRatio,
+				&usfg.Extra.PlayedHours,
+			)
+		}
+	} else {
+		return usfg, err
+	}
+
 	if rows, err := ds.statements["select_player_stats"].Query(steamID); err == nil {
 		for rows.Next() {
 			rows.Scan(
@@ -399,6 +413,19 @@ func (ds *DataStorage) UpdateUserStatsForGame(stats steamclient.UserStatsForGame
 
 	rows, err := result.RowsAffected()
 	log.Debugf("Added %v to player_stats table. %v rows affected", stats.SteamID, rows)
+
+	if result, err = ds.statements["update_player_extra"].Exec(
+		stats.SteamID,
+		stats.Extra.TotalKD,
+		stats.Extra.LastMatchKD,
+		stats.Extra.HitRatio,
+		stats.Extra.PlayedHours,
+	); err != nil {
+		return err
+	}
+
+	rows, err = result.RowsAffected()
+	log.Debugf("Added %v to player_extra table. %v rows affected", stats.SteamID, rows)
 
 	return err
 

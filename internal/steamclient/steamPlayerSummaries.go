@@ -68,12 +68,12 @@ type PlayerSummary struct {
 
 	// 0 - Offline
 	// 1 - Online
-	// 2 -Busy
+	// 2 - Busy
 	// 3 - Away
 	// 4 - Snooze
 	// 5 - looking to trade
 	// 6 - looking to play.
-	// The user's current status.  If the player's profile is private,
+	// The user's current status. If the player's profile is private,
 	// this will always be "0", except if the user has set
 	// their status to looking to trade or looking to play,
 	// because a bug makes those status appear even if the
@@ -111,20 +111,21 @@ type PlayerSummary struct {
 
 	// This value will be removed in a future update (see loccityid)
 	Cityid string
+
 	// If the user is currently in-game, this will be the name
 	// of the game they are playing. This may be the name of a
 	// non-Steam game shortcut.
-
 	Gameextrainfo string
+
 	// If the user is currently in-game, this value will be
 	// returned and set to the gameid of that game.
-
 	Gameid string
+
 	// The ip and port of the game server the user is currently
 	// playing on, if they are playing on-line in a game using
 	// Steam matchmaking. Otherwise will be set to "0.0.0.0:0".
-
 	Gameserverip string
+
 	// An internal code indicating the user's city of
 	// residence. A future update will provide this data in a
 	// more useful way.  steam_location gem/package makes
@@ -162,26 +163,26 @@ func (sc *SteamClient) GetPlayerSummary(steamID string) (PlayerSummary, error) {
 	}
 
 	return PlayerSummary{
+		Lastlogoff:               strconv.Itoa(data.Response.Players[0].Lastlogoff),
+		Communityvisibilitystate: strconv.Itoa(data.Response.Players[0].Communityvisibilitystate),
+		Personastate:             strconv.Itoa(data.Response.Players[0].Personastate),
+		Profilestate:             strconv.Itoa(data.Response.Players[0].Profilestate),
+		Timecreated:              strconv.Itoa(data.Response.Players[0].Timecreated),
 		Avatar:                   data.Response.Players[0].Avatar,
 		Avatarfull:               data.Response.Players[0].Avatarfull,
 		Avatarmedium:             data.Response.Players[0].Avatarmedium,
 		Cityid:                   data.Response.Players[0].Cityid,
 		Commentpermission:        data.Response.Players[0].Commentpermission,
-		Communityvisibilitystate: strconv.Itoa(data.Response.Players[0].Communityvisibilitystate),
 		Gameextrainfo:            data.Response.Players[0].Gameextrainfo,
 		Gameid:                   data.Response.Players[0].Gameid,
 		Gameserverip:             data.Response.Players[0].Gameserverip,
-		Lastlogoff:               strconv.Itoa(data.Response.Players[0].Lastlogoff),
 		Loccityid:                data.Response.Players[0].Loccityid,
 		Loccountrycode:           data.Response.Players[0].Loccountrycode,
 		Locstatecode:             data.Response.Players[0].Locstatecode,
 		Personaname:              data.Response.Players[0].Personaname,
-		Personastate:             strconv.Itoa(data.Response.Players[0].Personastate),
 		Primaryclanid:            data.Response.Players[0].Primaryclanid,
-		Profilestate:             strconv.Itoa(data.Response.Players[0].Profilestate),
 		Profileurl:               data.Response.Players[0].Profileurl,
 		Realname:                 data.Response.Players[0].Realname,
 		SteamID:                  data.Response.Players[0].Steamid,
-		Timecreated:              strconv.Itoa(data.Response.Players[0].Timecreated),
 	}, nil
 }
