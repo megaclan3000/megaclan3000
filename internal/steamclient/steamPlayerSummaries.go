@@ -1,6 +1,7 @@
 package steamclient
 
 import (
+	"errors"
 	"strconv"
 )
 
@@ -154,31 +155,33 @@ func (sc *SteamClient) GetPlayerSummary(steamID string) (PlayerSummary, error) {
 	url := "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=" + sc.config.SteamAPIKey + "&steamids=" + steamID
 
 	var err error
-	ps := PlayerSummary{}
 
 	data := playerSummariesData{}
 	if getJSON(url, &data); err != nil {
-		ps.Avatar = data.Response.Players[0].Avatar
-		ps.Avatarfull = data.Response.Players[0].Avatarfull
-		ps.Avatarmedium = data.Response.Players[0].Avatarmedium
-		ps.Cityid = data.Response.Players[0].Cityid
-		ps.Commentpermission = data.Response.Players[0].Commentpermission
-		ps.Communityvisibilitystate = strconv.Itoa(data.Response.Players[0].Communityvisibilitystate)
-		ps.Gameextrainfo = data.Response.Players[0].Gameextrainfo
-		ps.Gameid = data.Response.Players[0].Gameid
-		ps.Gameserverip = data.Response.Players[0].Gameserverip
-		ps.Lastlogoff = strconv.Itoa(data.Response.Players[0].Lastlogoff)
-		ps.Loccityid = data.Response.Players[0].Loccityid
-		ps.Loccountrycode = data.Response.Players[0].Loccountrycode
-		ps.Locstatecode = data.Response.Players[0].Locstatecode
-		ps.Personaname = data.Response.Players[0].Personaname
-		ps.Personastate = strconv.Itoa(data.Response.Players[0].Personastate)
-		ps.Primaryclanid = data.Response.Players[0].Primaryclanid
-		ps.Profilestate = strconv.Itoa(data.Response.Players[0].Profilestate)
-		ps.Profileurl = data.Response.Players[0].Profileurl
-		ps.Realname = data.Response.Players[0].Realname
-		ps.SteamID = data.Response.Players[0].Steamid
-		ps.Timecreated = strconv.Itoa(data.Response.Players[0].Timecreated)
+		return PlayerSummary{}, errors.New("Unable to get PlayerSummary for: " + steamID)
 	}
-	return ps, err
+
+	return PlayerSummary{
+		Avatar:                   data.Response.Players[0].Avatar,
+		Avatarfull:               data.Response.Players[0].Avatarfull,
+		Avatarmedium:             data.Response.Players[0].Avatarmedium,
+		Cityid:                   data.Response.Players[0].Cityid,
+		Commentpermission:        data.Response.Players[0].Commentpermission,
+		Communityvisibilitystate: strconv.Itoa(data.Response.Players[0].Communityvisibilitystate),
+		Gameextrainfo:            data.Response.Players[0].Gameextrainfo,
+		Gameid:                   data.Response.Players[0].Gameid,
+		Gameserverip:             data.Response.Players[0].Gameserverip,
+		Lastlogoff:               strconv.Itoa(data.Response.Players[0].Lastlogoff),
+		Loccityid:                data.Response.Players[0].Loccityid,
+		Loccountrycode:           data.Response.Players[0].Loccountrycode,
+		Locstatecode:             data.Response.Players[0].Locstatecode,
+		Personaname:              data.Response.Players[0].Personaname,
+		Personastate:             strconv.Itoa(data.Response.Players[0].Personastate),
+		Primaryclanid:            data.Response.Players[0].Primaryclanid,
+		Profilestate:             strconv.Itoa(data.Response.Players[0].Profilestate),
+		Profileurl:               data.Response.Players[0].Profileurl,
+		Realname:                 data.Response.Players[0].Realname,
+		SteamID:                  data.Response.Players[0].Steamid,
+		Timecreated:              strconv.Itoa(data.Response.Players[0].Timecreated),
+	}, nil
 }
