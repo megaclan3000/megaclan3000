@@ -80,6 +80,10 @@ func NewDataStorage(path string) (*DataStorage, error) {
 		log.Fatal("Failed to create table player_history", err)
 	}
 
+	if _, err = storage.statements["create_player_extra"].Exec(); err != nil {
+		log.Fatal("Failed to create table player_extra", err)
+	}
+
 	// Prepare remaining statements
 	if err = storage.getUpdatePreparedstatements(); err != nil {
 		log.Fatal("Failed to prepare UPDATE statements", err)

@@ -212,6 +212,17 @@ func (ds *DataStorage) getCreatePreparedstatements() error {
 		return err
 	}
 
+	ds.statements["create_player_extra"], err = ds.db.Prepare(
+		`CREATE TABLE IF NOT EXISTS player_extra (
+			steamid TEXT PRIMARY KEY,
+			total_kd TEXT,
+			last_match_kd TEXT,
+			hit_ratio TEXT,
+			played_hours TEXT)`)
+	if err != nil {
+		return err
+	}
+
 	ds.statements["create_recently_played"], err = ds.db.Prepare(
 		`CREATE TABLE IF NOT EXISTS recently_played (
 			steamid TEXT PRIMARY KEY,
@@ -248,6 +259,20 @@ func (ds *DataStorage) getUpdatePreparedstatements() error {
 
 	if err != nil {
 		log.Fatal("Failed to prepare statement: update_recently_played")
+		return err
+	}
+
+	// - update player_extra
+	ds.statements["update_player_extra"], err = ds.db.Prepare(
+		`INSERT OR REPLACE INTO player_extra(
+				steamid,
+				total_kd,
+				last_match_kd,
+				hit_ratio,
+				played_hours)
+			VALUES ( ?,?,?,?,?) `)
+	if err != nil {
+		log.Fatal("Failed to prepare statement: update_player_extra")
 		return err
 	}
 
@@ -483,9 +508,17 @@ func (ds *DataStorage) getSelectPreparedstatements() error {
 	// Prepare all statements
 	var err error
 
-	// - insert histor	// - query player_summary for player
+	// - query player_summary for player
 	if ds.statements["select_player_summary"], err = ds.db.Prepare(`
 			SELECT * FROM player_summary
+			WHERE steamid = ?
+			LIMIT 1`); err != nil {
+		return err
+	}
+
+	// - query player_extra for player
+	if ds.statements["select_player_extra"], err = ds.db.Prepare(`
+			SELECT * FROM player_extra
 			WHERE steamid = ?
 			LIMIT 1`); err != nil {
 		return err
