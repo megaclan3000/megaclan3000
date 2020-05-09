@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"html/template"
 
 	"net/http"
@@ -18,11 +19,17 @@ var datastorage *database.DataStorage
 var steamClient *steamclient.SteamClient
 
 func main() {
+
+	// -verbose flag to set logging level to DebugLevel
+	flagVerbose := flag.Bool("verbose", false, "Enable verbose output")
+	flag.Parse()
+
+	if *flagVerbose {
+		log.SetLevel(log.DebugLevel)
+	}
+
 	// Output to stdout instead of the default stderr
 	// log.SetOutput(os.Stdout)
-
-	// Only log the warning severity or above.
-	// log.SetLevel(log.WarnLevel)
 
 	Formatter := new(log.TextFormatter)
 	Formatter.TimestampFormat = "02-01-2006 15:04:05"
