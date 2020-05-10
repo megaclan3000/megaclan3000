@@ -493,9 +493,10 @@ func (ds *DataStorage) getUpdatePreparedstatements() error {
 	}
 	return err
 }
+
 func (ds *DataStorage) getInsertPreparedstatements() error {
 	var err error
-	ds.statements["insert_history"], err = ds.db.Prepare(
+	ds.statements["insert_player_history"], err = ds.db.Prepare(
 		`INSERT INTO player_history (
 			steamid,
 			time,
