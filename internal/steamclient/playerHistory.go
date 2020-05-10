@@ -4,8 +4,13 @@ package steamclient
 // Stats values that need to be saved over time, are added to this table and
 // object.
 type PlayerHistory struct {
-	//TODO implement
-	SteamID    int
-	Time       int
-	TotalKills int
+	SteamID string
+	Data    []PlayerHistoryEntry
+}
+
+type PlayerHistoryEntry struct {
+	Time    int
+	TotalKD string
+	//ADR string
+	//TODO add otheres here, like ADR
 }
