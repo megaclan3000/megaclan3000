@@ -102,7 +102,7 @@ func updateData(minutes int) {
 			}
 
 			// if part threshold, update
-			log.Println("updatetime", time.Now().Sub(lastUpdateTime).Minutes)
+			log.Println("updatetime", time.Now().Sub(lastUpdateTime).Minutes())
 			if time.Now().Sub(lastUpdateTime).Minutes() > 5 {
 				log.Infof("Updating history for %v (%v)", v.PlayerSummary.Personaname, v.PlayerSummary.SteamID)
 				err = datastorage.UpdatePlayerHistory(v)

@@ -22,15 +22,15 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 				SteamID: "123456789",
 				Data: []steamclient.PlayerHistoryEntry{
 					{
-						Time:    3000,
+						Time:    "3000",
 						TotalKD: "0.3",
 					},
 					{
-						Time:    2000,
+						Time:    "2000",
 						TotalKD: "0.2",
 					},
 					{
-						Time:    1000,
+						Time:    "1000",
 						TotalKD: "0.1",
 					},
 				},
@@ -49,31 +49,6 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 			}
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("DataStorage.GetPlayerHistory() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestDataStorage_GetPlayerHistoryLatestTime(t *testing.T) {
-	tests := []struct {
-		name    string
-		steamID string
-		want    int
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-
-			prepareDB()
-			got, err := db.GetPlayerHistoryLatestTime(tt.steamID)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("DataStorage.GetPlayerHistoryLatestTime() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if got != tt.want {
-				t.Errorf("DataStorage.GetPlayerHistoryLatestTime() = %v, want %v", got, tt.want)
 			}
 		})
 	}
