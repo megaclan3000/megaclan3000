@@ -58,32 +58,17 @@
 {{template "weapons-chart.html" .}}
 {{template "maps-chart.html" .}}
 
-<h3>kills over time</h1>
+<h3>TotalKD over time</h1>
 <table>
 	<tr>
 		<th>Time</th>
 		<th>Kills</th>
 	</tr>
-	{{range index .PlayerHistory.Data "total_kills"}}
+	{{range .PlayerHistory.Data }}
 	<tr>
-		<td>.Time</td>
-		<td>.Value</td>
+		<td>{{.Time}}</td>
+		<td>{{.TotalKD}}</td>
 	</tr>
 	{{end}}
 </table>
 
-<h3>ADR over time</h1>
-<table>
-	<tr>
-		<th>Time</th>
-		<th>ADR</th>
-	</tr>
-	{{range index .PlayerHistory.Data "adr"}}
-	<tr>
-		<td>.Time</td>
-		<td>.Value</td>
-	</tr>
-	{{end}}
-</table>
-
-{{template "footer.html"}}
