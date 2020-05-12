@@ -1,3 +1,19 @@
+- steamid: 000111000
+  time: 500
+  total_kills: 0.05
+
 - steamid: 123456789
-  time: 1
-  total_kills: 2
+  time: 1000
+  total_kills: 0.1
+
+- steamid: 123456789
+  time: 3000
+  total_kills: 0.3
+
+- steamid: 123456789
+  time: 2000
+  total_kills: 0.2
+
+- steamid: 000111000
+  time: 4000
+  total_kills: 0.4

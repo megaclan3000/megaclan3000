@@ -81,6 +81,7 @@ func main() {
 }
 
 func updateData(minutes int) {
+	var err error
 	for {
 
 		// Get PlayerInfo for all players
@@ -88,13 +89,30 @@ func updateData(minutes int) {
 
 		// Save to db
 		for _, v := range players {
+
 			log.Infof("Updating data for %v (%v)", v.PlayerSummary.Personaname, v.PlayerSummary.SteamID)
-			if err := datastorage.UpdatePlayerInfo(v); err != nil {
+			if err = datastorage.UpdatePlayerInfo(v); err != nil {
 				log.Fatal(err)
+			}
+
+			// get latest timestamp
+			var lastUpdateTime time.Time
+			if lastUpdateTime, err = datastorage.GetPlayerHistoryLatestTime(v.PlayerSummary.SteamID); err != nil {
+				log.Fatal(err)
+			}
+
+			// if part threshold, update
+			log.Println("updatetime", time.Now().Sub(lastUpdateTime).Minutes())
+			if time.Now().Sub(lastUpdateTime).Minutes() > 5 {
+				log.Infof("Updating history for %v (%v)", v.PlayerSummary.Personaname, v.PlayerSummary.SteamID)
+				err = datastorage.UpdatePlayerHistory(v)
+				if err != nil {
+					log.Fatal(err)
+				}
 			}
 		}
 
-		// Sleep for a predefined duration (in minutes), then fetch again
+		// Sleep for a predefined duration (in minutes)
 		time.Sleep(time.Duration(minutes) * time.Minute)
 	}
 }

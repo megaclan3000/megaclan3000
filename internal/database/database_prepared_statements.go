@@ -9,18 +9,18 @@ func (ds *DataStorage) getCreatePreparedstatements() error {
 
 	ds.statements["create_player_summary"], err = ds.db.Prepare(
 		`CREATE TABLE IF NOT EXISTS player_summary (
-			steamid INTEGER PRIMARY KEY,
-			communityvisibilitystate INTEGER,
-			profilestate INTEGER,
+			steamid TEXT PRIMARY KEY,
+			communityvisibilitystate TEXT,
+			profilestate TEXT,
 			personaname TEXT,
 			profileurl TEXT,
 			avatar TEXT,
 			avatarmedium TEXT,
 			avatarfull TEXT,
-			lastlogoff INTEGER,
-			personastate INTEGER,
-			primaryclanid INTEGER,
-			timecreated INTEGER)`)
+			lastlogoff TEXT,
+			personastate TEXT,
+			primaryclanid TEXT,
+			timecreated TEXT)`)
 
 	if err != nil {
 		return err
@@ -238,9 +238,9 @@ func (ds *DataStorage) getCreatePreparedstatements() error {
 	// TODO add all fields for which we want historical info
 	ds.statements["create_player_history"], err = ds.db.Prepare(
 		`CREATE TABLE IF NOT EXISTS player_history (
-			steamid INTEGER,
-			time INTEGER,
-			total_kills INTEGER)`)
+			steamid TEXT,
+			time TEXT,
+			total_kills TEXT)`)
 
 	return err
 }
@@ -493,14 +493,15 @@ func (ds *DataStorage) getUpdatePreparedstatements() error {
 	}
 	return err
 }
+
 func (ds *DataStorage) getInsertPreparedstatements() error {
 	var err error
-	ds.statements["insert_history"], err = ds.db.Prepare(
+	ds.statements["insert_player_history"], err = ds.db.Prepare(
 		`INSERT INTO player_history (
 			steamid,
 			time,
 			total_kills
-		) VALUES (?, ?, ?)`)
+		) VALUES (?, datetime('now'), ?)`)
 	return err
 }
 
@@ -538,15 +539,30 @@ func (ds *DataStorage) getSelectPreparedstatements() error {
 			LIMIT 1`); err != nil {
 		return err
 	}
-	// - query history for last n entries of player
+
+	// Statements for player_history
+
+	// Query last 10 entries for steamID
 	if ds.statements["select_player_history"], err = ds.db.Prepare(`
 			SELECT * FROM player_history
 			WHERE steamid = ?
-			ORDER BY time DESC`); err != nil {
+			ORDER BY time DESC
+			LIMIT 10`); err != nil {
 		return err
 	}
 
-	// - insert histor	// - query player_summary for player
+	// Get latest timestamp for steamID
+	if ds.statements["select_player_history_latest_time"], err = ds.db.Prepare(`
+			SELECT time FROM player_history
+			WHERE steamid = ?
+			ORDER BY time DESC
+			LIMIT 1`); err != nil {
+		return err
+	}
+
+	// Other statements
+
+	// Get all steamIDs known to player_stats table
 	if ds.statements["select_all_player_ids"], err = ds.db.Prepare(`
 			SELECT steamid FROM player_stats`); err != nil {
 		return err
