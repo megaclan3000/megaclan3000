@@ -9,7 +9,7 @@ type PlayerHistory struct {
 }
 
 type PlayerHistoryEntry struct {
-	Time    int
+	Time    string
 	TotalKD string
 	//ADR string
 	//TODO add otheres here, like ADR
