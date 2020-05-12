@@ -501,7 +501,7 @@ func (ds *DataStorage) getInsertPreparedstatements() error {
 			steamid,
 			time,
 			total_kills
-		) VALUES (?, ?, ?)`)
+		) VALUES (?, datetime('now'), ?)`)
 	return err
 }
 
