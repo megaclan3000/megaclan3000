@@ -1,0 +1,7 @@
+# Add 'label1' to any changes within 'example' folder or any subfolders
+frontend:
+  - templates/**/*
+
+# Add 'test' label to any change to *.spec.js files within the source dir
+test:
+  - ./**/*_test.go
