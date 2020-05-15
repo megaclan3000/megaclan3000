@@ -10,6 +10,9 @@ Our custom CS:GO stats page: https://megaclan3000.de
 [![Test Coverage](https://api.codeclimate.com/v1/badges/994620bcbe906b069ef0/test_coverage)](https://codeclimate.com/github/pinpox/megaclan3000/test_coverage)
 ![GitHub issues](https://img.shields.io/github/issues/pinpox/megaclan3000?style=plastic)
 
+![Labeler](https://github.com/pinpox/megaclan3000/workflows/Labeler/badge.svg)
+![Go](https://github.com/pinpox/megaclan3000/workflows/Go/badge.svg)
+
 
 ![](https://i.imgur.com/tQzdzAd.png)
 
