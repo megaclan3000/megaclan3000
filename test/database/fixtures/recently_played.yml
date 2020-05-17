@@ -4,3 +4,10 @@
   playtime_windows_forever: 3
   playtime_mac_forever: 4
   playtime_linux_forever: 5
+
+- steamid: 40
+  playtime_2weeks:          35
+  playtime_forever:         36
+  playtime_linux_forever:   37
+  playtime_mac_forever:     38
+  playtime_windows_forever: 39
