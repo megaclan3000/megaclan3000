@@ -2,7 +2,6 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
 	"time"
 
 	"github.com/pinpox/megaclan3000/internal/steamclient"
@@ -41,7 +40,6 @@ func (ds *DataStorage) GetPlayerHistory(steamID string) (steamclient.PlayerHisto
 			ph.Data = append(ph.Data, entry)
 		}
 	}
-	fmt.Println("got totalKills:", ph.Data[0].TotalKills)
 	return ph, err
 }
 
