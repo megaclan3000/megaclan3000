@@ -1,3 +1,21 @@
+- steamid: "all_columns"
+  hit_ratio:                     "0"
+  last_match_adr:                "1"
+  last_match_contribution_score: "2"
+  LastMatchDamage:               "3"
+  last_match_deaths:             "4"
+  last_match_kd:                 "5"
+  last_match_kills:              "6"
+  last_match_rounds:             "7"
+  playtime_2_weeks:              "8"
+  time:                          "9"
+  total_adr:                     "10"
+  total_kd:                      "11"
+  total_kills:                   "12"
+  total_kills_headshot:          "13"
+  total_shots_fired:             "14"
+  total_shots_hit:               "15"
+
 - steamid:                       1
   time:                          100
   total_kills:                   101
@@ -141,21 +159,3 @@
   total_kills_headshot:          71
   total_shots_fired:             72
   total_shots_hit:               73
-
-- steamid: "all_player_history_fields"
-  hit_ratio:                     "0"
-  last_match_adr:                "1"
-  last_match_contribution_score: "2"
-  LastMatchDamage:               "3"
-  last_match_deaths:             "4"
-  last_match_kd:                 "5"
-  last_match_kills:              "6"
-  last_match_rounds:             "7"
-  playtime_2_weeks:              "8"
-  time:                          "9"
-  total_adr:                     "10"
-  total_kd:                      "11"
-  total_kills:                   "12"
-  total_kills_headshot:          "13"
-  total_shots_fired:             "14"
-  total_shots_hit:               "15"

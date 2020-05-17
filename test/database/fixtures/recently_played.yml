@@ -1,3 +1,14 @@
+- steamid:                  "all_columns"
+  appid:                    "0"
+  img_icon_url:             "1"
+  img_logo_url:             "2"
+  name:                     "3"
+  playtime_2_weeks:         "4"
+  playtime_forever:         "5"
+  playtime_linux_forever:   "6"
+  playtime_mac_forever:     "7"
+  playtime_windows_forever: "8"
+
 - steamid: 123456789
   playtime_2weeks: 1
   playtime_forever: 2
@@ -11,14 +22,3 @@
   playtime_linux_forever:   37
   playtime_mac_forever:     38
   playtime_windows_forever: 39
-
-- steamid:                  "all_recently_played_fields"
-  appid:                    "0"
-  img_icon_url:             "1"
-  img_logo_url:             "2"
-  name:                     "3"
-  playtime_2_weeks:         "4"
-  playtime_forever:         "5"
-  playtime_linux_forever:   "6"
-  playtime_mac_forever:     "7"
-  playtime_windows_forever: "8"
