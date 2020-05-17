@@ -1,3 +1,27 @@
+- steamid: "info0"
+  communityvisibilitystate: "1"
+  profilestate: "2"
+  personaname:              "3"
+  profileurl:               "4"
+  avatar:                   "5"
+  avatarmedium:             "6"
+  avatarfull:               "7"
+  lastlogoff:               "8"
+  personastate:             "9"
+  primaryclanid:            "10"
+  timecreated:              "11"
+  # TODO fix these missing fields!
+  # commentpermission:        "13"
+  # cityid:                   "12"
+  # gameextrainfo:            "14"
+  # gameid:                  "15"
+  # gameserverip:             "16"
+  # loccityid:                "17"
+  # loccountrycode:           "18"
+  # locstatecode:             "19"
+  # realname:                 "20"
+
+
 - steamid: 123456789
   communityvisibilitystate: 1
   profilestate: 2
@@ -11,8 +35,6 @@
   primaryclanid: 10
   timecreated: 11
 
-
-
 - steamid: 20
   avatar:                   5
   avatarfull:               7
@@ -25,3 +47,27 @@
   profilestate:             2
   profileurl:               4
   timecreated:              11
+
+
+
+- steamid:                  "all_player_summary_fields"
+  avatar:                   "0"
+  avatarfull:               "1"
+  avatarmedium:             "2"
+  cityid:                   "3"
+  commentpermission:        "4"
+  communityvisibilitystate: "5"
+  gameextrainfo:            "6"
+  gameid:                   "7"
+  gameserverip:             "8"
+  lastlogoff:               "9"
+  loccityid:                "10"
+  loccountrycode:           "11"
+  locstatecode:             "12"
+  personaname:              "13"
+  personastate:             "14"
+  primaryclanid:            "15"
+  profilestate:             "16"
+  profileurl:               "17"
+  realname:                 "18"
+  timecreated:              "19"
