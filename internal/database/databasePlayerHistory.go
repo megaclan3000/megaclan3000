@@ -21,8 +21,8 @@ func (ds *DataStorage) GetPlayerHistory(steamID string) (steamclient.PlayerHisto
 			rows.Scan(
 				&ph.SteamID,
 				&entry.Time,
-				&entry.TotalADR,
 				&entry.TotalKills,
+				&entry.TotalADR,
 				&entry.TotalShotsHit,
 				&entry.TotalShotsFired,
 				&entry.TotalKillsHeadshot,
