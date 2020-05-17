@@ -66,6 +66,12 @@ type GameExtras struct {
 
 	// Total played hours
 	PlayedHours string
+
+	// Total Average damage per round
+	TotalADR string
+
+	// Last match average damage per round
+	LastMatchADR string
 }
 
 // GetUserStatsForGame fetches information for the given steamID from the API

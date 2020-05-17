@@ -13,6 +13,7 @@ type PlayerHistory struct {
 }
 
 type PlayerHistoryEntry struct {
+	// The time when the entry was saved
 	Time string
 
 	// Total kill/death ratio
@@ -52,11 +53,11 @@ type PlayerHistoryEntry struct {
 	LastMatchRounds string
 
 	// Las match kill/death ratio
-	LastMatchKd string
+	LastMatchKD string
 
 	// Total hit ratio
 	HitRatio string
 
 	// Platime in the last 2 weeks
-	Playtime2weeks string
+	Playtime2Weeks string
 }
