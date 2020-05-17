@@ -39,6 +39,24 @@ func prepareDB() {
 }
 
 func TestDataStorage_GetPlayerInfoBySteamID(t *testing.T) {
+
+	summary, err := db.GetPlayerSummary("all_columns")
+	if err != nil {
+		panic(err)
+	}
+	stats, err := db.GetUserStatsForGame("all_columns")
+	if err != nil {
+		panic(err)
+	}
+	recent, err := db.GetRecentlyPlayedGames("all_columns")
+	if err != nil {
+		panic(err)
+	}
+	history, err := db.GetPlayerHistory("all_columns")
+	if err != nil {
+		panic(err)
+	}
+
 	tests := []struct {
 		name    string
 		steamID string
@@ -46,113 +64,26 @@ func TestDataStorage_GetPlayerInfoBySteamID(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "Retrieve PlayerInfo from fixtures (ID: playerInfo0 )",
-			steamID: "playerInfo0",
+			name:    "Retrieve PlayerInfo from fixtures (ID: all_columns)",
+			steamID: "all_columns",
 			want: steamclient.PlayerInfo{
-				PlayerSummary: steamclient.PlayerSummary{
-					Avatar:                   "1",
-					Avatarfull:               "2",
-					Avatarmedium:             "3",
-					Cityid:                   "4",
-					Commentpermission:        "5",
-					Communityvisibilitystate: "6",
-					Gameextrainfo:            "7",
-					Gameid:                   "8",
-					Gameserverip:             "9",
-					Lastlogoff:               "10",
-					Loccityid:                "11",
-					Loccountrycode:           "12",
-					Locstatecode:             "13",
-					Personaname:              "14",
-					Personastate:             "15",
-					Primaryclanid:            "16",
-					Profilestate:             "17",
-					Profileurl:               "18",
-					Realname:                 "19",
-					SteamID:                  "20",
-					Timecreated:              "21",
-				},
-				UserStatsForGame: steamclient.UserStatsForGame{
-					Archivements: steamclient.GameArchievements{},
-					Extra: steamclient.GameExtras{
-						HitRatio:     "22",
-						LastMatchADR: "23",
-						LastMatchKD:  "24",
-						PlayedHours:  "25",
-						TotalADR:     "26",
-						TotalKD:      "27",
-					},
-					GameName: "28",
-					Stats: steamclient.GameStats{
-						// TODO Just testing some of the stats for now, maybe add more
-						TotalWinsMapDeLake:       "29",
-						TotalWinsMapDeNuke:       "29",
-						TotalWinsMapDeSafehouse:  "29",
-						TotalWinsMapDeShorttrain: "29",
-						TotalWinsMapDeStmarc:     "29",
-						TotalWinsMapDeSugarcane:  "29",
-						TotalWinsMapDeTrain:      "29",
-						TotalWinsMapDeVertigo:    "29",
-						TotalWinsPistolround:     "29",
-					},
-					SteamID: "30",
-				},
-				RecentlyPlayedGames: steamclient.RecentlyPlayedGames{
-					Appid:                  "31",
-					ImgIconURL:             "32",
-					ImgLogoURL:             "33",
-					Name:                   "34",
-					Playtime2Weeks:         "35",
-					PlaytimeForever:        "36",
-					PlaytimeLinuxForever:   "37",
-					PlaytimeMacForever:     "38",
-					PlaytimeWindowsForever: "39",
-					SteamID:                "40",
-				},
-				PlayerHistory: steamclient.PlayerHistory{
-
-					SteamID: "41",
-
-					Data: []steamclient.PlayerHistoryEntry{
-						{
-							HitRatio:                   "42",
-							LastMatchADR:               "43",
-							LastMatchContributionScore: "44",
-							LastMatchDamage:            "45",
-							LastMatchDeaths:            "46",
-							LastMatchKD:                "47",
-							LastMatchKills:             "48",
-							LastMatchRounds:            "49",
-							Playtime2Weeks:             "50",
-							Time:                       "51",
-							TotalADR:                   "52",
-							TotalKD:                    "53",
-							TotalKills:                 "54",
-							TotalKillsHeadshot:         "55",
-							TotalShotsFired:            "56",
-							TotalShotsHit:              "57",
-						},
-						{
-							HitRatio:                   "58",
-							LastMatchADR:               "59",
-							LastMatchContributionScore: "60",
-							LastMatchDamage:            "61",
-							LastMatchDeaths:            "62",
-							LastMatchKD:                "63",
-							LastMatchKills:             "64",
-							LastMatchRounds:            "65",
-							Playtime2Weeks:             "66",
-							Time:                       "67",
-							TotalADR:                   "68",
-							TotalKD:                    "69",
-							TotalKills:                 "70",
-							TotalKillsHeadshot:         "71",
-							TotalShotsFired:            "72",
-							TotalShotsHit:              "73",
-						},
-					},
-				},
+				PlayerSummary:       summary,
+				UserStatsForGame:    stats,
+				RecentlyPlayedGames: recent,
+				PlayerHistory:       history,
 			},
+			wantErr: false,
+		},
+		{
+			name:    "Retrieve PlayerInfo from fixtures (ID: no_exist)",
+			steamID: "all_columns",
+			want: steamclient.PlayerInfo{
+				PlayerSummary:       steamclient.PlayerSummary{},
+				UserStatsForGame:    steamclient.UserStatsForGame{},
+				RecentlyPlayedGames: steamclient.RecentlyPlayedGames{},
+				PlayerHistory:       steamclient.PlayerHistory{},
+			},
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
@@ -166,9 +97,6 @@ func TestDataStorage_GetPlayerInfoBySteamID(t *testing.T) {
 			if diff := cmp.Diff(tt.want, got); diff != "" {
 				t.Errorf("DataStorage.GetPlayerInfoBySteamID() mismatch (-want +got):\n%s", diff)
 			}
-			// if !reflect.DeepEqual(got, tt.want) {
-			// 	t.Errorf("DataStorage.GetPlayerInfoBySteamID() = %v, want %v", got, tt.want)
-			// }
 		})
 	}
 }
