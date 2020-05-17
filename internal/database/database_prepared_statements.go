@@ -239,9 +239,8 @@ func (ds *DataStorage) getCreatePreparedstatements() error {
 		`CREATE TABLE IF NOT EXISTS player_history (
 			steamid TEXT,
 			time TEXT,
-			adr TEXT,
 			total_kills TEXT,
-			total_kills_headshot TEXT,
+			total_adr TEXT,
 			total_shots_hit TEXT,
 			total_shots_fired TEXT,
 			total_kills_headshot TEXT,
@@ -252,6 +251,7 @@ func (ds *DataStorage) getCreatePreparedstatements() error {
 			last_match_kills TEXT,
 			last_match_rounds TEXT,
 			last_match_kd TEXT,
+			last_match_adr TEXT,
 			hit_ratio TEXT,
 			playtime_2weeks TEXT)`)
 
@@ -513,9 +513,8 @@ func (ds *DataStorage) getInsertPreparedstatements() error {
 		`INSERT INTO player_history (
 			steamid,
 			time,
-			total_kills
+			total_kills,
 			total_adr,
-			total_kills_headshot,
 			total_shots_hit,
 			total_shots_fired,
 			total_kills_headshot,
@@ -529,7 +528,7 @@ func (ds *DataStorage) getInsertPreparedstatements() error {
 			last_match_adr,
 			hit_ratio,
 			playtime_2weeks)
-		VALUES (?, datetime('now'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+		VALUES (?, datetime('now'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
 	return err
 }
 
@@ -574,7 +573,7 @@ func (ds *DataStorage) getSelectPreparedstatements() error {
 	if ds.statements["select_player_history"], err = ds.db.Prepare(`
 			SELECT * FROM player_history
 			WHERE steamid = ?
-			ORDER BY time DESC
+			ORDER BY time
 			LIMIT 10`); err != nil {
 		return err
 	}
