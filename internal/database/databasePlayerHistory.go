@@ -21,7 +21,21 @@ func (ds *DataStorage) GetPlayerHistory(steamID string) (steamclient.PlayerHisto
 			rows.Scan(
 				&ph.SteamID,
 				&entry.Time,
+				&entry.TotalKills,
+				&entry.TotalADR,
+				&entry.TotalShotsHit,
+				&entry.TotalShotsFired,
+				&entry.TotalKillsHeadshot,
 				&entry.TotalKD,
+				&entry.LastMatchContributionScore,
+				&entry.LastMatchDamage,
+				&entry.LastMatchDeaths,
+				&entry.LastMatchKills,
+				&entry.LastMatchRounds,
+				&entry.LastMatchKD,
+				&entry.LastMatchADR,
+				&entry.HitRatio,
+				&entry.Playtime2Weeks,
 			)
 			ph.Data = append(ph.Data, entry)
 		}
@@ -57,8 +71,21 @@ func (ds *DataStorage) UpdatePlayerHistory(pi steamclient.PlayerInfo) error {
 
 	if result, err = ds.statements["insert_player_history"].Exec(
 		pi.PlayerSummary.SteamID,
-		//TODO add other stats here, e.g. ADR
+		pi.UserStatsForGame.Stats.TotalKills,
+		pi.UserStatsForGame.Extra.TotalADR,
+		pi.UserStatsForGame.Stats.TotalShotsHit,
+		pi.UserStatsForGame.Stats.TotalShotsFired,
+		pi.UserStatsForGame.Stats.TotalKillsHeadshot,
 		pi.UserStatsForGame.Extra.TotalKD,
+		pi.UserStatsForGame.Stats.LastMatchContributionScore,
+		pi.UserStatsForGame.Stats.LastMatchDamage,
+		pi.UserStatsForGame.Stats.LastMatchDeaths,
+		pi.UserStatsForGame.Stats.LastMatchKills,
+		pi.UserStatsForGame.Stats.LastMatchRounds,
+		pi.UserStatsForGame.Extra.LastMatchKD,
+		pi.UserStatsForGame.Extra.LastMatchADR,
+		pi.UserStatsForGame.Extra.HitRatio,
+		pi.RecentlyPlayedGames.Playtime2Weeks,
 	); err != nil {
 		return err
 	}
