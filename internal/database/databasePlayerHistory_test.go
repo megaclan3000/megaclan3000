@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/pinpox/megaclan3000/internal/steamclient"
@@ -209,6 +210,41 @@ func TestDataStorage_UpdatePlayerHistory(t *testing.T) {
 			}
 			if err := ds.UpdatePlayerHistory(tt.args.pi); (err != nil) != tt.wantErr {
 				t.Errorf("DataStorage.UpdatePlayerHistory() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestDataStorage_GetPlayerHistoryLatestTime(t *testing.T) {
+	type fields struct {
+		db         *sql.DB
+		statements map[string]*sql.Stmt
+	}
+	type args struct {
+		steamID string
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		want    time.Time
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ds := &DataStorage{
+				db:         tt.fields.db,
+				statements: tt.fields.statements,
+			}
+			got, err := ds.GetPlayerHistoryLatestTime(tt.args.steamID)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("DataStorage.GetPlayerHistoryLatestTime() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("DataStorage.GetPlayerHistoryLatestTime() = %v, want %v", got, tt.want)
 			}
 		})
 	}
