@@ -1,12 +1,12 @@
 package database
 
 import (
-	"database/sql"
 	"reflect"
 	"testing"
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
+	"github.com/google/go-cmp/cmp"
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
 
@@ -216,58 +216,218 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 }
 
 func TestDataStorage_UpdatePlayerHistory(t *testing.T) {
-	type fields struct {
-		db         *sql.DB
-		statements map[string]*sql.Stmt
-	}
-	type args struct {
-		pi steamclient.PlayerInfo
-	}
 	tests := []struct {
 		name    string
-		fields  fields
-		args    args
+		pi      steamclient.PlayerInfo
+		want    steamclient.PlayerHistory
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "All values inserted for new ID (ID: all_new)",
+			want: steamclient.PlayerHistory{
+				SteamID: "all_new",
+				Data: []steamclient.PlayerHistoryEntry{
+					{
+						HitRatio:                   "inserted9",
+						LastMatchADR:               "inserted10",
+						LastMatchContributionScore: "inserted0",
+						LastMatchDamage:            "inserted1",
+						LastMatchDeaths:            "inserted2",
+						LastMatchKD:                "inserted13",
+						LastMatchKills:             "inserted3",
+						LastMatchRounds:            "inserted2",
+						Playtime2Weeks:             "inserted14",
+						TotalADR:                   "inserted12",
+						TotalKD:                    "inserted13",
+						TotalKills:                 "inserted5",
+						TotalKillsHeadshot:         "inserted6",
+						TotalShotsFired:            "inserted7",
+						TotalShotsHit:              "inserted8",
+
+						//This value is set by the database, not tested
+						Time: "database",
+					},
+				},
+			},
+			pi: steamclient.PlayerInfo{
+				PlayerSummary: steamclient.PlayerSummary{
+					SteamID: "all_new",
+				},
+				UserStatsForGame: steamclient.UserStatsForGame{
+					Stats: steamclient.GameStats{
+						LastMatchContributionScore: "inserted0",
+						LastMatchDamage:            "inserted1",
+						LastMatchDeaths:            "inserted2",
+						LastMatchKills:             "inserted3",
+						LastMatchRounds:            "inserted2",
+						TotalKills:                 "inserted5",
+						TotalKillsHeadshot:         "inserted6",
+						TotalShotsFired:            "inserted7",
+						TotalShotsHit:              "inserted8",
+					},
+					Extra: steamclient.GameExtras{
+						HitRatio:     "inserted9",
+						LastMatchADR: "inserted10",
+						LastMatchKD:  "inserted13",
+						TotalADR:     "inserted12",
+						TotalKD:      "inserted13",
+					},
+				},
+				RecentlyPlayedGames: steamclient.RecentlyPlayedGames{
+					Playtime2Weeks: "inserted14",
+				},
+				PlayerHistory: steamclient.PlayerHistory{},
+			},
+		},
+		{
+
+			//TODO add more cases for other id's
+
+			name: "All values inserted for existing ID (ID: all_columns)",
+			want: steamclient.PlayerHistory{
+				SteamID: "all_columns",
+				Data: []steamclient.PlayerHistoryEntry{
+					{
+						HitRatio:                   "inserted9",
+						LastMatchADR:               "inserted10",
+						LastMatchContributionScore: "inserted0",
+						LastMatchDamage:            "inserted1",
+						LastMatchDeaths:            "inserted2",
+						LastMatchKD:                "inserted13",
+						LastMatchKills:             "inserted3",
+						LastMatchRounds:            "inserted2",
+						Playtime2Weeks:             "inserted14",
+						TotalADR:                   "inserted12",
+						TotalKD:                    "inserted13",
+						TotalKills:                 "inserted5",
+						TotalKillsHeadshot:         "inserted6",
+						TotalShotsFired:            "inserted7",
+						TotalShotsHit:              "inserted8",
+
+						//This value is set by the database, not tested
+						Time: "database",
+					},
+					{
+						Time:                       "database",
+						TotalKD:                    "11",
+						TotalADR:                   "10",
+						LastMatchADR:               "1",
+						TotalKills:                 "12",
+						TotalKillsHeadshot:         "13",
+						TotalShotsHit:              "15",
+						TotalShotsFired:            "14",
+						LastMatchContributionScore: "2",
+						LastMatchDamage:            "3",
+						LastMatchDeaths:            "4",
+						LastMatchKills:             "6",
+						LastMatchRounds:            "7",
+						LastMatchKD:                "5",
+						HitRatio:                   "0",
+						Playtime2Weeks:             "8",
+					},
+				},
+			},
+			pi: steamclient.PlayerInfo{
+				PlayerSummary: steamclient.PlayerSummary{
+					SteamID: "all_columns",
+				},
+				UserStatsForGame: steamclient.UserStatsForGame{
+					Stats: steamclient.GameStats{
+						LastMatchContributionScore: "inserted0",
+						LastMatchDamage:            "inserted1",
+						LastMatchDeaths:            "inserted2",
+						LastMatchKills:             "inserted3",
+						LastMatchRounds:            "inserted2",
+						TotalKills:                 "inserted5",
+						TotalKillsHeadshot:         "inserted6",
+						TotalShotsFired:            "inserted7",
+						TotalShotsHit:              "inserted8",
+					},
+					Extra: steamclient.GameExtras{
+						HitRatio:     "inserted9",
+						LastMatchADR: "inserted10",
+						LastMatchKD:  "inserted13",
+						TotalADR:     "inserted12",
+						TotalKD:      "inserted13",
+					},
+				},
+				RecentlyPlayedGames: steamclient.RecentlyPlayedGames{
+					Playtime2Weeks: "inserted14",
+				},
+				PlayerHistory: steamclient.PlayerHistory{},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ds := &DataStorage{
-				db:         tt.fields.db,
-				statements: tt.fields.statements,
-			}
-			if err := ds.UpdatePlayerHistory(tt.args.pi); (err != nil) != tt.wantErr {
+			prepareDB()
+
+			if err := db.UpdatePlayerHistory(tt.pi); (err != nil) != tt.wantErr {
 				t.Errorf("DataStorage.UpdatePlayerHistory() error = %v, wantErr %v", err, tt.wantErr)
+			}
+
+			if got, err := db.GetPlayerHistory(tt.pi.PlayerSummary.SteamID); err == nil {
+
+				//Replace db-generated time field to exclude from test
+				for k := range got.Data {
+					got.Data[k].Time = "database"
+				}
+
+				if diff := cmp.Diff(tt.want, got); diff != "" {
+					t.Errorf("DataStorage.UpdatePlayerHistory() mismatch (-want +got):\n%s", diff)
+				}
+			} else {
+				if tt.wantErr == (err != nil) {
+					t.Errorf("DataStorage.UpdatePlayerHistory() error = %v, wantErr %v", err, tt.wantErr)
+				}
 			}
 		})
 	}
 }
 
 func TestDataStorage_GetPlayerHistoryLatestTime(t *testing.T) {
-	type fields struct {
-		db         *sql.DB
-		statements map[string]*sql.Stmt
-	}
-	type args struct {
-		steamID string
-	}
 	tests := []struct {
 		name    string
-		fields  fields
-		args    args
+		steamID string
 		want    time.Time
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name:    "Get Time for existing ID (ID: all_columns)",
+			steamID: "all_columns",
+			want:    time.Date(0001, 01, 01, 00, 00, 00, 00, time.UTC),
+			wantErr: false,
+		},
+		{
+			name:    "Get Time for existing ID (ID: 1)",
+			steamID: "1",
+			want:    time.Date(0001, 01, 01, 00, 00, 00, 00, time.UTC),
+			wantErr: false,
+		},
+		{
+			name:    "Get Time for existing ID (ID: 2)",
+			steamID: "2",
+			want:    time.Date(0001, 01, 01, 00, 00, 00, 00, time.UTC),
+			wantErr: false,
+		},
+		{
+			name:    "Get Time for existing ID (ID: 3)",
+			steamID: "3",
+			want:    time.Date(0001, 01, 01, 00, 00, 00, 00, time.UTC),
+			wantErr: false,
+		},
+		{
+			name:    "Get Time for existing ID (ID: 41)",
+			steamID: "41",
+			want:    time.Date(0001, 01, 01, 00, 00, 00, 00, time.UTC),
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ds := &DataStorage{
-				db:         tt.fields.db,
-				statements: tt.fields.statements,
-			}
-			got, err := ds.GetPlayerHistoryLatestTime(tt.args.steamID)
+			prepareDB()
+
+			got, err := db.GetPlayerHistoryLatestTime(tt.steamID)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("DataStorage.GetPlayerHistoryLatestTime() error = %v, wantErr %v", err, tt.wantErr)
 				return
