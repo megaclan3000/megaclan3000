@@ -38,6 +38,10 @@ func (ds *DataStorage) UpdateRecentlyPlayedGames(rpg steamclient.RecentlyPlayedG
 
 	if result, err = ds.statements["update_recently_played"].Exec(
 		rpg.SteamID,
+		rpg.Appid,
+		rpg.ImgIconURL,
+		rpg.ImgLogoURL,
+		rpg.Name,
 		rpg.Playtime2Weeks,
 		rpg.PlaytimeForever,
 		rpg.PlaytimeWindowsForever,
