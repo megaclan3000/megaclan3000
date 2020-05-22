@@ -275,11 +275,15 @@ func (ds *DataStorage) getCreatePreparedstatements() error {
 	ds.statements["create_recently_played"], err = ds.db.Prepare(
 		`CREATE TABLE IF NOT EXISTS recently_played (
 			steamid TEXT PRIMARY KEY,
-			playtime_2weeks TEXT,
-			playtime_forever TEXT,
-			playtime_windows_forever TEXT,
-			playtime_mac_forever TEXT,
-			playtime_linux_forever TEXT)`)
+            appid TEXT,
+            img_icon_url TEXT,
+            img_logo_url TEXT,
+            name TEXT,
+            playtime_2_weeks TEXT,
+            playtime_forever TEXT,
+            playtime_linux_forever TEXT,
+            playtime_mac_forever TEXT,
+            playtime_windows_forever TEXT)`)
 	if err != nil {
 		return err
 	}
@@ -302,7 +306,7 @@ func (ds *DataStorage) getCreatePreparedstatements() error {
 			last_match_kd TEXT,
 			last_match_adr TEXT,
 			hit_ratio TEXT,
-			playtime_2weeks TEXT)`)
+			playtime_2_weeks TEXT)`)
 
 	return err
 }
@@ -312,15 +316,19 @@ func (ds *DataStorage) getUpdatePreparedstatements() error {
 	ds.statements["update_recently_played"], err = ds.db.Prepare(
 		`INSERT OR REPLACE INTO recently_played (
 			steamid,
-			playtime_2weeks,
-			playtime_forever,
-			playtime_windows_forever,
-			playtime_mac_forever,
-			playtime_linux_forever)
-		VALUES (?,?,?,?,?,?)`)
+            appid,
+            img_icon_url,
+            img_logo_url,
+            name,
+            playtime_2_weeks,
+            playtime_forever,
+            playtime_linux_forever,
+            playtime_mac_forever,
+            playtime_windows_forever)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
 
 	if err != nil {
-		log.Fatal("Failed to prepare statement: update_recently_played")
+		log.Fatal("Failed to prepare statement: update_recently_played", err)
 		return err
 	}
 
@@ -362,9 +370,9 @@ func (ds *DataStorage) getUpdatePreparedstatements() error {
                 profileurl,
                 realname,
                 timecreated)
-			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
 	if err != nil {
-		log.Fatal("Failed to prepare statement: update_player_summary")
+		log.Fatal("Failed to prepare statement: update_player_summary", err)
 		return err
 	}
 
@@ -627,7 +635,7 @@ func (ds *DataStorage) getInsertPreparedstatements() error {
 			last_match_kd,
 			last_match_adr,
 			hit_ratio,
-			playtime_2weeks)
+			playtime_2_weeks)
 		VALUES (?, datetime('now'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
 	return err
 }

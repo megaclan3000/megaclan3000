@@ -16,7 +16,15 @@ func TestDataStorage_GetRecentlyPlayedGames(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "Test retrieval of RecentlyPlayedGames from fixtures",
+			name:    "Test retrieval of RecentlyPlayedGames from fixtures (ID: all_columns)",
+			steamID: "all_columns",
+			want:    steamclient.RecentlyPlayedGames{
+				//TODO
+			},
+			wantErr: false,
+		},
+		{
+			name:    "Test retrieval of RecentlyPlayedGames from fixtures (ID: 123456789)",
 			steamID: "123456789",
 			want: steamclient.RecentlyPlayedGames{
 				SteamID:                "123456789",
