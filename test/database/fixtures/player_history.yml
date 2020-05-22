@@ -2,7 +2,7 @@
   hit_ratio:                     "0"
   last_match_adr:                "1"
   last_match_contribution_score: "2"
-  LastMatchDamage:               "3"
+  last_match_damage:             "3"
   last_match_deaths:             "4"
   last_match_kd:                 "5"
   last_match_kills:              "6"
