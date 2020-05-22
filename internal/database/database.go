@@ -134,7 +134,7 @@ func (ds *DataStorage) UpdatePlayerInfo(pi steamclient.PlayerInfo) error {
 	var err error
 
 	if err = ds.UpdatePlayerSummary(pi.PlayerSummary); err != nil {
-		log.Fatalf("Error saving PlayerSummary for %v (%v)", pi.PlayerSummary.SteamID, pi.PlayerSummary.Personaname)
+		log.Fatalf("Error saving PlayerSummary for %v (%v): %v", pi.PlayerSummary.SteamID, pi.PlayerSummary.Personaname, err)
 		return err
 	}
 	if err = ds.UpdateRecentlyPlayedGames(pi.RecentlyPlayedGames); err != nil {
