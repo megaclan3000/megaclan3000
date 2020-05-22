@@ -17,6 +17,35 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 		want    steamclient.PlayerHistory
 		wantErr bool
 	}{
+
+		{
+			name:    "Retrieve PlayerHistory from fixtures (ID: all_columns)",
+			steamID: "all_columns",
+			want: steamclient.PlayerHistory{
+				SteamID: "all_columns",
+				Data: []steamclient.PlayerHistoryEntry{
+					{
+						HitRatio:                   "0",
+						LastMatchADR:               "1",
+						LastMatchContributionScore: "2",
+						LastMatchDamage:            "3",
+						LastMatchDeaths:            "4",
+						LastMatchKD:                "5",
+						LastMatchKills:             "6",
+						LastMatchRounds:            "7",
+						Playtime2Weeks:             "8",
+						Time:                       "9",
+						TotalADR:                   "10",
+						TotalKD:                    "11",
+						TotalKills:                 "12",
+						TotalKillsHeadshot:         "13",
+						TotalShotsFired:            "14",
+						TotalShotsHit:              "15",
+					},
+				},
+			},
+			wantErr: false,
+		},
 		{
 			name:    "Retrieve PlayerHistory from fixtures (ID: 1)",
 			steamID: "1",
