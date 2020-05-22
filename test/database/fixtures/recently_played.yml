@@ -8,17 +8,3 @@
   playtime_linux_forever:   "6"
   playtime_mac_forever:     "7"
   playtime_windows_forever: "8"
-
-- steamid: 123456789
-  playtime_2_weeks: 1
-  playtime_forever: 2
-  playtime_windows_forever: 3
-  playtime_mac_forever: 4
-  playtime_linux_forever: 5
-
-- steamid: 40
-  playtime_2_weeks:          35
-  playtime_forever:         36
-  playtime_linux_forever:   37
-  playtime_mac_forever:     38
-  playtime_windows_forever: 39
