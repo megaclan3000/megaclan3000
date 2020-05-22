@@ -38,6 +38,11 @@ func prepareDB() {
 
 func TestDataStorage_GetPlayerInfoBySteamID(t *testing.T) {
 
+	// Needed here because other tests modify the database
+	prepareDB()
+
+	// The methods called here are tested on their own, so we might aswell use
+	// the output instead of typing all fields again by hand
 	summary, err := db.GetPlayerSummary("all_columns")
 	if err != nil {
 		panic(err)
@@ -74,7 +79,7 @@ func TestDataStorage_GetPlayerInfoBySteamID(t *testing.T) {
 		},
 		{
 			name:    "Retrieve PlayerInfo from fixtures (ID: no_exist)",
-			steamID: "all_columns",
+			steamID: "no_exist",
 			want: steamclient.PlayerInfo{
 				PlayerSummary:       steamclient.PlayerSummary{},
 				UserStatsForGame:    steamclient.UserStatsForGame{},

@@ -13,35 +13,31 @@ import (
 func (ds *DataStorage) GetPlayerSummary(steamID string) (steamclient.PlayerSummary, error) {
 
 	ps := steamclient.PlayerSummary{}
-	var err error
 
-	if rows, err := ds.statements["select_player_summary"].Query(steamID); err == nil {
-		for rows.Next() {
-			rows.Scan(
-				&ps.SteamID,
-				&ps.Avatar,
-				&ps.Avatarfull,
-				&ps.Avatarmedium,
-				&ps.Cityid,
-				&ps.Commentpermission,
-				&ps.Communityvisibilitystate,
-				&ps.Gameextrainfo,
-				&ps.Gameid,
-				&ps.Gameserverip,
-				&ps.Lastlogoff,
-				&ps.Loccityid,
-				&ps.Loccountrycode,
-				&ps.Locstatecode,
-				&ps.Personaname,
-				&ps.Personastate,
-				&ps.Primaryclanid,
-				&ps.Profilestate,
-				&ps.Profileurl,
-				&ps.Realname,
-				&ps.Timecreated,
-			)
-		}
-	}
+	err := ds.statements["select_player_summary"].QueryRow(steamID).Scan(
+		&ps.SteamID,
+		&ps.Avatar,
+		&ps.Avatarfull,
+		&ps.Avatarmedium,
+		&ps.Cityid,
+		&ps.Commentpermission,
+		&ps.Communityvisibilitystate,
+		&ps.Gameextrainfo,
+		&ps.Gameid,
+		&ps.Gameserverip,
+		&ps.Lastlogoff,
+		&ps.Loccityid,
+		&ps.Loccountrycode,
+		&ps.Locstatecode,
+		&ps.Personaname,
+		&ps.Personastate,
+		&ps.Primaryclanid,
+		&ps.Profilestate,
+		&ps.Profileurl,
+		&ps.Realname,
+		&ps.Timecreated,
+	)
+
 	return ps, err
 }
 
