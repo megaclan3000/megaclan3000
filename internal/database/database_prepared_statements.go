@@ -10,17 +10,26 @@ func (ds *DataStorage) getCreatePreparedstatements() error {
 	ds.statements["create_player_summary"], err = ds.db.Prepare(
 		`CREATE TABLE IF NOT EXISTS player_summary (
 			steamid TEXT PRIMARY KEY,
-			communityvisibilitystate TEXT,
-			profilestate TEXT,
-			personaname TEXT,
-			profileurl TEXT,
-			avatar TEXT,
-			avatarmedium TEXT,
-			avatarfull TEXT,
-			lastlogoff TEXT,
-			personastate TEXT,
-			primaryclanid TEXT,
-			timecreated TEXT)`)
+            avatar TEXT,
+            avatarfull TEXT,
+            avatarmedium TEXT,
+            cityid TEXT,
+            commentpermission TEXT,
+            communityvisibilitystate TEXT,
+            gameextrainfo TEXT,
+            gameid TEXT,
+            gameserverip TEXT,
+            lastlogoff TEXT,
+            loccityid TEXT,
+            loccountrycode TEXT,
+            locstatecode TEXT,
+            personaname TEXT,
+            personastate TEXT,
+            primaryclanid TEXT,
+            profilestate TEXT,
+            profileurl TEXT,
+            realname TEXT,
+            timecreated TEXT)`)
 
 	if err != nil {
 		return err
@@ -333,18 +342,27 @@ func (ds *DataStorage) getUpdatePreparedstatements() error {
 	ds.statements["update_player_summary"], err = ds.db.Prepare(
 		`INSERT OR REPLACE INTO player_summary (
 				steamid,
-				communityvisibilitystate,
-				profilestate,
-				personaname,
-				profileurl,
-				avatar,
-				avatarmedium,
-				avatarfull,
-				lastlogoff,
-				personastate,
-				primaryclanid,
-				timecreated)
-			VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?) `)
+                avatar,
+                avatarfull,
+                avatarmedium,
+                cityid,
+                commentpermission,
+                communityvisibilitystate,
+                gameextrainfo,
+                gameid,
+                gameserverip,
+                lastlogoff,
+                loccityid,
+                loccountrycode,
+                locstatecode,
+                personaname,
+                personastate,
+                primaryclanid,
+                profilestate,
+                profileurl,
+                realname,
+                timecreated)
+			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
 	if err != nil {
 		log.Fatal("Failed to prepare statement: update_player_summary")
 		return err

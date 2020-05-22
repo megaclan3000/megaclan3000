@@ -18,7 +18,7 @@ func TestDataStorage_GetPlayerSummary(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "Test retrieval of PlayerSummary from fixtures",
+			name:    "Test retrieval of PlayerSummary from fixtures (ID: 123456789)",
 			steamID: "123456789",
 			want: steamclient.PlayerSummary{
 				SteamID:                  "123456789",
@@ -33,6 +33,34 @@ func TestDataStorage_GetPlayerSummary(t *testing.T) {
 				Personastate:             "9",
 				Primaryclanid:            "10",
 				Timecreated:              "11",
+			},
+			wantErr: false,
+		},
+
+		{
+			name:    "Test retrieval of PlayerSummary from fixtures (ID: all_columns)",
+			steamID: "all_columns",
+			want: steamclient.PlayerSummary{
+				Avatar:                   "0",
+				Avatarfull:               "1",
+				Avatarmedium:             "2",
+				Cityid:                   "3",
+				Commentpermission:        "4",
+				Communityvisibilitystate: "5",
+				Gameextrainfo:            "6",
+				Gameid:                   "7",
+				Gameserverip:             "8",
+				Lastlogoff:               "9",
+				Loccityid:                "10",
+				Loccountrycode:           "11",
+				Locstatecode:             "12",
+				Personaname:              "13",
+				Personastate:             "14",
+				Primaryclanid:            "15",
+				Profilestate:             "16",
+				Profileurl:               "17",
+				Realname:                 "18",
+				Timecreated:              "19",
 			},
 			wantErr: false,
 		},
