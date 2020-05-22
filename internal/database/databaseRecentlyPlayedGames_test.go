@@ -1,10 +1,10 @@
 package database
 
 import (
-	"database/sql"
 	"reflect"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
 
@@ -56,30 +56,77 @@ func TestDataStorage_GetRecentlyPlayedGames(t *testing.T) {
 }
 
 func TestDataStorage_UpdateRecentlyPlayedGames(t *testing.T) {
-	type fields struct {
-		db         *sql.DB
-		statements map[string]*sql.Stmt
-	}
-	type args struct {
-		rpg steamclient.RecentlyPlayedGames
-	}
 	tests := []struct {
 		name    string
-		fields  fields
-		args    args
+		steamID string
+		rpg     steamclient.RecentlyPlayedGames
+		want    steamclient.RecentlyPlayedGames
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name:    "Change all values (ID: all_columns)",
+			steamID: "all_columns",
+			rpg: steamclient.RecentlyPlayedGames{
+				SteamID:                "all_columns",
+				Appid:                  "changed-0",
+				ImgIconURL:             "changed-1",
+				ImgLogoURL:             "changed-2",
+				Name:                   "changed-3",
+				Playtime2Weeks:         "changed-4",
+				PlaytimeForever:        "changed-5",
+				PlaytimeLinuxForever:   "changed-6",
+				PlaytimeMacForever:     "changed-7",
+				PlaytimeWindowsForever: "changed-8",
+			},
+			want: steamclient.RecentlyPlayedGames{
+				SteamID:                "all_columns",
+				Appid:                  "changed-0",
+				ImgIconURL:             "changed-1",
+				ImgLogoURL:             "changed-2",
+				Name:                   "changed-3",
+				Playtime2Weeks:         "changed-4",
+				PlaytimeForever:        "changed-5",
+				PlaytimeLinuxForever:   "changed-6",
+				PlaytimeMacForever:     "changed-7",
+				PlaytimeWindowsForever: "changed-8",
+			},
+			wantErr: false,
+		},
+		{
+			name:    "Try to change all values (ID: no_exist)",
+			steamID: "all_columns",
+			rpg: steamclient.RecentlyPlayedGames{
+				SteamID:                "all_columns",
+				Appid:                  "changed-0",
+				ImgIconURL:             "changed-1",
+				ImgLogoURL:             "changed-2",
+				Name:                   "changed-3",
+				Playtime2Weeks:         "changed-4",
+				PlaytimeForever:        "changed-5",
+				PlaytimeLinuxForever:   "changed-6",
+				PlaytimeMacForever:     "changed-7",
+				PlaytimeWindowsForever: "changed-8",
+			},
+			want:    steamclient.RecentlyPlayedGames{},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ds := &DataStorage{
-				db:         tt.fields.db,
-				statements: tt.fields.statements,
-			}
-			if err := ds.UpdateRecentlyPlayedGames(tt.args.rpg); (err != nil) != tt.wantErr {
+			prepareDB()
+			if err := db.UpdateRecentlyPlayedGames(tt.rpg); (err != nil) != tt.wantErr {
 				t.Errorf("DataStorage.UpdateRecentlyPlayedGames() error = %v, wantErr %v", err, tt.wantErr)
 			}
+			if got, err := db.GetRecentlyPlayedGames(tt.steamID); err == nil {
+				if diff := cmp.Diff(tt.want, got); diff != "" {
+					t.Errorf("DataStorage.UpdateRecentlyPlayedGamesGame() mismatch (-want +got):\n%s", diff)
+				}
+			} else {
+				if !(tt.wantErr == (err != nil)) {
+					t.Errorf("DataStorage.UpdateRecentlyPlayedGamesForGame() error = %v, wantErr %v", err, tt.wantErr)
+				}
+			}
+
 		})
 	}
 }
