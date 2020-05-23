@@ -1,5 +1,7 @@
 {
     "SteamAPIKey": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+	"UpdateInterval": 4,
+	"HistoryInterval": 20,
     "SteamIDs": [
         "76561197978015984",
         "76561198092006615",
