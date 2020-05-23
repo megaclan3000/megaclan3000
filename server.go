@@ -76,11 +76,11 @@ func main() {
 	}
 
 	//start updating data every 5 minutes asynchroniusly
-	go updateData(5)
+	go updateData()
 	log.Fatal(srv.ListenAndServe())
 }
 
-func updateData(minutes int) {
+func updateData() {
 	var err error
 	for {
 
@@ -103,7 +103,7 @@ func updateData(minutes int) {
 
 			// if part threshold, update
 			log.Println("updatetime", time.Now().Sub(lastUpdateTime).Minutes())
-			if time.Now().Sub(lastUpdateTime).Minutes() > 5 {
+			if time.Now().Sub(lastUpdateTime).Minutes() > float64(steamClient.Config.HistoryInterval) {
 				log.Infof("Updating history for %v (%v)", v.PlayerSummary.Personaname, v.PlayerSummary.SteamID)
 				err = datastorage.UpdatePlayerHistory(v)
 				if err != nil {
@@ -113,7 +113,7 @@ func updateData(minutes int) {
 		}
 
 		// Sleep for a predefined duration (in minutes)
-		time.Sleep(time.Duration(minutes) * time.Minute)
+		time.Sleep(time.Duration(steamClient.Config.UpdateInterval) * time.Minute)
 	}
 }
 
