@@ -19,11 +19,15 @@ func (ds *DataStorage) GetRecentlyPlayedGames(steamID string) (steamclient.Recen
 		for rows.Next() {
 			rows.Scan(
 				&rpg.SteamID,
+				&rpg.Appid,
+				&rpg.ImgIconURL,
+				&rpg.ImgLogoURL,
+				&rpg.Name,
 				&rpg.Playtime2Weeks,
 				&rpg.PlaytimeForever,
-				&rpg.PlaytimeWindowsForever,
-				&rpg.PlaytimeMacForever,
 				&rpg.PlaytimeLinuxForever,
+				&rpg.PlaytimeMacForever,
+				&rpg.PlaytimeWindowsForever,
 			)
 		}
 	}
@@ -38,11 +42,15 @@ func (ds *DataStorage) UpdateRecentlyPlayedGames(rpg steamclient.RecentlyPlayedG
 
 	if result, err = ds.statements["update_recently_played"].Exec(
 		rpg.SteamID,
+		rpg.Appid,
+		rpg.ImgIconURL,
+		rpg.ImgLogoURL,
+		rpg.Name,
 		rpg.Playtime2Weeks,
 		rpg.PlaytimeForever,
-		rpg.PlaytimeWindowsForever,
-		rpg.PlaytimeMacForever,
 		rpg.PlaytimeLinuxForever,
+		rpg.PlaytimeMacForever,
+		rpg.PlaytimeWindowsForever,
 	); err != nil {
 		return err
 	}

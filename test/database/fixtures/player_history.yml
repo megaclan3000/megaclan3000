@@ -1,3 +1,21 @@
+- steamid: "all_columns"
+  hit_ratio:                     "0"
+  last_match_adr:                "1"
+  last_match_contribution_score: "2"
+  last_match_damage:             "3"
+  last_match_deaths:             "4"
+  last_match_kd:                 "5"
+  last_match_kills:              "6"
+  last_match_rounds:             "7"
+  playtime_2_weeks:               "8"
+  time:                          "9"
+  total_adr:                     "10"
+  total_kd:                      "11"
+  total_kills:                   "12"
+  total_kills_headshot:          "13"
+  total_shots_fired:             "14"
+  total_shots_hit:               "15"
+
 - steamid:                       1
   time:                          100
   total_kills:                   101
@@ -14,7 +32,7 @@
   last_match_kd:                 1012
   last_match_adr:                1013
   hit_ratio:                     1014
-  playtime_2weeks:               1015
+  playtime_2_weeks:               1015
 
 - steamid:                       2
   time:                          200
@@ -32,7 +50,7 @@
   last_match_kd:                 2012
   last_match_adr:                2013
   hit_ratio:                     2014
-  playtime_2weeks:               2015
+  playtime_2_weeks:               2015
 
 - steamid:                       3
   time:                          3003
@@ -50,7 +68,7 @@
   last_match_kd:                 30123
   last_match_adr:                30133
   hit_ratio:                     30143
-  playtime_2weeks:               30153
+  playtime_2_weeks:               30153
 
 - steamid:                       3
   time:                          30034
@@ -68,7 +86,7 @@
   last_match_kd:                 301234
   last_match_adr:                301334
   hit_ratio:                     301434
-  playtime_2weeks:               301534
+  playtime_2_weeks:               301534
 
 - steamid:                       3
   time:                          300
@@ -86,7 +104,7 @@
   last_match_kd:                 3012
   last_match_adr:                3013
   hit_ratio:                     3014
-  playtime_2weeks:               3015
+  playtime_2_weeks:               3015
 
 - steamid:                       4
   time:                          400
@@ -104,4 +122,40 @@
   last_match_kd:                 4012
   last_match_adr:                4013
   hit_ratio:                     4014
-  playtime_2weeks:               4015
+  playtime_2_weeks:               4015
+
+- steamid:                       41
+  hit_ratio:                     42
+  last_match_adr:                43
+  last_match_contribution_score: 44
+  last_match_damage:             45
+  last_match_deaths:             46
+  last_match_kd:                 47
+  last_match_kills:              48
+  last_match_rounds:             49
+  playtime_2_weeks:               50
+  time:                          51
+  total_adr:                     52
+  total_kd:                      53
+  total_kills:                   54
+  total_kills_headshot:          55
+  total_shots_fired:             56
+  total_shots_hit:               57
+
+- steamid:                       41
+  hit_ratio:                     58
+  last_match_adr:                59
+  last_match_contribution_score: 60
+  last_match_damage:             61
+  last_match_deaths:             62
+  last_match_kd:                 63
+  last_match_kills:              64
+  last_match_rounds:             65
+  playtime_2_weeks:               66
+  time:                          67
+  total_adr:                     68
+  total_kd:                      69
+  total_kills:                   70
+  total_kills_headshot:          71
+  total_shots_fired:             72
+  total_shots_hit:               73
