@@ -80,7 +80,7 @@ func (sc *SteamClient) GetUserStatsForGame(steamID string) (UserStatsForGame, er
 
 	url :=
 		"https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=730&key=" +
-			sc.config.SteamAPIKey + "&steamid=" + steamID
+			sc.Config.SteamAPIKey + "&steamid=" + steamID
 
 	data := userStatsForGameData{}
 

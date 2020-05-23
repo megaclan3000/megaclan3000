@@ -82,7 +82,7 @@ type RecentlyPlayedGames struct {
 // endpoint GetRecentlyPlayedGames and returns a RecentlyPlayedGames object
 func (sc *SteamClient) GetRecentlyPlayedGames(steamID string) (RecentlyPlayedGames, error) {
 
-	url := "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=" + sc.config.SteamAPIKey + "&steamid=" + steamID
+	url := "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=" + sc.Config.SteamAPIKey + "&steamid=" + steamID
 
 	data := recentlyPlayedGamesData{}
 	if err := getJSON(url, &data); err != nil {
