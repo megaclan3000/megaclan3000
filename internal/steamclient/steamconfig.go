@@ -10,10 +10,12 @@ import (
 // SteamConfig struct holds the values as read from the configuration file
 // config.json on startup
 type SteamConfig struct {
-	SteamAPIKey string   `json:"SteamAPIKey"`
-	SteamIDs    []string `json:"SteamIDs"`
-	lastUpdate  time.Time
-	configPath  string
+	SteamAPIKey     string   `json:"SteamAPIKey"`
+	SteamIDs        []string `json:"SteamIDs"`
+	HistoryInterval int      `json:"HistoryInterval"`
+	UpdateInterval  int      `json:"UpdateInterval"`
+	lastUpdate      time.Time
+	configPath      string
 }
 
 func NewSteamConfig(configPath string) (SteamConfig, error) {

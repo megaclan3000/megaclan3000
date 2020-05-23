@@ -7,7 +7,7 @@ import (
 // SteamClient acts as main interface to interact with the steam API and gather
 // data
 type SteamClient struct {
-	config SteamConfig
+	Config SteamConfig
 }
 
 // NewSteamClient returrns a new SteamClient
@@ -30,7 +30,7 @@ func (sc SteamClient) GetPlayers() []PlayerInfo {
 
 	players := []PlayerInfo{}
 
-	for _, v := range sc.config.SteamIDs {
+	for _, v := range sc.Config.SteamIDs {
 		log.Debugf("Fetching data for ID: %v", v)
 		if pi, err := sc.getPlayerInfo(v); err == nil {
 			players = append(players, pi)

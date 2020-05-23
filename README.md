@@ -13,7 +13,6 @@ Our custom CS:GO stats page: https://megaclan3000.de
 ![Labeler](https://github.com/pinpox/megaclan3000/workflows/Labeler/badge.svg)
 ![Go](https://github.com/pinpox/megaclan3000/workflows/Go/badge.svg)
 
-
 ![](https://i.imgur.com/tQzdzAd.png)
 
 ## Setup
@@ -23,6 +22,8 @@ Our custom CS:GO stats page: https://megaclan3000.de
 ```json
 {
     "SteamAPIKey": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "UpdateInterval": 4,
+    "HistoryInterval": 20,
     "SteamIDs": [
         "XXXXXXXXXXXXXXXXX",
         "XXXXXXXXXXXXXXXXX",
