@@ -58,7 +58,7 @@
 {{template "weapons-chart.html" .}}
 {{template "maps-chart.html" .}}
 
-<h3>TotalKD over time</h1>
+<h3>KD (last match) over time</h1>
 <table>
 	<tr>
 		<th>Time</th>
@@ -67,14 +67,13 @@
 	{{range .PlayerHistory.Data }}
 	<tr>
 		<td>{{.Time}}</td>
-		<td>{{.TotalKD}}</td>
+		<td>{{.LastMatchKD}}</td>
 	</tr>
 	{{end}}
 </table>
 
 
-
-<h3>Hitrati over time</h1>
+<h3>Hitratio over time</h1>
 <table>
 	<tr>
 		<th>Time</th>
@@ -88,3 +87,17 @@
 	{{end}}
 </table>
 
+
+<h3>ADR (last match) over time</h1>
+<table>
+	<tr>
+		<th>Time</th>
+		<th>Percentage</th>
+	</tr>
+	{{range .PlayerHistory.Data }}
+	<tr>
+		<td>{{.Time}}</td>
+		<td>{{.LastMatchADR}}</td>
+	</tr>
+	{{end}}
+</table>
