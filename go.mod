@@ -71,6 +71,7 @@ require (
 	github.com/hajimehoshi/oto v0.6.1 // indirect
 	github.com/hashicorp/go-multierror v1.1.0 // indirect
 	github.com/haxpax/gosms v0.0.0-20170707114517-25e8b34fe625 // indirect
+<<<<<<< HEAD
 	github.com/heptio/velero v1.3.2 // indirect
 	github.com/ianremmler/ode v0.0.0-20150825143819-b062ec7b88b9 // indirect
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4 // indirect
@@ -78,6 +79,11 @@ require (
 	github.com/kbinani/screenshot v0.0.0-20191211154542-3a185f1ce18f // indirect
 	github.com/kisielk/errcheck v1.2.0 // indirect
 	github.com/klauspost/asmfmt v1.2.1 // indirect
+=======
+	github.com/josharian/impl v0.0.0-20191119165012-6b9658ad00c7 // indirect
+	github.com/kbinani/screenshot v0.0.0-20191211154542-3a185f1ce18f // indirect
+	github.com/kisielk/errcheck v1.2.0 // indirect
+>>>>>>> 11aaf9c8bfd11c0d8b209ca9966ad95680e15e40
 	github.com/kyokomi/emoji v2.2.2+incompatible // indirect
 	github.com/lithammer/fuzzysearch v1.1.0 // indirect
 	github.com/matrix-org/gomatrix v0.0.0-20200501121722-e5578b12c752 // indirect
@@ -102,8 +108,11 @@ require (
 	github.com/pinpox/go-game-of-life v1.0.0 // indirect
 	github.com/pinpox/go-getlink v0.0.0-20170822182207-8a320c627876 // indirect
 	github.com/pinpox/matrix-bot v0.0.0-20190422182545-e58f16f86ca7 // indirect
+<<<<<<< HEAD
 	github.com/pinpox/quobar v0.0.0-20160613212119-139f6533afd7 // indirect
 	github.com/pkg/sftp v1.11.0 // indirect
+=======
+>>>>>>> 11aaf9c8bfd11c0d8b209ca9966ad95680e15e40
 	github.com/prologic/go-gopher v0.0.0-20191226035442-664dbdb49f44 // indirect
 	github.com/prometheus/client_golang v1.6.0 // indirect
 	github.com/rivo/tview v0.0.0-20200507165325-823f280c5426 // indirect
@@ -120,7 +129,10 @@ require (
 	github.com/sourcegraph/jsonrpc2 v0.0.0-20200429184054-15c2290dcb37 // indirect
 	github.com/sqweek/dialog v0.0.0-20200304031853-0dcd55bfe06a // indirect
 	github.com/tarm/serial v0.0.0-20180830185346-98f6abe2eb07 // indirect
+<<<<<<< HEAD
 	github.com/tcnksm/gcli v0.2.3 // indirect
+=======
+>>>>>>> 11aaf9c8bfd11c0d8b209ca9966ad95680e15e40
 	github.com/ttacon/chalk v0.0.0-20160626202418-22c06c80ed31 // indirect
 	github.com/tv42/quobar v0.0.0-20180627180858-90d532413b55 // indirect
 	github.com/urfave/cli v1.22.4 // indirect
@@ -131,6 +143,7 @@ require (
 	github.com/zserge/webview v0.0.0-20200516134046-4caf698fad53 // indirect
 	go.opencensus.io v0.22.3 // indirect
 	gocv.io/x/gocv v0.23.0 // indirect
+<<<<<<< HEAD
 	golang.org/x/net/http2/h2demo v0.0.0-20200520182314-0ba52f642ac2 // indirect
 	google.golang.org/grpc/test/tools v0.0.0-20200521212154-4709b05f2c64 // indirect
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6 // indirect
@@ -143,4 +156,11 @@ require (
 	maunium.net/go/mautrix v0.4.5 // indirect
 	maunium.net/go/tview v0.0.0-20190111223510-de38190b095b // indirect
 	sourcegraph.com/sqs/goreturns v0.0.0-20181028201513-538ac6014518 // indirect
+=======
+	gopkg.in/alecthomas/kingpin.v2 v2.2.6 // indirect
+	gopkg.in/ini.v1 v1.56.0 // indirect
+	gopkg.in/validator.v2 v2.0.0-20191107172027-c3144fdedc21 // indirect
+	gopkg.in/yaml.v1 v1.0.0-20140924161607-9f9df34309c0 // indirect
+	maunium.net/go/tview v0.0.0-20190111223510-de38190b095b // indirect
+>>>>>>> 11aaf9c8bfd11c0d8b209ca9966ad95680e15e40
 )
