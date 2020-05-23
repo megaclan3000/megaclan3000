@@ -72,3 +72,19 @@
 	{{end}}
 </table>
 
+
+
+<h3>Hitrati over time</h1>
+<table>
+	<tr>
+		<th>Time</th>
+		<th>Hitratio</th>
+	</tr>
+	{{range .PlayerHistory.Data }}
+	<tr>
+		<td>{{.Time}}</td>
+		<td>{{.HitRatio}}</td>
+	</tr>
+	{{end}}
+</table>
+
