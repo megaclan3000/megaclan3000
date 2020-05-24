@@ -3,6 +3,8 @@ package steamclient
 import (
 	"fmt"
 	"strconv"
+
+	"github.com/davecgh/go-spew/spew"
 )
 
 // https://developer.valvesoftware.com/wiki/Steam_Web_API#GetUserStatsForGame_.28v0002.29
@@ -124,6 +126,8 @@ func (sc *SteamClient) GetUserStatsForGame(steamID string) (UserStatsForGame, er
 		extra.PlayedHours = strconv.Itoa(secI / 3600)
 	}
 
+	spew.Dump(statsMap)
+
 	return UserStatsForGame{
 		SteamID:  data.Playerstats.SteamID,
 		GameName: data.Playerstats.GameName,
@@ -181,7 +185,7 @@ func (sc *SteamClient) GetUserStatsForGame(steamID string) (UserStatsForGame, er
 			TotalGunGameContributionScore:             statsMap["total_gun_game_contribution_score"],
 			TotalGunGameRoundsPlayed:                  statsMap["total_gun_game_rounds_played"],
 			TotalGunGameRoundsWon:                     statsMap["total_gun_game_rounds_won"],
-			TotalHitsAk47:                             statsMap["total_hits_ak_47"],
+			TotalHitsAk47:                             statsMap["total_hits_ak47"],
 			TotalHitsAug:                              statsMap["total_hits_aug"],
 			TotalHitsAwp:                              statsMap["total_hits_awp"],
 			TotalHitsBizon:                            statsMap["total_hits_bizon"],
@@ -192,7 +196,7 @@ func (sc *SteamClient) GetUserStatsForGame(steamID string) (UserStatsForGame, er
 			TotalHitsG3sg1:                            statsMap["total_hits_g_3sg_1"],
 			TotalHitsGalilar:                          statsMap["total_hits_galilar"],
 			TotalHitsGlock:                            statsMap["total_hits_glock"],
-			TotalHitsHkp2000:                          statsMap["total_hits_hkp_2000"],
+			TotalHitsHkp2000:                          statsMap["total_hits_hkp2000"],
 			TotalHitsM249:                             statsMap["total_hits_m249"],
 			TotalHitsM4a1:                             statsMap["total_hits_m_4a_1"],
 			TotalHitsMac10:                            statsMap["total_hits_mac_10"],
@@ -204,15 +208,15 @@ func (sc *SteamClient) GetUserStatsForGame(steamID string) (UserStatsForGame, er
 			TotalHitsP250:                             statsMap["total_hits_p250"],
 			TotalHitsP90:                              statsMap["total_hits_p90"],
 			TotalHitsSawedoff:                         statsMap["total_hits_sawedoff"],
-			TotalHitsScar20:                           statsMap["total_hits_scar_20"],
-			TotalHitsSg556:                            statsMap["total_hits_sg_556"],
-			TotalHitsSsg08:                            statsMap["total_hits_ssg_08"],
+			TotalHitsScar20:                           statsMap["total_hits_scar20"],
+			TotalHitsSg556:                            statsMap["total_hits_sg556"],
+			TotalHitsSsg08:                            statsMap["total_hits_ssg08"],
 			TotalHitsTec9:                             statsMap["total_hits_tec_9"],
 			TotalHitsUmp45:                            statsMap["total_hits_ump_45"],
 			TotalHitsXm1014:                           statsMap["total_hits_xm_1014"],
 			TotalKills:                                statsMap["total_kills"],
 			TotalKillsAgainstZoomedSniper:             statsMap["total_kills_against_zoomed_sniper"],
-			TotalKillsAk47:                            statsMap["total_kills_ak_47"],
+			TotalKillsAk47:                            statsMap["total_kills_ak47"],
 			TotalKillsAug:                             statsMap["total_kills_aug"],
 			TotalKillsAwp:                             statsMap["total_kills_awp"],
 			TotalKillsBizon:                           statsMap["total_kills_bizon"],
@@ -222,33 +226,33 @@ func (sc *SteamClient) GetUserStatsForGame(steamID string) (UserStatsForGame, er
 			TotalKillsEnemyWeapon:                     statsMap["total_kills_enemy_weapon"],
 			TotalKillsFamas:                           statsMap["total_kills_famas"],
 			TotalKillsFiveseven:                       statsMap["total_kills_fiveseven"],
-			TotalKillsG3sg1:                           statsMap["total_kills_g_3sg_1"],
+			TotalKillsG3sg1:                           statsMap["total_kills_g3sg1"],
 			TotalKillsGalilar:                         statsMap["total_kills_galilar"],
 			TotalKillsGlock:                           statsMap["total_kills_glock"],
 			TotalKillsHeadshot:                        statsMap["total_kills_headshot"],
 			TotalKillsHegrenade:                       statsMap["total_kills_hegrenade"],
-			TotalKillsHkp2000:                         statsMap["total_kills_hkp_2000"],
+			TotalKillsHkp2000:                         statsMap["total_kills_hkp2000"],
 			TotalKillsKnife:                           statsMap["total_kills_knife"],
 			TotalKillsKnifeFight:                      statsMap["total_kills_knife_fight"],
 			TotalKillsM249:                            statsMap["total_kills_m249"],
-			TotalKillsM4a1:                            statsMap["total_kills_m_4a_1"],
-			TotalKillsMac10:                           statsMap["total_kills_mac_10"],
-			TotalKillsMag7:                            statsMap["total_kills_mag_7"],
+			TotalKillsM4a1:                            statsMap["total_kills_m4a1"],
+			TotalKillsMac10:                           statsMap["total_kills_mac10"],
+			TotalKillsMag7:                            statsMap["total_kills_mag7"],
 			TotalKillsMolotov:                         statsMap["total_kills_molotov"],
-			TotalKillsMp7:                             statsMap["total_kills_mp_7"],
-			TotalKillsMp9:                             statsMap["total_kills_mp_9"],
+			TotalKillsMp7:                             statsMap["total_kills_mp7"],
+			TotalKillsMp9:                             statsMap["total_kills_mp9"],
 			TotalKillsNegev:                           statsMap["total_kills_negev"],
 			TotalKillsNova:                            statsMap["total_kills_nova"],
 			TotalKillsP250:                            statsMap["total_kills_p250"],
 			TotalKillsP90:                             statsMap["total_kills_p90"],
 			TotalKillsSawedoff:                        statsMap["total_kills_sawedoff"],
-			TotalKillsScar20:                          statsMap["total_kills_scar_20"],
-			TotalKillsSg556:                           statsMap["total_kills_sg_556"],
-			TotalKillsSsg08:                           statsMap["total_kills_ssg_08"],
+			TotalKillsScar20:                          statsMap["total_kills_scar20"],
+			TotalKillsSg556:                           statsMap["total_kills_sg556"],
+			TotalKillsSsg08:                           statsMap["total_kills_ssg08"],
 			TotalKillsTaser:                           statsMap["total_kills_taser"],
-			TotalKillsTec9:                            statsMap["total_kills_tec_9"],
-			TotalKillsUmp45:                           statsMap["total_kills_ump_45"],
-			TotalKillsXm1014:                          statsMap["total_kills_xm_1014"],
+			TotalKillsTec9:                            statsMap["total_kills_tec9"],
+			TotalKillsUmp45:                           statsMap["total_kills_ump45"],
+			TotalKillsXm1014:                          statsMap["total_kills_xm1014"],
 			TotalMatchesPlayed:                        statsMap["total_matches_played"],
 			TotalMatchesWon:                           statsMap["total_matches_won"],
 			TotalMatchesWonBaggage:                    statsMap["total_matches_won_baggage"],
