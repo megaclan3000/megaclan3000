@@ -1,0 +1,14 @@
+
+<h3>online time (playtime2weeks) over time</h1>
+<table>
+	<tr>
+		<th>Time</th>
+		<th>Percentage</th>
+	</tr>
+	{{range .PlayerHistory.Data }}
+	<tr>
+		<td>{{.Time}}</td>
+		<td>{{.Playtime2Weeks}}</td>
+	</tr>
+	{{end}}
+</table>

@@ -1,0 +1,13 @@
+<h3>KD (last match) over time</h1>
+<table>
+	<tr>
+		<th>Time</th>
+		<th>Kills</th>
+	</tr>
+	{{range .PlayerHistory.Data }}
+	<tr>
+		<td>{{.Time}}</td>
+		<td>{{.LastMatchKD}}</td>
+	</tr>
+	{{end}}
+</table>

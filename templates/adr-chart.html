@@ -1,0 +1,14 @@
+
+<h3>ADR (last match) over time</h1>
+<table>
+	<tr>
+		<th>Time</th>
+		<th>Percentage</th>
+	</tr>
+	{{range .PlayerHistory.Data }}
+	<tr>
+		<td>{{.Time}}</td>
+		<td>{{.LastMatchADR}}</td>
+	</tr>
+	{{end}}
+</table>
