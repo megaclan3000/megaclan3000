@@ -1,14 +1,42 @@
+	<div class="col s12 m12 l6">
+        <div class="card blue-grey darken-2">
+            <div class="card-content white-text">
+                <span class="card-title">Accuracy (Hit-ratio)</span>
+                <br />
+                <canvas id="accChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+<script>
+    var ctx = document.getElementById('accChart');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
 
-<h3>accuracy Hitratio over time</h1>
-<table>
-	<tr>
-		<th>Time</th>
-		<th>Hitratio</th>
-	</tr>
-	{{range .PlayerHistory.Data }}
-	<tr>
-		<td>{{.Time}}</td>
-		<td>{{.HitRatio}}</td>
-	</tr>
-	{{end}}
-</table>
+            labels: [ {{range .PlayerHistory.Data }}
+				"{{.Time}}",
+				{{end}} ],
+            datasets: [{
+                label: 'Accuracy (Hit-ratio)',
+                data: [ {{range .PlayerHistory.Data }}
+				"{{.HitRatio}}",
+				{{end}} ],
+                backgroundColor: 'red',
+                borderColor: 'red',
+				fill: true,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            legend: {
+                labels: {
+                    // This more specific font property overrides the global property
+                    fontColor: 'white'
+                },
+                position: 'bottom',
+                align: 'start',
+                display: false
+            }
+        }
+    });
+</script>

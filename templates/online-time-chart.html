@@ -1,14 +1,42 @@
+	<div class="col s12 m12 l6">
+        <div class="card blue-grey darken-2">
+            <div class="card-content white-text">
+                <span class="card-title">Online Time</span>
+                <br />
+                <canvas id="onlineChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+<script>
+    var ctx = document.getElementById('onlineChart');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
 
-<h3>online time (playtime2weeks) over time</h1>
-<table>
-	<tr>
-		<th>Time</th>
-		<th>Percentage</th>
-	</tr>
-	{{range .PlayerHistory.Data }}
-	<tr>
-		<td>{{.Time}}</td>
-		<td>{{.Playtime2Weeks}}</td>
-	</tr>
-	{{end}}
-</table>
+            labels: [ {{range .PlayerHistory.Data }}
+				"{{.Time}}",
+				{{end}} ],
+            datasets: [{
+                label: 'ADR',
+                data: [ {{range .PlayerHistory.Data }}
+				"{{.Playtime2Weeks}}",
+				{{end}} ],
+                backgroundColor: 'red',
+                borderColor: 'red',
+				fill: false,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            legend: {
+                labels: {
+                    // This more specific font property overrides the global property
+                    fontColor: 'white'
+                },
+                position: 'bottom',
+                align: 'start',
+                display: false
+            }
+        }
+    });
+</script>
