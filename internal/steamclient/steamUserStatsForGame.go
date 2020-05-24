@@ -76,19 +76,7 @@ type GameExtras struct {
 	LastMatchADR string
 }
 
-// GetUserStatsForGame fetches information for the given steamID from the API
-// endpoint GetUserStatsForGame and returns a PlayerSummary object
-func (sc *SteamClient) GetUserStatsForGame(steamID string) (UserStatsForGame, error) {
-
-	url :=
-		"https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v2/?appid=730&key=" +
-			sc.Config.SteamAPIKey + "&steamid=" + steamID
-
-	data := userStatsForGameData{}
-
-	if err := getJSON(url, &data); err != nil {
-		return UserStatsForGame{}, err
-	}
+func (sc *SteamClient) ParseUserStatsForGame(data userStatsForGameData) (UserStatsForGame, error) {
 
 	//Create to maps for stats and archivements, so the search will be quicker afterwards
 	statsMap := make(map[string]string)
