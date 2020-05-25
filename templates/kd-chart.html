@@ -3,40 +3,43 @@
             <div class="card-content white-text">
                 <span class="card-title">Kill-Death-Ratio (KD)</span>
                 <br />
-                <canvas id="kdChart" width="400" height="400"></canvas>
+				<div id="kd-chart"></div>
             </div>
         </div>
     </div>
-<script>
-    var ctx = document.getElementById('kdChart');
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
 
-            labels: [ {{range .PlayerHistory.Data }}
-				"{{.Time}}",
-				{{end}} ],
-            datasets: [{
-                label: 'KD',
-                data: [ {{range .PlayerHistory.Data }}
-				"{{.LastMatchKD}}",
-				{{end}} ],
-                backgroundColor: 'red',
-                borderColor: 'red',
-				fill: true,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            legend: {
-                labels: {
-                    // This more specific font property overrides the global property
-                    fontColor: 'white'
-                },
-                position: 'bottom',
-                align: 'start',
-                display: false
-            }
-        }
-    });
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+<script charset="utf-8">
+
+	google.charts.load('current', {packages: ['corechart', 'line']});
+	google.charts.setOnLoadCallback(drawBasic);
+
+function drawBasic() {
+
+	  var data = new google.visualization.DataTable();
+	  data.addColumn('datetime', 'X');
+	  data.addColumn('number', 'Dogs');
+
+
+	  data.addRows([
+			 {{range .PlayerHistory.Data }} [new Date('{{.Time}}'), {{.TotalKD}}], {{end}}
+	  ]);
+
+	  var options = {
+		hAxis: {
+		  title: 'Time'
+		},
+		vAxis: {
+		  title: 'Popularity'
+		}
+	  };
+
+	  var chart = new google.visualization.LineChart(document.getElementById('kd-chart'));
+
+	  chart.draw(data, options);
+	}
+
 </script>
