@@ -4,6 +4,8 @@
 			<span class="card-title">Played maps</span>
 			<br />
 			<div id="piechart-maps" ></div>
+			<br />
+  <div id="chart_div"></div>
 		</div>
 	</div>
 </div>
@@ -50,4 +52,62 @@
 		var chart = new google.visualization.PieChart(document.getElementById('piechart-maps'));
 		chart.draw(data, options);
 	  }
+</script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script charset="utf-8">
+
+google.charts.load('current', {packages: ['corechart', 'bar']});
+google.charts.setOnLoadCallback(drawStacked);
+
+function drawStacked() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Map');
+      data.addColumn('number', 'Win');
+      data.addColumn('number', 'Loose');
+
+      data.addRows([
+
+	['TotalWinsMapArBaggage',    {{.UserStatsForGame.Stats.TotalWinsMapArBaggage}},    {{.UserStatsForGame.Stats.TotalRoundsMapArBaggage}}    - {{.UserStatsForGame.Stats.TotalWinsMapArMonastery}}],
+	['TotalWinsMapArMonastery',  {{.UserStatsForGame.Stats.TotalWinsMapArMonastery}},  {{.UserStatsForGame.Stats.TotalRoundsMapArMonastery}}  - {{.UserStatsForGame.Stats.TotalWinsMapArMonastery}}],
+	['TotalWinsMapArShoots',     {{.UserStatsForGame.Stats.TotalWinsMapArShoots}},     {{.UserStatsForGame.Stats.TotalRoundsMapArShoots}}     - {{.UserStatsForGame.Stats.TotalWinsMapArShoots}}],
+	['TotalWinsMapCsAssault',    {{.UserStatsForGame.Stats.TotalWinsMapCsAssault}},    {{.UserStatsForGame.Stats.TotalRoundsMapCsAssault}}    - {{.UserStatsForGame.Stats.TotalWinsMapCsAssault}}],
+	['TotalWinsMapCsItaly',      {{.UserStatsForGame.Stats.TotalWinsMapCsItaly}},      {{.UserStatsForGame.Stats.TotalRoundsMapCsItaly}}      - {{.UserStatsForGame.Stats.TotalWinsMapCsItaly}}],
+	['TotalWinsMapCsMilitia',    {{.UserStatsForGame.Stats.TotalWinsMapCsMilitia}},    {{.UserStatsForGame.Stats.TotalRoundsMapCsMilitia}}    - {{.UserStatsForGame.Stats.TotalWinsMapCsMilitia}}],
+	['TotalWinsMapCsOffice',     {{.UserStatsForGame.Stats.TotalWinsMapCsOffice}},     {{.UserStatsForGame.Stats.TotalRoundsMapCsOffice}}     - {{.UserStatsForGame.Stats.TotalWinsMapCsOffice}}],
+	['TotalWinsMapDeAztec',      {{.UserStatsForGame.Stats.TotalWinsMapDeAztec}},      {{.UserStatsForGame.Stats.TotalRoundsMapDeAztec}}      - {{.UserStatsForGame.Stats.TotalWinsMapDeAztec}}],
+	['TotalWinsMapDeBank',       {{.UserStatsForGame.Stats.TotalWinsMapDeBank}},       {{.UserStatsForGame.Stats.TotalRoundsMapDeBank}}       - {{.UserStatsForGame.Stats.TotalWinsMapDeBank}}],
+	['TotalWinsMapDeCbble',      {{.UserStatsForGame.Stats.TotalWinsMapDeCbble}},      {{.UserStatsForGame.Stats.TotalRoundsMapDeCbble}}      - {{.UserStatsForGame.Stats.TotalWinsMapDeCbble}}],
+	['TotalWinsMapDeDust',       {{.UserStatsForGame.Stats.TotalWinsMapDeDust}},       {{.UserStatsForGame.Stats.TotalRoundsMapDeDust}}       - {{.UserStatsForGame.Stats.TotalWinsMapDeDust}}],
+	['TotalWinsMapDeDust2',      {{.UserStatsForGame.Stats.TotalWinsMapDeDust2}},      {{.UserStatsForGame.Stats.TotalRoundsMapDeDust2}}      - {{.UserStatsForGame.Stats.TotalWinsMapDeDust2}}],
+	['TotalWinsMapDeInferno',    {{.UserStatsForGame.Stats.TotalWinsMapDeInferno}},    {{.UserStatsForGame.Stats.TotalRoundsMapDeInferno}}    - {{.UserStatsForGame.Stats.TotalWinsMapDeInferno}}],
+	['TotalWinsMapDeLake',       {{.UserStatsForGame.Stats.TotalWinsMapDeLake}},       {{.UserStatsForGame.Stats.TotalRoundsMapDeLake}}       - {{.UserStatsForGame.Stats.TotalWinsMapDeLake}}],
+	['TotalWinsMapDeNuke',       {{.UserStatsForGame.Stats.TotalWinsMapDeNuke}},       {{.UserStatsForGame.Stats.TotalRoundsMapDeNuke}}       - {{.UserStatsForGame.Stats.TotalWinsMapDeNuke}}],
+	['TotalWinsMapDeSafehouse',  {{.UserStatsForGame.Stats.TotalWinsMapDeSafehouse}},  {{.UserStatsForGame.Stats.TotalRoundsMapDeSafehouse}}  - {{.UserStatsForGame.Stats.TotalWinsMapDeSafehouse}}],
+	['TotalWinsMapDeShorttrain', {{.UserStatsForGame.Stats.TotalWinsMapDeShorttrain}}, {{.UserStatsForGame.Stats.TotalRoundsMapDeShorttrain}} - {{.UserStatsForGame.Stats.TotalWinsMapDeShorttrain}}],
+	['TotalWinsMapDeStmarc',     {{.UserStatsForGame.Stats.TotalWinsMapDeStmarc}},     {{.UserStatsForGame.Stats.TotalRoundsMapDeStmarc}}     - {{.UserStatsForGame.Stats.TotalWinsMapDeStmarc}}],
+	['TotalWinsMapDeSugarcane',  {{.UserStatsForGame.Stats.TotalWinsMapDeSugarcane}},  {{.UserStatsForGame.Stats.TotalRoundsMapDeSugarcane}}  - {{.UserStatsForGame.Stats.TotalWinsMapDeSugarcane}}],
+	['TotalWinsMapDeTrain',      {{.UserStatsForGame.Stats.TotalWinsMapDeTrain}},      {{.UserStatsForGame.Stats.TotalRoundsMapDeTrain}}      - {{.UserStatsForGame.Stats.TotalWinsMapDeTrain}}],
+	['TotalWinsMapDeVertigo',    {{.UserStatsForGame.Stats.TotalWinsMapDeVertigo}},    {{.UserStatsForGame.Stats.TotalRoundsMapDeVertigo}}    - {{.UserStatsForGame.Stats.TotalWinsMapDeVertigo}}]
+	//<!-- ['TotalWinsMapDeHouse',      {{.UserStatsForGame.Stats.TotalWinsMapDeHouse}},      {{.UserStatsForGame.Stats.TotalRoundsMapDeHouse}}      - {{.UserStatsForGame.Stats.TotalWinsMapDeHouse}}], -->
+      ]);
+
+      var options = {
+        title: 'Motivation and Energy Level Throughout the Day',
+        isStacked: true,
+        hAxis: {
+          title: 'Time of Day',
+          format: 'h:mm a',
+          viewWindow: {
+            min: [7, 30, 0],
+            max: [17, 30, 0]
+          }
+        },
+        vAxis: {
+          title: 'Rating (scale of 1-10)'
+        }
+      };
+
+      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    }
 </script>
