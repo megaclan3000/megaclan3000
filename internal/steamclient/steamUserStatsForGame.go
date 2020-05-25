@@ -2,10 +2,7 @@ package steamclient
 
 import (
 	"fmt"
-	"log"
 	"strconv"
-
-	"github.com/davecgh/go-spew/spew"
 )
 
 // https://developer.valvesoftware.com/wiki/Steam_Web_API#GetUserStatsForGame_.28v0002.29
@@ -114,6 +111,8 @@ func (sc *SteamClient) ParseUserStatsForGame(data userStatsForGameData) (UserSta
 	if secI, err := strconv.Atoi(statsMap["total_time_played"]); err == nil {
 		extra.PlayedHours = strconv.Itoa(secI / 3600)
 	}
+
+	//TODO add ADR
 
 	return UserStatsForGame{
 		SteamID:  data.Playerstats.SteamID,
@@ -329,7 +328,6 @@ func (sc *SteamClient) ParseUserStatsForGame(data userStatsForGameData) (UserSta
 			TotalWinsMapDeDust:                        nilToZeroString(statsMap["total_wins_map_de_dust"]),
 			TotalWinsMapDeDust2:                       nilToZeroString(statsMap["total_wins_map_de_dust2"]),
 			TotalWinsMapDeHouse:                       nilToZeroString(statsMap["total_wins_map_de_house"]),
-			TotalRoundsMapDeHouse:                     nilToZeroString(statsMap["total_rounds_map_de_house"]),
 			TotalWinsMapDeInferno:                     nilToZeroString(statsMap["total_wins_map_de_inferno"]),
 			TotalWinsMapDeLake:                        nilToZeroString(statsMap["total_wins_map_de_lake"]),
 			TotalWinsMapDeNuke:                        nilToZeroString(statsMap["total_wins_map_de_nuke"]),
@@ -349,10 +347,7 @@ func (sc *SteamClient) ParseUserStatsForGame(data userStatsForGameData) (UserSta
 }
 
 func nilToZeroString(input string) string {
-	log.Println("got:")
-	spew.Dump(input)
 	if input == "" {
-		log.Println("returning 0")
 		return "0"
 	}
 	return input
