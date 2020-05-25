@@ -1,236 +1,63 @@
-	<div class="col s12 m12 l6">
-        <div class="card blue-grey darken-2">
-            <div class="card-content white-text">
-                <span class="card-title">Number of kills per weapon</span>
-                <br />
-                <canvas id="weaponsChart" width="400" height="400"></canvas>
-            </div>
-        </div>
-    </div>
-<script>
-    var ctx = document.getElementById('weaponsChart');
-    var myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: [
-                // --------  Close Range  --------  
-                'Knife', 
-                // 'Zeus x27',
-                
-                // --------  Pistoles  --------  
-                // 'CZ75-Auto',
-                'Desert Eagle',
-                // 'Dual Berettas',
-                'Five Seven',
-                'Glock', 
-                'P250',
-                'P2000',
-                // 'R8 Revolver',
-                'Tec-9', 
-                // 'USP-S',
-    
-                // --------  SMG  --------  
-                'MAC-10',
-                // 'MP5-SD',
-                'MP7',
-                'MP9',
-                // 'M4A4',
-                'P90',
-                'PP-Bizon', 
-                // 'SSG 08',
-                'UMP-45',
-    
-                // --------  Rifles  --------
-                'AK 47',
-                'AUG', 
-                'AWP',
-                'Famas',
-                'Galil AR',
-                'G3SG1',
-                'M4A1-S',
-                'SG 556',
-                'SCAR-20', 
-    
-                // --------  Heavy  --------
-                'MAG-7',
-                'M249',
-                'Negev',
-                'Nova',
-                'Sawed off',
-                'XM1014',
-    
-                // --------  Grenades  --------
-                'HE Grenade',
-                'Molotov'
-            ],
-            datasets: [{
-                label: '# of kills',
-                data: [
-                    // --------  Close Range  --------  
-                    {{.UserStatsForGame.Stats.TotalKillsKnife}},
-                    // 'Zeus x27',
-    
-                    // --------  Pistoles  --------  
-                    // 'CZ75-Auto',
-                    {{ .UserStatsForGame.Stats.TotalKillsDeagle}},
-                    // 'Dual Berettas',
-                    {{ .UserStatsForGame.Stats.TotalKillsFiveseven}},
-                    {{ .UserStatsForGame.Stats.TotalKillsGlock}},
-                    {{ .UserStatsForGame.Stats.TotalKillsP250}},
-                    {{ .UserStatsForGame.Stats.TotalKillsHkp2000}},
-                    // 'R8 Revolver',
-                    {{ .UserStatsForGame.Stats.TotalKillsTec9}},
-                    // 'USP-S',
-    
-                    // --------  SMG  --------  
-                    {{ .UserStatsForGame.Stats.TotalKillsMac10}},
-                     // 'MP5-SD',
-                    {{ .UserStatsForGame.Stats.TotalKillsMp7}},
-                    {{ .UserStatsForGame.Stats.TotalKillsMp9}},
-                    // 'M4A4',
-                    {{ .UserStatsForGame.Stats.TotalKillsP90}},
-                    {{ .UserStatsForGame.Stats.TotalKillsBizon}},
-                    // 'SSG 08',
-                    {{ .UserStatsForGame.Stats.TotalKillsUmp45}},
-    
-                    // --------  Rifles  --------
-                    {{ .UserStatsForGame.Stats.TotalKillsAk47}},
-                    {{ .UserStatsForGame.Stats.TotalKillsAug}},
-                    {{ .UserStatsForGame.Stats.TotalKillsAwp}},
-                    {{ .UserStatsForGame.Stats.TotalKillsFamas}},
-                    {{ .UserStatsForGame.Stats.TotalKillsGalilar}},
-                    {{ .UserStatsForGame.Stats.TotalKillsG3sg1}},
-                    {{ .UserStatsForGame.Stats.TotalKillsM4a1}},
-                    {{ .UserStatsForGame.Stats.TotalKillsSg556}},
-                    {{ .UserStatsForGame.Stats.TotalKillsScar20}}, 
-                    
-                    // --------  Heavy  --------
-                    {{ .UserStatsForGame.Stats.TotalKillsMag7}},
-                    {{ .UserStatsForGame.Stats.TotalKillsM249}},
-                    {{ .UserStatsForGame.Stats.TotalKillsNegev}},
-                    {{ .UserStatsForGame.Stats.TotalKillsNova}},
-                    {{ .UserStatsForGame.Stats.TotalKillsSawedoff}},
-                    {{ .UserStatsForGame.Stats.TotalKillsXm1014}},  
-                    
-                    // --------  Grenades  --------
-                    {{ .UserStatsForGame.Stats.TotalKillsHegrenade}},
-                    {{ .UserStatsForGame.Stats.TotalKillsMolotov}}
-                ],
-                backgroundColor: [
-                    // --------  Close Range  --------
-                    '#e91e6399',
-                    //'#d81b6099',
-    
-                    // --------  Pistoles  -------- 
-                    //'#f3e5f599',
-                    '#e1bee799',
-                    //'#ce93d899',
-                    '#ba68c899',
-                    '#ab47bc99',
-                    '#9c27b099',
-                    '#8e24aa99',
-                    //'#7b1fa299',
-                    '#6a1b9a99',
-                    //'#4a148c99',
-    
-                    // --------  SMG  --------  
-                    '#dcedc899',
-                    //'#c5e1a599',
-                    '#aed58199',
-                    '#9ccc6599',
-                    //'#8bc34a99',
-                    '#7cb34299',
-                    '#689f3899',
-                    //'#558b2f99',
-                    '#33691e99',
-    
-                    // --------  Rifles  --------
-                    '#ffccbc99',
-                    '#ffab9199',
-                    '#ff8a6599',
-                    '#ff704399',
-                    '#ff572299',
-                    '#f4511e99',
-                    '#e64a1999',
-                    '#d8431599',
-                    '#bf360c99',
-    
-                    // --------  Heavy  --------
-                    '#8d6e6399',
-                    '#79554899',
-                    '#6d4c4199',
-                    '#5d403799',
-                    '#4e342e99',
-                    '#3e272399',
-    
-                    // --------  Grenades  --------
-                    '#ffeb3b99',
-                    '#fdd83599'
-                ],
-                borderColor: [
-                   // --------  Close Range  --------
-                   '#e91e63',
-                    //'#d81b60',
-    
-                    // --------  Pistoles  -------- 
-                    //'#f3e5f5',
-                    '#e1bee7',
-                    //'#ce93d8',
-                    '#ba68c8',
-                    '#ab47bc',
-                    '#9c27b0',
-                    '#8e24aa',
-                    //'#7b1fa2',
-                    '#6a1b9a',
-                    //'#4a148c',
-    
-                    // --------  SMG  --------  
-                    '#dcedc8',
-                    //'#c5e1a5',
-                    '#aed581',
-                    '#9ccc65',
-                    //'#8bc34a',
-                    '#7cb342',
-                    '#689f38',
-                    //'#558b2f',
-                    '#33691e',
-    
-                    // --------  Rifles  --------
-                    '#ffccbc',
-                    '#ffab91',
-                    '#ff8a65',
-                    '#ff7043',
-                    '#ff5722',
-                    '#f4511e',
-                    '#e64a19',
-                    '#d84315',
-                    '#bf360c',
-    
-                    // --------  Heavy  --------
-                    '#8d6e63',
-                    '#795548',
-                    '#6d4c41',
-                    '#5d4037',
-                    '#4e342e',
-                    '#3e2723',
-    
-                    // --------  Grenades  --------
-                    '#ffeb3b',
-                    '#fdd835'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            legend: {
-                labels: {
-                    // This more specific font property overrides the global property
-                    fontColor: 'white'
-                },
-                position: 'bottom',
-                align: 'start',
-                display: false
-            }
-        }
-    });
+<div class="col s12 m12 l6">
+	<div class="card blue-grey darken-2">
+		<div class="card-content white-text">
+			<span class="card-title">Number of kills per weapon</span>
+			<br />
+			<div id="piechart" ></div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script charset="utf-8">
+	google.charts.load('current', {'packages':['corechart']});
+	  google.charts.setOnLoadCallback(drawChart);
+
+	  function drawChart() {
+
+		var data = google.visualization.arrayToDataTable([
+		  ['Task', 'Hours per Day'],
+			['TotalKillsAk47',                 {{.UserStatsForGame.Stats.TotalKillsAk47}}],
+			['TotalKillsAug',                  {{.UserStatsForGame.Stats.TotalKillsAug}}],
+			['TotalKillsAwp',                  {{.UserStatsForGame.Stats.TotalKillsAwp}}],
+			['TotalKillsBizon',                {{.UserStatsForGame.Stats.TotalKillsBizon}}],
+			['TotalKillsDeagle',               {{.UserStatsForGame.Stats.TotalKillsDeagle}}],
+			['TotalKillsElite',                {{.UserStatsForGame.Stats.TotalKillsElite}}],
+			['TotalKillsFamas',                {{.UserStatsForGame.Stats.TotalKillsFamas}}],
+			['TotalKillsFiveseven',            {{.UserStatsForGame.Stats.TotalKillsFiveseven}}],
+			['TotalKillsG3sg1',                {{.UserStatsForGame.Stats.TotalKillsG3sg1}}],
+			['TotalKillsGalilar',              {{.UserStatsForGame.Stats.TotalKillsGalilar}}],
+			['TotalKillsGlock',                {{.UserStatsForGame.Stats.TotalKillsGlock}}],
+			['TotalKillsHegrenade',            {{.UserStatsForGame.Stats.TotalKillsHegrenade}}],
+			['TotalKillsHkp2000',              {{.UserStatsForGame.Stats.TotalKillsHkp2000}}],
+			['TotalKillsKnife',                {{.UserStatsForGame.Stats.TotalKillsKnife}}],
+			['TotalKillsM249',                 {{.UserStatsForGame.Stats.TotalKillsM249}}],
+			['TotalKillsM4a1',                 {{.UserStatsForGame.Stats.TotalKillsM4a1}}],
+			['TotalKillsMac10',                {{.UserStatsForGame.Stats.TotalKillsMac10}}],
+			['TotalKillsMag7',                 {{.UserStatsForGame.Stats.TotalKillsMag7}}],
+			['TotalKillsMolotov',              {{.UserStatsForGame.Stats.TotalKillsMolotov}}],
+			['TotalKillsMp7',                  {{.UserStatsForGame.Stats.TotalKillsMp7}}],
+			['TotalKillsMp9',                  {{.UserStatsForGame.Stats.TotalKillsMp9}}],
+			['TotalKillsNegev',                {{.UserStatsForGame.Stats.TotalKillsNegev}}],
+			['TotalKillsNova',                 {{.UserStatsForGame.Stats.TotalKillsNova}}],
+			['TotalKillsP250',                 {{.UserStatsForGame.Stats.TotalKillsP250}}],
+			['TotalKillsP90',                  {{.UserStatsForGame.Stats.TotalKillsP90}}],
+			['TotalKillsSawedoff',             {{.UserStatsForGame.Stats.TotalKillsSawedoff}}],
+			['TotalKillsScar20',               {{.UserStatsForGame.Stats.TotalKillsScar20}}],
+			['TotalKillsSg556',                {{.UserStatsForGame.Stats.TotalKillsSg556}}],
+			['TotalKillsSsg08',                {{.UserStatsForGame.Stats.TotalKillsSsg08}}],
+			['TotalKillsTaser',                {{.UserStatsForGame.Stats.TotalKillsTaser}}],
+			['TotalKillsTec9',                 {{.UserStatsForGame.Stats.TotalKillsTec9}}],
+			['TotalKillsUmp45',                {{.UserStatsForGame.Stats.TotalKillsUmp45}}],
+			['TotalKillsXm1014',               {{.UserStatsForGame.Stats.TotalKillsXm1014}}]
+
+		]);
+
+		var options = {
+		  title: 'Used weapons'
+		};
+
+		var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+		chart.draw(data, options);
+	  }
 </script>
