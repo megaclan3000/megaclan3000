@@ -3,7 +3,7 @@
 		<div class="card-content white-text">
 			<span class="card-title">Number of kills per weapon</span>
 			<br />
-			<div id="piechart" ></div>
+			<div id="piechart-weapons" ></div>
 		</div>
 	</div>
 </div>
@@ -16,7 +16,7 @@
 	  function drawChart() {
 
 		var data = google.visualization.arrayToDataTable([
-		  ['Task', 'Hours per Day'],
+		  ['Weapon', 'Kills'],
 			['TotalKillsAk47',                 {{.UserStatsForGame.Stats.TotalKillsAk47}}],
 			['TotalKillsAug',                  {{.UserStatsForGame.Stats.TotalKillsAug}}],
 			['TotalKillsAwp',                  {{.UserStatsForGame.Stats.TotalKillsAwp}}],
@@ -57,7 +57,7 @@
 		  title: 'Used weapons'
 		};
 
-		var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+		var chart = new google.visualization.PieChart(document.getElementById('piechart-weapons'));
 		chart.draw(data, options);
 	  }
 </script>

@@ -1,97 +1,53 @@
-	<div class="col s12 m12 l6">
-        <div class="card blue-grey darken-2">
-            <div class="card-content white-text">
-                <span class="card-title">Played maps</span>
-                <br />
-                <canvas id="mapsChart" width="400" height="400"></canvas>
-            </div>
-        </div>
-    </div>
-<script>
-    var ctx = document.getElementById('mapsChart');
-    var myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: [
-                "Baggage",
-                "Bank",
-                "CBBL",
-                "Dust",
-                "Dust 2",
-                "Inferno",
-                "Italy",
-                "Lake",
-                "Nuke",
-                "Safehouse",
-                "St. Marc",
-                "Sugarcane",
-                "Train",
-                "Vertigo"
-            ],
-            datasets: [{
-                label: 'Maps',
-                data: [
-                    {{ .UserStatsForGame.Stats.TotalWinsMapArBaggage }},
-                    {{ .UserStatsForGame.Stats.TotalWinsMapArBaggage }},
-                    {{ .UserStatsForGame.Stats.TotalWinsMapDeCbble }},
-                    {{ .UserStatsForGame.Stats.TotalWinsMapDeDust }},
-                    {{ .UserStatsForGame.Stats.TotalWinsMapDeDust2 }},
-                    {{ .UserStatsForGame.Stats.TotalWinsMapDeInferno }},
-                    {{ .UserStatsForGame.Stats.TotalWinsMapCsItaly }},
-                    {{ .UserStatsForGame.Stats.TotalWinsMapDeLake }},
-                    {{ .UserStatsForGame.Stats.TotalWinsMapDeNuke }},
-                    {{ .UserStatsForGame.Stats.TotalWinsMapDeSafehouse }},
-                    {{ .UserStatsForGame.Stats.TotalWinsMapDeStmarc }},
-                    {{ .UserStatsForGame.Stats.TotalWinsMapDeSugarcane }},
-                    {{ .UserStatsForGame.Stats.TotalWinsMapDeTrain }},
-                    {{ .UserStatsForGame.Stats.TotalWinsMapDeVertigo }},
-                ],
-                backgroundColor: [
-                    '#fbe9e799',
-                    '#ffccbc99',
-                    '#ffab9199',
-                    '#ff8a6599',
-                    '#ff704399',
-                    '#ff572299',
-                    '#f4511e99',
-                    '#e64a1999',
-                    '#d8431599',
-                    '#bf360c99',
-                    '#e5393599',
-                    '#d32f2f99',
-                    '#c6282899',
-                    '#b71c1c99'
-                ],
-                borderColor: [
-                    '#fbe9e7',
-                    '#ffccbc',
-                    '#ffab91',
-                    '#ff8a65',
-                    '#ff7043',
-                    '#ff5722',
-                    '#f4511e',
-                    '#e64a19',
-                    '#d84315',
-                    '#bf360c',
-                    '#e53935',
-                    '#d32f2f',
-                    '#c62828',
-                    '#b71c1c'       
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            legend: {
-                labels: {
-                    // This more specific font property overrides the global property
-                    fontColor: 'white'
-                    
-                },
-                position: 'bottom',
-                align: 'start',
-                display: false
-            }
-        }
-    });
+<div class="col s12 m12 l6">
+	<div class="card blue-grey darken-2">
+		<div class="card-content white-text">
+			<span class="card-title">Played maps</span>
+			<br />
+			<div id="piechart-maps" ></div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script charset="utf-8">
+	google.charts.load('current', {'packages':['corechart']});
+	  google.charts.setOnLoadCallback(drawChart);
+
+	  function drawChart() {
+
+		var data = google.visualization.arrayToDataTable([
+		  ['Map', 'Wins'],
+
+	['TotalWinsMapArBaggage', {{.UserStatsForGame.Stats.TotalWinsMapArBaggage}}],
+	['TotalWinsMapArMonastery', {{.UserStatsForGame.Stats.TotalWinsMapArMonastery}}],
+	['TotalWinsMapArShoots', {{.UserStatsForGame.Stats.TotalWinsMapArShoots}}],
+	['TotalWinsMapCsAssault', {{.UserStatsForGame.Stats.TotalWinsMapCsAssault}}],
+	['TotalWinsMapCsItaly', {{.UserStatsForGame.Stats.TotalWinsMapCsItaly}}],
+	['TotalWinsMapCsMilitia', {{.UserStatsForGame.Stats.TotalWinsMapCsMilitia}}],
+	['TotalWinsMapCsOffice', {{.UserStatsForGame.Stats.TotalWinsMapCsOffice}}],
+	['TotalWinsMapDeAztec', {{.UserStatsForGame.Stats.TotalWinsMapDeAztec}}],
+	['TotalWinsMapDeBank', {{.UserStatsForGame.Stats.TotalWinsMapDeBank}}],
+	['TotalWinsMapDeCbble', {{.UserStatsForGame.Stats.TotalWinsMapDeCbble}}],
+	['TotalWinsMapDeDust', {{.UserStatsForGame.Stats.TotalWinsMapDeDust}}],
+	['TotalWinsMapDeDust2', {{.UserStatsForGame.Stats.TotalWinsMapDeDust2}}],
+	['TotalWinsMapDeHouse', {{.UserStatsForGame.Stats.TotalWinsMapDeHouse}}],
+	['TotalWinsMapDeInferno', {{.UserStatsForGame.Stats.TotalWinsMapDeInferno}}],
+	['TotalWinsMapDeLake', {{.UserStatsForGame.Stats.TotalWinsMapDeLake}}],
+	['TotalWinsMapDeNuke', {{.UserStatsForGame.Stats.TotalWinsMapDeNuke}}],
+	['TotalWinsMapDeSafehouse', {{.UserStatsForGame.Stats.TotalWinsMapDeSafehouse}}],
+	['TotalWinsMapDeShorttrain', {{.UserStatsForGame.Stats.TotalWinsMapDeShorttrain}}],
+	['TotalWinsMapDeStmarc', {{.UserStatsForGame.Stats.TotalWinsMapDeStmarc}}],
+	['TotalWinsMapDeSugarcane', {{.UserStatsForGame.Stats.TotalWinsMapDeSugarcane}}],
+	['TotalWinsMapDeTrain', {{.UserStatsForGame.Stats.TotalWinsMapDeTrain}}],
+	['TotalWinsMapDeVertigo', {{.UserStatsForGame.Stats.TotalWinsMapDeVertigo}}]
+
+		]);
+
+		var options = {
+		  title: 'Used weapons'
+		};
+
+		var chart = new google.visualization.PieChart(document.getElementById('piechart-maps'));
+		chart.draw(data, options);
+	  }
 </script>
