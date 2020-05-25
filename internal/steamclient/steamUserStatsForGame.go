@@ -3,8 +3,6 @@ package steamclient
 import (
 	"fmt"
 	"strconv"
-
-	"github.com/davecgh/go-spew/spew"
 )
 
 // https://developer.valvesoftware.com/wiki/Steam_Web_API#GetUserStatsForGame_.28v0002.29
@@ -113,8 +111,6 @@ func (sc *SteamClient) ParseUserStatsForGame(data userStatsForGameData) (UserSta
 	if secI, err := strconv.Atoi(statsMap["total_time_played"]); err == nil {
 		extra.PlayedHours = strconv.Itoa(secI / 3600)
 	}
-
-	spew.Dump(statsMap)
 
 	return UserStatsForGame{
 		SteamID:  data.Playerstats.SteamID,
@@ -279,7 +275,7 @@ func (sc *SteamClient) ParseUserStatsForGame(data userStatsForGameData) (UserSta
 			TotalRoundsMapDeTrain:                     statsMap["total_rounds_map_de_train"],
 			TotalRoundsMapDeVertigo:                   statsMap["total_rounds_map_de_vertigo"],
 			TotalRoundsPlayed:                         statsMap["total_rounds_played"],
-			TotalShotsAk47:                            statsMap["total_shots_ak_47"],
+			TotalShotsAk47:                            statsMap["total_shots_ak47"],
 			TotalShotsAug:                             statsMap["total_shots_aug"],
 			TotalShotsAwp:                             statsMap["total_shots_awp"],
 			TotalShotsBizon:                           statsMap["total_shots_bizon"],
@@ -288,29 +284,29 @@ func (sc *SteamClient) ParseUserStatsForGame(data userStatsForGameData) (UserSta
 			TotalShotsFamas:                           statsMap["total_shots_famas"],
 			TotalShotsFired:                           statsMap["total_shots_fired"],
 			TotalShotsFiveseven:                       statsMap["total_shots_fiveseven"],
-			TotalShotsG3sg1:                           statsMap["total_shots_g_3sg_1"],
+			TotalShotsG3sg1:                           statsMap["total_shots_g3sg1"],
 			TotalShotsGalilar:                         statsMap["total_shots_galilar"],
 			TotalShotsGlock:                           statsMap["total_shots_glock"],
 			TotalShotsHit:                             statsMap["total_shots_hit"],
-			TotalShotsHkp2000:                         statsMap["total_shots_hkp_2000"],
+			TotalShotsHkp2000:                         statsMap["total_shots_hkp2000"],
 			TotalShotsM249:                            statsMap["total_shots_m249"],
-			TotalShotsM4a1:                            statsMap["total_shots_m_4a_1"],
-			TotalShotsMac10:                           statsMap["total_shots_mac_10"],
-			TotalShotsMag7:                            statsMap["total_shots_mag_7"],
-			TotalShotsMp7:                             statsMap["total_shots_mp_7"],
-			TotalShotsMp9:                             statsMap["total_shots_mp_9"],
+			TotalShotsM4a1:                            statsMap["total_shots_m4a1"],
+			TotalShotsMac10:                           statsMap["total_shots_mac10"],
+			TotalShotsMag7:                            statsMap["total_shots_mag7"],
+			TotalShotsMp7:                             statsMap["total_shots_mp7"],
+			TotalShotsMp9:                             statsMap["total_shots_mp9"],
 			TotalShotsNegev:                           statsMap["total_shots_negev"],
 			TotalShotsNova:                            statsMap["total_shots_nova"],
 			TotalShotsP250:                            statsMap["total_shots_p250"],
 			TotalShotsP90:                             statsMap["total_shots_p90"],
 			TotalShotsSawedoff:                        statsMap["total_shots_sawedoff"],
-			TotalShotsScar20:                          statsMap["total_shots_scar_20"],
-			TotalShotsSg556:                           statsMap["total_shots_sg_556"],
-			TotalShotsSsg08:                           statsMap["total_shots_ssg_08"],
+			TotalShotsScar20:                          statsMap["total_shots_scar20"],
+			TotalShotsSg556:                           statsMap["total_shots_sg556"],
+			TotalShotsSsg08:                           statsMap["total_shots_ssg08"],
 			TotalShotsTaser:                           statsMap["total_shots_taser"],
-			TotalShotsTec9:                            statsMap["total_shots_tec_9"],
-			TotalShotsUmp45:                           statsMap["total_shots_ump_45"],
-			TotalShotsXm1014:                          statsMap["total_shots_xm_1014"],
+			TotalShotsTec9:                            statsMap["total_shots_tec9"],
+			TotalShotsUmp45:                           statsMap["total_shots_ump45"],
+			TotalShotsXm1014:                          statsMap["total_shots_xm1014"],
 			TotalTRDefusedBombs:                       statsMap["total_tr_defused_bombs"],
 			TotalTRPlantedBombs:                       statsMap["total_tr_planted_bombs"],
 			TotalTimePlayed:                           statsMap["total_time_played"],
@@ -328,7 +324,7 @@ func (sc *SteamClient) ParseUserStatsForGame(data userStatsForGameData) (UserSta
 			TotalWinsMapDeBank:                        statsMap["total_wins_map_de_bank"],
 			TotalWinsMapDeCbble:                       statsMap["total_wins_map_de_cbble"],
 			TotalWinsMapDeDust:                        statsMap["total_wins_map_de_dust"],
-			TotalWinsMapDeDust2:                       statsMap["total_wins_map_de_dust_2"],
+			TotalWinsMapDeDust2:                       statsMap["total_wins_map_de_dust2"],
 			TotalWinsMapDeHouse:                       statsMap["total_wins_map_de_house"],
 			TotalWinsMapDeInferno:                     statsMap["total_wins_map_de_inferno"],
 			TotalWinsMapDeLake:                        statsMap["total_wins_map_de_lake"],
