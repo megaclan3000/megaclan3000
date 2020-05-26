@@ -1,16 +1,6 @@
-<div class="col s12 m12 l6">
-	<div class="card blue-grey darken-2">
-		<div class="card-content white-text">
-			<span class="card-title">Accuracy (Hit-ratio)</span>
-			<br />
-			<div id="accuracy-chart"></div>
-		</div>
-	</div>
-</div>
+<div id="accuracy-chart"></div>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-
 <script charset="utf-8">
 
 	google.charts.load('current', {packages: ['corechart', 'line']});
@@ -20,7 +10,7 @@ function drawBasic() {
 
 	  var data = new google.visualization.DataTable();
 	  data.addColumn('datetime', 'X');
-	  data.addColumn('number', 'Dogs');
+	  data.addColumn('number', 'Hit-Ratio');
 
 
 	  data.addRows([
@@ -29,10 +19,10 @@ function drawBasic() {
 
 	  var options = {
 		hAxis: {
-		  title: 'Time'
+		  //title: 'Time'
 		},
 		vAxis: {
-		  title: 'Popularity'
+		  //title: 'Popularity'
 		}
 	  };
 

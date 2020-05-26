@@ -1,17 +1,7 @@
-	<div class="col s12 m12 l6">
-        <div class="card blue-grey darken-2">
-            <div class="card-content white-text">
-                <span class="card-title">Kill-Death-Ratio (KD)</span>
-                <br />
-				<div id="kd-chart"></div>
-            </div>
-        </div>
-    </div>
+<div id="kd-chart"></div>
 
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-
 <script charset="utf-8">
 
 	google.charts.load('current', {packages: ['corechart', 'line']});
@@ -38,7 +28,6 @@ function drawBasic() {
 	  };
 
 	  var chart = new google.visualization.LineChart(document.getElementById('kd-chart'));
-
 	  chart.draw(data, options);
 	}
 

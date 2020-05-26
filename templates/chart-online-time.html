@@ -1,42 +1,34 @@
-	<div class="col s12 m12 l6">
-        <div class="card blue-grey darken-2">
-            <div class="card-content white-text">
-                <span class="card-title">Online Time</span>
-                <br />
-                <canvas id="onlineChart" width="400" height="400"></canvas>
-            </div>
-        </div>
-    </div>
-<script>
-    var ctx = document.getElementById('onlineChart');
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
+<div id="online-time-chart"></div>
 
-            labels: [ {{range .PlayerHistory.Data }}
-				"{{.Time}}",
-				{{end}} ],
-            datasets: [{
-                label: 'ADR',
-                data: [ {{range .PlayerHistory.Data }}
-				"{{.Playtime2Weeks}}",
-				{{end}} ],
-                backgroundColor: 'red',
-                borderColor: 'red',
-				fill: false,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            legend: {
-                labels: {
-                    // This more specific font property overrides the global property
-                    fontColor: 'white'
-                },
-                position: 'bottom',
-                align: 'start',
-                display: false
-            }
-        }
-    });
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script charset="utf-8">
+
+	google.charts.load('current', {packages: ['corechart', 'line']});
+	google.charts.setOnLoadCallback(drawBasic);
+
+function drawBasic() {
+
+	  var data = new google.visualization.DataTable();
+	  data.addColumn('datetime', 'X');
+	  data.addColumn('number', 'KD');
+
+
+	  data.addRows([
+			 {{range .PlayerHistory.Data }} [new Date('{{.Time}}'), {{.Playtime2Weeks}}], {{end}}
+	  ]);
+
+	  var options = {
+		hAxis: {
+		  //title: 'Time'
+		},
+		vAxis: {
+		  //title: 'KD'
+		}
+	  };
+
+	  var chart = new google.visualization.LineChart(document.getElementById('online-time-chart'));
+	  chart.draw(data, options);
+	}
+
 </script>
