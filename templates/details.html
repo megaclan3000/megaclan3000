@@ -28,6 +28,7 @@
 						{{end}}
 						</p>
 						<p>Steam ID: &nbsp;<a href="{{.PlayerSummary.Profileurl}}" target="_blank">{{.PlayerSummary.SteamID}}</a></p>
+						{{template "chart-online-time.html" .}}
 					</div>
 				</div>
 			</div>
@@ -38,20 +39,35 @@
 <ul class="collapsible popout">
 	<li class="active">
 		<div class="collapsible-header blue-grey darken-2 white-text"><i class="material-icons">filter_drama</i>Overview</div>
-		<div class="collapsible-body white"><img src="/public/img/placeholder/overview.png" alt=""></div>
-		<div class="collapsible-body white"><img src="/public/img/placeholder/other.png" alt=""></div>
+		<div class="collapsible-body white">
+			<img src="/public/img/placeholder/overview.png" alt="">
+			<img src="/public/img/placeholder/other.png" alt="">
+			{{template "chart-kd.html" .}}
+			{{template "chart-accuracy.html" .}}
+			{{template "chart-adr.html" .}}
+		</div>
 	</li>
 	<li>
 		<div class="collapsible-header blue-grey darken-2 white-text"><i class="material-icons">place</i>Last Match</div>
-		<div class="collapsible-body white"><img src="/public/img/placeholder/last.png" alt=""></div>
+		<div class="collapsible-body white">
+			<img src="/public/img/placeholder/last.png" alt="">
+		</div>
 	</li>
 	<li>
 		<div class="collapsible-header blue-grey darken-2 white-text"><i class="material-icons">place</i>Maps</div>
-		<div class="collapsible-body white"><img src="/public/img/placeholder/maps.png" alt=""></div>
+		<div class="collapsible-body white">
+			<img src="/public/img/placeholder/maps.png" alt="">
+			{{template "chart-maps.html" .}}
+			{{template "table-maps.html" .}}
+		</div>
 	</li>
 	<li>
 		<div class="collapsible-header blue-grey darken-2 white-text"><i class="material-icons">whatshot</i>Weapons</div>
-		<div class="collapsible-body white"><img src="/public/img/placeholder/weapons.png" alt=""></div>
+		<div class="collapsible-body white">
+			<img src="/public/img/placeholder/weapons.png" alt="">
+			{{template "chart-weapons.html" .}}
+			{{template "table-weapons.html" .}}
+		</div>
 	</li>
 </ul>
 
@@ -70,10 +86,4 @@
 </script>
 
 <div class="row">
-	{{template "weapons-chart.html" .}}
-	{{template "maps-chart.html" .}}
-	{{template "kd-chart.html" .}}
-	{{template "accuracy-chart.html" .}}
-	{{template "adr-chart.html" .}}
-	{{template "online-time-chart.html" .}}
 </div>
