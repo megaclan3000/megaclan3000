@@ -1,70 +1,56 @@
-<div id="accuracy-chart"></div>
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<div id="container-acc" style="width: 700px; height: 300px; align: center;" class="center-align" ></div>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js" ></script>
 <script charset="utf-8">
-
-	google.charts.load('current', {packages: ['corechart', 'line']});
-	google.charts.setOnLoadCallback(drawBasic);
-
-function drawBasic() {
-
-	  var data = new google.visualization.DataTable();
-	  data.addColumn('datetime', 'X');
-	  data.addColumn('number', 'Hit-Ratio');
-
-
-	  data.addRows([
-			 {{range .PlayerHistory.Data }} [new Date('{{.Time}}'), {{.HitRatio}}], {{end}}
-	  ]);
-
-	  var options = {
-		hAxis: {
-		  //title: 'Time'
-		},
-		vAxis: {
-		  //title: 'Popularity'
+var dom = document.getElementById("container-acc");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+    title: {
+        text: 'Some text'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: ['KD', 'HitRatio']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [{{ range.PlayerHistory.Data }} '{{.Time}}', {{ end }} ]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [{
+            name: 'KD',
+            type: 'line',
+            stack: 'stack1',
+            data: [{{ range.PlayerHistory.Data }} {{ .TotalKD }}, {{ end }}]
+			},
+        {
+            name: 'HitRatio',
+            type: 'line',
+            stack: 'stack2',
+            data: [{{ range.PlayerHistory.Data }} {{ .HitRatio }}, {{ end }}]
 		}
-	  };
-
-	  var chart = new google.visualization.LineChart(document.getElementById('accuracy-chart'));
-
-	  chart.draw(data, options);
-	}
-
-</script>
+    ]
+};
 
 
-<div id="kd-chart"></div>
-
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script charset="utf-8">
-
-	google.charts.load('current', {packages: ['corechart', 'line']});
-	google.charts.setOnLoadCallback(drawBasic);
-
-function drawBasic() {
-
-	  var data = new google.visualization.DataTable();
-	  data.addColumn('datetime', 'X');
-	  data.addColumn('number', 'KD');
-
-
-	  data.addRows([
-			 {{range .PlayerHistory.Data }} [new Date('{{.Time}}'), {{.TotalKD}}], {{end}}
-	  ]);
-
-	  var options = {
-		hAxis: {
-		  //title: 'Time'
-		},
-		vAxis: {
-		  //title: 'KD'
-		}
-	  };
-
-	  var chart = new google.visualization.LineChart(document.getElementById('kd-chart'));
-	  chart.draw(data, options);
-	}
-
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
 </script>
