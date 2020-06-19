@@ -3,6 +3,17 @@
 Here is a minimal guide on how to set up the project. Some knowledge of the
 command line and git is assumed.
 
+## Get a steam API key
+
+Go to https://steamcommunity.com/dev/apikey and generate a API Key. You will
+need it to fetch any user data from the steam, otherwise the application will
+not be able to run.
+
+## Create configuration file
+
+Copy `./config.json.example` to `./config.conf` and edit accordingly. You need
+at least one steam id and the API key set for the application to work.
+
 ## Install requirements
 
 As a bare minimum, you will need the following software to be installed:
