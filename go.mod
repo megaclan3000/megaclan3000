@@ -20,9 +20,13 @@ require (
 	github.com/faiface/glhf v0.0.0-20181018222622-82a6317ac380 // indirect
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3 // indirect
 	github.com/galdor/go-cmdline v1.1.1 // indirect
+	github.com/go-echarts/go-echarts v0.0.0-20200525051329-dea0e75cdde8 // indirect
 	github.com/go-gl/gl v0.0.0-20190320180904-bf2b1f2f34d7 // indirect
 	github.com/go-gl/mathgl v0.0.0-20190713194549-592312d8590a // indirect
 	github.com/go-testfixtures/testfixtures/v3 v3.2.0
+	github.com/gobuffalo/envy v1.9.0 // indirect
+	github.com/gobuffalo/packd v1.0.0 // indirect
+	github.com/gobuffalo/packr v1.30.1 // indirect
 	github.com/google/go-cmp v0.4.0
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
 	github.com/gorilla/mux v1.7.4
@@ -35,6 +39,7 @@ require (
 	github.com/pinpox/http-stressor v0.0.0-20200305140758-0e7a0baa900d // indirect
 	github.com/pinpox/matrix-bot v0.0.0-20190422182545-e58f16f86ca7 // indirect
 	github.com/rivo/tview v0.0.0-20200507165325-823f280c5426 // indirect
+	github.com/rogpeppe/go-internal v1.6.0 // indirect
 	github.com/segmentio/go-snakecase v1.2.0 // indirect
 	github.com/sirupsen/logrus v1.6.0
 	github.com/spf13/pflag v1.0.5 // indirect
