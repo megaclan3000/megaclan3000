@@ -51,21 +51,15 @@ func main() {
 	r.PathPrefix("/public/").Handler(http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 
 	// Define routes
-	r.HandleFunc("/", handlerIndex)
-	r.HandleFunc("/stats", handlerStats)
-	r.HandleFunc("/contact", handlerContact)
-	r.HandleFunc("/faq", handlerFAQ)
-	r.HandleFunc("/player/{id}", handlerDetails)
-	r.HandleFunc("/imprint", handlerImprint)
+	r.HandleFunc("/", parseTemplates(handlerIndex))
+	r.HandleFunc("/stats", parseTemplates(handlerStats))
+	r.HandleFunc("/contact", parseTemplates(handlerContact))
+	r.HandleFunc("/faq", parseTemplates(handlerFAQ))
+	r.HandleFunc("/player/{id}", parseTemplates(handlerDetails))
+	r.HandleFunc("/imprint", parseTemplates(handlerImprint))
 
 	// Set custom 404 page
 	r.NotFoundHandler = http.HandlerFunc(handler404)
-
-	// Parse all templates
-	t, err = template.ParseGlob("./templates/*")
-	if err != nil {
-		log.Panic("Cannot parse templates", err)
-	}
 
 	// Set up the HTTP-server
 	srv := &http.Server{
@@ -78,6 +72,21 @@ func main() {
 	//start updating data every 5 minutes asynchroniusly
 	go updateData()
 	log.Fatal(srv.ListenAndServe())
+}
+
+func parseTemplates(h http.HandlerFunc) http.HandlerFunc {
+
+	return func(w http.ResponseWriter, r *http.Request) {
+		var err error
+		// Parse all templates
+		t, err = template.ParseGlob("./templates/*")
+		if err != nil {
+			log.Panic("Cannot parse templates", err)
+		}
+
+		h(w, r)
+	}
+
 }
 
 func updateData() {
