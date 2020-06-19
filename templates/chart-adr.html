@@ -1,45 +1,38 @@
-	<div class="col s12 m12 l6">
-        <div class="card blue-grey darken-2">
-            <div class="card-content white-text">
-                <span class="card-title">Average Damage per Round (ADR)</span>
-
-			<br />
-			<div id="adr-chart"></div>
-            </div>
-        </div>
-    </div>
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-
+<div id="container-adr" style="width: 700px; height: 300px; align: center;" class="center-align" ></div>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js" ></script>
 <script charset="utf-8">
+var dom = document.getElementById("container-adr");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
 
-	google.charts.load('current', {packages: ['corechart', 'line']});
-	google.charts.setOnLoadCallback(drawBasic);
+option = {
+responsive: true,
+maintainAspectRatio: false,
+height: '100%',
+width: '100%',
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [{
+        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        type: 'line',
+        areaStyle: {}
+    }]
+};
 
-function drawBasic() {
 
-	  var data = new google.visualization.DataTable();
-	  data.addColumn('datetime', 'X');
-	  data.addColumn('number', 'Dogs');
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+            $(window).resize(function() {
+                myChart.resize();
+            });
 
-
-	  data.addRows([
-			 {{range .PlayerHistory.Data }} [new Date('{{.Time}}'), {{.LastMatchADR}}], {{end}}
-	  ]);
-
-	  var options = {
-		hAxis: {
-		  title: 'Time'
-		},
-		vAxis: {
-		  title: 'Popularity'
-		}
-	  };
-
-	  var chart = new google.visualization.LineChart(document.getElementById('adr-chart'));
-
-	  chart.draw(data, options);
-	}
 
 </script>

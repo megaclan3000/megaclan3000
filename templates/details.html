@@ -38,23 +38,22 @@
 
 <ul class="collapsible popout">
 	<li class="active">
-		<div class="collapsible-header blue-grey darken-2 white-text"><i class="material-icons">filter_drama</i>Overview</div>
+		<div class="collapsible-header blue-grey darken-2 white-text"><i class="material-icons">timeline</i>Overview</div>
 		<div class="collapsible-body white">
-			<img src="/public/img/placeholder/overview.png" alt="">
-			<img src="/public/img/placeholder/other.png" alt="">
-			{{template "chart-kd.html" .}}
+			{{template "chart-overview.html" .}}
 			{{template "chart-accuracy.html" .}}
 			{{template "chart-adr.html" .}}
+			{{template "table-other.html" .}}
 		</div>
 	</li>
 	<li>
-		<div class="collapsible-header blue-grey darken-2 white-text"><i class="material-icons">place</i>Last Match</div>
+		<div class="collapsible-header blue-grey darken-2 white-text"><i class="material-icons">multiline_chart</i>Last Match</div>
 		<div class="collapsible-body white">
 			<img src="/public/img/placeholder/last.png" alt="">
 		</div>
 	</li>
 	<li>
-		<div class="collapsible-header blue-grey darken-2 white-text"><i class="material-icons">place</i>Maps</div>
+		<div class="collapsible-header blue-grey darken-2 white-text"><i class="material-icons">terrain</i>Maps</div>
 		<div class="collapsible-body white">
 			<img src="/public/img/placeholder/maps.png" alt="">
 			{{template "chart-maps.html" .}}
