@@ -68,4 +68,42 @@ git checkout -b "fix-weapons-chart'
 git add templates/chart-weapons.html
 git commit -m'Fixed the weapons, now show all info'
 ```
-5
+
+5. Push your changes to your branch. `git push` will give you an error message,
+   the first time, saying there is no upstream branch (yet). Use the printed
+   command to add one. This is only needed on the first push to a new branch.
+
+```
+# git push
+
+fatal: The current branch CONTRIBUTING.md has no upstream branch.
+To push the current branch and set the remote as upstream, use
+    git push --set-upstream origin fix-weapons-chart
+
+# git push --set-upstream origin fix-weapons-chart
+```
+
+Your changes should now have been pushed successfully. You can keep committing
+and pushing to your branch with just `git push` until you are done. Split the
+work in reasonable commits to make tracking changes easier for the reviewer.
+
+6. After finishing your work and pushing all commits, submit a pull request from
+   the repo's GitHub page.
+
+7. The reviewer will be notifyied and review your changes. He might ask you to
+   change things, you can keep committing to your branch. Every time you push to
+   your branch, the checks will be run by Github. Only if the checks pass the
+   brach can be merged into master.
+
+8. After any corrections, the reviewer will merge your branch into master and
+   delete it afterwards. You will see all your commits in the master branch.
+   Before doing any more work you should change back to the master branch
+   locally and pull the changes (i.e. the merge).
+
+```
+git checkout master
+```
+
+At this point you are ready to start working on your next issue (like discribed
+at `2.`)
+
