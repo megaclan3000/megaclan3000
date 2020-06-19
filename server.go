@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"html/template"
+	"text/template"
 
 	"net/http"
 	"time"

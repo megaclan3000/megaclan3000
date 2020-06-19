@@ -149,17 +149,10 @@ type PlayerSummary struct {
 	Timecreated string
 }
 
-// GetPlayerSummary fetches information for the given steamID from the API
-// endpoint GetPlayerSummary and returns a PlayerSummary object
-func (sc *SteamClient) GetPlayerSummary(steamID string) (PlayerSummary, error) {
+func (sc *SteamClient) ParsePlayerSummary(data playerSummariesData) (PlayerSummary, error) {
 
-	url := "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=" + sc.Config.SteamAPIKey + "&steamids=" + steamID
-
-	var err error
-
-	data := playerSummariesData{}
-	if getJSON(url, &data); err != nil {
-		return PlayerSummary{}, errors.New("Unable to get PlayerSummary for: " + steamID)
+	if len(data.Response.Players) < 1 {
+		return PlayerSummary{}, errors.New("Failed to download PlayerSummary")
 	}
 
 	return PlayerSummary{

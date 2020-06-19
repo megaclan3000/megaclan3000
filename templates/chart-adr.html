@@ -1,0 +1,38 @@
+<div id="container-adr" style="width: 700px; height: 300px; align: center;" class="center-align" ></div>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js" ></script>
+<script charset="utf-8">
+var dom = document.getElementById("container-adr");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+
+option = {
+responsive: true,
+maintainAspectRatio: false,
+height: '100%',
+width: '100%',
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [{
+        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        type: 'line',
+        areaStyle: {}
+    }]
+};
+
+
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+            $(window).resize(function() {
+                myChart.resize();
+            });
+
+
+</script>

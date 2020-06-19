@@ -33,9 +33,7 @@ func (ds *DataStorage) GetUserStatsForGame(steamID string) (steamclient.UserStat
 		for rows.Next() {
 
 			rows.Scan(
-
 				&usfg.SteamID,
-
 				&usfg.Stats.GILessonBombSitesA,
 				&usfg.Stats.GILessonBombSitesB,
 				&usfg.Stats.GILessonCsgoCycleWeaponsKb,
