@@ -1,11 +1,11 @@
 <div id="container-acc" style="width: 700px; height: 300px; align: center;" class="center-align" ></div>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js" ></script>
 <script charset="utf-8">
-var dom = document.getElementById("container-acc");
-var myChart = echarts.init(dom);
+var chartAccuracy = document.getElementById("container-acc");
+var myChartAccuracy = echarts.init(chartAccuracy);
 var app = {};
-option = null;
-option = {
+optionAccuracy = null;
+optionAccuracy = {
     title: {
         text: 'KD and Hit-Ratio'
     },
@@ -50,8 +50,8 @@ option = {
 };
 
 
-if (option && typeof option === "object") {
-    myChart.setOption(option, true);
+if (optionAccuracy && typeof optionAccuracy === "object") {
+    myChartAccuracy.setOption(optionAccuracy, true);
 }
 </script>
 

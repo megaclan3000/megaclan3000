@@ -57,7 +57,7 @@
 	</div>
 	<div class="col s4">
 		<p class="center-align">
-		<div id="container-kd" style="width:300px; height:300px; align:center;" class="center-align"></div>
+		<div id="container-kd" style="width:100%; height:300px;"></div>
 		</p>
 	</div>
 	<div class="col s4">
@@ -112,8 +112,8 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 <script charset="utf-8">
 
-	var dom = document.getElementById("container-kd");
-var myChart = echarts.init(dom);
+var chartKd = document.getElementById("container-kd");
+var myChartOverview = echarts.init(chartKd);
 var app = {};
 option = null;
 
@@ -154,7 +154,7 @@ option = null;
 };
 
 if (option && typeof option === "object") {
-	myChart.setOption(option, true);
+	myChartOverview.setOption(option, true);
 }
 
 </script>

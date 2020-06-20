@@ -1,12 +1,12 @@
 <div id="container-adr" style="width: 700px; height: 300px; align: center;" class="center-align" ></div>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js" ></script>
 <script charset="utf-8">
-var dom = document.getElementById("container-adr");
-var myChart = echarts.init(dom);
+var chartAdr = document.getElementById("container-adr");
+var myChartAdr = echarts.init(chartAdr);
 var app = {};
-option = null;
+optionAdr = null;
 
-option = {
+optionAdr = {
 responsive: true,
 maintainAspectRatio: false,
 height: '100%',
@@ -27,12 +27,12 @@ width: '100%',
 };
 
 
-if (option && typeof option === "object") {
-    myChart.setOption(option, true);
+if (optionAdr && typeof optionAdr === "object") {
+    myChartAdr.setOption(optionAdr, true);
 }
-            $(window).resize(function() {
-                myChart.resize();
-            });
+$(window).resize(function() {
+    myChartAdr.resize();
+});
 
 
 </script>

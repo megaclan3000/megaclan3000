@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
 	var dom = document.getElementById("container-heat");
-var myChart = echarts.init(dom);
+var myChartOnlineTime = echarts.init(dom);
 var app = {};
 option = null;
 
@@ -47,6 +47,6 @@ option = {
 };
 
 if (option && typeof option === "object") {
-	myChart.setOption(option, true);
+	myChartOnlineTime.setOption(option, true);
 }
 </script>
