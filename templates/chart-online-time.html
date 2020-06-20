@@ -1,6 +1,6 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 
-<div id="container-heat" style="width:600px; height:200px;"></div>
+<div id="container-heat" style="width:100%; height:200px;"></div>
 
 <script type="text/javascript">
 	var dom = document.getElementById("container-heat");
@@ -49,4 +49,7 @@ option = {
 if (option && typeof option === "object") {
 	myChartOnlineTime.setOption(option, true);
 }
+$(window).resize(function() {
+    myChartOnlineTime.resize();
+});
 </script>
