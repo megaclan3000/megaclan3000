@@ -94,3 +94,13 @@ a{
 .inline-badge{
     position: absolute;
 }
+
+.tab a {
+    display: flex !important;
+    align-content: center !important;
+}
+.material-icons {
+    display: flex !important;
+    line-height: 2 !important;
+    margin-right: .5rem;
+}
