@@ -280,7 +280,7 @@
 
 <script id="itemTemplate" type="text/x-jquery-tmpl">
 	<tr>
-		<td>${Icon}</td>
+		<td><img height="20" src="${Icon}"></td>
 		<td>${Weapon}</td>
 		<td>${Kills}</td>
 		<td>${Shots}</td>
@@ -292,7 +292,7 @@
 <table id="itemList">
 	<thead>
 		<tr>
-			<th>Icon</th>
+			<th></th>
 			<th>Weapon</th>
 			<th>Kills</th>
 			<th>Shots</th>
@@ -308,26 +308,14 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		var items = [
-			{ Icon: 'xxx', Weapon: "Zeus x27", Kills: "80", Shots : "3", Hits : "240", Accuracy: '0' },
-			{ Icon: 'xxx', Weapon: "Molotov", Kills: "50", Shots : "4", Hits : "200", Accuracy: '0' },
-			{ Icon: 'xxx', Weapon: "Galil AR", Kills: "20", Shots : "8", Hits : "160", Accuracy: '0' },
-			{ Icon: 'xxx', Weapon: "M4A1-S & M4A4", Kills: "250", Shots : "10", Hits : "2500", Accuracy: '0' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
-			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' }									
+			{ 
+				Icon: '/public/img/weapons/galilar.jpg', 
+				Weapon: "Galil AR", 
+				Kills: {{.UserStatsForGame.Stats.TotalKillsGalilar}}, 
+				Shots: {{.UserStatsForGame.Stats.TotalShotsGalilar}}, 
+				Hits: {{.UserStatsForGame.Stats.TotalHitsGalilar}}, 
+				Accuracy: {{.UserStatsForGame.Stats.TotalHitsGalilar}}/{{.UserStatsForGame.Stats.TotalShotsGalilar}}*100 + '%'
+			}								
 		];
 
 		$( "#itemTemplate" ).tmpl( items ).appendTo( "#itemList tbody" );
