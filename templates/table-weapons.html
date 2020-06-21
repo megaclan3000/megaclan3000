@@ -278,5 +278,61 @@
 	</tbody>
 </table>
 
+<script id="itemTemplate" type="text/x-jquery-tmpl">
+	<tr>
+		<td>${Icon}</td>
+		<td>${Weapon}</td>
+		<td>${Kills}</td>
+		<td>${Shots}</td>
+		<td>${Hits}</td>
+		<td>${Accuracy}</td>
+	</tr>
+</script>
+
+<table id="itemList">
+	<thead>
+		<tr>
+			<th>Icon</th>
+			<th>Weapon</th>
+			<th>Kills</th>
+			<th>Shots</th>
+			<th>Hits</th>
+			<th>Accuracy</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+
+<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var items = [
+			{ Icon: , Weapon: "Zeus x27", Kills: "80", Shots : "3", Hits : "240", Accuracy: '0' },
+			{ Icon: 'xxx', Weapon: "Molotov", Kills: "50", Shots : "4", Hits : "200", Accuracy: '0' },
+			{ Icon: 'xxx', Weapon: "Galil AR", Kills: "20", Shots : "8", Hits : "160", Accuracy: '0' },
+			{ Icon: 'xxx', Weapon: "M4A1-S & M4A4", Kills: "250", Shots : "10", Hits : "2500", Accuracy: '0' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' },
+			{ Icon: 'xxx', Weapon: "xxx", Kills: "xxx", Shots : "xxx", Hits : "xxx", Accuracy: 'xxx' }									
+		];
+
+		$( "#itemTemplate" ).tmpl( items ).appendTo( "#itemList tbody" );
+	});
+</script>
+
 
 
