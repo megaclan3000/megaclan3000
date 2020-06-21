@@ -1,4 +1,4 @@
-<table>
+<!-- <table>
 	<thead>
 		<tr>
 			<th></th>
@@ -276,7 +276,7 @@
 			<td></td>
 		</tr>
 	</tbody>
-</table>
+</table>-->
 
 <script id="itemTemplate" type="text/x-jquery-tmpl">
 	<tr>
@@ -302,7 +302,6 @@
 	</thead>
 	<tbody>
 	</tbody>
-</table>
 
 <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
 <script type="text/javascript">
@@ -318,7 +317,9 @@
 			}								
 		];
 
-		$( "#itemTemplate" ).tmpl( items ).appendTo( "#itemList tbody" );
+		for (var i = 0; i < 10; i++) {
+			$( "#itemTemplate" ).tmpl( items ).appendTo( "#itemList tbody" );			
+		}
 	});
 </script>
 
