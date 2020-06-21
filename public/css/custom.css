@@ -94,3 +94,21 @@ a{
 .inline-badge{
     position: absolute;
 }
+
+.tab a {
+    display: flex !important;
+    align-content: center !important;
+    color: white !important;
+}
+.tab a .material-icons {
+    display: flex !important;
+    line-height: 2 !important;
+    margin-right: .5rem;
+}
+.tabs .indicator {
+    background-color: #e65100 !important;
+}
+.tabs .tab a:focus,
+.tabs .tab a:focus.active {
+    background-color: rgba(0,0,0,0.1) !important;
+}
