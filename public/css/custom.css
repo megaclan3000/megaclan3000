@@ -99,7 +99,7 @@ a{
     display: flex !important;
     align-content: center !important;
 }
-.material-icons {
+.tab a .material-icons {
     display: flex !important;
     line-height: 2 !important;
     margin-right: .5rem;
