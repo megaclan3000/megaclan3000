@@ -98,6 +98,7 @@ a{
 .tab a {
     display: flex !important;
     align-content: center !important;
+    color: white !important;
 }
 .tab a .material-icons {
     display: flex !important;
