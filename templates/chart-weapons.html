@@ -1,54 +1,71 @@
-		<div id="piechart-weapons" ></div>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+var data = [
+	['TotalKillsAk47',                 {{.UserStatsForGame.Stats.TotalKillsAk47}}],
+	['TotalKillsAug',                  {{.UserStatsForGame.Stats.TotalKillsAug}}],
+	['TotalKillsAwp',                  {{.UserStatsForGame.Stats.TotalKillsAwp}}],
+	['TotalKillsBizon',                {{.UserStatsForGame.Stats.TotalKillsBizon}}],
+	['TotalKillsDeagle',               {{.UserStatsForGame.Stats.TotalKillsDeagle}}],
+	['TotalKillsElite',                {{.UserStatsForGame.Stats.TotalKillsElite}}],
+	['TotalKillsFamas',                {{.UserStatsForGame.Stats.TotalKillsFamas}}],
+	['TotalKillsFiveseven',            {{.UserStatsForGame.Stats.TotalKillsFiveseven}}],
+	['TotalKillsG3sg1',                {{.UserStatsForGame.Stats.TotalKillsG3sg1}}],
+	['TotalKillsGalilar',              {{.UserStatsForGame.Stats.TotalKillsGalilar}}],
+	['TotalKillsGlock',                {{.UserStatsForGame.Stats.TotalKillsGlock}}],
+	['TotalKillsHegrenade',            {{.UserStatsForGame.Stats.TotalKillsHegrenade}}],
+	['TotalKillsHkp2000',              {{.UserStatsForGame.Stats.TotalKillsHkp2000}}],
+	['TotalKillsKnife',                {{.UserStatsForGame.Stats.TotalKillsKnife}}],
+	['TotalKillsM249',                 {{.UserStatsForGame.Stats.TotalKillsM249}}],
+	['TotalKillsM4a1',                 {{.UserStatsForGame.Stats.TotalKillsM4a1}}],
+	['TotalKillsMac10',                {{.UserStatsForGame.Stats.TotalKillsMac10}}],
+	['TotalKillsMag7',                 {{.UserStatsForGame.Stats.TotalKillsMag7}}],
+	['TotalKillsMolotov',              {{.UserStatsForGame.Stats.TotalKillsMolotov}}],
+	['TotalKillsMp7',                  {{.UserStatsForGame.Stats.TotalKillsMp7}}],
+	['TotalKillsMp9',                  {{.UserStatsForGame.Stats.TotalKillsMp9}}],
+	['TotalKillsNegev',                {{.UserStatsForGame.Stats.TotalKillsNegev}}],
+	['TotalKillsNova',                 {{.UserStatsForGame.Stats.TotalKillsNova}}],
+	['TotalKillsP250',                 {{.UserStatsForGame.Stats.TotalKillsP250}}],
+	['TotalKillsP90',                  {{.UserStatsForGame.Stats.TotalKillsP90}}],
+	['TotalKillsSawedoff',             {{.UserStatsForGame.Stats.TotalKillsSawedoff}}],
+	['TotalKillsScar20',               {{.UserStatsForGame.Stats.TotalKillsScar20}}],
+	['TotalKillsSg556',                {{.UserStatsForGame.Stats.TotalKillsSg556}}],
+	['TotalKillsSsg08',                {{.UserStatsForGame.Stats.TotalKillsSsg08}}],
+	['TotalKillsTaser',                {{.UserStatsForGame.Stats.TotalKillsTaser}}],
+	['TotalKillsTec9',                 {{.UserStatsForGame.Stats.TotalKillsTec9}}],
+	['TotalKillsUmp45',                {{.UserStatsForGame.Stats.TotalKillsUmp45}}],
+	['TotalKillsXm1014',               {{.UserStatsForGame.Stats.TotalKillsXm1014}}]
+
+];	
+var dataAxis = data.sort((a, b) => b[1] - a[1]).map(e => e[0])
+</script>
+<div id="container-weapons" style="width: 600px; height: 300px;"></div>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js" ></script>
 <script charset="utf-8">
-	google.charts.load('current', {'packages':['corechart']});
-	  google.charts.setOnLoadCallback(drawChart);
+var chartWeapons = document.getElementById("container-weapons");
+var myChartWeapons = echarts.init(chartWeapons);
+var app = {};
+optionChartWeapons = null;
+optionChartWeapons = {
+    xAxis: {
+        data: dataAxis,
+		type: 'category',
+		axisLabel: {
+			interval: 0,
+			rotate: 45
+		}
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [{
+            name: 'Weapons',
+            type: 'bar',
+            data: data.map(e => e[1])
+			}
+    ]
+};
 
-	  function drawChart() {
 
-		var data = google.visualization.arrayToDataTable([
-		  ['Weapon', 'Kills'],
-			['TotalKillsAk47',                 {{.UserStatsForGame.Stats.TotalKillsAk47}}],
-			['TotalKillsAug',                  {{.UserStatsForGame.Stats.TotalKillsAug}}],
-			['TotalKillsAwp',                  {{.UserStatsForGame.Stats.TotalKillsAwp}}],
-			['TotalKillsBizon',                {{.UserStatsForGame.Stats.TotalKillsBizon}}],
-			['TotalKillsDeagle',               {{.UserStatsForGame.Stats.TotalKillsDeagle}}],
-			['TotalKillsElite',                {{.UserStatsForGame.Stats.TotalKillsElite}}],
-			['TotalKillsFamas',                {{.UserStatsForGame.Stats.TotalKillsFamas}}],
-			['TotalKillsFiveseven',            {{.UserStatsForGame.Stats.TotalKillsFiveseven}}],
-			['TotalKillsG3sg1',                {{.UserStatsForGame.Stats.TotalKillsG3sg1}}],
-			['TotalKillsGalilar',              {{.UserStatsForGame.Stats.TotalKillsGalilar}}],
-			['TotalKillsGlock',                {{.UserStatsForGame.Stats.TotalKillsGlock}}],
-			['TotalKillsHegrenade',            {{.UserStatsForGame.Stats.TotalKillsHegrenade}}],
-			['TotalKillsHkp2000',              {{.UserStatsForGame.Stats.TotalKillsHkp2000}}],
-			['TotalKillsKnife',                {{.UserStatsForGame.Stats.TotalKillsKnife}}],
-			['TotalKillsM249',                 {{.UserStatsForGame.Stats.TotalKillsM249}}],
-			['TotalKillsM4a1',                 {{.UserStatsForGame.Stats.TotalKillsM4a1}}],
-			['TotalKillsMac10',                {{.UserStatsForGame.Stats.TotalKillsMac10}}],
-			['TotalKillsMag7',                 {{.UserStatsForGame.Stats.TotalKillsMag7}}],
-			['TotalKillsMolotov',              {{.UserStatsForGame.Stats.TotalKillsMolotov}}],
-			['TotalKillsMp7',                  {{.UserStatsForGame.Stats.TotalKillsMp7}}],
-			['TotalKillsMp9',                  {{.UserStatsForGame.Stats.TotalKillsMp9}}],
-			['TotalKillsNegev',                {{.UserStatsForGame.Stats.TotalKillsNegev}}],
-			['TotalKillsNova',                 {{.UserStatsForGame.Stats.TotalKillsNova}}],
-			['TotalKillsP250',                 {{.UserStatsForGame.Stats.TotalKillsP250}}],
-			['TotalKillsP90',                  {{.UserStatsForGame.Stats.TotalKillsP90}}],
-			['TotalKillsSawedoff',             {{.UserStatsForGame.Stats.TotalKillsSawedoff}}],
-			['TotalKillsScar20',               {{.UserStatsForGame.Stats.TotalKillsScar20}}],
-			['TotalKillsSg556',                {{.UserStatsForGame.Stats.TotalKillsSg556}}],
-			['TotalKillsSsg08',                {{.UserStatsForGame.Stats.TotalKillsSsg08}}],
-			['TotalKillsTaser',                {{.UserStatsForGame.Stats.TotalKillsTaser}}],
-			['TotalKillsTec9',                 {{.UserStatsForGame.Stats.TotalKillsTec9}}],
-			['TotalKillsUmp45',                {{.UserStatsForGame.Stats.TotalKillsUmp45}}],
-			['TotalKillsXm1014',               {{.UserStatsForGame.Stats.TotalKillsXm1014}}]
-
-		]);
-
-		var options = {
-		  title: 'Used weapons'
-		};
-
-		var chart = new google.visualization.PieChart(document.getElementById('piechart-weapons'));
-		chart.draw(data, options);
-	  }
+if (optionChartWeapons && typeof optionChartWeapons === "object") {
+    myChartWeapons.setOption(optionChartWeapons, true);
+}
 </script>
