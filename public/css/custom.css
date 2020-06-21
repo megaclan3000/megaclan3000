@@ -105,3 +105,6 @@ a{
     line-height: 2 !important;
     margin-right: .5rem;
 }
+.tabs .indicator {
+    background-color: #e65100 !important;
+}
