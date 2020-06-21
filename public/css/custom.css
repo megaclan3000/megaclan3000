@@ -108,3 +108,7 @@ a{
 .tabs .indicator {
     background-color: #e65100 !important;
 }
+.tabs .tab a:focus,
+.tabs .tab a:focus.active {
+    background-color: rgba(0,0,0,0.1) !important;
+}
