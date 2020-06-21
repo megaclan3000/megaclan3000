@@ -278,18 +278,18 @@
 	</tbody>
 </table>-->
 
-<script id="itemTemplate" type="text/x-jquery-tmpl">
+<script id="weaponTemplate" type="text/x-jquery-tmpl">
 	<tr>
-		<td><img height="20" src="${Icon}"></td>
-		<td>${Weapon}</td>
-		<td>${Kills}</td>
-		<td>${Shots}</td>
-		<td>${Hits}</td>
-		<td>${Accuracy}</td>
+		<td id="weaponsIcon"><img src="${Icon}"></td>
+		<td id="weaponsName">${Weapon}</td>
+		<td id="weaponsKills">${Kills}</td>
+		<td id="weaponsShots">${Shots}</td>
+		<td id="weaponsHits">${Hits}</td>
+		<td id="weaponsAccuracy">${Accuracy}</td>
 	</tr>
 </script>
 
-<table id="itemList">
+<table id="weaponsList">
 	<thead>
 		<tr>
 			<th></th>
@@ -318,7 +318,7 @@
 		];
 
 		for (var i = 0; i < 10; i++) {
-			$( "#itemTemplate" ).tmpl( items ).appendTo( "#itemList tbody" );			
+			$( "#weaponTemplate" ).tmpl( items ).appendTo( "#weaponsList tbody" );			
 		}
 	});
 </script>

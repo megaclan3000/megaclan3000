@@ -112,3 +112,19 @@ a{
 .tabs .tab a:focus.active {
     background-color: rgba(0,0,0,0.1) !important;
 }
+
+#weaponsIcon img {
+    width: 20px;
+}
+#weaponsKills {
+    color: green;
+}
+#weaponsShots {
+    color: cornflowerblue;
+}
+#weaponsHits {
+    color: goldenrod;
+}
+#weaponsAccuracy {
+    color: goldenrod;
+}
