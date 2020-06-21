@@ -36,53 +36,57 @@
 	</div>
 </div>
 
-<ul class="collapsible popout">
-	<li class="active">
-		<div class="collapsible-header blue-grey darken-2 white-text"><i class="material-icons">timeline</i>Overview</div>
-		<!-- <div class="collapsible-body white"> -->
-			<div class="white">
-			{{template "chart-overview.html" .}}
-			{{template "chart-accuracy.html" .}}
-			{{template "chart-adr.html" .}}
-			{{template "table-other.html" .}}
-		</div>
-	</li>
-	<li>
-		<div class="collapsible-header blue-grey darken-2 white-text"><i class="material-icons">multiline_chart</i>Last Match</div>
-		<div class="collapsible-body white">
-			<img src="/public/img/placeholder/last.png" alt="">
-		</div>
-	</li>
-	<li>
-		<div class="collapsible-header blue-grey darken-2 white-text"><i class="material-icons">terrain</i>Maps</div>
-		<div class="collapsible-body white">
-			<img src="/public/img/placeholder/maps.png" alt="">
-			{{template "chart-maps.html" .}}
-			{{template "table-maps.html" .}}
-		</div>
-	</li>
-	<li>
-		<div class="collapsible-header blue-grey darken-2 white-text"><i class="material-icons">whatshot</i>Weapons</div>
-		<div class="collapsible-body white">
-			<img src="/public/img/placeholder/weapons.png" alt="">
-			{{template "chart-weapons.html" .}}
-			{{template "table-weapons.html" .}}
-		</div>
-	</li>
-</ul>
+<div class="row blue-grey">
+	<div class="col s12">
+		<ul class="tabs blue-grey">
+			<li class="tab col">
+				<a href="#detailsOverview" class="active">
+					<i class="material-icons">timeline</i>Overview
+				</a>
+			</li>	
+			<li class="tab col">
+				<a href="#detailsLastMatch">
+					<i class="material-icons">multiline_chart</i>Last Match
+				</a>
+			</li>	
+			<li class="tab col">
+				<a href="#detailsMaps">
+					<i class="material-icons">terrain</i>Maps
+				</a>
+			</li>	
+			<li class="tab col">
+				<a href="#detailsWeapons">
+					<i class="material-icons">whatshot</i>Weapons
+				</a>
+			</li>												
+		</ul>
+	</div>
 
-<script charset="utf-8">
-	document.addEventListener('DOMContentLoaded', function() {
-	var elems = document.querySelectorAll('.collapsible');
-	var instances = M.Collapsible.init(elems, options);
-  });
+	<div id="detailsOverview" class="col s12">
+		{{template "chart-overview.html" .}}
+		{{template "chart-accuracy.html" .}}
+		{{template "chart-adr.html" .}}
+		{{template "table-other.html" .}}
+	</div>
+	<div id="detailsLastMatch" class="col s12">
+		<img src="/public/img/placeholder/last.png" alt="">
+	</div>
+	<div id="detailsMaps" class="col s12">
+		<img src="/public/img/placeholder/maps.png" alt="" width="100%">
+		{{template "chart-maps.html" .}}
+		{{template "table-maps.html" .}}
+	</div>
+	<div id="detailsWeapons" class="col s12">
+		<img src="/public/img/placeholder/weapons.png" alt="" width="100%">
+		{{template "chart-weapons.html" .}}
+		{{template "table-weapons.html" .}}
+	</div>
+</div>
 
-  // Or with jQuery
-
- $(document).ready(function(){
-   $('.collapsible').collapsible();
- });
-
+<script>
+$(document).ready(function(){
+    $('.tabs').tabs();
+});
 </script>
 
 <div class="row">
