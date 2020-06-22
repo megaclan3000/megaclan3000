@@ -8,32 +8,6 @@ import (
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
 
-// GetRecentlyPlayedGames returns a RecentlyPlayedGames object by fetching the values from
-// the database using a prepared statement.
-func (ds *DataStorage) GetRecentlyPlayedGames(steamID string) (steamclient.RecentlyPlayedGames, error) {
-	rpg := steamclient.RecentlyPlayedGames{}
-	var err error
-
-	if rows, err := ds.statements["select_recently_played"].Query(steamID); err == nil {
-
-		for rows.Next() {
-			rows.Scan(
-				&rpg.SteamID,
-				&rpg.Appid,
-				&rpg.ImgIconURL,
-				&rpg.ImgLogoURL,
-				&rpg.Name,
-				&rpg.Playtime2Weeks,
-				&rpg.PlaytimeForever,
-				&rpg.PlaytimeLinuxForever,
-				&rpg.PlaytimeMacForever,
-				&rpg.PlaytimeWindowsForever,
-			)
-		}
-	}
-	return rpg, err
-}
-
 // UpdateRecentlyPlayedGames receives a RecentlyPlayedGames from a PlayerInfo
 // object and updates the databaes for this steamID
 func (ds *DataStorage) UpdateRecentlyPlayedGames(rpg steamclient.RecentlyPlayedGames) error {

@@ -355,13 +355,6 @@ func (ds *DataStorage) getSelectPreparedstatements() error {
 			LIMIT 1`); err != nil {
 		return err
 	}
-	// - query recently_played
-	if ds.statements["select_recently_played"], err = ds.db.Prepare(`
-			SELECT * FROM recently_played
-			WHERE steamid=?
-			LIMIT 1`); err != nil {
-		return err
-	}
 
 	// Statements for player_history
 

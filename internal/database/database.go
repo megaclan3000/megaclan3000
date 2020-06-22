@@ -32,14 +32,16 @@ func (ds *DataStorage) GetPlayerInfoBySteamID(steamID string) (steamclient.Playe
 		return info, err
 	}
 
-	if info.RecentlyPlayedGames, err = ds.GetRecentlyPlayedGames(steamID); err != nil {
+	if err = ds.db.Get(&info.RecentlyPlayedGames, "SELECT * FROM recently_played WHERE steamid=?  LIMIT 1", steamID); err != nil {
 		return info, err
 	}
 
+	// TODO move to sqlx
 	if info.UserStatsForGame, err = ds.GetUserStatsForGame(steamID); err != nil {
 		return info, err
 	}
 
+	// TODO move to sqlx
 	if info.PlayerHistory, err = ds.GetPlayerHistory(steamID); err != nil {
 		return info, err
 	}
