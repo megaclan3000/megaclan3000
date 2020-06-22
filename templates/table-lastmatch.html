@@ -1,0 +1,74 @@
+Rounds total
+{{.UserStatsForGame.Stats.LastMatchRounds}}
+
+rounds won {{.UserStatsForGame.Stats.LastMatch
+All: {{UserStatsForGame.Stats.LastMatchWins}}
+T: {{UserStatsForGame.Stats.LastMatchTWins}}
+CT: {{UserStatsForGame.Stats.LastMatchCtWins}}
+
+result (draw/win/loose)
+
+Best weapon name
+{{UserStatsForGame.Stats.LastMatchFavweaponID}}
+
+
+best weapon kills
+{{UserStatsForGame.Stats.LastMatchFavweaponKills}}
+
+best weapon accuracy
+{{UserStatsForGame.Stats.LastMatchFavweaponHits}}
+{{UserStatsForGame.Stats.LastMatchFavweaponShots}}
+
+kd
+
+kills
+{{UserStatsForGame.Stats.LastMatchKills}}
+
+deaths
+{{UserStatsForGame.Stats.LastMatchDeaths}}
+
+damange
+{{UserStatsForGame.Stats.LastMatchDamage}}
+
+money spend
+{{UserStatsForGame.Stats.LastMatchMoneySpent}}
+
+MVPs
+{{UserStatsForGame.Stats.LastMatchMvps}}
+
+score
+{{UserStatsForGame.Stats.LastMatchContributionScore}}
+
+
+
+{{UserStatsForGame.Stats.LastMatchDominations}}
+
+{{UserStatsForGame.Stats.LastMatchGgContributionScore}}
+
+{{UserStatsForGame.Stats.LastMatchMaxPlayers}}
+{{UserStatsForGame.Stats.LastMatchRevenges}}
+<table>
+	<thead>
+		<tr>
+			<th>Map</th>
+			<th>Rounds</th>
+			<th>Rounds Won</th>
+			<th>Win Rate</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>TotalRoundsMapArBaggage</td>
+			<td>{{.UserStatsForGame.Stats.TotalRoundsMapArBaggage}}</td>
+			<td>{{.UserStatsForGame.Stats.TotalWinsMapArBaggage}}</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>TotalRoundsMapArMonastery</td>
+			<td>{{.UserStatsForGame.Stats.TotalRoundsMapArMonastery}}</td>
+			<td>{{.UserStatsForGame.Stats.TotalWinsMapArMonastery}}</td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
