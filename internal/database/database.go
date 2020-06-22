@@ -4,8 +4,10 @@ import (
 	"database/sql"
 
 	log "github.com/sirupsen/logrus"
+	"io/ioutil"
 
 	// Use sqlite backend
+	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
@@ -14,7 +16,7 @@ import (
 // retrieval as well as methods to ingress new data from the API or update
 // existing values
 type DataStorage struct {
-	db         *sql.DB
+	db         *sqlx.DB
 	statements map[string]*sql.Stmt
 }
 
@@ -53,36 +55,19 @@ func NewDataStorage(path string) (*DataStorage, error) {
 	storage := new(DataStorage)
 	storage.statements = make(map[string]*sql.Stmt)
 
+	// Connect to database
 	log.Debugf("Reading %v", path)
-	if storage.db, err = sql.Open("sqlite3", path); err != nil {
+	if storage.db, err = sqlx.Open("sqlite3", path); err != nil {
 		log.Fatal("Failed to open sqlite file", err)
 	}
 
-	// Prepare CREATE statements
-	if err = storage.getCreatePreparedstatements(); err != nil {
-		log.Fatal("Failed to prepare CREATE statements", err)
+	// Read and execute schema from schema.sql
+	schema, err := ioutil.ReadFile("./schema.sql")
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	// Create tables, if necessary
-	if _, err = storage.statements["create_player_summary"].Exec(); err != nil {
-		log.Fatal("Failed to create table player_summary", err)
-	}
-
-	if _, err = storage.statements["create_player_stats"].Exec(); err != nil {
-		log.Fatal("Failed to create table player_stats", err)
-	}
-
-	if _, err = storage.statements["create_recently_played"].Exec(); err != nil {
-		log.Fatal("Failed to create table recently_played", err)
-	}
-
-	if _, err = storage.statements["create_player_history"].Exec(); err != nil {
-		log.Fatal("Failed to create table player_history", err)
-	}
-
-	if _, err = storage.statements["create_player_extra"].Exec(); err != nil {
-		log.Fatal("Failed to create table player_extra", err)
-	}
+	storage.db.MustExec(string(schema))
 
 	// Prepare remaining statements
 	if err = storage.getUpdatePreparedstatements(); err != nil {

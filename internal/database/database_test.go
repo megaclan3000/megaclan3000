@@ -23,7 +23,7 @@ func prepareDB() {
 	}
 
 	if fixtures, err = testfixtures.New(
-		testfixtures.Database(db.db),
+		testfixtures.Database(db.db.DB),
 		testfixtures.Dialect("sqlite"),
 		testfixtures.Directory(
 			"../../test/database/fixtures",
