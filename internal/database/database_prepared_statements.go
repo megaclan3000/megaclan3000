@@ -339,12 +339,6 @@ func (ds *DataStorage) getSelectPreparedstatements() error {
 	var err error
 
 	// - query player_summary for player
-	if ds.statements["select_player_summary"], err = ds.db.Prepare(`
-			SELECT * FROM player_summary
-			WHERE steamid=?
-			LIMIT 1`); err != nil {
-		return err
-	}
 
 	// - query player_extra for player
 	if ds.statements["select_player_extra"], err = ds.db.Prepare(`

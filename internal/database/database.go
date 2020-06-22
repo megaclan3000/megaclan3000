@@ -28,7 +28,7 @@ func (ds *DataStorage) GetPlayerInfoBySteamID(steamID string) (steamclient.Playe
 	info := steamclient.PlayerInfo{}
 	var err error
 
-	if info.PlayerSummary, err = ds.GetPlayerSummary(steamID); err != nil {
+	if err = ds.db.Get(&info.PlayerSummary, "SELECT * FROM player_summary WHERE steamid=?  LIMIT 1", steamID); err != nil {
 		return info, err
 	}
 
