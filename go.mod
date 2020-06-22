@@ -30,6 +30,7 @@ require (
 	github.com/google/go-cmp v0.4.0
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
 	github.com/gorilla/mux v1.7.4
+	github.com/jmoiron/sqlx v1.2.0
 	github.com/matrix-org/gomatrix v0.0.0-20200501121722-e5578b12c752 // indirect
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
 	github.com/mdempsky/gocode v0.0.0-20200405233807-4acdcbdea79d // indirect
