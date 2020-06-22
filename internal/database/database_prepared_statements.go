@@ -136,7 +136,7 @@ func (ds *DataStorage) getUpdatePreparedstatements() error {
 			total_hits_g3sg1,
 			total_hits_galilar,
 			total_hits_glock,
-			total_hits_hkp_2000,
+			total_hits_hkp2000,
 			total_hits_m249,
 			total_hits_m4a1,
 			total_hits_mac10,
@@ -147,7 +147,7 @@ func (ds *DataStorage) getUpdatePreparedstatements() error {
 			total_hits_nova,
 			total_hits_p250,
 			total_hits_p90,
-			total_hits_s556,
+			total_hits_sg556,
 			total_hits_sawedoff,
 			total_hits_scar20,
 			total_hits_ssg08,
@@ -264,7 +264,7 @@ func (ds *DataStorage) getUpdatePreparedstatements() error {
 			total_shots_ump45,
 			total_shots_xm1014,
 			total_time_played,
-			total_tr_bomb_matches_won,
+			total_trbomb_matches_won,
 			total_tr_defused_bombs,
 			total_tr_planted_bombs,
 			total_weapons_donated,
@@ -341,31 +341,6 @@ func (ds *DataStorage) getSelectPreparedstatements() error {
 	// - query player_summary for player
 
 	// - query player_extra for player
-	if ds.statements["select_player_extra"], err = ds.db.Prepare(`
-			SELECT * FROM player_extra
-			WHERE steamid=?
-			LIMIT 1`); err != nil {
-		return err
-	}
-
-	// - query player_stats
-	if ds.statements["select_player_stats"], err = ds.db.Prepare(`
-			SELECT * FROM player_stats
-			WHERE steamid=?
-			LIMIT 1`); err != nil {
-		return err
-	}
-
-	// Statements for player_history
-
-	// Query last 10 entries for steamID
-	if ds.statements["select_player_history"], err = ds.db.Prepare(`
-			SELECT * FROM player_history
-			WHERE steamid = ?
-			ORDER BY time
-			LIMIT 10`); err != nil {
-		return err
-	}
 
 	// Get latest timestamp for steamID
 	if ds.statements["select_player_history_latest_time"], err = ds.db.Prepare(`

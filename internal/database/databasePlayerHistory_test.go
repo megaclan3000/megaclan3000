@@ -5,7 +5,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/google/go-cmp/cmp"
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
@@ -25,6 +24,7 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 				SteamID: "all_columns",
 				Data: []steamclient.PlayerHistoryEntry{
 					{
+						SteamID:                    "all_columns",
 						HitRatio:                   "0",
 						LastMatchADR:               "1",
 						LastMatchContributionScore: "2",
@@ -53,6 +53,7 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 				SteamID: "1",
 				Data: []steamclient.PlayerHistoryEntry{
 					{
+						SteamID:                    "1",
 						Time:                       "100",
 						TotalKills:                 "101",
 						TotalADR:                   "102",
@@ -82,6 +83,7 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 				SteamID: "2",
 				Data: []steamclient.PlayerHistoryEntry{
 					{
+						SteamID:                    "2",
 						Time:                       "200",
 						TotalKills:                 "201",
 						TotalADR:                   "202",
@@ -111,6 +113,7 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 				SteamID: "3",
 				Data: []steamclient.PlayerHistoryEntry{
 					{
+						SteamID:                    "3",
 						Time:                       "300",
 						TotalKills:                 "301",
 						TotalADR:                   "302",
@@ -129,6 +132,7 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 						Playtime2Weeks:             "3015",
 					},
 					{
+						SteamID:                    "3",
 						Time:                       "3003",
 						TotalKills:                 "3013",
 						TotalADR:                   "3023",
@@ -147,6 +151,7 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 						Playtime2Weeks:             "30153",
 					},
 					{
+						SteamID:                    "3",
 						Time:                       "30034",
 						TotalKills:                 "30134",
 						TotalADR:                   "30234",
@@ -176,6 +181,7 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 				SteamID: "4",
 				Data: []steamclient.PlayerHistoryEntry{
 					{
+						SteamID:                    "4",
 						Time:                       "400",
 						TotalKills:                 "401",
 						TotalADR:                   "402",
@@ -203,13 +209,15 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 
 			prepareDB()
-			got, err := db.GetPlayerHistory(tt.steamID)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("DataStorage.GetPlayerHistory() error = %v, wantErr %v", err, tt.wantErr)
-				return
+
+			got, err := db.GetPlayerInfoBySteamID(tt.steamID)
+
+			if err != nil {
+				t.Logf("DataStorage.GetPlayerHistory() error = %v, wantErr %v", err, tt.wantErr)
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("DataStorage.GetPlayerHistory() = \n%v \nwant:\n%v", spew.Sdump(got), spew.Sdump(tt.want))
+
+			if diff := cmp.Diff(got.PlayerHistory, tt.want); diff != "" {
+				t.Errorf("DataStorage.GetPlayerHistory() mismatch (-got +want):\n%s", diff)
 			}
 		})
 	}
@@ -228,6 +236,7 @@ func TestDataStorage_UpdatePlayerHistory(t *testing.T) {
 				SteamID: "all_new",
 				Data: []steamclient.PlayerHistoryEntry{
 					{
+						SteamID:                    "all_new",
 						HitRatio:                   "inserted9",
 						LastMatchADR:               "inserted10",
 						LastMatchContributionScore: "inserted0",
@@ -288,6 +297,7 @@ func TestDataStorage_UpdatePlayerHistory(t *testing.T) {
 				SteamID: "all_columns",
 				Data: []steamclient.PlayerHistoryEntry{
 					{
+						SteamID:                    "all_columns",
 						HitRatio:                   "inserted9",
 						LastMatchADR:               "inserted10",
 						LastMatchContributionScore: "inserted0",
@@ -308,6 +318,7 @@ func TestDataStorage_UpdatePlayerHistory(t *testing.T) {
 						Time: "database",
 					},
 					{
+						SteamID:                    "all_columns",
 						Time:                       "database",
 						TotalKD:                    "11",
 						TotalADR:                   "10",
@@ -366,14 +377,14 @@ func TestDataStorage_UpdatePlayerHistory(t *testing.T) {
 				t.Errorf("DataStorage.UpdatePlayerHistory() error = %v, wantErr %v", err, tt.wantErr)
 			}
 
-			if got, err := db.GetPlayerHistory(tt.pi.PlayerSummary.SteamID); err == nil {
+			if got, err := db.GetPlayerInfoBySteamID(tt.pi.PlayerSummary.SteamID); err == nil {
 
 				//Replace db-generated time field to exclude from test
-				for k := range got.Data {
-					got.Data[k].Time = "database"
+				for k := range got.PlayerHistory.Data {
+					got.PlayerHistory.Data[k].Time = "database"
 				}
 
-				if diff := cmp.Diff(tt.want, got); diff != "" {
+				if diff := cmp.Diff(tt.want, got.PlayerHistory); diff != "" {
 					t.Errorf("DataStorage.UpdatePlayerHistory() mismatch (-want +got):\n%s", diff)
 				}
 			} else {

@@ -2,7 +2,6 @@ package database
 
 import (
 	"database/sql"
-
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 
@@ -28,23 +27,32 @@ func (ds *DataStorage) GetPlayerInfoBySteamID(steamID string) (steamclient.Playe
 	info := steamclient.PlayerInfo{}
 	var err error
 
-	if err = ds.db.Get(&info.PlayerSummary, "SELECT * FROM player_summary WHERE steamid=?  LIMIT 1", steamID); err != nil {
-		return info, err
+	if err = ds.db.Get(&info.PlayerSummary, "SELECT * FROM player_summary WHERE steamid=? LIMIT 1", steamID); err != nil {
+		log.Warn("Error retrieving player_summary for steamID:", steamID)
 	}
 
-	if err = ds.db.Get(&info.RecentlyPlayedGames, "SELECT * FROM recently_played WHERE steamid=?  LIMIT 1", steamID); err != nil {
-		return info, err
+	if err = ds.db.Get(&info.RecentlyPlayedGames, "SELECT * FROM recently_played WHERE steamid=? LIMIT 1", steamID); err != nil {
+		log.Warn("Error retrieving recently_played for steamID:", steamID)
 	}
 
-	// TODO move to sqlx
-	if info.UserStatsForGame, err = ds.GetUserStatsForGame(steamID); err != nil {
-		return info, err
+	if err = ds.db.Get(&info.UserStatsForGame.Extra, "SELECT * FROM player_extra WHERE steamid=? LIMIT 1", steamID); err != nil {
+		log.Warn("Error retrieving player_extra for steamID:", steamID)
 	}
 
-	// TODO move to sqlx
-	if info.PlayerHistory, err = ds.GetPlayerHistory(steamID); err != nil {
-		return info, err
+	if err = ds.db.Get(&info.UserStatsForGame.Stats, "SELECT * FROM player_stats WHERE steamid=? LIMIT 1", steamID); err != nil {
+		log.Warn("Error retrieving player_stats for steamID:", steamID)
 	}
+
+	entries := []steamclient.PlayerHistoryEntry{}
+
+	if err = ds.db.Select(&entries, "SELECT * FROM player_history WHERE steamid=? ORDER BY time LIMIT 10", steamID); err != nil {
+		log.Warn("Error retrieving player_history for steamID:", steamID)
+	}
+
+	info.PlayerHistory.SteamID = steamID
+	info.PlayerHistory.Data = entries
+
+	info.UserStatsForGame.SteamID = steamID
 
 	return info, nil
 }
