@@ -41,7 +41,7 @@ func main() {
 	steamClient = steamclient.NewSteamClient("./config.json")
 
 	log.Info("Creating datastorage")
-	if datastorage, err = database.NewDataStorage("./data.db"); err != nil {
+	if datastorage, err = database.NewDataStorage("./data.db", "./schema.sql"); err != nil {
 		log.Fatal("Failed to open database:", err)
 	}
 

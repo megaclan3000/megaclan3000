@@ -18,7 +18,7 @@ var (
 func prepareDB() {
 
 	var err error
-	if db, err = NewDataStorage("../../test/database/test.db"); err != nil {
+	if db, err = NewDataStorage("../../test/database/test.db", "../../schema.sql"); err != nil {
 		panic(err)
 	}
 

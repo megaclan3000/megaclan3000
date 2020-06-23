@@ -58,7 +58,7 @@ func (ds *DataStorage) GetPlayerInfoBySteamID(steamID string) (steamclient.Playe
 }
 
 // NewDataStorage creates a new DataStorage for a given sqlite database filepath
-func NewDataStorage(path string) (*DataStorage, error) {
+func NewDataStorage(pathStorage, pathSchema string) (*DataStorage, error) {
 	var err error
 
 	// Initialize database
@@ -66,13 +66,13 @@ func NewDataStorage(path string) (*DataStorage, error) {
 	storage.statements = make(map[string]*sql.Stmt)
 
 	// Connect to database
-	log.Debugf("Reading %v", path)
-	if storage.db, err = sqlx.Open("sqlite3", path); err != nil {
+	log.Debugf("Reading %v", pathStorage)
+	if storage.db, err = sqlx.Open("sqlite3", pathStorage); err != nil {
 		log.Fatal("Failed to open sqlite file", err)
 	}
 
 	// Read and execute schema from schema.sql
-	schema, err := ioutil.ReadFile("./schema.sql")
+	schema, err := ioutil.ReadFile(pathSchema)
 	if err != nil {
 		log.Fatal(err)
 	}
