@@ -248,7 +248,9 @@ CREATE TABLE IF NOT EXISTS player_extra (
 			total_kd TEXT,
 			last_match_kd TEXT,
 			hit_ratio TEXT,
-			played_hours TEXT);
+			played_hours TEXT,
+			total_adr TEXT,
+			last_match_adr TEXT);
 
 CREATE TABLE IF NOT EXISTS recently_played (
 			steamid TEXT PRIMARY KEY,
