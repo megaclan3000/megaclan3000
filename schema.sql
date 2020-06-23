@@ -266,7 +266,7 @@ CREATE TABLE IF NOT EXISTS recently_played (
 
 CREATE TABLE IF NOT EXISTS player_history (
 			steamid TEXT,
-			time TEXT,
+			time DATETIME,
 			total_kills TEXT,
 			total_adr TEXT,
 			total_shots_hit TEXT,

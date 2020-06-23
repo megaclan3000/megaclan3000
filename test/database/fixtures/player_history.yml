@@ -8,7 +8,7 @@
   last_match_kills:              "6"
   last_match_rounds:             "7"
   playtime_2_weeks:               "8"
-  time:                          "9"
+  time:                          "2020-06-23 00:00:09+0000"
   total_adr:                     "10"
   total_kd:                      "11"
   total_kills:                   "12"
@@ -17,7 +17,7 @@
   total_shots_hit:               "15"
 
 - steamid:                       1
-  time:                          100
+  time:                          "2020-06-23 00:00:01+0000"
   total_kills:                   101
   total_adr:                     102
   total_shots_hit:               103
@@ -35,7 +35,7 @@
   playtime_2_weeks:               1015
 
 - steamid:                       2
-  time:                          200
+  time:                          "2020-06-23 00:00:02+0000"
   total_kills:                   201
   total_adr:                     202
   total_shots_hit:               203
@@ -53,7 +53,7 @@
   playtime_2_weeks:               2015
 
 - steamid:                       3
-  time:                          3003
+  time:                          "2020-06-23 00:00:03+0000"
   total_kills:                   3013
   total_adr:                     3023
   total_shots_hit:               3033
@@ -71,7 +71,7 @@
   playtime_2_weeks:               30153
 
 - steamid:                       3
-  time:                          30034
+  time:                          "2020-06-23 00:00:04+0000"
   total_kills:                   30134
   total_adr:                     30234
   total_shots_hit:               30334
@@ -89,7 +89,7 @@
   playtime_2_weeks:               301534
 
 - steamid:                       3
-  time:                          300
+  time:                          "2020-06-23 00:00:05+0000"
   total_kills:                   301
   total_adr:                     302
   total_shots_hit:               303
@@ -107,7 +107,7 @@
   playtime_2_weeks:               3015
 
 - steamid:                       4
-  time:                          400
+  time:                          "2020-06-23 00:00:06+0000"
   total_kills:                   401
   total_adr:                     402
   total_shots_hit:               403
@@ -125,6 +125,7 @@
   playtime_2_weeks:               4015
 
 - steamid:                       41
+  time:                          "2020-06-23 00:00:07+0000"
   hit_ratio:                     42
   last_match_adr:                43
   last_match_contribution_score: 44
@@ -134,7 +135,6 @@
   last_match_kills:              48
   last_match_rounds:             49
   playtime_2_weeks:               50
-  time:                          51
   total_adr:                     52
   total_kd:                      53
   total_kills:                   54
@@ -143,6 +143,7 @@
   total_shots_hit:               57
 
 - steamid:                       41
+  time:                          "2020-06-23 00:00:08+0000"
   hit_ratio:                     58
   last_match_adr:                59
   last_match_contribution_score: 60
@@ -152,7 +153,6 @@
   last_match_kills:              64
   last_match_rounds:             65
   playtime_2_weeks:               66
-  time:                          67
   total_adr:                     68
   total_kd:                      69
   total_kills:                   70

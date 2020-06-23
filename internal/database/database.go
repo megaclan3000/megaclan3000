@@ -46,6 +46,7 @@ func (ds *DataStorage) GetPlayerInfoBySteamID(steamID string) (steamclient.Playe
 	entries := []steamclient.PlayerHistoryEntry{}
 
 	if err = ds.db.Select(&entries, "SELECT * FROM player_history WHERE steamid=? ORDER BY time LIMIT 10", steamID); err != nil {
+		log.Warn(err)
 		log.Warn("Error retrieving player_history for steamID:", steamID)
 	}
 
@@ -78,10 +79,6 @@ func NewDataStorage(pathStorage, pathSchema string) (*DataStorage, error) {
 	}
 
 	storage.db.MustExec(string(schema))
-
-	if err = storage.getInsertPreparedstatements(); err != nil {
-		log.Fatal("Failed to prepare INSERT statements", err)
-	}
 
 	if err = storage.getSelectPreparedstatements(); err != nil {
 		log.Fatal("Failed to prepare SELECT statements", err)

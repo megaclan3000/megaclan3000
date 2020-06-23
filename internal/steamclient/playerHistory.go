@@ -1,5 +1,9 @@
 package steamclient
 
+import (
+	"time"
+)
+
 // PlayerHistory holds the players history data from the player_history table.
 // Stats values that need to be saved over time, are added to this table and
 // object.
@@ -18,7 +22,7 @@ type PlayerHistoryEntry struct {
 	SteamID string `db:"steamid"`
 
 	// The time when the entry was saved
-	Time string `db:"time"`
+	Time time.Time `db:"time"`
 
 	// Total kill/death ratio
 	TotalKD string `db:"total_kd"`

@@ -25,6 +25,7 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 				Data: []steamclient.PlayerHistoryEntry{
 					{
 						SteamID:                    "all_columns",
+						Time:                       time.Date(2020, time.June, 23, 0, 0, 9, 0, time.UTC),
 						HitRatio:                   "0",
 						LastMatchADR:               "1",
 						LastMatchContributionScore: "2",
@@ -34,7 +35,6 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 						LastMatchKills:             "6",
 						LastMatchRounds:            "7",
 						Playtime2Weeks:             "8",
-						Time:                       "9",
 						TotalADR:                   "10",
 						TotalKD:                    "11",
 						TotalKills:                 "12",
@@ -54,7 +54,7 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 				Data: []steamclient.PlayerHistoryEntry{
 					{
 						SteamID:                    "1",
-						Time:                       "100",
+						Time:                       time.Date(2020, time.June, 23, 0, 0, 1, 0, time.UTC),
 						TotalKills:                 "101",
 						TotalADR:                   "102",
 						TotalShotsHit:              "103",
@@ -84,7 +84,7 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 				Data: []steamclient.PlayerHistoryEntry{
 					{
 						SteamID:                    "2",
-						Time:                       "200",
+						Time:                       time.Date(2020, time.June, 23, 0, 0, 2, 0, time.UTC),
 						TotalKills:                 "201",
 						TotalADR:                   "202",
 						TotalShotsHit:              "203",
@@ -114,26 +114,7 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 				Data: []steamclient.PlayerHistoryEntry{
 					{
 						SteamID:                    "3",
-						Time:                       "300",
-						TotalKills:                 "301",
-						TotalADR:                   "302",
-						TotalShotsHit:              "303",
-						TotalShotsFired:            "304",
-						TotalKillsHeadshot:         "305",
-						TotalKD:                    "306",
-						LastMatchContributionScore: "307",
-						LastMatchDamage:            "308",
-						LastMatchDeaths:            "309",
-						LastMatchKills:             "3010",
-						LastMatchRounds:            "3011",
-						LastMatchKD:                "3012",
-						LastMatchADR:               "3013",
-						HitRatio:                   "3014",
-						Playtime2Weeks:             "3015",
-					},
-					{
-						SteamID:                    "3",
-						Time:                       "3003",
+						Time:                       time.Date(2020, time.June, 23, 0, 0, 3, 0, time.UTC),
 						TotalKills:                 "3013",
 						TotalADR:                   "3023",
 						TotalShotsHit:              "3033",
@@ -152,7 +133,7 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 					},
 					{
 						SteamID:                    "3",
-						Time:                       "30034",
+						Time:                       time.Date(2020, time.June, 23, 0, 0, 4, 0, time.UTC),
 						TotalKills:                 "30134",
 						TotalADR:                   "30234",
 						TotalShotsHit:              "30334",
@@ -169,6 +150,25 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 						HitRatio:                   "301434",
 						Playtime2Weeks:             "301534",
 					},
+					{
+						SteamID:                    "3",
+						Time:                       time.Date(2020, time.June, 23, 0, 0, 5, 0, time.UTC),
+						TotalKills:                 "301",
+						TotalADR:                   "302",
+						TotalShotsHit:              "303",
+						TotalShotsFired:            "304",
+						TotalKillsHeadshot:         "305",
+						TotalKD:                    "306",
+						LastMatchContributionScore: "307",
+						LastMatchDamage:            "308",
+						LastMatchDeaths:            "309",
+						LastMatchKills:             "3010",
+						LastMatchRounds:            "3011",
+						LastMatchKD:                "3012",
+						LastMatchADR:               "3013",
+						HitRatio:                   "3014",
+						Playtime2Weeks:             "3015",
+					},
 				},
 			},
 			wantErr: false,
@@ -182,7 +182,7 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 				Data: []steamclient.PlayerHistoryEntry{
 					{
 						SteamID:                    "4",
-						Time:                       "400",
+						Time:                       time.Date(2020, time.June, 23, 0, 0, 6, 0, time.UTC),
 						TotalKills:                 "401",
 						TotalADR:                   "402",
 						TotalShotsHit:              "403",
@@ -226,13 +226,14 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 func TestDataStorage_UpdatePlayerHistory(t *testing.T) {
 	tests := []struct {
 		name    string
-		pi      steamclient.PlayerInfo
+		pi      steamclient.PlayerHistoryEntry
 		want    steamclient.PlayerHistory
 		wantErr bool
 	}{
 		{
 			name: "All values inserted for new ID (ID: all_new)",
 			want: steamclient.PlayerHistory{
+
 				SteamID: "all_new",
 				Data: []steamclient.PlayerHistoryEntry{
 					{
@@ -254,38 +255,31 @@ func TestDataStorage_UpdatePlayerHistory(t *testing.T) {
 						TotalShotsHit:              "inserted8",
 
 						//This value is set by the database, not tested
-						Time: "database",
+						Time: time.Date(2090, time.June, 0, 0, 0, 0, 0, time.UTC),
 					},
 				},
 			},
-			pi: steamclient.PlayerInfo{
-				PlayerSummary: steamclient.PlayerSummary{
-					SteamID: "all_new",
-				},
-				UserStatsForGame: steamclient.UserStatsForGame{
-					Stats: steamclient.GameStats{
-						LastMatchContributionScore: "inserted0",
-						LastMatchDamage:            "inserted1",
-						LastMatchDeaths:            "inserted2",
-						LastMatchKills:             "inserted3",
-						LastMatchRounds:            "inserted2",
-						TotalKills:                 "inserted5",
-						TotalKillsHeadshot:         "inserted6",
-						TotalShotsFired:            "inserted7",
-						TotalShotsHit:              "inserted8",
-					},
-					Extra: steamclient.GameExtras{
-						HitRatio:     "inserted9",
-						LastMatchADR: "inserted10",
-						LastMatchKD:  "inserted13",
-						TotalADR:     "inserted12",
-						TotalKD:      "inserted13",
-					},
-				},
-				RecentlyPlayedGames: steamclient.RecentlyPlayedGames{
-					Playtime2Weeks: "inserted14",
-				},
-				PlayerHistory: steamclient.PlayerHistory{},
+			pi: steamclient.PlayerHistoryEntry{
+
+				SteamID:                    "all_new",
+				HitRatio:                   "inserted9",
+				LastMatchADR:               "inserted10",
+				LastMatchContributionScore: "inserted0",
+				LastMatchDamage:            "inserted1",
+				LastMatchDeaths:            "inserted2",
+				LastMatchKD:                "inserted13",
+				LastMatchKills:             "inserted3",
+				LastMatchRounds:            "inserted2",
+				Playtime2Weeks:             "inserted14",
+				TotalADR:                   "inserted12",
+				TotalKD:                    "inserted13",
+				TotalKills:                 "inserted5",
+				TotalKillsHeadshot:         "inserted6",
+				TotalShotsFired:            "inserted7",
+				TotalShotsHit:              "inserted8",
+
+				//This value is set by the database, not tested
+				Time: time.Date(2090, time.June, 0, 0, 0, 0, 0, time.UTC),
 			},
 		},
 		{
@@ -296,6 +290,25 @@ func TestDataStorage_UpdatePlayerHistory(t *testing.T) {
 			want: steamclient.PlayerHistory{
 				SteamID: "all_columns",
 				Data: []steamclient.PlayerHistoryEntry{
+					{
+						SteamID:                    "all_columns",
+						Time:                       time.Date(2020, time.June, 23, 0, 0, 9, 0, time.UTC),
+						TotalKD:                    "11",
+						TotalADR:                   "10",
+						LastMatchADR:               "1",
+						TotalKills:                 "12",
+						TotalKillsHeadshot:         "13",
+						TotalShotsHit:              "15",
+						TotalShotsFired:            "14",
+						LastMatchContributionScore: "2",
+						LastMatchDamage:            "3",
+						LastMatchDeaths:            "4",
+						LastMatchKills:             "6",
+						LastMatchRounds:            "7",
+						LastMatchKD:                "5",
+						HitRatio:                   "0",
+						Playtime2Weeks:             "8",
+					},
 					{
 						SteamID:                    "all_columns",
 						HitRatio:                   "inserted9",
@@ -315,57 +328,32 @@ func TestDataStorage_UpdatePlayerHistory(t *testing.T) {
 						TotalShotsHit:              "inserted8",
 
 						//This value is set by the database, not tested
-						Time: "database",
-					},
-					{
-						SteamID:                    "all_columns",
-						Time:                       "database",
-						TotalKD:                    "11",
-						TotalADR:                   "10",
-						LastMatchADR:               "1",
-						TotalKills:                 "12",
-						TotalKillsHeadshot:         "13",
-						TotalShotsHit:              "15",
-						TotalShotsFired:            "14",
-						LastMatchContributionScore: "2",
-						LastMatchDamage:            "3",
-						LastMatchDeaths:            "4",
-						LastMatchKills:             "6",
-						LastMatchRounds:            "7",
-						LastMatchKD:                "5",
-						HitRatio:                   "0",
-						Playtime2Weeks:             "8",
+
+						Time: time.Date(2090, time.June, 0, 0, 0, 0, 0, time.UTC),
 					},
 				},
 			},
-			pi: steamclient.PlayerInfo{
-				PlayerSummary: steamclient.PlayerSummary{
-					SteamID: "all_columns",
-				},
-				UserStatsForGame: steamclient.UserStatsForGame{
-					Stats: steamclient.GameStats{
-						LastMatchContributionScore: "inserted0",
-						LastMatchDamage:            "inserted1",
-						LastMatchDeaths:            "inserted2",
-						LastMatchKills:             "inserted3",
-						LastMatchRounds:            "inserted2",
-						TotalKills:                 "inserted5",
-						TotalKillsHeadshot:         "inserted6",
-						TotalShotsFired:            "inserted7",
-						TotalShotsHit:              "inserted8",
-					},
-					Extra: steamclient.GameExtras{
-						HitRatio:     "inserted9",
-						LastMatchADR: "inserted10",
-						LastMatchKD:  "inserted13",
-						TotalADR:     "inserted12",
-						TotalKD:      "inserted13",
-					},
-				},
-				RecentlyPlayedGames: steamclient.RecentlyPlayedGames{
-					Playtime2Weeks: "inserted14",
-				},
-				PlayerHistory: steamclient.PlayerHistory{},
+			pi: steamclient.PlayerHistoryEntry{
+				SteamID:                    "all_columns",
+				HitRatio:                   "inserted9",
+				LastMatchADR:               "inserted10",
+				LastMatchContributionScore: "inserted0",
+				LastMatchDamage:            "inserted1",
+				LastMatchDeaths:            "inserted2",
+				LastMatchKD:                "inserted13",
+				LastMatchKills:             "inserted3",
+				LastMatchRounds:            "inserted2",
+				Playtime2Weeks:             "inserted14",
+				TotalADR:                   "inserted12",
+				TotalKD:                    "inserted13",
+				TotalKills:                 "inserted5",
+				TotalKillsHeadshot:         "inserted6",
+				TotalShotsFired:            "inserted7",
+				TotalShotsHit:              "inserted8",
+
+				//This value is set by the database, not tested
+
+				Time: time.Date(2090, time.June, 0, 0, 0, 0, 0, time.UTC),
 			},
 		},
 	}
@@ -377,12 +365,7 @@ func TestDataStorage_UpdatePlayerHistory(t *testing.T) {
 				t.Errorf("DataStorage.UpdatePlayerHistory() error = %v, wantErr %v", err, tt.wantErr)
 			}
 
-			if got, err := db.GetPlayerInfoBySteamID(tt.pi.PlayerSummary.SteamID); err == nil {
-
-				//Replace db-generated time field to exclude from test
-				for k := range got.PlayerHistory.Data {
-					got.PlayerHistory.Data[k].Time = "database"
-				}
+			if got, err := db.GetPlayerInfoBySteamID(tt.pi.SteamID); err == nil {
 
 				if diff := cmp.Diff(tt.want, got.PlayerHistory); diff != "" {
 					t.Errorf("DataStorage.UpdatePlayerHistory() mismatch (-want +got):\n%s", diff)
@@ -401,48 +384,39 @@ func TestDataStorage_GetPlayerHistoryLatestTime(t *testing.T) {
 		name    string
 		steamID string
 		want    time.Time
-		wantErr bool
 	}{
 		{
 			name:    "Get Time for existing ID (ID: all_columns)",
 			steamID: "all_columns",
-			want:    time.Date(0001, 01, 01, 00, 00, 00, 00, time.UTC),
-			wantErr: false,
+			want:    time.Date(2020, time.June, 23, 0, 0, 9, 00, time.UTC),
 		},
 		{
 			name:    "Get Time for existing ID (ID: 1)",
 			steamID: "1",
-			want:    time.Date(0001, 01, 01, 00, 00, 00, 00, time.UTC),
-			wantErr: false,
+			want:    time.Date(2020, time.June, 23, 0, 0, 1, 00, time.UTC),
 		},
 		{
 			name:    "Get Time for existing ID (ID: 2)",
 			steamID: "2",
-			want:    time.Date(0001, 01, 01, 00, 00, 00, 00, time.UTC),
-			wantErr: false,
+			want:    time.Date(2020, time.June, 23, 0, 0, 2, 00, time.UTC),
 		},
 		{
 			name:    "Get Time for existing ID (ID: 3)",
 			steamID: "3",
-			want:    time.Date(0001, 01, 01, 00, 00, 00, 00, time.UTC),
-			wantErr: false,
+			want:    time.Date(2020, time.June, 23, 0, 0, 5, 00, time.UTC),
 		},
 		{
 			name:    "Get Time for existing ID (ID: 41)",
 			steamID: "41",
-			want:    time.Date(0001, 01, 01, 00, 00, 00, 00, time.UTC),
-			wantErr: false,
+			want:    time.Date(2020, time.June, 23, 0, 0, 8, 00, time.UTC),
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			prepareDB()
 
-			got, err := db.GetPlayerHistoryLatestTime(tt.steamID)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("DataStorage.GetPlayerHistoryLatestTime() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
+			got := db.GetPlayerHistoryLatestTime(tt.steamID)
+
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("DataStorage.GetPlayerHistoryLatestTime() = %v, want %v", got, tt.want)
 			}

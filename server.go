@@ -105,16 +105,34 @@ func updateData() {
 			}
 
 			// get latest timestamp
-			var lastUpdateTime time.Time
-			if lastUpdateTime, err = datastorage.GetPlayerHistoryLatestTime(v.PlayerSummary.SteamID); err != nil {
-				log.Fatal(err)
-			}
+			lastUpdateTime := datastorage.GetPlayerHistoryLatestTime(v.PlayerSummary.SteamID)
 
 			// if part threshold, update
 			log.Println("updatetime", time.Now().Sub(lastUpdateTime).Minutes())
 			if time.Now().Sub(lastUpdateTime).Minutes() > float64(steamClient.Config.HistoryInterval) {
 				log.Infof("Updating history for %v (%v)", v.PlayerSummary.Personaname, v.PlayerSummary.SteamID)
-				err = datastorage.UpdatePlayerHistory(v)
+
+				entry := steamclient.PlayerHistoryEntry{
+
+					HitRatio:                   v.UserStatsForGame.Extra.HitRatio,
+					LastMatchADR:               v.UserStatsForGame.Extra.LastMatchADR,
+					LastMatchContributionScore: v.UserStatsForGame.Stats.LastMatchContributionScore,
+					LastMatchDamage:            v.UserStatsForGame.Stats.LastMatchDamage,
+					LastMatchDeaths:            v.UserStatsForGame.Stats.LastMatchDeaths,
+					LastMatchKD:                v.UserStatsForGame.Extra.LastMatchKD,
+					LastMatchKills:             v.UserStatsForGame.Stats.LastMatchKills,
+					LastMatchRounds:            v.UserStatsForGame.Stats.LastMatchRounds,
+					Playtime2Weeks:             v.RecentlyPlayedGames.Playtime2Weeks,
+					SteamID:                    v.PlayerSummary.SteamID,
+					Time:                       time.Now(),
+					TotalADR:                   v.UserStatsForGame.Extra.TotalADR,
+					TotalKD:                    v.UserStatsForGame.Extra.TotalKD,
+					TotalKills:                 v.UserStatsForGame.Stats.TotalKills,
+					TotalKillsHeadshot:         v.UserStatsForGame.Stats.TotalKillsHeadshot,
+					TotalShotsFired:            v.UserStatsForGame.Stats.TotalShotsFired,
+					TotalShotsHit:              v.UserStatsForGame.Stats.TotalShotsHit,
+				}
+				err = datastorage.UpdatePlayerHistory(entry)
 				if err != nil {
 					log.Fatal(err)
 				}
