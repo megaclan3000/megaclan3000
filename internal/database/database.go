@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"github.com/jmoiron/modl"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 
@@ -109,17 +110,39 @@ func (ds *DataStorage) GetAllPlayers() ([]steamclient.PlayerInfo, error) {
 func (ds *DataStorage) UpdatePlayerInfo(pi steamclient.PlayerInfo) error {
 	var err error
 
-	if err = ds.UpdatePlayerSummary(pi.PlayerSummary); err != nil {
-		log.Fatalf("Error saving PlayerSummary for %v (%v): %v", pi.PlayerSummary.SteamID, pi.PlayerSummary.Personaname, err)
+	dbm := modl.NewDbMap(ds.db.DB, modl.SqliteDialect{})
+	dbm.AddTableWithName(steamclient.PlayerSummary{}, "player_summary").SetKeys(false, "steamid")
+	dbm.AddTableWithName(steamclient.RecentlyPlayedGames{}, "recently_played").SetKeys(false, "steamid")
+	dbm.AddTableWithName(steamclient.GameStats{}, "player_stats").SetKeys(false, "steamid")
+	dbm.AddTableWithName(steamclient.GameExtras{}, "player_extra").SetKeys(false, "steamid")
+
+	if err := dbm.CreateTablesIfNotExists(); err != nil {
+		log.Warn("Database not creatable: ", err)
 		return err
 	}
-	if err = ds.UpdateRecentlyPlayedGames(pi.RecentlyPlayedGames); err != nil {
-		log.Fatalf("Error saving RecentlyPlayedGames for %v (%v)", pi.PlayerSummary.SteamID, pi.PlayerSummary.Personaname)
-		return err
+
+	// PlayerSummary
+	dbm.Insert(&pi.PlayerSummary)
+
+	//RecentlyPlayedGames
+	dbm.Insert(&pi.RecentlyPlayedGames)
+
+	//UserStatsForGame
+	dbm.Delete(&pi.UserStatsForGame.Stats)
+	dbm.Delete(&pi.UserStatsForGame.Extra)
+	if err != nil {
+		panic(err)
 	}
-	if err = ds.UpdateUserStatsForGame(pi.UserStatsForGame); err != nil {
-		log.Fatalf("Error saving UserStatsForGame for %v (%v)", pi.PlayerSummary.SteamID, pi.PlayerSummary.Personaname)
-		return err
+	err = dbm.Insert(&pi.UserStatsForGame.Stats)
+
+	if err != nil {
+		panic(err)
+	}
+
+	err = dbm.Insert(&pi.UserStatsForGame.Extra)
+
+	if err != nil {
+		panic(err)
 	}
 
 	return nil
