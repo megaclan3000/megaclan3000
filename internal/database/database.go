@@ -80,30 +80,20 @@ func NewDataStorage(pathStorage, pathSchema string) (*DataStorage, error) {
 
 	storage.db.MustExec(string(schema))
 
-	if err = storage.getSelectPreparedstatements(); err != nil {
-		log.Fatal("Failed to prepare SELECT statements", err)
-	}
-
 	return storage, nil
 }
 
 // GetAllPlayers returns a PlayerInfo object for all players known to the
 // database
 func (ds *DataStorage) GetAllPlayers() ([]steamclient.PlayerInfo, error) {
+
 	var players []steamclient.PlayerInfo
-	var rows *sql.Rows
-	var err error
+	var Ids []string
 
-	if rows, err = ds.statements["select_all_player_ids"].Query(); err != nil {
-		return players, err
-	}
-
-	var steamID string
-
-	for rows.Next() {
-		if err = rows.Scan(&steamID); err == nil {
-			log.Debugf("Got ID from database: %v", steamID)
-			if pi, err := ds.GetPlayerInfoBySteamID(steamID); err == nil {
+	if err := ds.db.Select(&Ids, "SELECT steamid FROM player_stats"); err == nil {
+		for _, v := range Ids {
+			log.Debugf("Got ID from database: %v", v)
+			if pi, err := ds.GetPlayerInfoBySteamID(v); err == nil {
 				players = append(players, pi)
 			} else {
 				log.Fatal(err)
@@ -111,7 +101,6 @@ func (ds *DataStorage) GetAllPlayers() ([]steamclient.PlayerInfo, error) {
 		}
 	}
 
-	rows.Close() //good habit to close
 	return players, nil
 }
 
