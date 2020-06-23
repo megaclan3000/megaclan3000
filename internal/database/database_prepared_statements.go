@@ -7,25 +7,6 @@ import (
 func (ds *DataStorage) getUpdatePreparedstatements() error {
 	var err error
 
-	ds.statements["update_recently_played"], err = ds.db.Prepare(
-		`INSERT OR REPLACE INTO recently_played (
-			steamid,
-            appid,
-            img_icon_url,
-            img_logo_url,
-            name,
-            playtime_2_weeks,
-            playtime_forever,
-            playtime_linux_forever,
-            playtime_mac_forever,
-            playtime_windows_forever)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-
-	if err != nil {
-		log.Fatal("Failed to prepare statement: update_recently_played", err)
-		return err
-	}
-
 	// - update player_extra
 	ds.statements["update_player_extra"], err = ds.db.Prepare(
 		`INSERT OR REPLACE INTO player_extra(
