@@ -79,11 +79,6 @@ func NewDataStorage(pathStorage, pathSchema string) (*DataStorage, error) {
 
 	storage.db.MustExec(string(schema))
 
-	// Prepare remaining statements
-	if err = storage.getUpdatePreparedstatements(); err != nil {
-		log.Fatal("Failed to prepare UPDATE statements", err)
-	}
-
 	if err = storage.getInsertPreparedstatements(); err != nil {
 		log.Fatal("Failed to prepare INSERT statements", err)
 	}
