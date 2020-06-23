@@ -247,7 +247,13 @@ func TestDataStorage_UpdateUserStatsForGame(t *testing.T) {
 				SteamID: "all_columns",
 				// GameName: "1",
 				Extra: steamclient.GameExtras{
-					SteamID: "all_columns",
+					SteamID:      "all_columns",
+					TotalKD:      "extra0",
+					LastMatchKD:  "extra1",
+					HitRatio:     "extra2",
+					PlayedHours:  "extra3",
+					TotalADR:     "extra4",
+					LastMatchADR: "extra5",
 				},
 				Stats: steamclient.GameStats{
 					SteamID:                                   "all_columns",

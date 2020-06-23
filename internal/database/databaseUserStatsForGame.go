@@ -1,9 +1,9 @@
 package database
 
 import (
-	"database/sql"
+	"github.com/jmoiron/modl"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
@@ -12,251 +12,32 @@ import (
 // corresponding entry in the database for the steamID
 func (ds *DataStorage) UpdateUserStatsForGame(stats steamclient.UserStatsForGame) error {
 
-	var result sql.Result
+	dbm := modl.NewDbMap(ds.db.DB, modl.SqliteDialect{})
+	dbm.AddTableWithName(steamclient.GameStats{}, "player_stats").SetKeys(false, "steamid")
+	dbm.AddTableWithName(steamclient.GameExtras{}, "player_extra").SetKeys(false, "steamid")
+
+	if err := dbm.CreateTablesIfNotExists(); err != nil {
+		logrus.Fatal("Database not creatable: ", err)
+		return err
+	}
+
 	var err error
+	dbm.Delete(&stats.Stats)
+	dbm.Delete(&stats.Extra)
+	if err != nil {
+		panic(err)
+	}
+	err = dbm.Insert(&stats.Stats)
 
-	if result, err = ds.statements["update_player_stats"].Exec(
-		stats.SteamID,
-		stats.Stats.GILessonBombSitesA,
-		stats.Stats.GILessonBombSitesB,
-		stats.Stats.GILessonCsgoCycleWeaponsKb,
-		stats.Stats.GILessonCsgoHostageLeadToHrz,
-		stats.Stats.GILessonCsgoInstrExplainBombCarrier,
-		stats.Stats.GILessonCsgoInstrExplainBuyarmor,
-		stats.Stats.GILessonCsgoInstrExplainBuymenu,
-		stats.Stats.GILessonCsgoInstrExplainFollowBomber,
-		stats.Stats.GILessonCsgoInstrExplainInspect,
-		stats.Stats.GILessonCsgoInstrExplainPickupBomb,
-		stats.Stats.GILessonCsgoInstrExplainPlantBomb,
-		stats.Stats.GILessonCsgoInstrExplainPreventBombPickup,
-		stats.Stats.GILessonCsgoInstrExplainReload,
-		stats.Stats.GILessonCsgoInstrExplainZoom,
-		stats.Stats.GILessonCsgoInstrRescueZone,
-		stats.Stats.GILessonDefusePlantedBomb,
-		stats.Stats.GILessonFindPlantedBomb,
-		stats.Stats.GILessonTrExplainPlantBomb,
-		stats.Stats.GILessonVersionNumber,
-		stats.Stats.LastMatchContributionScore,
-		stats.Stats.LastMatchCtWins,
-		stats.Stats.LastMatchDamage,
-		stats.Stats.LastMatchDeaths,
-		stats.Stats.LastMatchDominations,
-		stats.Stats.LastMatchFavweaponID,
-		stats.Stats.LastMatchFavweaponHits,
-		stats.Stats.LastMatchFavweaponKills,
-		stats.Stats.LastMatchFavweaponShots,
-		stats.Stats.LastMatchGgContributionScore,
-		stats.Stats.LastMatchKills,
-		stats.Stats.LastMatchMaxPlayers,
-		stats.Stats.LastMatchMoneySpent,
-		stats.Stats.LastMatchMvps,
-		stats.Stats.LastMatchRevenges,
-		stats.Stats.LastMatchRounds,
-		stats.Stats.LastMatchTWins,
-		stats.Stats.LastMatchWins,
-		stats.Stats.SteamStatMatchwinscomp,
-		stats.Stats.SteamStatSurvivedz,
-		stats.Stats.SteamStatXpearnedgames,
-		stats.Stats.TotalBrokenWindows,
-		stats.Stats.TotalContributionScore,
-		stats.Stats.TotalDamageDone,
-		stats.Stats.TotalDeaths,
-		stats.Stats.TotalDefusedBombs,
-		stats.Stats.TotalDominationOverkills,
-		stats.Stats.TotalDominations,
-		stats.Stats.TotalGgMatchesPlayed,
-		stats.Stats.TotalGgMatchesWon,
-		stats.Stats.TotalGunGameContributionScore,
-		stats.Stats.TotalGunGameRoundsPlayed,
-		stats.Stats.TotalGunGameRoundsWon,
-		stats.Stats.TotalHitsAk47,
-		stats.Stats.TotalHitsAug,
-		stats.Stats.TotalHitsAwp,
-		stats.Stats.TotalHitsBizon,
-		stats.Stats.TotalHitsDeagle,
-		stats.Stats.TotalHitsElite,
-		stats.Stats.TotalHitsFamas,
-		stats.Stats.TotalHitsFiveseven,
-		stats.Stats.TotalHitsG3sg1,
-		stats.Stats.TotalHitsGalilar,
-		stats.Stats.TotalHitsGlock,
-		stats.Stats.TotalHitsHkp2000,
-		stats.Stats.TotalHitsM249,
-		stats.Stats.TotalHitsM4a1,
-		stats.Stats.TotalHitsMac10,
-		stats.Stats.TotalHitsMag7,
-		stats.Stats.TotalHitsMp7,
-		stats.Stats.TotalHitsMp9,
-		stats.Stats.TotalHitsNegev,
-		stats.Stats.TotalHitsNova,
-		stats.Stats.TotalHitsP250,
-		stats.Stats.TotalHitsP90,
-		stats.Stats.TotalHitsSg556,
-		stats.Stats.TotalHitsSawedoff,
-		stats.Stats.TotalHitsScar20,
-		stats.Stats.TotalHitsSsg08,
-		stats.Stats.TotalHitsTec9,
-		stats.Stats.TotalHitsUmp45,
-		stats.Stats.TotalHitsXm1014,
-		stats.Stats.TotalKills,
-		stats.Stats.TotalKillsAgainstZoomedSniper,
-		stats.Stats.TotalKillsAk47,
-		stats.Stats.TotalKillsAug,
-		stats.Stats.TotalKillsAwp,
-		stats.Stats.TotalKillsBizon,
-		stats.Stats.TotalKillsDeagle,
-		stats.Stats.TotalKillsElite,
-		stats.Stats.TotalKillsEnemyBlinded,
-		stats.Stats.TotalKillsEnemyWeapon,
-		stats.Stats.TotalKillsFamas,
-		stats.Stats.TotalKillsFiveseven,
-		stats.Stats.TotalKillsG3sg1,
-		stats.Stats.TotalKillsGalilar,
-		stats.Stats.TotalKillsGlock,
-		stats.Stats.TotalKillsHeadshot,
-		stats.Stats.TotalKillsHegrenade,
-		stats.Stats.TotalKillsHkp2000,
-		stats.Stats.TotalKillsKnife,
-		stats.Stats.TotalKillsKnifeFight,
-		stats.Stats.TotalKillsM249,
-		stats.Stats.TotalKillsM4a1,
-		stats.Stats.TotalKillsMac10,
-		stats.Stats.TotalKillsMag7,
-		stats.Stats.TotalKillsMolotov,
-		stats.Stats.TotalKillsMp7,
-		stats.Stats.TotalKillsMp9,
-		stats.Stats.TotalKillsNegev,
-		stats.Stats.TotalKillsNova,
-		stats.Stats.TotalKillsP250,
-		stats.Stats.TotalKillsP90,
-		stats.Stats.TotalKillsSawedoff,
-		stats.Stats.TotalKillsScar20,
-		stats.Stats.TotalKillsSg556,
-		stats.Stats.TotalKillsSsg08,
-		stats.Stats.TotalKillsTaser,
-		stats.Stats.TotalKillsTec9,
-		stats.Stats.TotalKillsUmp45,
-		stats.Stats.TotalKillsXm1014,
-		stats.Stats.TotalMatchesPlayed,
-		stats.Stats.TotalMatchesWon,
-		stats.Stats.TotalMatchesWonBaggage,
-		stats.Stats.TotalMatchesWonBank,
-		stats.Stats.TotalMatchesWonLake,
-		stats.Stats.TotalMatchesWonSafehouse,
-		stats.Stats.TotalMatchesWonShoots,
-		stats.Stats.TotalMatchesWonStmarc,
-		stats.Stats.TotalMatchesWonSugarcane,
-		stats.Stats.TotalMatchesWonTrain,
-		stats.Stats.TotalMoneyEarned,
-		stats.Stats.TotalMvps,
-		stats.Stats.TotalPlantedBombs,
-		stats.Stats.TotalProgressiveMatchesWon,
-		stats.Stats.TotalRescuedHostages,
-		stats.Stats.TotalRevenges,
-		stats.Stats.TotalRoundsMapArBaggage,
-		stats.Stats.TotalRoundsMapArMonastery,
-		stats.Stats.TotalRoundsMapArShoots,
-		stats.Stats.TotalRoundsMapCsAssault,
-		stats.Stats.TotalRoundsMapCsItaly,
-		stats.Stats.TotalRoundsMapCsMilitia,
-		stats.Stats.TotalRoundsMapCsOffice,
-		stats.Stats.TotalRoundsMapDeAztec,
-		stats.Stats.TotalRoundsMapDeBank,
-		stats.Stats.TotalRoundsMapDeCbble,
-		stats.Stats.TotalRoundsMapDeDust,
-		stats.Stats.TotalRoundsMapDeDust2,
-		stats.Stats.TotalRoundsMapDeInferno,
-		stats.Stats.TotalRoundsMapDeLake,
-		stats.Stats.TotalRoundsMapDeNuke,
-		stats.Stats.TotalRoundsMapDeSafehouse,
-		stats.Stats.TotalRoundsMapDeShorttrain,
-		stats.Stats.TotalRoundsMapDeStmarc,
-		stats.Stats.TotalRoundsMapDeSugarcane,
-		stats.Stats.TotalRoundsMapDeTrain,
-		stats.Stats.TotalRoundsMapDeVertigo,
-		stats.Stats.TotalRoundsPlayed,
-		stats.Stats.TotalShotsAk47,
-		stats.Stats.TotalShotsAug,
-		stats.Stats.TotalShotsAwp,
-		stats.Stats.TotalShotsBizon,
-		stats.Stats.TotalShotsDeagle,
-		stats.Stats.TotalShotsElite,
-		stats.Stats.TotalShotsFamas,
-		stats.Stats.TotalShotsFired,
-		stats.Stats.TotalShotsFiveseven,
-		stats.Stats.TotalShotsG3sg1,
-		stats.Stats.TotalShotsGalilar,
-		stats.Stats.TotalShotsGlock,
-		stats.Stats.TotalShotsHit,
-		stats.Stats.TotalShotsHkp2000,
-		stats.Stats.TotalShotsM249,
-		stats.Stats.TotalShotsM4a1,
-		stats.Stats.TotalShotsMac10,
-		stats.Stats.TotalShotsMag7,
-		stats.Stats.TotalShotsMp7,
-		stats.Stats.TotalShotsMp9,
-		stats.Stats.TotalShotsNegev,
-		stats.Stats.TotalShotsNova,
-		stats.Stats.TotalShotsP250,
-		stats.Stats.TotalShotsP90,
-		stats.Stats.TotalShotsSawedoff,
-		stats.Stats.TotalShotsScar20,
-		stats.Stats.TotalShotsSg556,
-		stats.Stats.TotalShotsSsg08,
-		stats.Stats.TotalShotsTaser,
-		stats.Stats.TotalShotsTec9,
-		stats.Stats.TotalShotsUmp45,
-		stats.Stats.TotalShotsXm1014,
-		stats.Stats.TotalTimePlayed,
-		stats.Stats.TotalTrbombMatchesWon,
-		stats.Stats.TotalTRDefusedBombs,
-		stats.Stats.TotalTRPlantedBombs,
-		stats.Stats.TotalWeaponsDonated,
-		stats.Stats.TotalWins,
-		stats.Stats.TotalWinsMapArBaggage,
-		stats.Stats.TotalWinsMapArMonastery,
-		stats.Stats.TotalWinsMapArShoots,
-		stats.Stats.TotalWinsMapCsAssault,
-		stats.Stats.TotalWinsMapCsItaly,
-		stats.Stats.TotalWinsMapCsMilitia,
-		stats.Stats.TotalWinsMapCsOffice,
-		stats.Stats.TotalWinsMapDeAztec,
-		stats.Stats.TotalWinsMapDeBank,
-		stats.Stats.TotalWinsMapDeCbble,
-		stats.Stats.TotalWinsMapDeDust,
-		stats.Stats.TotalWinsMapDeDust2,
-		stats.Stats.TotalWinsMapDeHouse,
-		stats.Stats.TotalWinsMapDeInferno,
-		stats.Stats.TotalWinsMapDeLake,
-		stats.Stats.TotalWinsMapDeNuke,
-		stats.Stats.TotalWinsMapDeSafehouse,
-		stats.Stats.TotalWinsMapDeShorttrain,
-		stats.Stats.TotalWinsMapDeStmarc,
-		stats.Stats.TotalWinsMapDeSugarcane,
-		stats.Stats.TotalWinsMapDeTrain,
-		stats.Stats.TotalWinsMapDeVertigo,
-		stats.Stats.TotalWinsPistolround,
-		//TODO
-	); err != nil {
-		return err
+	if err != nil {
+		panic(err)
 	}
 
-	rows, err := result.RowsAffected()
-	log.Debugf("Added %v to player_stats table. %v rows affected", stats.SteamID, rows)
+	err = dbm.Insert(&stats.Extra)
 
-	if result, err = ds.statements["update_player_extra"].Exec(
-		stats.SteamID,
-		stats.Extra.TotalKD,
-		stats.Extra.LastMatchKD,
-		stats.Extra.HitRatio,
-		stats.Extra.PlayedHours,
-	); err != nil {
-		return err
+	if err != nil {
+		panic(err)
 	}
-
-	rows, err = result.RowsAffected()
-	log.Debugf("Added %v to player_extra table. %v rows affected", stats.SteamID, rows)
-
-	return err
+	return nil
 
 }
