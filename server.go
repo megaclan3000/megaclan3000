@@ -108,7 +108,7 @@ func updateData() {
 			lastUpdateTime := datastorage.GetPlayerHistoryLatestTime(v.PlayerSummary.SteamID)
 
 			// if part threshold, update
-			log.Println("updatetime", time.Now().Sub(lastUpdateTime).Minutes())
+			log.Println("updatetime", time.Since(lastUpdateTime).Minutes())
 			if time.Now().Sub(lastUpdateTime).Minutes() > float64(steamClient.Config.HistoryInterval) {
 				log.Infof("Updating history for %v (%v)", v.PlayerSummary.Personaname, v.PlayerSummary.SteamID)
 
