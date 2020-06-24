@@ -210,14 +210,14 @@ func TestDataStorage_GetPlayerHistory(t *testing.T) {
 
 			prepareDB()
 
-			got, err := db.GetPlayerInfoBySteamID(tt.steamID)
+			got, err := db.getPlayerHistory(tt.steamID)
 
 			if err != nil {
-				t.Logf("DataStorage.GetPlayerHistory() error = %v, wantErr %v", err, tt.wantErr)
+				t.Logf("DataStorage.getPlayerHistory() error = %v, wantErr %v", err, tt.wantErr)
 			}
 
-			if diff := cmp.Diff(got.PlayerHistory, tt.want); diff != "" {
-				t.Errorf("DataStorage.GetPlayerHistory() mismatch (-got +want):\n%s", diff)
+			if diff := cmp.Diff(got, tt.want); diff != "" {
+				t.Errorf("DataStorage.getPlayerHistory() mismatch (-got +want):\n%s", diff)
 			}
 		})
 	}
@@ -238,6 +238,7 @@ func TestDataStorage_UpdatePlayerHistory(t *testing.T) {
 				Data: []steamclient.PlayerHistoryEntry{
 					{
 						SteamID:                    "all_new",
+						Time:                       time.Date(2090, time.June, 0, 0, 0, 0, 0, time.UTC),
 						HitRatio:                   "inserted9",
 						LastMatchADR:               "inserted10",
 						LastMatchContributionScore: "inserted0",
@@ -253,9 +254,6 @@ func TestDataStorage_UpdatePlayerHistory(t *testing.T) {
 						TotalKillsHeadshot:         "inserted6",
 						TotalShotsFired:            "inserted7",
 						TotalShotsHit:              "inserted8",
-
-						//This value is set by the database, not tested
-						Time: time.Date(2090, time.June, 0, 0, 0, 0, 0, time.UTC),
 					},
 				},
 			},
@@ -365,9 +363,9 @@ func TestDataStorage_UpdatePlayerHistory(t *testing.T) {
 				t.Errorf("DataStorage.UpdatePlayerHistory() error = %v, wantErr %v", err, tt.wantErr)
 			}
 
-			if got, err := db.GetPlayerInfoBySteamID(tt.pi.SteamID); err == nil {
+			if got, err := db.getPlayerHistory(tt.pi.SteamID); err == nil {
 
-				if diff := cmp.Diff(tt.want, got.PlayerHistory); diff != "" {
+				if diff := cmp.Diff(tt.want, got); diff != "" {
 					t.Errorf("DataStorage.UpdatePlayerHistory() mismatch (-want +got):\n%s", diff)
 				}
 			} else {
