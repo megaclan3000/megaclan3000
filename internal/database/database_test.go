@@ -1,11 +1,12 @@
 package database
 
 import (
-	"reflect"
 	"testing"
 	"time"
 
 	"github.com/go-testfixtures/testfixtures/v3"
+	"github.com/google/go-cmp/cmp"
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
 
@@ -54,8 +55,9 @@ func TestDataStorage_GetAllPlayers(t *testing.T) {
 				t.Errorf("DataStorage.GetAllPlayers() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("DataStorage.GetAllPlayers() = %v, want %v", got, tt.want)
+
+			if diff := cmp.Diff(tt.want, got); diff != "" {
+				t.Errorf("DataStorage.GetAllPlayers() mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}
@@ -144,8 +146,9 @@ func TestDataStorage_getPlayerSummary(t *testing.T) {
 				t.Errorf("DataStorage.getPlayerSummary() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("DataStorage.getPlayerSummary() = %v, want %v", got, tt.want)
+
+			if diff := cmp.Diff(tt.want, got); diff != "" {
+				t.Errorf("DataStorage.getPlayerSummary() mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}
@@ -193,48 +196,9 @@ func TestDataStorage_getRecentlyPlayedGames(t *testing.T) {
 				t.Errorf("DataStorage.getRecentlyPlayedGames() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("DataStorage.getRecentlyPlayedGames() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
 
-func TestDataStorage_getUserStatsForGame(t *testing.T) {
-	tests := []struct {
-		name    string
-		steamID string
-		want    steamclient.UserStatsForGame
-		wantErr bool
-	}{
-		{
-			name:    "Retrieve UserStatsForGame from fixtures for ID: all_columns",
-			steamID: "all_columns",
-			want:    steamclient.UserStatsForGame{
-				//TODO
-			},
-			wantErr: false,
-		},
-
-		{
-			name:    "Try to retrieve UserStatsForGamefrom fixtures for ID: no_exist",
-			steamID: "no_exist",
-			want:    steamclient.UserStatsForGame{},
-			wantErr: true,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-
-			prepareDB()
-			got, err := db.getUserStatsForGame(tt.steamID)
-
-			if (err != nil) != tt.wantErr {
-				t.Errorf("DataStorage.getUserStatsForGame() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("DataStorage.getUserStatsForGame() = %v, want %v", got, tt.want)
+			if diff := cmp.Diff(tt.want, got); diff != "" {
+				t.Errorf("DataStorage.getRecentlyPlayedGames() mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}
@@ -361,8 +325,95 @@ func TestDataStorage_getPlayerHistory(t *testing.T) {
 				t.Errorf("DataStorage.getPlayerHistory() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("DataStorage.getPlayerHistory() = %v, want %v", got, tt.want)
+
+			if diff := cmp.Diff(tt.want, got); diff != "" {
+				t.Errorf("DataStorage.getPlayerHistory() mismatch (-want +got):\n%s", diff)
+			}
+		})
+	}
+}
+
+func TestDataStorage_getUserStatsForGameExtra(t *testing.T) {
+	tests := []struct {
+		name    string
+		steamID string
+		want    steamclient.GameExtras
+		wantErr bool
+	}{
+		{
+			name:    "Retrieve Extra from fixtures (ID: all_columns)",
+			steamID: "all_columns",
+			want: steamclient.GameExtras{
+				SteamID:      "all_columns",
+				TotalKD:      "extra0",
+				LastMatchKD:  "extra1",
+				HitRatio:     "extra2",
+				PlayedHours:  "extra3",
+				TotalADR:     "extra4",
+				LastMatchADR: "extra5",
+			},
+			wantErr: false,
+		},
+		{
+			name:    "Retrieve Extra from fixtures (ID: no_exist)",
+			steamID: "no_exist",
+			want:    steamclient.GameExtras{},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+
+			prepareDB()
+			got, err := db.getUserStatsForGameExtra(tt.steamID)
+
+			if (err != nil) != tt.wantErr {
+				t.Errorf("DataStorage.getUserStatsForGameExtra() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+
+			if diff := cmp.Diff(tt.want, got); diff != "" {
+				t.Errorf("DataStorage.getUserStatsForGameExtra() mismatch (-want +got):\n%s", diff)
+			}
+		})
+	}
+}
+
+func TestDataStorage_getUserStatsForGameStats(t *testing.T) {
+	tests := []struct {
+		name    string
+		steamID string
+		want    steamclient.GameStats
+		wantErr bool
+	}{
+		{
+			name:    "Retrieve Stats from fixtures (ID: all_columns)",
+			steamID: "all_columns",
+			want:    steamclient.GameStats{
+				//TODO
+			},
+			wantErr: false,
+		},
+		{
+			name:    "Retrieve Stats from fixtures (ID: no_exist)",
+			steamID: "no_exist",
+			want:    steamclient.GameStats{},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+
+			prepareDB()
+			got, err := db.getUserStatsForGameStats(tt.steamID)
+
+			if (err != nil) != tt.wantErr {
+				t.Errorf("DataStorage.getUserStatsForGameStats() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+
+			if diff := cmp.Diff(tt.want, got); diff != "" {
+				t.Errorf("DataStorage.getUserStatsForGameStats() mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}
