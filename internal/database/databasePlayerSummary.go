@@ -21,5 +21,9 @@ func (ds *DataStorage) UpdatePlayerSummary(ps steamclient.PlayerSummary) error {
 		return err
 	}
 
+	if _, err := dbm.Delete(&ps); err != nil {
+		return err
+	}
+
 	return dbm.Insert(&ps)
 }
