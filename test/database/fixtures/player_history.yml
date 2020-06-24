@@ -54,57 +54,57 @@
 
 - steamid:                       3
   time:                          "2020-06-23 00:00:03+0000"
-  total_kills:                   3013
-  total_adr:                     3023
-  total_shots_hit:               3033
-  total_shots_fired:             3043
-  total_kills_headshot:          3053
-  total_kd:                      3063
+  hit_ratio:                     30143
+  last_match_adr:                30133
   last_match_contribution_score: 3073
   last_match_damage:             3083
   last_match_deaths:             3093
+  last_match_kd:                 30123
   last_match_kills:              30103
   last_match_rounds:             30113
-  last_match_kd:                 30123
-  last_match_adr:                30133
-  hit_ratio:                     30143
   playtime_2_weeks:               30153
+  total_adr:                     3023
+  total_kd:                      3063
+  total_kills:                   3013
+  total_kills_headshot:          3053
+  total_shots_fired:             3043
+  total_shots_hit:               3033
 
 - steamid:                       3
   time:                          "2020-06-23 00:00:04+0000"
-  total_kills:                   30134
-  total_adr:                     30234
-  total_shots_hit:               30334
-  total_shots_fired:             30434
-  total_kills_headshot:          30534
-  total_kd:                      30634
+  hit_ratio:                     301434
+  last_match_adr:                301334
   last_match_contribution_score: 30734
   last_match_damage:             30834
   last_match_deaths:             30934
+  last_match_kd:                 301234
   last_match_kills:              301034
   last_match_rounds:             301134
-  last_match_kd:                 301234
-  last_match_adr:                301334
-  hit_ratio:                     301434
   playtime_2_weeks:               301534
+  total_adr:                     30234
+  total_kd:                      30634
+  total_kills:                   30134
+  total_kills_headshot:          30534
+  total_shots_fired:             30434
+  total_shots_hit:               30334
 
 - steamid:                       3
   time:                          "2020-06-23 00:00:05+0000"
-  total_kills:                   301
-  total_adr:                     302
-  total_shots_hit:               303
-  total_shots_fired:             304
-  total_kills_headshot:          305
-  total_kd:                      306
+  hit_ratio:                     3014
+  last_match_adr:                3013
   last_match_contribution_score: 307
   last_match_damage:             308
   last_match_deaths:             309
+  last_match_kd:                 3012
   last_match_kills:              3010
   last_match_rounds:             3011
-  last_match_kd:                 3012
-  last_match_adr:                3013
-  hit_ratio:                     3014
   playtime_2_weeks:               3015
+  total_adr:                     302
+  total_kd:                      306
+  total_kills:                   301
+  total_kills_headshot:          305
+  total_shots_fired:             304
+  total_shots_hit:               303
 
 - steamid:                       4
   time:                          "2020-06-23 00:00:06+0000"
