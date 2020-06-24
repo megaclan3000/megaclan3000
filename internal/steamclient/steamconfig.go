@@ -26,7 +26,6 @@ func NewSteamConfig(configPath string) (SteamConfig, error) {
 	}
 
 	byteValue, _ := ioutil.ReadAll(jsonFile)
-	json.Unmarshal(byteValue, &conf)
-
-	return conf, nil
+	err = json.Unmarshal(byteValue, &conf)
+	return conf, err
 }
