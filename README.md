@@ -12,6 +12,7 @@ Our custom CS:GO stats page: https://megaclan3000.de
 
 ![Labeler](https://github.com/megaclan3000/megaclan3000/workflows/Labeler/badge.svg)
 ![Go](https://github.com/megaclan3000/megaclan3000/workflows/Go/badge.svg)
+![golangci-lint](https://github.com/megaclan3000/megaclan3000/workflows/golangci-lint/badge.svg)
 
 ![](https://i.imgur.com/tQzdzAd.png)
 
