@@ -41,7 +41,7 @@ func main() {
 	steamClient = steamclient.NewSteamClient("./config.json")
 
 	log.Info("Creating datastorage")
-	if datastorage, err = database.NewDataStorage("./data.db"); err != nil {
+	if datastorage, err = database.NewDataStorage("./data.db", "./schema.sql"); err != nil {
 		log.Fatal("Failed to open database:", err)
 	}
 
@@ -105,16 +105,34 @@ func updateData() {
 			}
 
 			// get latest timestamp
-			var lastUpdateTime time.Time
-			if lastUpdateTime, err = datastorage.GetPlayerHistoryLatestTime(v.PlayerSummary.SteamID); err != nil {
-				log.Fatal(err)
-			}
+			lastUpdateTime := datastorage.GetPlayerHistoryLatestTime(v.PlayerSummary.SteamID)
 
 			// if part threshold, update
-			log.Println("updatetime", time.Now().Sub(lastUpdateTime).Minutes())
-			if time.Now().Sub(lastUpdateTime).Minutes() > float64(steamClient.Config.HistoryInterval) {
+			log.Println("updatetime", time.Since(lastUpdateTime).Minutes())
+			if time.Since(lastUpdateTime).Minutes() > float64(steamClient.Config.HistoryInterval) {
 				log.Infof("Updating history for %v (%v)", v.PlayerSummary.Personaname, v.PlayerSummary.SteamID)
-				err = datastorage.UpdatePlayerHistory(v)
+
+				entry := steamclient.PlayerHistoryEntry{
+
+					HitRatio:                   v.UserStatsForGame.Extra.HitRatio,
+					LastMatchADR:               v.UserStatsForGame.Extra.LastMatchADR,
+					LastMatchContributionScore: v.UserStatsForGame.Stats.LastMatchContributionScore,
+					LastMatchDamage:            v.UserStatsForGame.Stats.LastMatchDamage,
+					LastMatchDeaths:            v.UserStatsForGame.Stats.LastMatchDeaths,
+					LastMatchKD:                v.UserStatsForGame.Extra.LastMatchKD,
+					LastMatchKills:             v.UserStatsForGame.Stats.LastMatchKills,
+					LastMatchRounds:            v.UserStatsForGame.Stats.LastMatchRounds,
+					Playtime2Weeks:             v.RecentlyPlayedGames.Playtime2Weeks,
+					SteamID:                    v.PlayerSummary.SteamID,
+					Time:                       time.Now(),
+					TotalADR:                   v.UserStatsForGame.Extra.TotalADR,
+					TotalKD:                    v.UserStatsForGame.Extra.TotalKD,
+					TotalKills:                 v.UserStatsForGame.Stats.TotalKills,
+					TotalKillsHeadshot:         v.UserStatsForGame.Stats.TotalKillsHeadshot,
+					TotalShotsFired:            v.UserStatsForGame.Stats.TotalShotsFired,
+					TotalShotsHit:              v.UserStatsForGame.Stats.TotalShotsHit,
+				}
+				err = datastorage.UpdatePlayerHistory(entry)
 				if err != nil {
 					log.Fatal(err)
 				}
@@ -127,7 +145,9 @@ func updateData() {
 }
 
 func handlerIndex(w http.ResponseWriter, r *http.Request) {
-	t.ExecuteTemplate(w, "index.html", nil)
+	if err := t.ExecuteTemplate(w, "index.html", nil); err != nil {
+		log.Warn(err)
+	}
 }
 
 func handlerStats(w http.ResponseWriter, r *http.Request) {
@@ -137,34 +157,50 @@ func handlerStats(w http.ResponseWriter, r *http.Request) {
 
 	if players, err = datastorage.GetAllPlayers(); err != nil {
 		log.Error("Error getting stats from database:", err)
-		t.ExecuteTemplate(w, "404.html", nil)
+		if err := t.ExecuteTemplate(w, "404.html", nil); err != nil {
+			log.Warn(err)
+		}
 		return
 	}
-	t.ExecuteTemplate(w, "stats.html", players)
+	if err := t.ExecuteTemplate(w, "stats.html", players); err != nil {
+		log.Warn(err)
+	}
 }
 
 func handlerContact(w http.ResponseWriter, r *http.Request) {
-	t.ExecuteTemplate(w, "contact.html", nil)
+	if err := t.ExecuteTemplate(w, "contact.html", nil); err != nil {
+		log.Warn(err)
+	}
 }
 
 func handlerFAQ(w http.ResponseWriter, r *http.Request) {
-	t.ExecuteTemplate(w, "faq.html", nil)
+	if err := t.ExecuteTemplate(w, "faq.html", nil); err != nil {
+		log.Warn(err)
+	}
 }
 
 func handler404(w http.ResponseWriter, r *http.Request) {
-	t.ExecuteTemplate(w, "404.html", nil)
+	if err := t.ExecuteTemplate(w, "404.html", nil); err != nil {
+		log.Warn(err)
+	}
 }
 
 func handlerDetails(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	if p, err := datastorage.GetPlayerInfoBySteamID(vars["id"]); err == nil {
-		t.ExecuteTemplate(w, "details.html", p)
+		if err := t.ExecuteTemplate(w, "details.html", p); err != nil {
+			log.Warn(err)
+		}
 		return
 	}
-	t.ExecuteTemplate(w, "404.html", nil)
+	if err := t.ExecuteTemplate(w, "404.html", nil); err != nil {
+		log.Warn(err)
+	}
 }
 
 func handlerImprint(w http.ResponseWriter, r *http.Request) {
-	t.ExecuteTemplate(w, "imprint.html", nil)
+	if err := t.ExecuteTemplate(w, "imprint.html", nil); err != nil {
+		log.Warn(err)
+	}
 }

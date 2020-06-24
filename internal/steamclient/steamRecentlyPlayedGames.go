@@ -48,34 +48,34 @@ type recentlyPlayedGamesData struct {
 type RecentlyPlayedGames struct {
 
 	// SteamID of the player
-	SteamID string
+	SteamID string `db:"steamid"`
 
 	// AppID for the game, 730 for CS:GO
-	Appid string
+	Appid string `db:"appid"`
 
 	// Name of the game played
-	Name string
+	Name string `db:"name"`
 
 	// Playtime in the last two weeks
-	Playtime2Weeks string
+	Playtime2Weeks string `db:"playtime_2_weeks"`
 
 	// Total playtime
-	PlaytimeForever string
+	PlaytimeForever string `db:"playtime_forever"`
 
 	// URL to the icon of the game
-	ImgIconURL string
+	ImgIconURL string `db:"img_icon_url"`
 
 	// URL to the logo of the game
-	ImgLogoURL string
+	ImgLogoURL string `db:"img_logo_url"`
 
 	// Total playtime on windows
-	PlaytimeWindowsForever string
+	PlaytimeWindowsForever string `db:"playtime_windows_forever"`
 
 	// Total playtime on mac
-	PlaytimeMacForever string
+	PlaytimeMacForever string `db:"playtime_mac_forever"`
 
 	// Total playtime on linux
-	PlaytimeLinuxForever string
+	PlaytimeLinuxForever string `db:"playtime_linux_forever"`
 }
 
 func (sc *SteamClient) ParseRecentlyPlayedGames(data recentlyPlayedGamesData, steamID string) (RecentlyPlayedGames, error) {

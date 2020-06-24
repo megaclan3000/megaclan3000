@@ -2,10 +2,11 @@ package database
 
 import (
 	"database/sql"
-
 	log "github.com/sirupsen/logrus"
+	"io/ioutil"
 
 	// Use sqlite backend
+	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )
@@ -14,8 +15,91 @@ import (
 // retrieval as well as methods to ingress new data from the API or update
 // existing values
 type DataStorage struct {
-	db         *sql.DB
+	db         *sqlx.DB
 	statements map[string]*sql.Stmt
+}
+
+func (ds *DataStorage) getPlayerSummary(steamID string) (steamclient.PlayerSummary, error) {
+
+	summary := steamclient.PlayerSummary{}
+	var err error
+
+	if err = ds.db.Get(&summary, "SELECT * FROM player_summary WHERE steamid=? LIMIT 1", steamID); err != nil {
+		log.Warnf("Error retrieving player_summary for steamID %v: %v", steamID, err)
+	}
+
+	return summary, err
+}
+
+func (ds *DataStorage) getRecentlyPlayedGames(steamID string) (steamclient.RecentlyPlayedGames, error) {
+
+	recentGames := steamclient.RecentlyPlayedGames{}
+	var err error
+
+	if err = ds.db.Get(&recentGames, "SELECT * FROM recently_played WHERE steamid=? LIMIT 1", steamID); err != nil {
+		log.Warnf("Error retrieving recently_played for steamID %v: %v", steamID, err)
+	}
+
+	return recentGames, err
+}
+
+func (ds *DataStorage) getUserStatsForGameStats(steamID string) (steamclient.GameStats, error) {
+	var err error
+	gamestats := steamclient.GameStats{}
+	if err = ds.db.Get(&gamestats, "SELECT * FROM player_stats WHERE steamid=? LIMIT 1", steamID); err != nil {
+		log.Warnf("Error retrieving player_stats for steamID %v: %v", steamID, err)
+		return gamestats, err
+	}
+	gamestats.SteamID = steamID
+	return gamestats, err
+}
+
+func (ds *DataStorage) getUserStatsForGameExtra(steamID string) (steamclient.GameExtras, error) {
+
+	var err error
+	extra := steamclient.GameExtras{}
+
+	if err = ds.db.Get(&extra, "SELECT * FROM player_extra WHERE steamid=? LIMIT 1", steamID); err != nil {
+		log.Warnf("Error retrieving player_extra for steamID %v: %v", steamID, err)
+		return extra, err
+	}
+	extra.SteamID = steamID
+	return extra, err
+}
+
+func (ds *DataStorage) getUserStatsForGame(steamID string) (steamclient.UserStatsForGame, error) {
+
+	var err error
+	usfg := steamclient.UserStatsForGame{}
+
+	if usfg.Stats, err = ds.getUserStatsForGameStats(steamID); err != nil {
+		return steamclient.UserStatsForGame{}, err
+	}
+
+	if usfg.Extra, err = ds.getUserStatsForGameExtra(steamID); err != nil {
+		return steamclient.UserStatsForGame{}, err
+	}
+
+	usfg.SteamID = steamID
+
+	return usfg, err
+
+}
+
+func (ds *DataStorage) getPlayerHistory(steamID string) (steamclient.PlayerHistory, error) {
+
+	entries := []steamclient.PlayerHistoryEntry{}
+	history := steamclient.PlayerHistory{}
+	var err error
+
+	if err = ds.db.Select(&entries, "SELECT * FROM player_history WHERE steamid=? ORDER BY time LIMIT 10", steamID); err != nil {
+		log.Warnf("Error retrieving player_history for steamID %v: %v", steamID, err)
+	}
+
+	history.SteamID = steamID
+	history.Data = entries
+
+	return history, err
 }
 
 // GetPlayerInfoBySteamID returns a PlayerInfo from a steamID. It will try to
@@ -26,76 +110,46 @@ func (ds *DataStorage) GetPlayerInfoBySteamID(steamID string) (steamclient.Playe
 	info := steamclient.PlayerInfo{}
 	var err error
 
-	if info.PlayerSummary, err = ds.GetPlayerSummary(steamID); err != nil {
-		return info, err
+	if info.PlayerSummary, err = ds.getPlayerSummary(steamID); err != nil {
+		panic(err)
 	}
 
-	if info.RecentlyPlayedGames, err = ds.GetRecentlyPlayedGames(steamID); err != nil {
-		return info, err
+	if info.RecentlyPlayedGames, err = ds.getRecentlyPlayedGames(steamID); err != nil {
+		panic(err)
 	}
 
-	if info.UserStatsForGame, err = ds.GetUserStatsForGame(steamID); err != nil {
-		return info, err
+	if info.UserStatsForGame, err = ds.getUserStatsForGame(steamID); err != nil {
+		panic(err)
 	}
 
-	if info.PlayerHistory, err = ds.GetPlayerHistory(steamID); err != nil {
-		return info, err
+	if info.PlayerHistory, err = ds.getPlayerHistory(steamID); err != nil {
+		panic(err)
 	}
 
 	return info, nil
 }
 
 // NewDataStorage creates a new DataStorage for a given sqlite database filepath
-func NewDataStorage(path string) (*DataStorage, error) {
+func NewDataStorage(pathStorage, pathSchema string) (*DataStorage, error) {
 	var err error
 
 	// Initialize database
 	storage := new(DataStorage)
 	storage.statements = make(map[string]*sql.Stmt)
 
-	log.Debugf("Reading %v", path)
-	if storage.db, err = sql.Open("sqlite3", path); err != nil {
+	// Connect to database
+	log.Debugf("Reading %v", pathStorage)
+	if storage.db, err = sqlx.Open("sqlite3", pathStorage); err != nil {
 		log.Fatal("Failed to open sqlite file", err)
 	}
 
-	// Prepare CREATE statements
-	if err = storage.getCreatePreparedstatements(); err != nil {
-		log.Fatal("Failed to prepare CREATE statements", err)
+	// Read and execute schema from schema.sql
+	schema, err := ioutil.ReadFile(pathSchema)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	// Create tables, if necessary
-	if _, err = storage.statements["create_player_summary"].Exec(); err != nil {
-		log.Fatal("Failed to create table player_summary", err)
-	}
-
-	if _, err = storage.statements["create_player_stats"].Exec(); err != nil {
-		log.Fatal("Failed to create table player_stats", err)
-	}
-
-	if _, err = storage.statements["create_recently_played"].Exec(); err != nil {
-		log.Fatal("Failed to create table recently_played", err)
-	}
-
-	if _, err = storage.statements["create_player_history"].Exec(); err != nil {
-		log.Fatal("Failed to create table player_history", err)
-	}
-
-	if _, err = storage.statements["create_player_extra"].Exec(); err != nil {
-		log.Fatal("Failed to create table player_extra", err)
-	}
-
-	// Prepare remaining statements
-	if err = storage.getUpdatePreparedstatements(); err != nil {
-		log.Fatal("Failed to prepare UPDATE statements", err)
-	}
-
-	if err = storage.getInsertPreparedstatements(); err != nil {
-		log.Fatal("Failed to prepare INSERT statements", err)
-	}
-
-	if err = storage.getSelectPreparedstatements(); err != nil {
-		log.Fatal("Failed to prepare SELECT statements", err)
-	}
+	storage.db.MustExec(string(schema))
 
 	return storage, nil
 }
@@ -103,20 +157,14 @@ func NewDataStorage(path string) (*DataStorage, error) {
 // GetAllPlayers returns a PlayerInfo object for all players known to the
 // database
 func (ds *DataStorage) GetAllPlayers() ([]steamclient.PlayerInfo, error) {
+
 	var players []steamclient.PlayerInfo
-	var rows *sql.Rows
-	var err error
+	var Ids []string
 
-	if rows, err = ds.statements["select_all_player_ids"].Query(); err != nil {
-		return players, err
-	}
-
-	var steamID string
-
-	for rows.Next() {
-		if err = rows.Scan(&steamID); err == nil {
-			log.Debugf("Got ID from database: %v", steamID)
-			if pi, err := ds.GetPlayerInfoBySteamID(steamID); err == nil {
+	if err := ds.db.Select(&Ids, "SELECT steamid FROM player_stats"); err == nil {
+		for _, v := range Ids {
+			log.Debugf("Got ID from database: %v", v)
+			if pi, err := ds.GetPlayerInfoBySteamID(v); err == nil {
 				players = append(players, pi)
 			} else {
 				log.Fatal(err)
@@ -124,7 +172,6 @@ func (ds *DataStorage) GetAllPlayers() ([]steamclient.PlayerInfo, error) {
 		}
 	}
 
-	rows.Close() //good habit to close
 	return players, nil
 }
 
