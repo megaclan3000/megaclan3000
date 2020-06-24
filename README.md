@@ -9,7 +9,7 @@ Our custom CS:GO stats page: https://megaclan3000.de
 ![GitHub issues](https://img.shields.io/github/issues/megaclan3000/megaclan3000?style=plastic)
 
 ![Go](https://github.com/megaclan3000/megaclan3000/workflows/Go/badge.svg)
-[![codecov](https://codecov.io/gh/megclan3000/megaclan3000/branch/master/graph/badge.svg)](https://codecov.io/gh/megaclan3000/megaclan3000)
+[![codecov](https://codecov.io/gh/megaclan3000/megaclan3000/branch/master/graph/badge.svg)](https://codecov.io/gh/megaclan3000/megaclan3000)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/994620bcbe906b069ef0/test_coverage)](https://codeclimate.com/github/megaclan3000/megaclan3000/test_coverage)
 ![golangci-lint](https://github.com/megaclan3000/megaclan3000/workflows/golangci-lint/badge.svg)
 ![Labeler](https://github.com/megaclan3000/megaclan3000/workflows/Labeler/badge.svg)
