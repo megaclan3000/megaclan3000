@@ -15,7 +15,6 @@ type SteamConfig struct {
 	HistoryInterval int      `json:"HistoryInterval"`
 	UpdateInterval  int      `json:"UpdateInterval"`
 	lastUpdate      time.Time
-	configPath      string
 }
 
 func NewSteamConfig(configPath string) (SteamConfig, error) {
