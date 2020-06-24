@@ -12,6 +12,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@master
 
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
@@ -36,3 +37,6 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
