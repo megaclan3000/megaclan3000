@@ -19,6 +19,72 @@ type DataStorage struct {
 	statements map[string]*sql.Stmt
 }
 
+func (ds *DataStorage) getPlayerSummary(steamID string) (steamclient.PlayerSummary, error) {
+
+	summary := steamclient.PlayerSummary{}
+	var err error
+
+	if err = ds.db.Get(&summary, "SELECT * FROM player_summary WHERE steamid=? LIMIT 1", steamID); err != nil {
+		log.Warnf("Error retrieving player_summary for steamID %v: %v", steamID, err)
+	}
+
+	return summary, err
+}
+
+func (ds *DataStorage) getRecentlyPlayedGames(steamID string) (steamclient.RecentlyPlayedGames, error) {
+
+	recentGames := steamclient.RecentlyPlayedGames{}
+	var err error
+
+	if err = ds.db.Get(&recentGames, "SELECT * FROM recently_played WHERE steamid=? LIMIT 1", steamID); err != nil {
+		log.Warnf("Error retrieving recently_played for steamID %v: %v", steamID, err)
+	}
+
+	return recentGames, err
+}
+
+func (ds *DataStorage) getUserStatsForGame(steamID string) (steamclient.UserStatsForGame, error) {
+
+	var err error
+	gamestats := steamclient.GameStats{}
+	extra := steamclient.GameExtras{}
+	userStatsForgame := steamclient.UserStatsForGame{}
+
+	if err = ds.db.Get(&extra, "SELECT * FROM player_extra WHERE steamid=? LIMIT 1", steamID); err != nil {
+		log.Warnf("Error retrieving player_extra for steamID %v: %v", steamID, err)
+	}
+
+	if err = ds.db.Get(&gamestats, "SELECT * FROM player_stats WHERE steamid=? LIMIT 1", steamID); err != nil {
+		log.Warnf("Error retrieving player_stats for steamID %v: %v", steamID, err)
+	}
+
+	extra.SteamID = steamID
+	gamestats.SteamID = steamID
+	userStatsForgame.SteamID = steamID
+
+	userStatsForgame.Extra = extra
+	userStatsForgame.Stats = gamestats
+
+	return userStatsForgame, err
+
+}
+
+func (ds *DataStorage) getPlayerHistory(steamID string) (steamclient.PlayerHistory, error) {
+
+	entries := []steamclient.PlayerHistoryEntry{}
+	history := steamclient.PlayerHistory{}
+	var err error
+
+	if err = ds.db.Select(&entries, "SELECT * FROM player_history WHERE steamid=? ORDER BY time LIMIT 10", steamID); err != nil {
+		log.Warnf("Error retrieving player_history for steamID %v: %v", steamID, err)
+	}
+
+	history.SteamID = steamID
+	history.Data = entries
+
+	return history, err
+}
+
 // GetPlayerInfoBySteamID returns a PlayerInfo from a steamID. It will try to
 // get the needed values from the database and return an error if steamID
 // cannot be found in it.
@@ -27,33 +93,21 @@ func (ds *DataStorage) GetPlayerInfoBySteamID(steamID string) (steamclient.Playe
 	info := steamclient.PlayerInfo{}
 	var err error
 
-	if err = ds.db.Get(&info.PlayerSummary, "SELECT * FROM player_summary WHERE steamid=? LIMIT 1", steamID); err != nil {
-		log.Warn("Error retrieving player_summary for steamID:", steamID)
+	if info.PlayerSummary, err = ds.getPlayerSummary(steamID); err != nil {
+		panic(err)
 	}
 
-	if err = ds.db.Get(&info.RecentlyPlayedGames, "SELECT * FROM recently_played WHERE steamid=? LIMIT 1", steamID); err != nil {
-		log.Warn("Error retrieving recently_played for steamID:", steamID)
+	if info.RecentlyPlayedGames, err = ds.getRecentlyPlayedGames(steamID); err != nil {
+		panic(err)
 	}
 
-	if err = ds.db.Get(&info.UserStatsForGame.Extra, "SELECT * FROM player_extra WHERE steamid=? LIMIT 1", steamID); err != nil {
-		log.Warn("Error retrieving player_extra for steamID:", steamID)
+	if info.UserStatsForGame, err = ds.getUserStatsForGame(steamID); err != nil {
+		panic(err)
 	}
 
-	if err = ds.db.Get(&info.UserStatsForGame.Stats, "SELECT * FROM player_stats WHERE steamid=? LIMIT 1", steamID); err != nil {
-		log.Warn("Error retrieving player_stats for steamID:", steamID)
+	if info.PlayerHistory, err = ds.getPlayerHistory(steamID); err != nil {
+		panic(err)
 	}
-
-	entries := []steamclient.PlayerHistoryEntry{}
-
-	if err = ds.db.Select(&entries, "SELECT * FROM player_history WHERE steamid=? ORDER BY time LIMIT 10", steamID); err != nil {
-		log.Warn(err)
-		log.Warn("Error retrieving player_history for steamID:", steamID)
-	}
-
-	info.PlayerHistory.SteamID = steamID
-	info.PlayerHistory.Data = entries
-
-	info.UserStatsForGame.SteamID = steamID
 
 	return info, nil
 }
