@@ -109,7 +109,7 @@ func updateData() {
 
 			// if part threshold, update
 			log.Println("updatetime", time.Since(lastUpdateTime).Minutes())
-			if time.Now().Sub(lastUpdateTime).Minutes() > float64(steamClient.Config.HistoryInterval) {
+			if time.Since(lastUpdateTime).Minutes() > float64(steamClient.Config.HistoryInterval) {
 				log.Infof("Updating history for %v (%v)", v.PlayerSummary.Personaname, v.PlayerSummary.SteamID)
 
 				entry := steamclient.PlayerHistoryEntry{
