@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
-	"time"
 )
 
 // SteamConfig struct holds the values as read from the configuration file
@@ -14,7 +13,6 @@ type SteamConfig struct {
 	SteamIDs        []string `json:"SteamIDs"`
 	HistoryInterval int      `json:"HistoryInterval"`
 	UpdateInterval  int      `json:"UpdateInterval"`
-	lastUpdate      time.Time
 }
 
 func NewSteamConfig(configPath string) (SteamConfig, error) {
