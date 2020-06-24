@@ -20,7 +20,7 @@ func (sc *SteamClient) getPlayerInfo(steamID string) (PlayerInfo, error) {
 	summaryData := playerSummariesData{}
 	url = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=" + sc.Config.SteamAPIKey + "&steamids=" + steamID
 
-	if getJSON(url, &summaryData); err != nil {
+	if err := getJSON(url, &summaryData); err != nil {
 		return info, errors.New("Unable to get PlayerSummary for: " + steamID)
 	}
 

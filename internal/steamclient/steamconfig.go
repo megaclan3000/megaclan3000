@@ -20,10 +20,11 @@ func NewSteamConfig(configPath string) (SteamConfig, error) {
 	conf := SteamConfig{}
 
 	jsonFile, err := os.Open(configPath)
-	defer jsonFile.Close()
 	if err != nil {
 		return conf, err
 	}
+
+	defer jsonFile.Close()
 
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	err = json.Unmarshal(byteValue, &conf)
