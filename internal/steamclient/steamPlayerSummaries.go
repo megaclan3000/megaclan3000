@@ -43,28 +43,28 @@ type PlayerSummary struct {
 	// Public Data
 
 	// 64bit SteamID of the user
-	SteamID string
+	SteamID string `db:"steamid"`
 
 	// The player's persona name (display name)
-	Personaname string
+	Personaname string `db:"personaname"`
 
 	// The full URL of the player's Steam Community profile.
-	Profileurl string
+	Profileurl string `db:"profileurl"`
 
 	// The full URL of the player's 32x32px avatar. If the user
 	// hasn't configured an avatar, this will be the default ?
 	// avatar.
-	Avatar string
+	Avatar string `db:"avatar"`
 
 	// The full URL of the player's 64x64px avatar. If the user
 	// hasn't configured an avatar, this will be the default ?
 	// avatar.
-	Avatarmedium string
+	Avatarmedium string `db:"avatarmedium"`
 
 	// The full URL of the player's 184x184px avatar. If the
 	// user hasn't configured an avatar, this will be the
 	// default ? avatar.
-	Avatarfull string
+	Avatarfull string `db:"avatarfull"`
 
 	// 0 - Offline
 	// 1 - Online
@@ -78,7 +78,7 @@ type PlayerSummary struct {
 	// their status to looking to trade or looking to play,
 	// because a bug makes those status appear even if the
 	// profile is private.
-	Personastate string
+	Personastate string `db:"personastate"`
 
 	// This represents whether the profile is visible or not,
 	// and if it is visible, why you are allowed to see it.
@@ -93,60 +93,60 @@ type PlayerSummary struct {
 	// making the request to the account being viewed given the
 	// requesting account's relationship to the viewed
 	// account."
-	Communityvisibilitystate string
+	Communityvisibilitystate string `db:"communityvisibilitystate"`
 
 	// If set, indicates the user has a community profile
 	// configured (will be set to '1')
-	Profilestate string
+	Profilestate string `db:"profilestate"`
 
 	// The last time the user was online, in unix time. Only
 	// available when you are friends with the requested user
 	// (since Feb, 4).
-	Lastlogoff string
+	Lastlogoff string `db:"lastlogoff"`
 
 	// If set, indicates the profile allows public comments.
-	Commentpermission string
+	Commentpermission string `db:"commentpermission"`
 
 	// Private Data
 
 	// This value will be removed in a future update (see loccityid)
-	Cityid string
+	Cityid string `db:"cityid"`
 
 	// If the user is currently in-game, this will be the name
 	// of the game they are playing. This may be the name of a
 	// non-Steam game shortcut.
-	Gameextrainfo string
+	Gameextrainfo string `db:"gameextrainfo"`
 
 	// If the user is currently in-game, this value will be
 	// returned and set to the gameid of that game.
-	Gameid string
+	Gameid string `db:"gameid"`
 
 	// The ip and port of the game server the user is currently
 	// playing on, if they are playing on-line in a game using
 	// Steam matchmaking. Otherwise will be set to "0.0.0.0:0".
-	Gameserverip string
+	Gameserverip string `db:"gameserverip"`
 
 	// An internal code indicating the user's city of
 	// residence. A future update will provide this data in a
 	// more useful way.  steam_location gem/package makes
 	// player location data readable for output.
-	Loccityid string
+	Loccityid string `db:"loccityid"`
 
 	// If set on the user's Steam Community profile, The user's
 	// country of residence, 2-character ISO country code
-	Loccountrycode string
+	Loccountrycode string `db:"loccountrycode"`
 
 	// If set on the user's Steam Community profile, The user's state of residence
-	Locstatecode string
+	Locstatecode string `db:"locstatecode"`
 
 	// The player's primary group, as configured in their Steam Community profile.
-	Primaryclanid string
+	Primaryclanid string `db:"primaryclanid"`
 
 	// The player's "Real Name", if they have set it.
-	Realname string
+	Realname string `db:"realname"`
 
 	// The time the player's account was created.
-	Timecreated string
+	Timecreated string `db:"timecreated"`
 }
 
 func (sc *SteamClient) ParsePlayerSummary(data playerSummariesData) (PlayerSummary, error) {
