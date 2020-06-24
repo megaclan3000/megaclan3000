@@ -48,6 +48,7 @@ func (ds *DataStorage) getUserStatsForGameStats(steamID string) (steamclient.Gam
 	gamestats := steamclient.GameStats{}
 	if err = ds.db.Get(&gamestats, "SELECT * FROM player_stats WHERE steamid=? LIMIT 1", steamID); err != nil {
 		log.Warnf("Error retrieving player_stats for steamID %v: %v", steamID, err)
+		return gamestats, err
 	}
 	gamestats.SteamID = steamID
 	return gamestats, err
@@ -60,6 +61,7 @@ func (ds *DataStorage) getUserStatsForGameExtra(steamID string) (steamclient.Gam
 
 	if err = ds.db.Get(&extra, "SELECT * FROM player_extra WHERE steamid=? LIMIT 1", steamID); err != nil {
 		log.Warnf("Error retrieving player_extra for steamID %v: %v", steamID, err)
+		return extra, err
 	}
 	extra.SteamID = steamID
 	return extra, err
