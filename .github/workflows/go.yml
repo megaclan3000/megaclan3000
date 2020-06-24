@@ -37,5 +37,5 @@ jobs:
     - name: Test
       run: go test -v ./...
 
-    - name: Golint
-      run: golint ./...
+    - name: Run golangci-lint
+      uses: golangci/golangci-lint-action@v1.2.1
