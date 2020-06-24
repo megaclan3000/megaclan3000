@@ -145,7 +145,9 @@ func updateData() {
 }
 
 func handlerIndex(w http.ResponseWriter, r *http.Request) {
-	t.ExecuteTemplate(w, "index.html", nil)
+	if err := t.ExecuteTemplate(w, "index.html", nil); err != nil {
+		log.Warn(err)
+	}
 }
 
 func handlerStats(w http.ResponseWriter, r *http.Request) {
@@ -155,34 +157,50 @@ func handlerStats(w http.ResponseWriter, r *http.Request) {
 
 	if players, err = datastorage.GetAllPlayers(); err != nil {
 		log.Error("Error getting stats from database:", err)
-		t.ExecuteTemplate(w, "404.html", nil)
+		if err := t.ExecuteTemplate(w, "404.html", nil); err != nil {
+			log.Warn(err)
+		}
 		return
 	}
-	t.ExecuteTemplate(w, "stats.html", players)
+	if err := t.ExecuteTemplate(w, "stats.html", players); err != nil {
+		log.Warn(err)
+	}
 }
 
 func handlerContact(w http.ResponseWriter, r *http.Request) {
-	t.ExecuteTemplate(w, "contact.html", nil)
+	if err := t.ExecuteTemplate(w, "contact.html", nil); err != nil {
+		log.Warn(err)
+	}
 }
 
 func handlerFAQ(w http.ResponseWriter, r *http.Request) {
-	t.ExecuteTemplate(w, "faq.html", nil)
+	if err := t.ExecuteTemplate(w, "faq.html", nil); err != nil {
+		log.Warn(err)
+	}
 }
 
 func handler404(w http.ResponseWriter, r *http.Request) {
-	t.ExecuteTemplate(w, "404.html", nil)
+	if err := t.ExecuteTemplate(w, "404.html", nil); err != nil {
+		log.Warn(err)
+	}
 }
 
 func handlerDetails(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	if p, err := datastorage.GetPlayerInfoBySteamID(vars["id"]); err == nil {
-		t.ExecuteTemplate(w, "details.html", p)
+		if err := t.ExecuteTemplate(w, "details.html", p); err != nil {
+			log.Warn(err)
+		}
 		return
 	}
-	t.ExecuteTemplate(w, "404.html", nil)
+	if err := t.ExecuteTemplate(w, "404.html", nil); err != nil {
+		log.Warn(err)
+	}
 }
 
 func handlerImprint(w http.ResponseWriter, r *http.Request) {
-	t.ExecuteTemplate(w, "imprint.html", nil)
+	if err := t.ExecuteTemplate(w, "imprint.html", nil); err != nil {
+		log.Warn(err)
+	}
 }
