@@ -21,23 +21,17 @@ func (ds *DataStorage) UpdateUserStatsForGame(stats steamclient.UserStatsForGame
 		return err
 	}
 
-	var err error
-	dbm.Delete(&stats.Stats)
-	dbm.Delete(&stats.Extra)
-	if err != nil {
-		panic(err)
-	}
-	err = dbm.Insert(&stats.Stats)
-
-	if err != nil {
-		panic(err)
+	if _, err := dbm.Delete(&stats.Stats); err != nil {
+		return err
 	}
 
-	err = dbm.Insert(&stats.Extra)
-
-	if err != nil {
-		panic(err)
+	if _, err := dbm.Delete(&stats.Extra); err != nil {
+		return err
 	}
-	return nil
+	if err := dbm.Insert(&stats.Stats); err != nil {
+		return err
+	}
+
+	return dbm.Insert(&stats.Extra)
 
 }
