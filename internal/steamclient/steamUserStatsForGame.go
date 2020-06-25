@@ -91,7 +91,9 @@ func (sc *SteamClient) ParseUserStatsForGame(data userStatsForGameData) (UserSta
 		archivementsMap[v.Name] = strconv.Itoa(v.Achieved)
 	}
 
-	extra := GameExtras{}
+	extra := GameExtras{
+		SteamID: data.Playerstats.SteamID,
+	}
 
 	if totalDeaths, err := strconv.ParseFloat(statsMap["total_deaths"], 64); err == nil {
 		if totalKills, err := strconv.ParseFloat(statsMap["total_kills"], 64); err == nil {
@@ -122,6 +124,7 @@ func (sc *SteamClient) ParseUserStatsForGame(data userStatsForGameData) (UserSta
 		GameName: data.Playerstats.GameName,
 		Extra:    extra,
 		Stats: GameStats{
+			SteamID:                                   data.Playerstats.SteamID,
 			GILessonCsgoInstrExplainInspect:           nilToZeroString(statsMap["GI.lesson.csgo_instr_explain_inspect"]),
 			GILessonBombSitesA:                        nilToZeroString(statsMap["GI.lesson.bomb_sites_a"]),
 			GILessonBombSitesB:                        nilToZeroString(statsMap["GI.lesson.bomb_sites_b"]),

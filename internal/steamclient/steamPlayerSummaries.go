@@ -1,6 +1,7 @@
 package steamclient
 
 import (
+	"encoding/json"
 	"errors"
 	"strconv"
 )
@@ -10,27 +11,27 @@ type playerSummariesData struct {
 
 	Response struct {
 		Players []struct {
-			Avatar                   string `json:"avatar"`
-			Avatarfull               string `json:"avatarfull"`
-			Avatarmedium             string `json:"avatarmedium"`
-			Cityid                   string `json:"cityid"`
-			Commentpermission        string `json:"commentpermission"`
-			Communityvisibilitystate int    `json:"communityvisibilitystate"`
-			Gameextrainfo            string `json:"gameextrainfo"`
-			Gameid                   string `json:"gameid"`
-			Gameserverip             string `json:"gameserverip"`
-			Lastlogoff               int    `json:"lastlogoff"`
-			Loccityid                string `json:"loccityid"`
-			Loccountrycode           string `json:"loccountrycode"`
-			Locstatecode             string `json:"locstatecode"`
-			Personaname              string `json:"personaname"`
-			Personastate             int    `json:"personastate"`
-			Primaryclanid            string `json:"primaryclanid"`
-			Profilestate             int    `json:"profilestate"`
-			Profileurl               string `json:"profileurl"`
-			Realname                 string `json:"realname"`
-			Steamid                  string `json:"steamid"`
-			Timecreated              int    `json:"timecreated"`
+			Avatar                   string      `json:"avatar"`
+			Avatarfull               string      `json:"avatarfull"`
+			Avatarmedium             string      `json:"avatarmedium"`
+			Cityid                   string      `json:"cityid"`
+			Commentpermission        json.Number `json:"commentpermission"`
+			Communityvisibilitystate int         `json:"communityvisibilitystate"`
+			Gameextrainfo            string      `json:"gameextrainfo"`
+			Gameid                   string      `json:"gameid"`
+			Gameserverip             string      `json:"gameserverip"`
+			Lastlogoff               int         `json:"lastlogoff"`
+			Loccityid                string      `json:"loccityid"`
+			Loccountrycode           string      `json:"loccountrycode"`
+			Locstatecode             string      `json:"locstatecode"`
+			Personaname              string      `json:"personaname"`
+			Personastate             int         `json:"personastate"`
+			Primaryclanid            string      `json:"primaryclanid"`
+			Profilestate             int         `json:"profilestate"`
+			Profileurl               string      `json:"profileurl"`
+			Realname                 string      `json:"realname"`
+			Steamid                  string      `json:"steamid"`
+			Timecreated              int         `json:"timecreated"`
 			SteamID                  string
 		} `json:"players"`
 	} `json:"response"`
@@ -165,7 +166,7 @@ func (sc *SteamClient) ParsePlayerSummary(data playerSummariesData) (PlayerSumma
 		Avatarfull:               data.Response.Players[0].Avatarfull,
 		Avatarmedium:             data.Response.Players[0].Avatarmedium,
 		Cityid:                   data.Response.Players[0].Cityid,
-		Commentpermission:        data.Response.Players[0].Commentpermission,
+		Commentpermission:        string(data.Response.Players[0].Commentpermission),
 		Gameextrainfo:            data.Response.Players[0].Gameextrainfo,
 		Gameid:                   data.Response.Players[0].Gameid,
 		Gameserverip:             data.Response.Players[0].Gameserverip,

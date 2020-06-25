@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS player_summary (
-			steamid TEXT PRIMARY KEY,
+			steamid TEXT PRIMARY KEY NOT NULL,
             avatar TEXT,
             avatarfull TEXT,
             avatarmedium TEXT,
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS player_summary (
             timecreated TEXT);
 
 CREATE TABLE IF NOT EXISTS player_stats (
-			steamid TEXT PRIMARY KEY,
+			steamid TEXT PRIMARY KEY NOT NULL,
 			gi_lesson_bomb_sites_a TEXT,
 			gi_lesson_bomb_sites_b TEXT,
 			gi_lesson_csgo_cycle_weapons_kb TEXT,
@@ -244,7 +244,7 @@ CREATE TABLE IF NOT EXISTS player_stats (
 			total_wins_pistolround TEXT);
 
 CREATE TABLE IF NOT EXISTS player_extra (
-			steamid TEXT PRIMARY KEY,
+			steamid TEXT PRIMARY KEY NOT NULL,
 			total_kd TEXT,
 			last_match_kd TEXT,
 			hit_ratio TEXT,
@@ -253,7 +253,7 @@ CREATE TABLE IF NOT EXISTS player_extra (
 			last_match_adr TEXT);
 
 CREATE TABLE IF NOT EXISTS recently_played (
-			steamid TEXT PRIMARY KEY,
+			steamid TEXT PRIMARY KEY NOT NULL,
             appid TEXT,
             img_icon_url TEXT,
             img_logo_url TEXT,
@@ -265,7 +265,7 @@ CREATE TABLE IF NOT EXISTS recently_played (
             playtime_windows_forever TEXT);
 
 CREATE TABLE IF NOT EXISTS player_history (
-			steamid TEXT,
+			steamid TEXT NOT NULL,
 			time DATETIME,
 			total_kills TEXT,
 			total_adr TEXT,
