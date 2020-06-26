@@ -185,7 +185,7 @@ func (ds *DataStorage) GetAllPlayers(steamIDs []string) ([]steamclient.PlayerInf
 	var players []steamclient.PlayerInfo
 
 	for _, v := range steamIDs {
-		log.Debugf("Got ID from database: %v", v)
+		log.Debugf("Getting PlayerInfo from DB for ID: %v", v)
 		if pi, err := ds.GetPlayerInfoBySteamID(v); err == nil {
 			players = append(players, pi)
 		} else {
