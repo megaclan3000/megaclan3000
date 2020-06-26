@@ -16,9 +16,20 @@ Our custom CS:GO stats page: https://megaclan3000.de
 
 ![](https://i.imgur.com/tQzdzAd.png)
 
+## Suport the developers
+
+Buy the developers a coffee or a beer if you like this application!
+
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B0B11UD8T)
+
 ## Setup
 
+To setup the application, clone the repo to your server and build it using `go build`.
+
 ### Configuration `config.json`
+
+You will need to create a configuration with your Steam API-key and the IDs you want to include.
+To get started use the provided configuration example and copy it over to `config.json`
 
 ```json
 {
@@ -35,6 +46,9 @@ Our custom CS:GO stats page: https://megaclan3000.de
 ```
 
 ### Service file
+
+While you can just start the compiled binary manually, you will probably want to keep it running and have it start on boot automatically.
+For systemd distributions, use the following service file.
 
 ```dosini
 # /etc/systemd/system/megaclan3000.service
