@@ -117,7 +117,17 @@ func (sc *SteamClient) ParseUserStatsForGame(data userStatsForGameData) (UserSta
 		extra.PlayedHours = strconv.Itoa(secI / 3600)
 	}
 
-	//TODO add ADR
+	if totalDamage, err := strconv.ParseFloat(statsMap["total_damage_done"], 64); err == nil {
+		if totalRounds, err := strconv.ParseFloat(statsMap["total_rounds_played"], 64); err == nil {
+			extra.TotalADR = fmt.Sprintf("%.3f", totalDamage/totalRounds)
+		}
+	}
+
+	if lastMatchDamage, err := strconv.ParseFloat(statsMap["last_match_damage"], 64); err == nil {
+		if lastMatchRounds, err := strconv.ParseFloat(statsMap["last_match_rounds"], 64); err == nil {
+			extra.TotalADR = fmt.Sprintf("%.3f", lastMatchDamage/lastMatchRounds)
+		}
+	}
 
 	return UserStatsForGame{
 		SteamID:  data.Playerstats.SteamID,
