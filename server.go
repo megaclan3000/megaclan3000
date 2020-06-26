@@ -108,7 +108,6 @@ func updateData() {
 			lastUpdateTime := datastorage.GetPlayerHistoryLatestTime(v.PlayerSummary.SteamID)
 
 			// if part threshold, update
-			log.Println("updatetime", time.Since(lastUpdateTime).Minutes())
 			if time.Since(lastUpdateTime).Minutes() > float64(steamClient.Config.HistoryInterval) {
 				log.Infof("Updating history for %v (%v)", v.PlayerSummary.Personaname, v.PlayerSummary.SteamID)
 
@@ -155,7 +154,7 @@ func handlerStats(w http.ResponseWriter, r *http.Request) {
 	var players []steamclient.PlayerInfo
 	var err error
 
-	if players, err = datastorage.GetAllPlayers(); err != nil {
+	if players, err = datastorage.GetAllPlayers(steamClient.Config.SteamIDs); err != nil {
 		log.Error("Error getting stats from database:", err)
 		if err := t.ExecuteTemplate(w, "404.html", nil); err != nil {
 			log.Warn(err)

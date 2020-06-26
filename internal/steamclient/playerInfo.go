@@ -1,6 +1,10 @@
 package steamclient
 
-import "errors"
+import (
+	"errors"
+
+	log "github.com/sirupsen/logrus"
+)
 
 // PlayerInfo contains the information to be shown of a given player
 type PlayerInfo struct {
@@ -12,6 +16,10 @@ type PlayerInfo struct {
 
 func (sc *SteamClient) getPlayerInfo(steamID string) (PlayerInfo, error) {
 
+	if len(steamID) <= 1 {
+		panic("Tried to get playerInfo for empty ID")
+	}
+
 	info := PlayerInfo{}
 	var err error
 	var url string
@@ -21,6 +29,7 @@ func (sc *SteamClient) getPlayerInfo(steamID string) (PlayerInfo, error) {
 	url = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=" + sc.Config.SteamAPIKey + "&steamids=" + steamID
 
 	if err := getJSON(url, &summaryData); err != nil {
+		log.Warn(err)
 		return info, errors.New("Unable to get PlayerSummary for: " + steamID)
 	}
 
@@ -35,7 +44,8 @@ func (sc *SteamClient) getPlayerInfo(steamID string) (PlayerInfo, error) {
 			sc.Config.SteamAPIKey + "&steamid=" + steamID
 
 	if err := getJSON(url, &statsData); err != nil {
-		return info, err
+		log.Warn(err)
+		return info, errors.New("Unable to get UserStatsForGame for: " + steamID)
 	}
 
 	if info.UserStatsForGame, err = sc.ParseUserStatsForGame(statsData); err != nil {
@@ -47,11 +57,12 @@ func (sc *SteamClient) getPlayerInfo(steamID string) (PlayerInfo, error) {
 	url = "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=" + sc.Config.SteamAPIKey + "&steamid=" + steamID
 
 	if err := getJSON(url, &recentData); err != nil {
-		return info, err
+		log.Warn(err)
+		return info, errors.New("Unable to get RecentlyPlayedGames for: " + steamID)
 	}
 
 	if info.RecentlyPlayedGames, err = sc.ParseRecentlyPlayedGames(recentData, steamID); err != nil {
-		return info, err
+		return info, errors.New("Unable parse get RecentlyPlayedGames for: " + steamID)
 	}
 
 	return info, nil

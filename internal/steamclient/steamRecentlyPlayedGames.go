@@ -1,6 +1,11 @@
 package steamclient
 
-import "strconv"
+import (
+	"errors"
+
+	log "github.com/sirupsen/logrus"
+	"strconv"
+)
 
 // https://developer.valvesoftware.com/wiki/Steam_Web_API#GetRecentlyPlayedGames_.28v0001.29
 // http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=XXXXXXXXXXXXXXXXX&steamid=76561197960434622&format=json
@@ -80,6 +85,8 @@ type RecentlyPlayedGames struct {
 
 func (sc *SteamClient) ParseRecentlyPlayedGames(data recentlyPlayedGamesData, steamID string) (RecentlyPlayedGames, error) {
 
+	log.Debugf("Parsing recentlyPlayedGamesData for steamID: %v", steamID)
+
 	for _, v := range data.Response.Games {
 		if v.Appid == 730 {
 
@@ -98,5 +105,8 @@ func (sc *SteamClient) ParseRecentlyPlayedGames(data recentlyPlayedGamesData, st
 			}, nil
 		}
 	}
-	return RecentlyPlayedGames{}, nil
+
+	return RecentlyPlayedGames{
+		SteamID: steamID,
+	}, errors.New("No RecentlyPlayedGames found for " + steamID)
 }

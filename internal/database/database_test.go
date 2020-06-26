@@ -37,32 +37,6 @@ func prepareDB() {
 	}
 }
 
-func TestDataStorage_GetAllPlayers(t *testing.T) {
-	tests := []struct {
-		name    string
-		want    []steamclient.PlayerInfo
-		wantErr bool
-	}{
-		// all_columns
-		// other1
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			prepareDB()
-			got, err := db.GetAllPlayers()
-			if (err != nil) != tt.wantErr {
-				t.Errorf("DataStorage.GetAllPlayers() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-
-			if diff := cmp.Diff(tt.want, got); diff != "" {
-				t.Errorf("DataStorage.GetAllPlayers() mismatch (-want +got):\n%s", diff)
-			}
-		})
-	}
-}
-
 func TestDataStorage_UpdatePlayerInfo(t *testing.T) {
 	tests := []struct {
 		name    string

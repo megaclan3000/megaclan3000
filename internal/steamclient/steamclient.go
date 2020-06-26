@@ -13,9 +13,6 @@ type SteamClient struct {
 // NewSteamClient returrns a new SteamClient
 func NewSteamClient(configPath string) *SteamClient {
 
-	// var config SteamConfig{
-	// 	configPath: configconfigPath,
-	// }
 	config, err := NewSteamConfig(configPath)
 	if err != nil {
 		panic(err)
@@ -36,6 +33,7 @@ func (sc SteamClient) GetPlayers() []PlayerInfo {
 			players = append(players, pi)
 		} else {
 			log.Warningf("Failed to get data for ID: %v", v)
+			log.Warn(err)
 		}
 	}
 	return players
