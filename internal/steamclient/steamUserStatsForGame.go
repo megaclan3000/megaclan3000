@@ -77,7 +77,7 @@ type GameExtras struct {
 	LastMatchADR string `db:"last_match_adr"`
 }
 
-func (sc *SteamClient) ParseUserStatsForGame(data userStatsForGameData) (UserStatsForGame, error) {
+func (sc *SteamClient) parseUserStatsForGame(data userStatsForGameData) (UserStatsForGame, error) {
 
 	//Create to maps for stats and archivements, so the search will be quicker afterwards
 	statsMap := make(map[string]string)

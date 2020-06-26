@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestSteamClient_ParseRecentlyPlayedGames(t *testing.T) {
+func TestSteamClient_parseRecentlyPlayedGames(t *testing.T) {
 
 	steamConfig := SteamConfig{
 		SteamAPIKey:     "000000000",
@@ -80,14 +80,14 @@ func TestSteamClient_ParseRecentlyPlayedGames(t *testing.T) {
 			sc := &SteamClient{Config: steamConfig}
 
 			// Try to parse
-			got, err := sc.ParseRecentlyPlayedGames(data, tt.steamID)
+			got, err := sc.parseRecentlyPlayedGames(data, tt.steamID)
 
 			if diff := cmp.Diff(tt.want, got); diff != "" {
-				t.Errorf("SteamClient.ParseRecentlyPlayedGames() mismatch (-want +got):\n%s", diff)
+				t.Errorf("SteamClient.parseRecentlyPlayedGames() mismatch (-want +got):\n%s", diff)
 			}
 			if (err != nil) != tt.wantErr {
 
-				t.Errorf("SteamClient.ParseRecentlyPlayedGames() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("SteamClient.parseRecentlyPlayedGames() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 		})
