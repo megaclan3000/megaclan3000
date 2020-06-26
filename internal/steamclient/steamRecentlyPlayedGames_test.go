@@ -71,7 +71,10 @@ func TestSteamClient_ParseRecentlyPlayedGames(t *testing.T) {
 			defer jsonFile.Close()
 			byteValue, _ := ioutil.ReadAll(jsonFile)
 			var data recentlyPlayedGamesData
-			json.Unmarshal(byteValue, &data)
+
+			if err = json.Unmarshal(byteValue, &data); err != nil {
+				panic(err)
+			}
 
 			// Create a SteamClient
 			sc := &SteamClient{Config: steamConfig}
