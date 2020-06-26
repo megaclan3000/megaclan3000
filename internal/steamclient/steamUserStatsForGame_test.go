@@ -24,7 +24,9 @@ func TestSteamClient_ParseUserStatsForGame(t *testing.T) {
 		wantErr  bool
 	}{
 		{
-			name: "Parse data for ID: 76561197962156894",
+			name:     "Parse data for ID: 76561197962156894",
+			dataFile: "../../test/steamclient/GetUserStatsForGame76561197962156894.json",
+			wantErr:  false,
 			want: UserStatsForGame{
 				SteamID:  "76561197962156894",
 				GameName: "ValveTestApp260",
@@ -260,8 +262,6 @@ func TestSteamClient_ParseUserStatsForGame(t *testing.T) {
 					TotalWinsPistolround:                      "204",
 				},
 			},
-			dataFile: "../../test/steamclient/GetUserStatsForGame76561197962156894.json",
-			wantErr:  false,
 		},
 	}
 	for _, tt := range tests {

@@ -153,7 +153,7 @@ type PlayerSummary struct {
 func (sc *SteamClient) ParsePlayerSummary(data playerSummariesData) (PlayerSummary, error) {
 
 	if len(data.Response.Players) < 1 {
-		return PlayerSummary{}, errors.New("Failed to download PlayerSummary")
+		return PlayerSummary{}, errors.New("Failed to parse PlayerSummary")
 	}
 
 	return PlayerSummary{
