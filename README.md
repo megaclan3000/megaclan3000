@@ -1,10 +1,10 @@
 # megaclan3000
 Our custom CS:GO stats page: https://megaclan3000.de
 
-[![Build Status](https://travis-ci.org/megaclan3000/megaclan3000.svg?branch=master)](https://travis-ci.org/megclan3000/megaclan3000)
-[![GoDoc](https://godoc.org/github.com/megaclan3000/megaclan3000?status.svg)](https://godoc.org/github.com/megclan3000/megaclan3000)
-[![Go Report Card](https://goreportcard.com/badge/megaclan3000/megaclan3000)](https://goreportcard.com/report/megclan3000/megaclan3000) 
-[![HitCount](http://hits.dwyl.com/megclan3000/megaclan3000.svg)](http://hits.dwyl.com/megaclan3000/megaclan3000)
+[![Build Status](https://travis-ci.org/megaclan3000/megaclan3000.svg?branch=master)](https://travis-ci.org/megaclan3000/megaclan3000)
+[![GoDoc](https://godoc.org/github.com/megaclan3000/megaclan3000?status.svg)](https://godoc.org/github.com/megaclan3000/megaclan3000)
+[![Go Report Card](https://goreportcard.com/badge/megaclan3000/megaclan3000)](https://goreportcard.com/report/megaclan3000/megaclan3000) 
+[![HitCount](http://hits.dwyl.com/megaclan3000/megaclan3000.svg)](http://hits.dwyl.com/megaclan3000/megaclan3000)
 [![Maintainability](https://api.codeclimate.com/v1/badges/994620bcbe906b069ef0/maintainability)](https://codeclimate.com/github/megaclan3000/megaclan3000/maintainability)
 ![GitHub issues](https://img.shields.io/github/issues/megaclan3000/megaclan3000?style=plastic)
 
