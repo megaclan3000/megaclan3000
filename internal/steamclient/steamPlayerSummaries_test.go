@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestSteamClient_ParsePlayerSummary(t *testing.T) {
+func TestSteamClient_parsePlayerSummary(t *testing.T) {
 
 	steamConfig := SteamConfig{
 		SteamAPIKey:     "000000000",
@@ -61,14 +61,14 @@ func TestSteamClient_ParsePlayerSummary(t *testing.T) {
 			sc := &SteamClient{Config: steamConfig}
 
 			// Try to parse
-			got, err := sc.ParsePlayerSummary(data)
+			got, err := sc.parsePlayerSummary(data)
 
 			if diff := cmp.Diff(tt.want, got); diff != "" {
-				t.Errorf("SteamClient.ParsePlayerSummary() mismatch (-want +got):\n%s", diff)
+				t.Errorf("SteamClient.parsePlayerSummary() mismatch (-want +got):\n%s", diff)
 			}
 
 			if (err != nil) != tt.wantErr {
-				t.Errorf("SteamClient.ParsePlayerSummary() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("SteamClient.parsePlayerSummary() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 		})

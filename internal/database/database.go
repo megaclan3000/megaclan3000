@@ -9,6 +9,8 @@ import (
 	// Use sqlite backend
 	"github.com/jmoiron/modl"
 	"github.com/jmoiron/sqlx"
+
+	// Import sqlit3 driver
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/pinpox/megaclan3000/internal/steamclient"
 )

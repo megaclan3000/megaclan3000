@@ -33,7 +33,7 @@ func (sc *SteamClient) getPlayerInfo(steamID string) (PlayerInfo, error) {
 		return info, errors.New("Unable to get PlayerSummary for: " + steamID)
 	}
 
-	if info.PlayerSummary, err = sc.ParsePlayerSummary(summaryData); err != nil {
+	if info.PlayerSummary, err = sc.parsePlayerSummary(summaryData); err != nil {
 		return info, err
 	}
 
@@ -48,7 +48,7 @@ func (sc *SteamClient) getPlayerInfo(steamID string) (PlayerInfo, error) {
 		return info, errors.New("Unable to get UserStatsForGame for: " + steamID)
 	}
 
-	if info.UserStatsForGame, err = sc.ParseUserStatsForGame(statsData); err != nil {
+	if info.UserStatsForGame, err = sc.parseUserStatsForGame(statsData); err != nil {
 		return info, err
 	}
 
@@ -61,7 +61,7 @@ func (sc *SteamClient) getPlayerInfo(steamID string) (PlayerInfo, error) {
 		return info, errors.New("Unable to get RecentlyPlayedGames for: " + steamID)
 	}
 
-	if info.RecentlyPlayedGames, err = sc.ParseRecentlyPlayedGames(recentData, steamID); err != nil {
+	if info.RecentlyPlayedGames, err = sc.parseRecentlyPlayedGames(recentData, steamID); err != nil {
 		info.RecentlyPlayedGames.SteamID = steamID
 		log.Warnf("Unable parse RecentlyPlayedGames for: %v Might have not played in the last two weeks. " + steamID)
 	}

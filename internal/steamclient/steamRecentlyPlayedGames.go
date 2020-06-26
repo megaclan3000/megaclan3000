@@ -83,7 +83,7 @@ type RecentlyPlayedGames struct {
 	PlaytimeLinuxForever string `db:"playtime_linux_forever"`
 }
 
-func (sc *SteamClient) ParseRecentlyPlayedGames(data recentlyPlayedGamesData, steamID string) (RecentlyPlayedGames, error) {
+func (sc *SteamClient) parseRecentlyPlayedGames(data recentlyPlayedGamesData, steamID string) (RecentlyPlayedGames, error) {
 
 	log.Debugf("Parsing recentlyPlayedGamesData for steamID: %v", steamID)
 

@@ -150,7 +150,7 @@ type PlayerSummary struct {
 	Timecreated string `db:"timecreated"`
 }
 
-func (sc *SteamClient) ParsePlayerSummary(data playerSummariesData) (PlayerSummary, error) {
+func (sc *SteamClient) parsePlayerSummary(data playerSummariesData) (PlayerSummary, error) {
 
 	if len(data.Response.Players) < 1 {
 		return PlayerSummary{}, errors.New("Failed to parse PlayerSummary")
