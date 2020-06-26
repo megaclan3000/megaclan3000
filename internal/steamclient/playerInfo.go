@@ -62,7 +62,8 @@ func (sc *SteamClient) getPlayerInfo(steamID string) (PlayerInfo, error) {
 	}
 
 	if info.RecentlyPlayedGames, err = sc.ParseRecentlyPlayedGames(recentData, steamID); err != nil {
-		return info, errors.New("Unable parse get RecentlyPlayedGames for: " + steamID)
+		info.RecentlyPlayedGames.SteamID = steamID
+		log.Warnf("Unable parse RecentlyPlayedGames for: %v Might have not played in the last two weeks. " + steamID)
 	}
 
 	return info, nil
