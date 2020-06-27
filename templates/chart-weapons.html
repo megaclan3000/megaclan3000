@@ -1,41 +1,30 @@
 <script>
-var data = [
-	['TotalKillsAk47',                 {{.UserStatsForGame.Stats.TotalKillsAk47}}],
-	['TotalKillsAug',                  {{.UserStatsForGame.Stats.TotalKillsAug}}],
-	['TotalKillsAwp',                  {{.UserStatsForGame.Stats.TotalKillsAwp}}],
-	['TotalKillsBizon',                {{.UserStatsForGame.Stats.TotalKillsBizon}}],
-	['TotalKillsDeagle',               {{.UserStatsForGame.Stats.TotalKillsDeagle}}],
-	['TotalKillsElite',                {{.UserStatsForGame.Stats.TotalKillsElite}}],
-	['TotalKillsFamas',                {{.UserStatsForGame.Stats.TotalKillsFamas}}],
-	['TotalKillsFiveseven',            {{.UserStatsForGame.Stats.TotalKillsFiveseven}}],
-	['TotalKillsG3sg1',                {{.UserStatsForGame.Stats.TotalKillsG3sg1}}],
-	['TotalKillsGalilar',              {{.UserStatsForGame.Stats.TotalKillsGalilar}}],
-	['TotalKillsGlock',                {{.UserStatsForGame.Stats.TotalKillsGlock}}],
-	['TotalKillsHegrenade',            {{.UserStatsForGame.Stats.TotalKillsHegrenade}}],
-	['TotalKillsHkp2000',              {{.UserStatsForGame.Stats.TotalKillsHkp2000}}],
-	['TotalKillsKnife',                {{.UserStatsForGame.Stats.TotalKillsKnife}}],
-	['TotalKillsM249',                 {{.UserStatsForGame.Stats.TotalKillsM249}}],
-	['TotalKillsM4a1',                 {{.UserStatsForGame.Stats.TotalKillsM4a1}}],
-	['TotalKillsMac10',                {{.UserStatsForGame.Stats.TotalKillsMac10}}],
-	['TotalKillsMag7',                 {{.UserStatsForGame.Stats.TotalKillsMag7}}],
-	['TotalKillsMolotov',              {{.UserStatsForGame.Stats.TotalKillsMolotov}}],
-	['TotalKillsMp7',                  {{.UserStatsForGame.Stats.TotalKillsMp7}}],
-	['TotalKillsMp9',                  {{.UserStatsForGame.Stats.TotalKillsMp9}}],
-	['TotalKillsNegev',                {{.UserStatsForGame.Stats.TotalKillsNegev}}],
-	['TotalKillsNova',                 {{.UserStatsForGame.Stats.TotalKillsNova}}],
-	['TotalKillsP250',                 {{.UserStatsForGame.Stats.TotalKillsP250}}],
-	['TotalKillsP90',                  {{.UserStatsForGame.Stats.TotalKillsP90}}],
-	['TotalKillsSawedoff',             {{.UserStatsForGame.Stats.TotalKillsSawedoff}}],
-	['TotalKillsScar20',               {{.UserStatsForGame.Stats.TotalKillsScar20}}],
-	['TotalKillsSg556',                {{.UserStatsForGame.Stats.TotalKillsSg556}}],
-	['TotalKillsSsg08',                {{.UserStatsForGame.Stats.TotalKillsSsg08}}],
-	['TotalKillsTaser',                {{.UserStatsForGame.Stats.TotalKillsTaser}}],
-	['TotalKillsTec9',                 {{.UserStatsForGame.Stats.TotalKillsTec9}}],
-	['TotalKillsUmp45',                {{.UserStatsForGame.Stats.TotalKillsUmp45}}],
-	['TotalKillsXm1014',               {{.UserStatsForGame.Stats.TotalKillsXm1014}}]
+	var data = [
+		{
+			name: 'Galil AR',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsGalilar}}/{{.UserStatsForGame.Stats.TotalShotsGalilar}} * 10000) / 100
+		},
+		{
+			name: '	MAG-7',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsMag7}}/{{.UserStatsForGame.Stats.TotalShotsMag7}} * 10000) / 100
+		},		
+		{
+			name: 'Tec-9',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsTec9}}/{{.UserStatsForGame.Stats.TotalShotsTec9}} * 10000) / 100
+		},		
+		{
+			name: 'PP-Bizon',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsBizon}}/{{.UserStatsForGame.Stats.TotalShotsBizon}} * 10000) / 100
+		},		
+		{
+			name: 'Sawed-Off',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsSawedoff}}/{{.UserStatsForGame.Stats.TotalShotsSawedoff}} * 10000) / 100
+		}
+		// TODO: Add all weapons
+	];
 
-];	
-var dataAxis = data.sort((a, b) => b[1] - a[1]).map(e => e[0])
+var dataAxis = data.sort((a, b) => b.accuracy - a.accuracy).map(e => e.name)
+
 </script>
 <div id="container-weapons" style="width: 100%; height: 300px;"></div>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js" ></script>
@@ -57,11 +46,10 @@ optionChartWeapons = {
         type: 'value'
     },
     series: [{
-            name: 'Weapons',
-            type: 'bar',
-            data: data.map(e => e[1])
-			}
-    ]
+		name: 'Weapons',
+		type: 'bar',
+		data: data.map(e => e.accuracy)
+	}]
 };
 
 
