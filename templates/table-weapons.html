@@ -1,4 +1,15 @@
-<table>
+<script id="weaponTemplate" type="text/x-jquery-tmpl">
+	<tr>
+		<td id="weaponsIcon"><img height="20" src="${iconPath}"></td>
+		<td id="weaponsName">${name}</td>
+		<td id="weaponsKills">${kills}</td>
+		<td id="weaponsShots">${shots}</td>
+		<td id="weaponsHits">${hits}</td>
+		<td id="weaponsAccuracy">${accuracy}</td>
+	</tr>
+</script>
+
+<table id="weaponsList">
 	<thead>
 		<tr>
 			<th></th>
@@ -9,274 +20,279 @@
 			<th>Accuracy</th>
 		</tr>
 	</thead>
-
 	<tbody>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/taser.jpg"></td>
-			<td>Zeus x27</td>
-			<td>{{.UserStatsForGame.Stats.TotalKillsTaser}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalShotsTaser}}</td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/molotov.jpg"></td>
-			<td>Molotov</td>
-			<td>{{.UserStatsForGame.Stats.TotalKillsMolotov}}</td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/galilar.jpg"></td>
-			<td>Galil AR</td>
-			<td>{{.UserStatsForGame.Stats.TotalKillsGalilar}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalShotsGalilar}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalHitsGalilar}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/m4a1.jpg"></td>
-			<td>M4A1-S  &amp; M4A4</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/mag7.jpg"></td>
-			<td>MAG-7</td>
-			<td>{{.UserStatsForGame.Stats.TotalKillsMag7}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalShotsMag7}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalHitsMag7}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/tec9.jpg"></td>
-			<td>Tec-9</td>
-			<td>{{.UserStatsForGame.Stats.TotalKillsTec9}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalShotsTec9}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalHitsTec9}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/bizon.jpg"></td>
-			<td>PP-Bizon</td>
-			<td>{{.UserStatsForGame.Stats.TotalKillsBizon}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalShotsBizon}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalHitsBizon}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/sawedoff.jpg"></td>
-			<td>Sawed-Off</td>
-			<td>{{.UserStatsForGame.Stats.TotalKillsSawedoff}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalShotsSawedoff}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalHitsSawedoff}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/negev.jpg"></td>
-			<td>Negev</td>
-			<td>{{.UserStatsForGame.Stats.TotalKillsNegev}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalShotsNegev}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalHitsNegev}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/nova.jpg"></td>
-			<td>Nova</td>
-			<td>{{.UserStatsForGame.Stats.TotalKillsNova}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalShotsNova}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalHitsNova}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/mp9.jpg"></td>
-			<td>MP9</td>
-			<td>{{.UserStatsForGame.Stats.TotalKillsMp9}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalShotsMp9}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalHitsMp9}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/mp7.jpg"></td>
-			<td>MP7</td>
-			<td>{{.UserStatsForGame.Stats.TotalKillsMp7}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalShotsMp7}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalHitsMp7}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/ssg08.jpg"></td>
-			<td>SSG 08</td>
-			<td>{{.UserStatsForGame.Stats.TotalKillsSsg08}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalShotsSsg08}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalHitsSsg08}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/scar20.jpg"></td>
-			<td>SCAR-20</td>
-			<td>{{.UserStatsForGame.Stats.TotalKillsScar20}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalShotsScar20}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalHitsScar20}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/sg556.jpg"></td>
-			<td>SG 553</td>
-			<td>{{.UserStatsForGame.Stats.TotalKillsSg556}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalShotsSg556}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalHitsSg556}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/p250.jpg"></td>
-			<td>P250</td>
-			<td>{{.UserStatsForGame.Stats.TotalKillsP250}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalShotsP250}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalHitsP250}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/hkp2000.jpg"></td>
-			<td>USP-S &amp; P2000</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/m249.jpg"></td>
-			<td>M249</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/g3sg1.jpg"></td>
-			<td>G3SG1</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/famas.jpg"></td>
-			<td>FAMAS</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/aug.jpg"></td>
-			<td>AUG</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/ak47.jpg"></td>
-			<td>AK-47</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/awp.jpg"></td>
-			<td>AWP</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/p90.jpg"></td>
-			<td>P90</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/ump45.jpg"></td>
-			<td>UMP-45</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/mac10.jpg"></td>
-			<td>MAC-10</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/xm1014.jpg"></td>
-			<td>XM1014</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/fiveseven.jpg"></td>
-			<td>Five-SeveN</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/elite.jpg"></td>
-			<td>Dual Berettas</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/deagle.jpg"></td>
-			<td>Desert Eagle</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/glock.jpg"></td>
-			<td>Glock-18</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/hegrenade.jpg"></td>
-			<td>HE Grenade</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><img height="20" src="/public/img/weapons/knife.jpg"></td>
-			<td>Knife</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
 	</tbody>
-</table>
+
+<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+
+		for (var i = 0; i < weaponsData.length; i++) {
+			$( "#weaponTemplate" ).tmpl( weaponsData[i] ).appendTo( "#weaponsList tbody" );			
+		}
+	});
+
+	const weaponsData = [
+		{
+			name: 'Galil AR',
+			iconPath: '/public/img/weapons/galilar.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsGalilar}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsGalilar}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsGalilar}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsGalilar}}/{{.UserStatsForGame.Stats.TotalShotsGalilar}} * 10000) / 100 + '%'
+		},
+		{
+			name: '	MAG-7',
+			iconPath: '/public/img/weapons/mag7.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsMag7}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsMag7}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsMag7}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsMag7}}/{{.UserStatsForGame.Stats.TotalShotsMag7}} * 10000) / 100 + '%'
+		},		
+		{
+			name: 'Tec-9',
+			iconPath: '/public/img/weapons/tec9.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsTec9}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsTec9}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsTec9}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsTec9}}/{{.UserStatsForGame.Stats.TotalShotsTec9}} * 10000) / 100 + '%'
+		},		
+		{
+			name: 'PP-Bizon',
+			iconPath: '/public/img/weapons/bizon.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsBizon}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsBizon}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsBizon}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsBizon}}/{{.UserStatsForGame.Stats.TotalShotsBizon}} * 10000) / 100 + '%'
+		},		
+		{
+			name: 'Sawed-Off',
+			iconPath: '/public/img/weapons/sawedoff.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsSawedoff}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsSawedoff}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsSawedoff}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsSawedoff}}/{{.UserStatsForGame.Stats.TotalShotsSawedoff}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'M4A1-S &amp; M4A4',
+			iconPath: '/public/img/weapons/m4a1.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsM4a1}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsM4a1}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsM4a1}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsM4a1}}/{{.UserStatsForGame.Stats.TotalShotsM4a1}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'Negev',
+			iconPath: '/public/img/weapons/Negev.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsNegev}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsNegev}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsNegev}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsNegev}}/{{.UserStatsForGame.Stats.TotalShotsNegev}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'Nova',
+			iconPath: '/public/img/weapons/Nova.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsNova}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsNova}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsNova}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsNova}}/{{.UserStatsForGame.Stats.TotalShotsNova}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'MP9',
+			iconPath: '/public/img/weapons/mp9.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsMp9}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsMp9}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsMp9}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsMp9}}/{{.UserStatsForGame.Stats.TotalShotsMp9}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'MP7',
+			iconPath: '/public/img/weapons/mp7.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsMp7}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsMp7}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsMp7}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsMp7}}/{{.UserStatsForGame.Stats.TotalShotsMp7}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'SSG 08',
+			iconPath: '/public/img/weapons/ssg08.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsSsg08}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsSsg08}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsSsg08}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsSsg08}}/{{.UserStatsForGame.Stats.TotalShotsSsg08}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'SCAR-20',
+			iconPath: '/public/img/weapons/SCAR20.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsScar20}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsScar20}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsScar20}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsScar20}}/{{.UserStatsForGame.Stats.TotalShotsScar20}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'SG 556',
+			iconPath: '/public/img/weapons/SG556.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsSg556}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsSg556}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsSg556}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsSg556}}/{{.UserStatsForGame.Stats.TotalShotsSg556}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'P250',
+			iconPath: '/public/img/weapons/P250.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsP250}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsP250}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsP250}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsP250}}/{{.UserStatsForGame.Stats.TotalShotsP250}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'USP-S &amp; P2000',
+			iconPath: '/public/img/weapons/hkp2000.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsHkp2000}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsHkp2000}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsHkp2000}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsHkp2000}}/{{.UserStatsForGame.Stats.TotalShotsHkp2000}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'M249',
+			iconPath: '/public/img/weapons/M249.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsM249}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsM249}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsM249}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsM249}}/{{.UserStatsForGame.Stats.TotalShotsM249}} * 10000) / 100 + '%'
+		},	
+		{
+			name: 'G3SG1',
+			iconPath: '/public/img/weapons/G3sg1.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsG3sg1}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsG3sg1}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsG3sg1}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsG3sg1}}/{{.UserStatsForGame.Stats.TotalShotsG3sg1}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'FAMAS',
+			iconPath: '/public/img/weapons/Famas.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsFamas}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsFamas}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsFamas}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsFamas}}/{{.UserStatsForGame.Stats.TotalShotsFamas}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'AUG',
+			iconPath: '/public/img/weapons/AUG.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsAug}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsAug}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsAug}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsAug}}/{{.UserStatsForGame.Stats.TotalShotsAug}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'AK-47',
+			iconPath: '/public/img/weapons/AK47.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsAk47}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsAk47}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsAk47}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsAk47}}/{{.UserStatsForGame.Stats.TotalShotsAk47}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'AWP',
+			iconPath: '/public/img/weapons/Awp.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsAwp}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsAwp}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsAwp}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsAwp}}/{{.UserStatsForGame.Stats.TotalShotsAwp}} * 10000) / 100 + '%'
+		},	
+		{
+			name: 'P90',
+			iconPath: '/public/img/weapons/P90.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsP90}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsP90}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsP90}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsP90}}/{{.UserStatsForGame.Stats.TotalShotsP90}} * 10000) / 100 + '%'
+		},	
+		{
+			name: 'UMP-45',
+			iconPath: '/public/img/weapons/Ump45.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsUmp45}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsUmp45}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsUmp45}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsUmp45}}/{{.UserStatsForGame.Stats.TotalShotsUmp45}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'MAC-10',
+			iconPath: '/public/img/weapons/Mac10.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsMac10}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsMac10}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsMac10}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsMac10}}/{{.UserStatsForGame.Stats.TotalShotsMac10}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'XM1014',
+			iconPath: '/public/img/weapons/XM1014.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsXm1014}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsXm1014}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsXm1014}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsXm1014}}/{{.UserStatsForGame.Stats.TotalShotsXm1014}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'Five-SeveN',
+			iconPath: '/public/img/weapons/FiveSeveN.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsFiveseven}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsFiveseven}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsFiveseven}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsFiveseven}}/{{.UserStatsForGame.Stats.TotalShotsFiveseven}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'Dual Berettas',
+			iconPath: '/public/img/weapons/Elite.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsElite}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsElite}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsElite}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsElite}}/{{.UserStatsForGame.Stats.TotalShotsElite}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'Desert Eagle',
+			iconPath: '/public/img/weapons/DEagle.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsDeagle}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsDeagle}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsDeagle}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsDeagle}}/{{.UserStatsForGame.Stats.TotalShotsDeagle}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'Glock-18',
+			iconPath: '/public/img/weapons/glock.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsGlock}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsGlock}},
+			hits: {{.UserStatsForGame.Stats.TotalHitsGlock}},
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsGlock}}/{{.UserStatsForGame.Stats.TotalShotsGlock}} * 10000) / 100 + '%'
+		},
+		{
+			name: 'Taser',
+			iconPath: '/public/img/weapons/taser.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsTaser}},
+			shots: {{.UserStatsForGame.Stats.TotalShotsTaser}},
+			hits: '-',
+			accuracy: '-'
+		},		
+		{
+			name: 'Knife',
+			iconPath: '/public/img/weapons/Knife.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsKnifeFight}},
+			shots: '-',
+			hits: '-',
+			accuracy: '-'
+		},	
+		{
+			name: 'HE Grenade',
+			iconPath: '/public/img/weapons/HEGrenade.jpg',
+			kills: {{.UserStatsForGame.Stats.TotalKillsHegrenade}},
+			shots: '-',
+			hits: '-',
+			accuracy: '-'
+		},				
+
+	]
+	weaponsData.sort((a, b) => b.shots - a.shots)
+</script>
 
 
 
