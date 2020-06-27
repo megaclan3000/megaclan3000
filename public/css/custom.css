@@ -113,9 +113,6 @@ a{
     background-color: rgba(0,0,0,0.1) !important;
 }
 
-#weaponsIcon img {
-    height: 20px;
-}
 #weaponsKills {
     color: green;
 }
