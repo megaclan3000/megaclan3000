@@ -22,33 +22,22 @@ Buy the developers a coffee or a beer if you like this application!
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B0B11UD8T)
 
-## Setup
+## Deployment
 
-To setup the application, clone the repo to your server and build it using `go build`.
+To setup the application, clone the repo to your server and build it using `go
+build`.
 
 ### Configuration `config.json`
 
-You will need to create a configuration with your Steam API-key and the IDs you want to include.
-To get started use the provided configuration example and copy it over to `config.json`
-
-```json
-{
-    "SteamAPIKey": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "UpdateInterval": 4,
-    "HistoryInterval": 20,
-    "SteamIDs": [
-        "XXXXXXXXXXXXXXXXX",
-        "XXXXXXXXXXXXXXXXX",
-        "XXXXXXXXXXXXXXXXX",
-        "XXXXXXXXXXXXXXXXX"
-    ]
-}
-```
+You will need to create a configuration with your Steam API-key and the IDs you
+want to include.  To get started use the provided [configuration
+example](./config.json.example) and copy it over or rename it to `config.json`
 
 ### Service file
 
-While you can just start the compiled binary manually, you will probably want to keep it running and have it start on boot automatically.
-For systemd distributions, use the following service file.
+While you can just start the compiled binary manually, you will probably want to
+keep it running and have it start on boot automatically.  For systemd
+distributions, use the following service file.
 
 ```dosini
 # /etc/systemd/system/megaclan3000.service
@@ -70,14 +59,3 @@ ExecStart=/var/www/megaclan3000/megaclan3000
 WantedBy=multi-user.target
 ```
 
-## Available data (e.g. for the Frontend)
-
-All data on a player can be accessed through the `PlayerInfo` object documented [here](https://godoc.org/github.com/megclan3000/megaclan3000/internal/steamclient#PlayerInfo)
-It contains four object with different classes of data obtained through four API endpoint from the steam API.
-Their respective fields are documented in godoc.
-- [PlayerSummary](https://godoc.org/github.com/megclan3000/megaclan3000/internal/steamclient#PlayerSummary)
-- [UserStatsForGame](https://godoc.org/github.com/megclan3000/megaclan3000/internal/steamclient#UserStatsForGame)
-- [RecentlyPlayedGames](https://godoc.org/github.com/megclan3000/megaclan3000/internal/steamclient#RecentlyPlayedGames)
-- [PlayerHistory](https://godoc.org/github.com/megclan3000/megaclan3000/internal/steamclient#PlayerHistory)
-
-The `PlayerInfo`'s fields can be accessed in the `{{ template markers }}` as the object is passed to them.

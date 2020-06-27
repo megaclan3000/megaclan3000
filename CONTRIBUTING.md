@@ -116,3 +116,18 @@ at `2.`) While this process might seem complicated at first, it really is not as
 bad and ensures that the master branch always contains a working version that
 can be deployed to the server. Furthermore any changes in master will have to be
 reviewed by at least one second person, making the margin for mistakes smaller.
+
+
+# Available data (e.g. for frontend development)
+
+All data on a player can be accessed through the `PlayerInfo`
+[PlayerInfo](https://godoc.org/github.com/megclan3000/megaclan3000/internal/steamclient#PlayerInfo)
+struct.  It contains four structs with different classes of data obtained through
+four API endpoint from the steam API.  Their respective fields are documented in
+godoc.
+- [PlayerSummary](https://godoc.org/github.com/megclan3000/megaclan3000/internal/steamclient#PlayerSummary)
+- [UserStatsForGame](https://godoc.org/github.com/megclan3000/megaclan3000/internal/steamclient#UserStatsForGame)
+- [RecentlyPlayedGames](https://godoc.org/github.com/megclan3000/megaclan3000/internal/steamclient#RecentlyPlayedGames)
+- [PlayerHistory](https://godoc.org/github.com/megclan3000/megaclan3000/internal/steamclient#PlayerHistory)
+
+The `PlayerInfo`'s fields can be accessed in the `{{ template markers }}` as the object is passed to them.
