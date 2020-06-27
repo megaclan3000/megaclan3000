@@ -19,9 +19,105 @@
 		{
 			name: 'Sawed-Off',
 			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsSawedoff}}/{{.UserStatsForGame.Stats.TotalShotsSawedoff}} * 10000) / 100
-		}
-		// TODO: Add all weapons
-	];
+		},
+		{
+			name: 'M4A1-S &amp; M4A4',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsM4a1}}/{{.UserStatsForGame.Stats.TotalShotsM4a1}} * 10000) / 100
+		},
+		{
+			name: 'Negev',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsNegev}}/{{.UserStatsForGame.Stats.TotalShotsNegev}} * 10000) / 100
+		},
+		{
+			name: 'Nova',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsNova}}/{{.UserStatsForGame.Stats.TotalShotsNova}} * 10000) / 100
+		},
+		{
+			name: 'MP9',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsMp9}}/{{.UserStatsForGame.Stats.TotalShotsMp9}} * 10000) / 100
+		},
+		{
+			name: 'MP7',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsMp7}}/{{.UserStatsForGame.Stats.TotalShotsMp7}} * 10000) / 100
+		},
+		{
+			name: 'SSG 08',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsSsg08}}/{{.UserStatsForGame.Stats.TotalShotsSsg08}} * 10000) / 100
+		},
+		{
+			name: 'SCAR-20',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsScar20}}/{{.UserStatsForGame.Stats.TotalShotsScar20}} * 10000) / 100
+		},
+		{
+			name: 'SG 556',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsSg556}}/{{.UserStatsForGame.Stats.TotalShotsSg556}} * 10000) / 100
+		},
+		{
+			name: 'P250',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsP250}}/{{.UserStatsForGame.Stats.TotalShotsP250}} * 10000) / 100
+		},
+		{
+			name: 'USP-S &amp; P2000',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsHkp2000}}/{{.UserStatsForGame.Stats.TotalShotsHkp2000}} * 10000) / 100
+		},
+		{
+			name: 'M249',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsM249}}/{{.UserStatsForGame.Stats.TotalShotsM249}} * 10000) / 100
+		},	
+		{
+			name: 'G3SG1',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsG3sg1}}/{{.UserStatsForGame.Stats.TotalShotsG3sg1}} * 10000) / 100
+		},
+		{
+			name: 'FAMAS',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsFamas}}/{{.UserStatsForGame.Stats.TotalShotsFamas}} * 10000) / 100
+		},
+		{
+			name: 'AUG',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsAug}}/{{.UserStatsForGame.Stats.TotalShotsAug}} * 10000) / 100
+		},
+		{
+			name: 'AK-47',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsAk47}}/{{.UserStatsForGame.Stats.TotalShotsAk47}} * 10000) / 100
+		},
+		{
+			name: 'AWP',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsAwp}}/{{.UserStatsForGame.Stats.TotalShotsAwp}} * 10000) / 100
+		},	
+		{
+			name: 'P90',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsP90}}/{{.UserStatsForGame.Stats.TotalShotsP90}} * 10000) / 100
+		},	
+		{
+			name: 'UMP-45',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsUmp45}}/{{.UserStatsForGame.Stats.TotalShotsUmp45}} * 10000) / 100
+		},
+		{
+			name: 'MAC-10',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsMac10}}/{{.UserStatsForGame.Stats.TotalShotsMac10}} * 10000) / 100
+		},
+		{
+			name: 'XM1014',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsXm1014}}/{{.UserStatsForGame.Stats.TotalShotsXm1014}} * 10000) / 100
+		},
+		{
+			name: 'Five-SeveN',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsFiveseven}}/{{.UserStatsForGame.Stats.TotalShotsFiveseven}} * 10000) / 100
+		},
+		{
+			name: 'Dual Berettas',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsElite}}/{{.UserStatsForGame.Stats.TotalShotsElite}} * 10000) / 100
+		},
+		{
+			name: 'Desert Eagle',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsDeagle}}/{{.UserStatsForGame.Stats.TotalShotsDeagle}} * 10000) / 100
+		},
+		{
+			name: 'Glock-18',
+			accuracy: Math.round({{.UserStatsForGame.Stats.TotalHitsGlock}}/{{.UserStatsForGame.Stats.TotalShotsGlock}} * 10000) / 100
+		}			
+
+	]
 
 var dataAxis = data.sort((a, b) => b.accuracy - a.accuracy).map(e => e.name)
 
