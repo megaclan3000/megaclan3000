@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/pinpox/megaclan3000/internal/steamclient"
+	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 )
 
 func TestDataStorage_UpdatePlayerHistory(t *testing.T) {

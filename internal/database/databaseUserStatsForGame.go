@@ -3,7 +3,7 @@ package database
 import (
 	"github.com/sirupsen/logrus"
 
-	"github.com/pinpox/megaclan3000/internal/steamclient"
+	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 )
 
 // UpdateUserStatsForGame receives a UserStatsForGame object and updates the

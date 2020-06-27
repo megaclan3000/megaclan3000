@@ -10,8 +10,8 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
-	"github.com/pinpox/megaclan3000/internal/database"
-	"github.com/pinpox/megaclan3000/internal/steamclient"
+	"github.com/megaclan3000/megaclan3000/internal/database"
+	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 )
 
 var t *template.Template

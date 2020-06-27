@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/pinpox/megaclan3000/internal/steamclient"
+	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 	"github.com/sirupsen/logrus"
 )
 
