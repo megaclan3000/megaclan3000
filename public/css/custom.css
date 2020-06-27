@@ -59,6 +59,18 @@ a{
     font-size: 2.5rem !important;
 }
 
+.detail__player {
+    display: flex;
+    align-items: center;
+}
+.detail__player img {
+    width: 120px;
+    margin-right: 2rem;
+}
+.detail__player h3{
+    margin-top: 0;
+}
+
 .page-footer{
     padding-top: 0px;
 }
