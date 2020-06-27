@@ -1,4 +1,4 @@
-module github.com/pinpox/megaclan3000
+module github.com/megaclan3000/megaclan3000
 
 go 1.14
 

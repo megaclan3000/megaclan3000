@@ -3,7 +3,7 @@ package database
 import (
 	"time"
 
-	"github.com/pinpox/megaclan3000/internal/steamclient"
+	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 	log "github.com/sirupsen/logrus"
 )
 

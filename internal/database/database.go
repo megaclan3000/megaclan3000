@@ -12,7 +12,7 @@ import (
 
 	// Import sqlit3 driver
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/pinpox/megaclan3000/internal/steamclient"
+	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 )
 
 // DataStorage is the main interface to the saved data. It provides methods for

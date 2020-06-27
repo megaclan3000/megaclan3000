@@ -7,7 +7,7 @@ import (
 	"github.com/go-testfixtures/testfixtures/v3"
 	"github.com/google/go-cmp/cmp"
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/pinpox/megaclan3000/internal/steamclient"
+	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 )
 
 var (

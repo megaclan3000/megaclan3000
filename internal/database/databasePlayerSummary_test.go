@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/pinpox/megaclan3000/internal/steamclient"
+	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 )
 
 func TestDataStorage_UpdatePlayerSummary(t *testing.T) {
