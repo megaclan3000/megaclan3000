@@ -1,99 +1,104 @@
-<table>
 
-	<tr>
-		<td>Rounds Total</td>
-		<td> {{.UserStatsForGame.Stats.LastMatchRounds}} </td>
-	</tr>
+<div class="row">
+	<div class="col s12 m6 l4">
+		<table>
 
-	<tr>
-		<td>Rounds won (all)</td>
-		<td>{{.UserStatsForGame.Stats.LastMatchWins}} </td>
-	</tr>
+			<tr>
+				<td>Rounds Total</td>
+				<td> {{.UserStatsForGame.Stats.LastMatchRounds}} </td>
+			</tr>
 
-	<tr>
-		<td>Rounds won (T)</td>
-		<td> {{.UserStatsForGame.Stats.LastMatchTWins}} </td>
-	</tr>
+			<tr>
+				<td>Rounds won (all)</td>
+				<td>{{.UserStatsForGame.Stats.LastMatchWins}} </td>
+			</tr>
 
-	<tr>
-		<td>Rounds won (CT)</td>
-		<td>{{.UserStatsForGame.Stats.LastMatchCtWins}} </td>
-	</tr>
+			<tr>
+				<td>Rounds won (T)</td>
+				<td> {{.UserStatsForGame.Stats.LastMatchTWins}} </td>
+			</tr>
 
-	<tr>
-		<td>Outcome</td>
-		<td>TODO (win/draw/loose)</td>
-	</tr>
-	<tr>
-		<td>best weapon name</td>
-		<td> {{.UserStatsForGame.Stats.LastMatchFavweaponID}} </td>
-	</tr>
+			<tr>
+				<td>Rounds won (CT)</td>
+				<td>{{.UserStatsForGame.Stats.LastMatchCtWins}} </td>
+			</tr>
 
-	<tr>
-		<td>Best Weapon Kills</td>
-		<td> {{.UserStatsForGame.Stats.LastMatchFavweaponKills}} </td>
-	</tr>
+			<tr>
+				<td>Outcome</td>
+				<td>TODO (win/draw/loose)</td>
+			</tr>
+			<tr>
+				<td>best weapon name</td>
+				<td> {{.UserStatsForGame.Stats.LastMatchFavweaponID}} </td>
+			</tr>
 
-	<tr>
-		<td>Best weapon accuracy</td>
-		<td>
-			{{.UserStatsForGame.Stats.LastMatchFavweaponHits}} / {{.UserStatsForGame.Stats.LastMatchFavweaponShots}}
-		</td>
-	</tr>
+			<tr>
+				<td>Best Weapon Kills</td>
+				<td> {{.UserStatsForGame.Stats.LastMatchFavweaponKills}} </td>
+			</tr>
 
-	<tr>
-		<td>KD Ratio</td>
-		<td>
-			kills
-			{{.UserStatsForGame.Stats.LastMatchKills}}
+			<tr>
+				<td>Best weapon accuracy</td>
+				<td>
+					{{.UserStatsForGame.Stats.LastMatchFavweaponHits}} / {{.UserStatsForGame.Stats.LastMatchFavweaponShots}}
+				</td>
+			</tr>
 
-			deaths
-			{{.UserStatsForGame.Stats.LastMatchDeaths}}
+			<tr>
+				<td>KD Ratio</td>
+				<td>
+					kills
+					{{.UserStatsForGame.Stats.LastMatchKills}}
 
-		</td>
-	</tr>
+					deaths
+					{{.UserStatsForGame.Stats.LastMatchDeaths}}
 
-
-	<tr>
-		<td>damage</td>
-		<td>
-
-			{{.UserStatsForGame.Stats.LastMatchDamage}}
-		</td>
-	</tr>
+				</td>
+			</tr>
 
 
-	<tr>
-		<td>money spend</td>
-		<td>
-			{{.UserStatsForGame.Stats.LastMatchMoneySpent}}
-		</td>
+			<tr>
+				<td>damage</td>
+				<td>
 
-	</tr>
-
-
-	<tr>
-		<td>MVPs</td>
-		<td>
-
-			{{.UserStatsForGame.Stats.LastMatchMvps}}
-		</td>
-	</tr>
-
-	<tr>
-		<td>score</td>
-		<td>
-			{{.UserStatsForGame.Stats.LastMatchContributionScore}}
-		</td>
-	</tr>
+					{{.UserStatsForGame.Stats.LastMatchDamage}}
+				</td>
+			</tr>
 
 
+			<tr>
+				<td>money spend</td>
+				<td>
+					{{.UserStatsForGame.Stats.LastMatchMoneySpent}}
+				</td>
 
-	Unused:
-	{{.UserStatsForGame.Stats.LastMatchDominations}}
-	{{.UserStatsForGame.Stats.LastMatchGgContributionScore}}
-	{{.UserStatsForGame.Stats.LastMatchMaxPlayers}}
-	{{.UserStatsForGame.Stats.LastMatchRevenges}}
+			</tr>
 
 
-</table>
+			<tr>
+				<td>MVPs</td>
+				<td>
+
+					{{.UserStatsForGame.Stats.LastMatchMvps}}
+				</td>
+			</tr>
+
+			<tr>
+				<td>score</td>
+				<td>
+					{{.UserStatsForGame.Stats.LastMatchContributionScore}}
+				</td>
+			</tr>
+
+
+
+			Unused:
+			{{.UserStatsForGame.Stats.LastMatchDominations}}
+			{{.UserStatsForGame.Stats.LastMatchGgContributionScore}}
+			{{.UserStatsForGame.Stats.LastMatchMaxPlayers}}
+			{{.UserStatsForGame.Stats.LastMatchRevenges}}
+
+
+		</table>
+	</div>
+</div>
