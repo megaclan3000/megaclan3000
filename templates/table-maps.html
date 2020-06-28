@@ -1,4 +1,13 @@
-<table>
+<script id="mapTableTemplate" type="text/x-jquery-tmpl">
+	<tr>
+		<td id="mapName">${mapName}</td>
+		<td id="totalRounds">${totalRounds}</td>
+		<td id="roundsWon">${roundsWon}</td>
+		<td id="winRate">${winRate}</td>
+	</tr>
+</script>
+
+<table id="mapTable">
 	<thead>
 		<tr>
 			<th>Map</th>
@@ -7,133 +16,146 @@
 			<th>Win Rate</th>
 		</tr>
 	</thead>
-
 	<tbody>
-		<tr>
-			<td>TotalRoundsMapArBaggage</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapArBaggage}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapArBaggage}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapArMonastery</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapArMonastery}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapArMonastery}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapArShoots</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapArShoots}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapArShoots}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapCsAssault</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapCsAssault}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapCsAssault}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapCsItaly</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapCsItaly}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapCsItaly}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapCsMilitia</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapCsMilitia}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapCsMilitia}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapCsOffice</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapCsOffice}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapCsOffice}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapDeAztec</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapDeAztec}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapDeAztec}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapDeBank</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapDeBank}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapDeBank}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapDeCbble</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapDeCbble}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapDeCbble}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapDeDust</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapDeDust}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapDeDust}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapDeDust2</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapDeDust2}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapDeDust2}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapDeInferno</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapDeInferno}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapDeInferno}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapDeLake</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapDeLake}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapDeLake}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapDeNuke</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapDeNuke}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapDeNuke}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapDeSafehouse</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapDeSafehouse}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapDeSafehouse}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapDeShorttrain</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapDeShorttrain}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapDeShorttrain}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapDeStmarc</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapDeStmarc}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapDeStmarc}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapDeSugarcane</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapDeSugarcane}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapDeSugarcane}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapDeTrain</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapDeTrain}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapDeTrain}}</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>TotalRoundsMapDeVertigo</td>
-			<td>{{.UserStatsForGame.Stats.TotalRoundsMapDeVertigo}}</td>
-			<td>{{.UserStatsForGame.Stats.TotalWinsMapDeVertigo}}</td>
-			<td></td>
-		</tr>
 	</tbody>
 </table>
+
+<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+
+		for (var i = 0; i < mapsData.length; i++) {
+			$( "#mapTableTemplate" ).tmpl( mapsData[i] ).appendTo( "#mapTable tbody" );			
+		}
+	});
+
+	const mapsData = [
+		{
+			mapName: 'ar_baggage',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapArBaggage}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapArBaggage}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapArBaggage}}/{{.UserStatsForGame.Stats.TotalRoundsMapArBaggage}} * 10000) / 100 || 0) + '%'
+		},
+		{
+			mapName: 'ar_monastery',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapArMonastery}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapArMonastery}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapArMonastery}}/{{.UserStatsForGame.Stats.TotalRoundsMapArMonastery}} * 10000) / 100 || 0)  + '%'
+		},
+		{
+			mapName: 'ar_shoots',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapArShoots}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapArShoots}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapArShoots}}/{{.UserStatsForGame.Stats.TotalRoundsMapArShoots}} * 10000) / 100 || 0)  + '%'
+		},		
+		{
+			mapName: 'cs_assault',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapCsAssault}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapCsAssault}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapCsAssault}}/{{.UserStatsForGame.Stats.TotalRoundsMapCsAssault}} * 10000) / 100 || 0)  + '%'
+		},		
+		{
+			mapName: 'cs_italy',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapCsItaly}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapCsItaly}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapCsItaly}}/{{.UserStatsForGame.Stats.TotalRoundsMapCsItaly}} * 10000) / 100 || 0)  + '%'
+		},	
+		{
+			mapName: 'cs_militia',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapCsMilitia}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapCsMilitia}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapCsMilitia}}/{{.UserStatsForGame.Stats.TotalRoundsMapCsMilitia}} * 10000) / 100 || 0)  + '%'
+		},	
+		{
+			mapName: 'cs_office',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapCsOffice}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapCsOffice}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapCsOffice}}/{{.UserStatsForGame.Stats.TotalRoundsMapCsOffice}} * 10000) / 100 || 0)  + '%'
+		},
+		{
+			mapName: 'de_aztec',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapDeAztec}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapDeAztec}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapDeAztec}}/{{.UserStatsForGame.Stats.TotalRoundsMapDeAztec}} * 10000) / 100 || 0)  + '%'
+		},	
+		{
+			mapName: 'de_bank',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapDeBank}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapDeBank}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapDeBank}}/{{.UserStatsForGame.Stats.TotalRoundsMapDeBank}} * 10000) / 100 || 0)  + '%'
+		},		
+		{
+			mapName: 'de_cbble',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapDeCbble}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapDeCbble}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapDeCbble}}/{{.UserStatsForGame.Stats.TotalRoundsMapDeCbble}} * 10000) / 100 || 0)  + '%'
+		},	
+		{
+			mapName: 'de_dust',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapDeDust}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapDeDust}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapDeDust}}/{{.UserStatsForGame.Stats.TotalRoundsMapDeDust}} * 10000) / 100 || 0)  + '%'
+		},		
+		{
+			mapName: 'de_dust2',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapDeDust2}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapDeDust2}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapDeDust2}}/{{.UserStatsForGame.Stats.TotalRoundsMapDeDust2}} * 10000) / 100 || 0)  + '%'
+		},				
+		{
+			mapName: 'de_inferno',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapDeInferno}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapDeInferno}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapDeInferno}}/{{.UserStatsForGame.Stats.TotalRoundsMapDeInferno}} * 10000) / 100 || 0)  + '%'
+		},	
+		{
+			mapName: 'de_lake',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapDeLake}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapDeLake}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapDeLake}}/{{.UserStatsForGame.Stats.TotalRoundsMapDeLake}} * 10000) / 100 || 0)  + '%'
+		},	
+		{
+			mapName: 'de_nuke',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapDeNuke}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapDeNuke}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapDeNuke}}/{{.UserStatsForGame.Stats.TotalRoundsMapDeNuke}} * 10000) / 100 || 0)  + '%'
+		},					
+		{
+			mapName: 'de_safehouse',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapDeSafehouse}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapDeSafehouse}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapDeSafehouse}}/{{.UserStatsForGame.Stats.TotalRoundsMapDeSafehouse}} * 10000) / 100 || 0)  + '%'
+		},			
+		{
+			mapName: 'de_shorttrain',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapDeShorttrain}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapDeShorttrain}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapDeShorttrain}}/{{.UserStatsForGame.Stats.TotalRoundsMapDeShorttrain}} * 10000) / 100 || 0)  + '%'
+		},	
+		{
+			mapName: 'de_stmarc',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapDeStmarc}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapDeStmarc}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapDeStmarc}}/{{.UserStatsForGame.Stats.TotalRoundsMapDeStmarc}} * 10000) / 100 || 0)  + '%'
+		},		
+		{
+			mapName: 'de_sugarcane',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapDeSugarcane}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapDeSugarcane}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapDeSugarcane}}/{{.UserStatsForGame.Stats.TotalRoundsMapDeSugarcane}} * 10000) / 100 || 0)  + '%'
+		},		
+		{
+			mapName: 'de_train',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapDeTrain}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapDeTrain}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapDeTrain}}/{{.UserStatsForGame.Stats.TotalRoundsMapDeTrain}} * 10000) / 100 || 0)  + '%'
+		},		
+		{
+			mapName: 'de_vertigo',
+			totalRounds: {{.UserStatsForGame.Stats.TotalRoundsMapDeVertigo}},
+			roundsWon: {{.UserStatsForGame.Stats.TotalWinsMapDeVertigo}},
+			winRate: (Math.round({{.UserStatsForGame.Stats.TotalWinsMapDeVertigo}}/{{.UserStatsForGame.Stats.TotalRoundsMapDeVertigo}} * 10000) / 100 || 0)  + '%'
+		},								
+	]
+	mapsData.sort((a, b) => b.totalRounds - a.totalRounds)
+</script>
