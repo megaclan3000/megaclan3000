@@ -128,6 +128,6 @@ godoc.
 - [PlayerSummary](https://godoc.org/github.com/megaclan3000/megaclan3000/internal/steamclient#PlayerSummary)
 - [UserStatsForGame](https://godoc.org/github.com/megaclan3000/megaclan3000/internal/steamclient#UserStatsForGame)
 - [RecentlyPlayedGames](https://godoc.org/github.com/megaclan3000/megaclan3000/internal/steamclient#RecentlyPlayedGames)
-- [PlayerHistory](https://godoc.org/github.com/megcalan3000/megaclan3000/internal/steamclient#PlayerHistory)
+- [PlayerHistory](https://godoc.org/github.com/megaclan3000/megaclan3000/internal/steamclient#PlayerHistory)
 
 The `PlayerInfo`'s fields can be accessed in the `{{ template markers }}` as the object is passed to them.
