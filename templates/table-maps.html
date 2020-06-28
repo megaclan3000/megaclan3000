@@ -29,7 +29,9 @@
 	$(document).ready(function(){
 
 		for (var i = 0; i < mapsData.length; i++) {
-			$( "#mapTableTemplate" ).tmpl( mapsData[i] ).appendTo( "#mapTable tbody" );			
+			if (mapsData[i].totalRounds) {
+				$( "#mapTableTemplate" ).tmpl( mapsData[i] ).appendTo( "#mapTable tbody" );			
+			}
 		}
 	});
 
