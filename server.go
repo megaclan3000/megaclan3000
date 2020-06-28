@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"sort"
 	"text/template"
 
 	"net/http"
@@ -161,6 +162,12 @@ func handlerStats(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
+
+	// Stort players by Personastate (online status)
+	sort.Slice(players, func(i, j int) bool {
+		return players[i].PlayerSummary.Personastate > players[j].PlayerSummary.Personastate
+	})
+
 	if err := t.ExecuteTemplate(w, "stats.html", players); err != nil {
 		log.Warn(err)
 	}
