@@ -15,6 +15,8 @@ type SteamConfig struct {
 	UpdateInterval  int      `json:"UpdateInterval"`
 }
 
+// NewSteamConfig creates a new configuration struct from a path pointing to
+// the json configuration file. It will return an error if the file does not exist
 func NewSteamConfig(configPath string) (SteamConfig, error) {
 
 	conf := SteamConfig{}
