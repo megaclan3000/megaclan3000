@@ -23,9 +23,8 @@
 				<td>{{.UserStatsForGame.Stats.LastMatchCtWins}} </td>
 			</tr>
 
-			<tr>
+			<tr id="outcome-container">
 				<td>Outcome</td>
-				<td>TODO (win/draw/loose)</td>
 			</tr>
 			<tr>
 				<td>best weapon name</td>
@@ -61,7 +60,7 @@
 				<td>damage</td>
 				<td>
 
-					{{.UserStatsForGame.Stats.LastMatchDamage}}
+					{{.UserStatsForGame.Stats.LastMatchDamage}} HP
 				</td>
 			</tr>
 
@@ -69,7 +68,7 @@
 			<tr>
 				<td>money spend</td>
 				<td>
-					{{.UserStatsForGame.Stats.LastMatchMoneySpent}}
+					${{.UserStatsForGame.Stats.LastMatchMoneySpent}}
 				</td>
 
 			</tr>
@@ -102,3 +101,33 @@
 		</table>
 	</div>
 </div>
+
+<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+<script id="outcomeTemplate" type="text/x-jquery-tmpl">
+		<td id="outcome">${outcome}</td>
+</script>
+
+<script type="text/javascript">
+	var calculateOutcome = function() {
+		var outcome = ''
+		{{/* Case: won most rounds */}}
+		if ({{.UserStatsForGame.Stats.LastMatchWins}} > {{.UserStatsForGame.Stats.LastMatchRounds}} - {{.UserStatsForGame.Stats.LastMatchWins}}) {
+			outcome = 'win'
+		}
+		{{/* Case: lost most rounds */}}
+		else if ({{.UserStatsForGame.Stats.LastMatchWins}} < {{.UserStatsForGame.Stats.LastMatchRounds}} - {{.UserStatsForGame.Stats.LastMatchWins}}) {
+			outcome = 'lose'
+		}
+		{{/* Case: equally lost and won rounds */}}
+		else {
+			outcome = 'draw'
+		}
+		return {
+			outcome: outcome
+		}
+	}
+
+	$(document).ready(function(){
+		$( "#outcomeTemplate" ).tmpl( calculateOutcome ).appendTo( "#outcome-container" );			
+	});
+</script>
