@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"sort"
 	"text/template"
 
 	"net/http"
@@ -10,8 +11,8 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
-	"github.com/pinpox/megaclan3000/internal/database"
-	"github.com/pinpox/megaclan3000/internal/steamclient"
+	"github.com/megaclan3000/megaclan3000/internal/database"
+	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 )
 
 var t *template.Template
@@ -108,7 +109,6 @@ func updateData() {
 			lastUpdateTime := datastorage.GetPlayerHistoryLatestTime(v.PlayerSummary.SteamID)
 
 			// if part threshold, update
-			log.Println("updatetime", time.Since(lastUpdateTime).Minutes())
 			if time.Since(lastUpdateTime).Minutes() > float64(steamClient.Config.HistoryInterval) {
 				log.Infof("Updating history for %v (%v)", v.PlayerSummary.Personaname, v.PlayerSummary.SteamID)
 
@@ -155,13 +155,19 @@ func handlerStats(w http.ResponseWriter, r *http.Request) {
 	var players []steamclient.PlayerInfo
 	var err error
 
-	if players, err = datastorage.GetAllPlayers(); err != nil {
+	if players, err = datastorage.GetAllPlayers(steamClient.Config.SteamIDs); err != nil {
 		log.Error("Error getting stats from database:", err)
 		if err := t.ExecuteTemplate(w, "404.html", nil); err != nil {
 			log.Warn(err)
 		}
 		return
 	}
+
+	// Stort players by Personastate (online status)
+	sort.Slice(players, func(i, j int) bool {
+		return players[i].PlayerSummary.Personastate > players[j].PlayerSummary.Personastate
+	})
+
 	if err := t.ExecuteTemplate(w, "stats.html", players); err != nil {
 		log.Warn(err)
 	}

@@ -16,6 +16,9 @@ type PlayerHistory struct {
 	Data []PlayerHistoryEntry
 }
 
+// PlayerHistoryEntry holds on snapshot of the values that are tracked over
+// time. The steamid field is no primary key in this case, since every player
+// will have multiple entries
 type PlayerHistoryEntry struct {
 
 	// SteamID of the player

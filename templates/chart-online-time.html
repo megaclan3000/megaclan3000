@@ -3,7 +3,7 @@
 <div id="container-heat" style="width:100%; height:110px;"></div>
 
 <script type="text/javascript">
-	var dom = document.getElementById("container-heat");
+var dom = document.getElementById("container-heat");
 var myChartOnlineTime = echarts.init(dom);
 var app = {};
 option = null;
@@ -37,7 +37,15 @@ option = {
 		itemStyle: {
 			borderWidth: 0.5
 		},
-		yearLabel: {show: false}
+		dayLabel: {
+			color: 'rgba(255,255,255, 0.5)'
+		},
+		monthLabel: {
+			color: 'rgba(255,255,255, 0.5)'
+		},
+		yearLabel: {
+			show: false,
+		},
 	},
 	series: {
 		type: 'heatmap',

@@ -1,37 +1,29 @@
 package database
 
 import (
-	"github.com/jmoiron/modl"
-
 	"github.com/sirupsen/logrus"
 
-	"github.com/pinpox/megaclan3000/internal/steamclient"
+	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 )
 
 // UpdateUserStatsForGame receives a UserStatsForGame object and updates the
 // corresponding entry in the database for the steamID
 func (ds *DataStorage) UpdateUserStatsForGame(stats steamclient.UserStatsForGame) error {
 
-	dbm := modl.NewDbMap(ds.db.DB, modl.SqliteDialect{})
-	dbm.AddTableWithName(steamclient.GameStats{}, "player_stats").SetKeys(false, "steamid")
-	dbm.AddTableWithName(steamclient.GameExtras{}, "player_extra").SetKeys(false, "steamid")
-
-	if err := dbm.CreateTablesIfNotExists(); err != nil {
-		logrus.Fatal("Database not creatable: ", err)
+	if _, err := ds.dbm.Delete(&stats.Stats); err != nil {
 		return err
 	}
 
-	if _, err := dbm.Delete(&stats.Stats); err != nil {
+	if _, err := ds.dbm.Delete(&stats.Extra); err != nil {
 		return err
 	}
 
-	if _, err := dbm.Delete(&stats.Extra); err != nil {
-		return err
-	}
-	if err := dbm.Insert(&stats.Stats); err != nil {
+	logrus.Debugf("Inserting id %v into player_stats", stats.Stats.SteamID)
+	if err := ds.dbm.Insert(&stats.Stats); err != nil {
 		return err
 	}
 
-	return dbm.Insert(&stats.Extra)
+	logrus.Debugf("Inserting id %v into player_extra", stats.Extra.SteamID)
+	return ds.dbm.Insert(&stats.Extra)
 
 }

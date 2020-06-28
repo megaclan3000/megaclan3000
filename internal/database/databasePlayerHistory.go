@@ -1,11 +1,9 @@
 package database
 
 import (
-	"github.com/jmoiron/modl"
-	"github.com/sirupsen/logrus"
 	"time"
 
-	"github.com/pinpox/megaclan3000/internal/steamclient"
+	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -17,13 +15,12 @@ func (ds *DataStorage) GetPlayerHistoryLatestTime(steamID string) time.Time {
 	var err error
 	var updateTime time.Time
 
-	dbm := modl.NewDbMap(ds.db.DB, modl.SqliteDialect{})
-
-	if err = dbm.SelectOne(&updateTime,
+	if err = ds.dbm.SelectOne(&updateTime,
 		`SELECT time FROM player_history
 			WHERE steamid = ?
 			ORDER BY time DESC
 			LIMIT 1`, steamID); err != nil {
+		log.Warn("Could not get latest history time for id:", steamID)
 		log.Warn(err)
 	}
 
@@ -34,14 +31,5 @@ func (ds *DataStorage) GetPlayerHistoryLatestTime(steamID string) time.Time {
 // player_history table with the current time and the values from the
 // PlayerInfo object
 func (ds *DataStorage) UpdatePlayerHistory(phe steamclient.PlayerHistoryEntry) error {
-
-	dbm := modl.NewDbMap(ds.db.DB, modl.SqliteDialect{})
-	dbm.AddTableWithName(steamclient.PlayerHistoryEntry{}, "player_history")
-
-	if err := dbm.CreateTablesIfNotExists(); err != nil {
-		logrus.Fatal("Database not creatable: ", err)
-		return err
-	}
-
-	return dbm.Insert(&phe)
+	return ds.dbm.Insert(&phe)
 }

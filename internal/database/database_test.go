@@ -7,7 +7,7 @@ import (
 	"github.com/go-testfixtures/testfixtures/v3"
 	"github.com/google/go-cmp/cmp"
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/pinpox/megaclan3000/internal/steamclient"
+	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 )
 
 var (
@@ -34,32 +34,6 @@ func prepareDB() {
 
 	if err = fixtures.Load(); err != nil {
 		panic(err)
-	}
-}
-
-func TestDataStorage_GetAllPlayers(t *testing.T) {
-	tests := []struct {
-		name    string
-		want    []steamclient.PlayerInfo
-		wantErr bool
-	}{
-		// all_columns
-		// other1
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			prepareDB()
-			got, err := db.GetAllPlayers()
-			if (err != nil) != tt.wantErr {
-				t.Errorf("DataStorage.GetAllPlayers() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-
-			if diff := cmp.Diff(tt.want, got); diff != "" {
-				t.Errorf("DataStorage.GetAllPlayers() mismatch (-want +got):\n%s", diff)
-			}
-		})
 	}
 }
 

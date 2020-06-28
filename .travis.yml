@@ -12,7 +12,7 @@ script:
 notifications:
   email:
     recipients:
-      - pablo1@mailbox.org
+      - github@pablo.tools
  
 after_success:
  - bash <(curl -s https://codecov.io/bash)
