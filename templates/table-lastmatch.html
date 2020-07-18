@@ -1,110 +1,144 @@
 
-<div class="row">
-	<div class="col s12 m6 l4">
-		<table>
+<div class="col s12">
 
-			<tr>
-				<td>Rounds Total</td>
-				<td> {{.UserStatsForGame.Stats.LastMatchRounds}} </td>
-			</tr>
-
-			<tr>
-				<td>Rounds won (all)</td>
-				<td>{{.UserStatsForGame.Stats.LastMatchWins}} </td>
-			</tr>
-
-			<tr>
-				<td>Rounds won (T)</td>
-				<td> {{.UserStatsForGame.Stats.LastMatchTWins}} </td>
-			</tr>
-
-			<tr>
-				<td>Rounds won (CT)</td>
-				<td>{{.UserStatsForGame.Stats.LastMatchCtWins}} </td>
-			</tr>
-
-			<tr id="outcome-container">
-				<td>Outcome</td>
-			</tr>
-			<tr>
-				<td>best weapon name</td>
-				<td> {{.UserStatsForGame.Stats.LastMatchFavweaponID}} </td>
-			</tr>
-
-			<tr>
-				<td>Best Weapon Kills</td>
-				<td> {{.UserStatsForGame.Stats.LastMatchFavweaponKills}} </td>
-			</tr>
-
-			<tr>
-				<td>Best weapon accuracy</td>
-				<td>
-					{{.UserStatsForGame.Stats.LastMatchFavweaponHits}} / {{.UserStatsForGame.Stats.LastMatchFavweaponShots}}
-				</td>
-			</tr>
-
-			<tr>
-				<td>KD Ratio</td>
-				<td>
-					kills
-					{{.UserStatsForGame.Stats.LastMatchKills}}
-
-					deaths
-					{{.UserStatsForGame.Stats.LastMatchDeaths}}
-
-				</td>
-			</tr>
+	<div class="card green darken-1">
+		<div class="card-content white-text">
+			<span class="card-title">
+				<div id="outcome-container"></div>
+			</span>
+			<p> {{.UserStatsForGame.Stats.LastMatchWins}}/{{.UserStatsForGame.Stats.LastMatchRounds}} Rounds won </p>
 
 
-			<tr>
-				<td>damage</td>
-				<td>
+			<table>
+				<tbody>
+					<tr>
+						<td>Rounds Total</td>
+						<td> {{.UserStatsForGame.Stats.LastMatchRounds}} </td>
+					</tr>
 
-					{{.UserStatsForGame.Stats.LastMatchDamage}} HP
-				</td>
-			</tr>
+					<tr>
+						<td>Rounds won (all)</td>
+						<td>{{.UserStatsForGame.Stats.LastMatchWins}} </td>
+					</tr>
 
+					<tr>
+						<td>Rounds won (T)</td>
+						<td> {{.UserStatsForGame.Stats.LastMatchTWins}} </td>
+					</tr>
 
-			<tr>
-				<td>money spend</td>
-				<td>
-					${{.UserStatsForGame.Stats.LastMatchMoneySpent}}
-				</td>
-
-			</tr>
-
-
-			<tr>
-				<td>MVPs</td>
-				<td>
-
-					{{.UserStatsForGame.Stats.LastMatchMvps}}
-				</td>
-			</tr>
-
-			<tr>
-				<td>score</td>
-				<td>
-					{{.UserStatsForGame.Stats.LastMatchContributionScore}}
-				</td>
-			</tr>
-
-
-
-			{{/* Unused:
-			{{.UserStatsForGame.Stats.LastMatchDominations}}
-			{{.UserStatsForGame.Stats.LastMatchGgContributionScore}}
-			{{.UserStatsForGame.Stats.LastMatchMaxPlayers}}
-			{{.UserStatsForGame.Stats.LastMatchRevenges}} */}}
-
-
-		</table>
+					<tr>
+						<td>Rounds won (CT)</td>
+						<td>{{.UserStatsForGame.Stats.LastMatchCtWins}} </td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
+
+	<div class="card blue-grey darken-1">
+		<div class="card-content white-text">
+			<span class="card-title"> Best weapon </span>
+			<table>
+				<tbody>
+					<tr>
+						<td>best weapon name</td>
+						<td> {{.UserStatsForGame.Stats.LastMatchFavweaponID}} </td>
+					</tr>
+
+					<tr>
+						<td>Best Weapon Kills</td>
+						<td> {{.UserStatsForGame.Stats.LastMatchFavweaponKills}} </td>
+					</tr>
+
+					<tr>
+						<td>Best weapon accuracy</td>
+						<td>
+							{{.UserStatsForGame.Stats.LastMatchFavweaponHits}} / {{.UserStatsForGame.Stats.LastMatchFavweaponShots}}
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+			</p>
+		</div>
+	</div>
+
+
+
+	<div class="card blue-grey darken-1">
+		<div class="card-content white-text">
+			<span class="card-title">Personal Stats</span>
+			<table>
+				<tbody>
+
+					<tr>
+						<td>KD Ratio</td>
+						<td>
+							kills
+							{{.UserStatsForGame.Stats.LastMatchKills}}
+
+							deaths
+							{{.UserStatsForGame.Stats.LastMatchDeaths}}
+
+						</td>
+					</tr>
+
+
+					<tr>
+						<td>damage</td>
+						<td>
+
+							{{.UserStatsForGame.Stats.LastMatchDamage}} HP
+						</td>
+					</tr>
+
+
+					<tr>
+						<td>money spend</td>
+						<td>
+							${{.UserStatsForGame.Stats.LastMatchMoneySpent}}
+						</td>
+
+					</tr>
+
+
+					<tr>
+						<td>MVPs</td>
+						<td>
+
+							{{.UserStatsForGame.Stats.LastMatchMvps}}
+						</td>
+					</tr>
+
+					<tr>
+						<td>score</td>
+						<td>
+							{{.UserStatsForGame.Stats.LastMatchContributionScore}}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+
+
+
+	{{/* Unused:
+	{{.UserStatsForGame.Stats.LastMatchDominations}}
+	{{.UserStatsForGame.Stats.LastMatchGgContributionScore}}
+	{{.UserStatsForGame.Stats.LastMatchMaxPlayers}}
+	{{.UserStatsForGame.Stats.LastMatchRevenges}} */}}
+
+
+	</table>
+</div>
 </div>
 
 <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
 <script id="outcomeTemplate" type="text/x-jquery-tmpl">
-		<td id="outcome">${outcome}</td>
+	<div id="outcome">${outcome}</div>
 </script>
 
 <script type="text/javascript">
@@ -127,7 +161,7 @@
 		}
 	}
 
-	$(document).ready(function(){
-		$( "#outcomeTemplate" ).tmpl( calculateOutcome ).appendTo( "#outcome-container" );			
-	});
+$(document).ready(function(){
+	$( "#outcomeTemplate" ).tmpl( calculateOutcome ).appendTo( "#outcome-container" );
+});
 </script>
