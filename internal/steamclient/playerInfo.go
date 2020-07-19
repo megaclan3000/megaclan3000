@@ -68,3 +68,26 @@ func (sc *SteamClient) getPlayerInfo(steamID string) (PlayerInfo, error) {
 
 	return info, nil
 }
+
+// TODO implement these methods!
+func (pi PlayerInfo) LastMatch() LastMatch {
+	return LastMatch{
+		Outcome: "WON",
+	}
+}
+
+func (pi PlayerInfo) FavWeapon() Weapon {
+	return Weapon{
+		Name:     "WEAPONNAME",
+		IconPath: "/public/img/weapons/ak47.jpg",
+	}
+}
+
+type LastMatch struct {
+	Outcome string
+}
+
+type Weapon struct {
+	Name     string
+	IconPath string
+}
