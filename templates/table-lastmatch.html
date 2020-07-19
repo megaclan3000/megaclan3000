@@ -1,128 +1,114 @@
 
-<script charset="utf-8">
+<div class="row">
+	<div class="col s12 m12 l6">
 
-
-</script>
-<div class="col s12">
-
-
-
-
-	<div class="card">
-		<div class="card-image waves-effect waves-block waves-light">
-		{{if (eq .LastMatch.Outcome "WON")}}
+		<div class="card">
 			<div class="card-image waves-effect waves-block waves-light">
-				<img class="activator" height="200" src="/public/img/win_banner.png">
+				{{if (eq .LastMatch.Outcome "WON")}}
+				<div class="card-image waves-effect waves-block waves-light">
+					<img class="activator" height="100" src="/public/img/win_banner.png">
+				</div>
+				{{else if (eq .LastMatch.Outcome "DRAW")}}
+				<div class="card-image waves-effect waves-block waves-light">
+					<img class="activator" height="100" src="/public/img/draw_banner.png">
+				</div>
+				{{else}}
+				<div class="card-image waves-effect waves-block waves-light">
+					<img class="activator" height="100" src="/public/img/lose_banner.png">
+				</div>
+				{{end}}
 			</div>
-		{{else if (eq .LastMatch.Outcome "DRAW")}}
-			<div class="card-image waves-effect waves-block waves-light">
-				<img class="activator" height="200" src="/public/img/draw_banner.png">
+			<div class="card-content ">
+				<span class="card-title activator grey-text text-darken-4">{{.LastMatch.Outcome}}<i class="material-icons right">more_vert</i></span>
+				<p class="weapon-name orange-text activator">
+				{{.UserStatsForGame.Stats.LastMatchWins}}/{{.UserStatsForGame.Stats.LastMatchRounds}} Rounds won
+				</p>
 			</div>
-		{{else}}
-			<div class="card-image waves-effect waves-block waves-light">
-				<img class="activator" height="200" src="/public/img/lose_banner.png">
-			</div>
-		{{end}}
-		</div>
-		<div class="card-content ">
-			<span class="card-title activator grey-text text-darken-4">{{.LastMatch.Outcome}}<i class="material-icons right">more_vert</i></span>
-			<p class="weapon-name orange-text activator"> 
-			{{.UserStatsForGame.Stats.LastMatchWins}}/{{.UserStatsForGame.Stats.LastMatchRounds}} Rounds won
-			</p>
-		</div>
+			<div class="card-reveal">
+				<span class="weapon-name card-title grey-text text-darken-4">Rounds won<i class="material-icons right">close</i></span>
+				<p>
+				<table>
+					<tbody>
+						<tr>
+							<td>Rounds won as T</td>
+							<td>{{.UserStatsForGame.Stats.LastMatchTWins}}</td>
+						</tr>
 
-		<div class="card-reveal">
-			<span class="weapon-name card-title grey-text text-darken-4">Rounds won<i class="material-icons right">close</i></span>
-			<p>
-			<table>
-				<tbody>
-					<tr>
-						<td>Rounds won as T</td>
-						<td>{{.UserStatsForGame.Stats.LastMatchTWins}}</td>
-					</tr>
-
-					<tr>
-						<td>Rounds won as CT</td>
-						<td>{{.UserStatsForGame.Stats.LastMatchCtWins}}</td>
-					</tr>
-				</tbody>
-			</table>
-			</p>
+						<tr>
+							<td>Rounds won as CT</td>
+							<td>{{.UserStatsForGame.Stats.LastMatchCtWins}}</td>
+						</tr>
+					</tbody>
+				</table>
+				</p>
+			</div>
 		</div>
 	</div>
 
+	<div class="col s12 m12 l6">
+		<div class="card">
+			<div class="card-image waves-effect waves-block waves-light">
+				<img class="activator" height="100" src="{{.FavWeapon.IconPath}}">
+			</div>
+			<div class="card-content">
+				<span class="card-title activator grey-text text-darken-4">Best Weapon<i class="material-icons right">more_vert</i></span>
+				<p class="weapon-name orange-text activator">{{.FavWeapon.Name}}</p>
+			</div>
+			<div class="card-reveal">
+				<span class="weapon-name card-title grey-text text-darken-4">{{.FavWeapon.Name}}<i class="material-icons right">close</i></span>
+				<p>
+				<table>
+					<tbody>
+						<tr>
+							<td>Best Weapon Kills</td>
+							<td>{{.UserStatsForGame.Stats.LastMatchFavweaponKills}}</td>
+						</tr>
 
-	<div class="card">
-		<div class="card-image waves-effect waves-block waves-light">
-			<img class="activator" height="200" src="{{.FavWeapon.IconPath}}">
-		</div>
-		<div class="card-content">
-			<span class="card-title activator grey-text text-darken-4">Best Weapon<i class="material-icons right">more_vert</i></span>
-			<p class="weapon-name orange-text activator">{{.FavWeapon.Name}}</p>
-		</div>
-		<div class="card-reveal">
-			<span class="weapon-name card-title grey-text text-darken-4">{{.FavWeapon.Name}}<i class="material-icons right">close</i></span>
-			<p>
-			<table>
-
-				<tbody>
-					<tr>
-						<td>Best Weapon Kills</td>
-						<td>{{.UserStatsForGame.Stats.LastMatchFavweaponKills}}</td>
-					</tr>
-
-					<tr>
-						<td>Best Weapon Accuracy</td>
-						<td>
-							{{.UserStatsForGame.Stats.LastMatchFavweaponHits}} / {{.UserStatsForGame.Stats.LastMatchFavweaponShots}}
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			</p>
+						<tr>
+							<td>Best Weapon Accuracy</td>
+							<td>{{.UserStatsForGame.Stats.LastMatchFavweaponHits}} / {{.UserStatsForGame.Stats.LastMatchFavweaponShots}}</td>
+						</tr>
+					</tbody>
+				</table>
+				</p>
+			</div>
 		</div>
 	</div>
+</div>
 
+<div class="card blue-grey darken-1">
+	<div class="card-content white-text">
+		<span class="card-title">Personal Stats</span>
+		<table>
+			<tbody>
+				<tr>
+					<td >KD Ratio</td>
+					<td style="text-align:right;" > {{.UserStatsForGame.Stats.LastMatchKills}}/{{.UserStatsForGame.Stats.LastMatchDeaths}} </td>
+				</tr>
 
-	<!-- <div class="card blue-grey darken-1"> -->
-	<!--	<div class="card-content white-text"> -->
-	<!--		<span class="card-title"> Best weapon </span> -->
-	<!--	</div> -->
-	<!-- </div> -->
+				<tr>
+					<td>Damage dealt</td>
+					<td>{{.UserStatsForGame.Stats.LastMatchDamage}} HP</td>
+				</tr>
 
-	<div class="card blue-grey darken-1">
-		<div class="card-content white-text">
-			<span class="card-title">Personal Stats</span>
-			<table>
-				<tbody>
-					<tr>
-						<td >KD Ratio</td>
-						<td style="text-align:right;" > {{.UserStatsForGame.Stats.LastMatchKills}}/{{.UserStatsForGame.Stats.LastMatchDeaths}} </td>
-					</tr>
+				<tr>
+					<td>Money spend</td>
+					<td>${{.UserStatsForGame.Stats.LastMatchMoneySpent}}</td>
+				</tr>
 
-					<tr>
-						<td>Damage dealt</td>
-						<td>{{.UserStatsForGame.Stats.LastMatchDamage}} HP</td>
-					</tr>
+				<tr>
+					<td>MVPs</td>
+					<td>{{.UserStatsForGame.Stats.LastMatchMvps}}</td>
+				</tr>
 
-					<tr>
-						<td>Money spend</td>
-						<td>${{.UserStatsForGame.Stats.LastMatchMoneySpent}}</td>
-					</tr>
-
-					<tr>
-						<td>MVPs</td>
-						<td>{{.UserStatsForGame.Stats.LastMatchMvps}}</td>
-					</tr>
-
-					<tr>
-						<td>Score</td>
-						<td>{{.UserStatsForGame.Stats.LastMatchContributionScore}}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+				<tr>
+					<td>Score</td>
+					<td>{{.UserStatsForGame.Stats.LastMatchContributionScore}}</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
+</div>
 </div>
 
 
