@@ -2,6 +2,7 @@ package steamclient
 
 import (
 	"errors"
+	"strconv"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -69,25 +70,35 @@ func (sc *SteamClient) getPlayerInfo(steamID string) (PlayerInfo, error) {
 	return info, nil
 }
 
-// TODO implement these methods!
 func (pi PlayerInfo) LastMatch() LastMatch {
-	return LastMatch{
-		Outcome: "WON",
-	}
-}
 
-func (pi PlayerInfo) FavWeapon() Weapon {
-	return Weapon{
-		Name:     "WEAPONNAME",
-		IconPath: "/public/img/weapons/ak47.jpg",
+	outcome := "DRAW"
+
+	if wins, err := strconv.Atoi(pi.UserStatsForGame.Stats.LastMatchWins); err == nil {
+		if rounds, err := strconv.Atoi(pi.UserStatsForGame.Stats.LastMatchRounds); err == nil {
+			if wins > (rounds / 2) {
+				outcome = "WON"
+			} else if wins < (rounds / 2) {
+				outcome = "LOST"
+			}
+		}
+	}
+
+	//TODO add correct values here!
+
+	favWeapon := getWeaponByID(pi.UserStatsForGame.Stats.LastMatchFavweaponID)
+
+	return LastMatch{
+		Outcome:           outcome,
+		FavWeaponIconPath: favWeapon.IconPath,
+		FavWeaponName:     favWeapon.Name,
+		FavWeaponAccuracy: divideStringFloats(pi.UserStatsForGame.Stats.LastMatchFavweaponHits, pi.UserStatsForGame.Stats.LastMatchFavweaponShots),
 	}
 }
 
 type LastMatch struct {
-	Outcome string
-}
-
-type Weapon struct {
-	Name     string
-	IconPath string
+	Outcome           string
+	FavWeaponIconPath string
+	FavWeaponName     string
+	FavWeaponAccuracy string
 }
