@@ -28,6 +28,7 @@ func (pi PlayerInfo) LastMatch() LastMatch {
 	}
 }
 
+// Lastmatch hold additional stats calculated to be viewed in the templates
 type LastMatch struct {
 	Outcome           string
 	FavWeaponIconPath string

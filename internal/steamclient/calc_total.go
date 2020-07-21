@@ -1,5 +1,7 @@
 package steamclient
 
+// Calculations holds additional values to be shown in the templates, that are
+// calculated on-the-fly
 type Calculations struct {
 	PercentWin      string
 	PercentAccuracy string
