@@ -8,6 +8,8 @@ type Calculations struct {
 	PercentHeadshot string
 }
 
+// Calc is a helper function to access the dynamically caluclated values
+// from the templates
 func (pi PlayerInfo) Calc() Calculations {
 
 	return Calculations{

@@ -2,6 +2,8 @@ package steamclient
 
 import "strconv"
 
+// Lastmatch is a helper function to access the dynamically caluclated values
+// from the templates
 func (pi PlayerInfo) LastMatch() LastMatch {
 
 	outcome := "DRAW"
@@ -15,8 +17,6 @@ func (pi PlayerInfo) LastMatch() LastMatch {
 			}
 		}
 	}
-
-	//TODO add correct values here!
 
 	favWeapon := getWeaponByID(pi.UserStatsForGame.Stats.LastMatchFavweaponID)
 
