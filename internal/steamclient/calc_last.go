@@ -2,7 +2,7 @@ package steamclient
 
 import "strconv"
 
-// Lastmatch is a helper function to access the dynamically caluclated values
+// LastMatch is a helper function to access the dynamically caluclated values
 // from the templates
 func (pi PlayerInfo) LastMatch() LastMatch {
 
