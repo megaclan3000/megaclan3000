@@ -45,6 +45,9 @@ func percentStringFloats(a, b string) string {
 
 	if aF, err := strconv.ParseFloat(a, 64); err == nil {
 		if bF, err := strconv.ParseFloat(b, 64); err == nil {
+			if bF == 0.0 {
+				return "n/a"
+			}
 			return fmt.Sprintf("%.1f", aF*100/bF)
 		}
 	}
