@@ -9,7 +9,7 @@
 				<div class="row">
 					<div class="col s2 right-align">
 						<span class="orange-text">KILLS</span>
-						<span style="font-size:40">1396</span>
+						<span style="font-size:40">{{.UserStatsForGame.Stats.TotalKills}}</span>
 					</div>
 					<div class="col s2 offset-s2 right-align">
 						<img height="60" src="/public/img/icons/kills.svg">
@@ -24,7 +24,7 @@
 				<div class="row">
 					<div class="col s2 right-align">
 						<span class="orange-text">TIME PLAYED</span>
-						<span style="font-size:40">26h</span>
+						<span style="font-size:40">{{.UserStatsForGame.Extra.PlayedHours}}h</span>
 					</div>
 					<div class="col s2 offset-s2 right-align">
 						<img height="60" src="/public/img/icons/timer.svg">
@@ -42,7 +42,7 @@
 				<div class="row">
 					<div class="col s2 right-align">
 						<span class="orange-text">WIN</span>
-						<span style="font-size:40">51.5%</span>
+						<span style="font-size:40">{{.Calc.PercentWin}}%</span>
 					</div>
 					<div class="col s2 offset-s2 right-align">
 						<img height="60" src="/public/img/icons/win-cup.svg">
@@ -71,7 +71,7 @@
 					</div>
 					<div class="col s2 offset-s2">
 						<span class="orange-text">ACCURACY</span>
-						<span style="font-size:40">18.7%</span>
+						<span style="font-size:40">{{.Calc.PercentAccuracy}}%</span>
 					</div>
 				</div>
 			</div>
@@ -85,7 +85,7 @@
 					</div>
 					<div class="col s2 offset-s2">
 						<span class="orange-text">HEADSHOT</span>
-						<span style="font-size:40">23.4%</span>
+						<span style="font-size:40">{{.Calc.PercentHeadshot}}%</span>
 					</div>
 				</div>
 			</div>
@@ -98,7 +98,7 @@
 					</div>
 					<div class="col s2 offset-s2">
 						<span class="orange-text">MVPs</span>
-						<span style="font-size:40">242</span>
+						<span style="font-size:40">{{.UserStatsForGame.Stats.TotalMvps}}</span>
 					</div>
 				</div>
 			</div>
@@ -130,7 +130,7 @@ option = null;
 			avoidLabelOverlap: true,
 			label: {
 				show: true,
-						formatter: '1.03',
+						formatter: '{{.UserStatsForGame.Extra.TotalKD}}',
 						fontSize: '40',
 
 				position: 'center'
@@ -146,8 +146,8 @@ option = null;
 				show: false
 			},
 			data: [
-				{value: 2000, name: 'Kills'},
-				{value: 1548, name: 'Deaths'}
+				{value: {{.UserStatsForGame.Stats.TotalKills}}, name: 'Kills'},
+				{value: {{.UserStatsForGame.Stats.TotalDeaths}}, name: 'Deaths'}
 			]
 		}
 	]

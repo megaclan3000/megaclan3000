@@ -19,7 +19,16 @@ func Test_divideStringFloats(t *testing.T) {
 				a: "15",
 				b: "3",
 			},
-			want: "5.0000",
+			want: "5.000",
+		},
+
+		{
+			name: "Try to divide by zero",
+			args: args{
+				a: "15",
+				b: "0",
+			},
+			want: "+Inf",
 		},
 	}
 	for _, tt := range tests {
