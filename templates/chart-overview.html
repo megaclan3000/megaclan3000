@@ -130,7 +130,7 @@ option = null;
 			avoidLabelOverlap: true,
 			label: {
 				show: true,
-						formatter: '1.03',
+						formatter: '{{.UserStatsForGame.Extra.TotalKD}}',
 						fontSize: '40',
 
 				position: 'center'
@@ -146,8 +146,8 @@ option = null;
 				show: false
 			},
 			data: [
-				{value: 2000, name: 'Kills'},
-				{value: 1548, name: 'Deaths'}
+				{value: {{.UserStatsForGame.Stats.TotalKills}}, name: 'Kills'},
+				{value: {{.UserStatsForGame.Stats.TotalDeaths}}, name: 'Deaths'}
 			]
 		}
 	]
