@@ -32,6 +32,7 @@ require (
 	github.com/gorilla/mux v1.7.4
 	github.com/jmoiron/modl v0.0.0-20160417153729-99654d091ece
 	github.com/jmoiron/sqlx v1.2.0
+	github.com/markus-wa/demoinfocs-golang v1.11.0
 	github.com/matrix-org/gomatrix v0.0.0-20200501121722-e5578b12c752 // indirect
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
 	github.com/mdempsky/gocode v0.0.0-20200405233807-4acdcbdea79d // indirect
