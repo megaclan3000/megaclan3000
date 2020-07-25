@@ -2,11 +2,48 @@ package demoparser
 
 import (
 	"github.com/google/go-cmp/cmp"
+	common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
 	"testing"
 	"time"
 )
 
+func parseDurationNoErr(dur string) time.Duration {
+	d, err := time.ParseDuration(dur)
+	if err != nil {
+		panic(err)
+	}
+	return d
+}
+
 func TestMyParser_Parse(t *testing.T) {
+
+	// FIXME: I'm sure there is a better way of passing all these values, but it
+	// should be good enought for the tests. If you care to clean it up, please do.
+	demo1Times := map[string]string{
+		"1Start": "1m49.046874112s", "1End": "3m38.953121792s",
+		"2Start": "3m46.078130176s", "2End": "4m39.187488768s",
+		"3Start": "4m46.28123648s", "3End": "6m5.24998656s",
+		"4Start": "6m12.249985024s", "4End": "7m35.31250688s",
+		"5Start": "7m42.406254592s", "5End": "8m20.406255616s",
+		"6Start": "8m27.437514752s", "6End": "10m13.093736448s",
+		"7Start": "10m20.203147264s", "7End": "11m43.078137856s",
+		"8Start": "11m50.156222464s", "8End": "12m52.656267264s",
+		"9Start": "12m59.65623296s", "9End": "14m10.437472256s",
+		"10Start": "14m17.546883072s", "10End": "16m35.20315392s",
+		"11Start": "16m42.26564096s", "11End": "18m16.859385856s",
+		"12Start": "18m23.968731136s", "12End": "20m33.874976768s",
+		"13Start": "20m40.875008s", "13End": "21m53.859436544s",
+		"14Start": "22m0.859336704s", "14End": "22m55.765659648s",
+		"15Start": "23m2.875004928s", "15End": "24m18.781290496s",
+		"16Start": "24m33.85942016s", "16End": "25m31.015593984s",
+		"17Start": "25m38.07814656s", "17End": "27m46.734358528s",
+		"18Start": "27m53.812508672s", "18End": "28m59.249942528s",
+		"19Start": "29m6.328092672s", "19End": "29m52.859439104s",
+		"20Start": "29m59.859339264s", "20End": "31m4.984428544s",
+		"21Start": "31m11.984328704s", "21End": "32m49.234378752s",
+		"22Start": "32m56.234409984s", "22End": "33m59.062462464s",
+	}
+
 	tests := []struct {
 		name    string
 		path    string
@@ -26,15 +63,14 @@ func TestMyParser_Parse(t *testing.T) {
 
 				// Match in the demo took 22 rounds
 				// TODO fill in correct values
-				Rounds: []Round{
-					{
-						Number:       1,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+				Rounds: Rounds{
+					1: {
+						TimeStart:    parseDurationNoErr(demo1Times["1Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["1End"]),
+						TeamWon:      common.TeamTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -67,14 +103,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       2,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					2: {
+						TimeStart:    parseDurationNoErr(demo1Times["2Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["2End"]),
+						TeamWon:      common.TeamTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -107,14 +142,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       3,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					3: {
+						TimeStart:    parseDurationNoErr(demo1Times["3Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["3End"]),
+						TeamWon:      common.TeamTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -147,14 +181,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       4,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					4: {
+						TimeStart:    parseDurationNoErr(demo1Times["4Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["4End"]),
+						TeamWon:      common.TeamTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -187,14 +220,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       5,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					5: {
+						TimeStart:    parseDurationNoErr(demo1Times["5Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["5End"]),
+						TeamWon:      common.TeamTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -227,14 +259,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       6,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					6: {
+						TimeStart:    parseDurationNoErr(demo1Times["6Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["6End"]),
+						TeamWon:      common.TeamTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -267,14 +298,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       7,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					7: {
+						TimeStart:    parseDurationNoErr(demo1Times["7Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["7End"]),
+						TeamWon:      common.TeamTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -307,14 +337,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       8,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					8: {
+						TimeStart:    parseDurationNoErr(demo1Times["8Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["8End"]),
+						TeamWon:      common.TeamTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -347,14 +376,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       9,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					9: {
+						TimeStart:    parseDurationNoErr(demo1Times["9Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["9End"]),
+						TeamWon:      common.TeamTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -387,14 +415,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       10,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
+					10: {
+						TimeStart:    parseDurationNoErr(demo1Times["10Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["10End"]),
+						TeamWon:      common.TeamCounterTerrorists,
 						BombPlanted:  true,
 						BombDefused:  true,
-						BombExploded: true,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -427,14 +454,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       11,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					11: {
+						TimeStart:    parseDurationNoErr(demo1Times["11Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["11End"]),
+						TeamWon:      common.TeamTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -467,14 +493,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       12,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					12: {
+						TimeStart:    parseDurationNoErr(demo1Times["12Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["12End"]),
+						TeamWon:      common.TeamCounterTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -507,14 +532,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       13,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					13: {
+						TimeStart:    parseDurationNoErr(demo1Times["13Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["13End"]),
+						TeamWon:      common.TeamTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -547,14 +571,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       14,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					14: {
+						TimeStart:    parseDurationNoErr(demo1Times["14Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["14End"]),
+						TeamWon:      common.TeamTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -587,14 +610,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       15,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					15: {
+						TimeStart:    parseDurationNoErr(demo1Times["15Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["15End"]),
+						TeamWon:      common.TeamCounterTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -627,14 +649,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       16,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					16: {
+						TimeStart:    parseDurationNoErr(demo1Times["16Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["16End"]),
+						TeamWon:      common.TeamTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -667,14 +688,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       17,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
+					17: {
+						TimeStart:    parseDurationNoErr(demo1Times["17Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["17End"]),
+						TeamWon:      common.TeamCounterTerrorists,
 						BombPlanted:  true,
 						BombDefused:  true,
-						BombExploded: true,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -707,14 +727,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       18,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
+					18: {
+						TimeStart:    parseDurationNoErr(demo1Times["18Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["18End"]),
+						TeamWon:      common.TeamCounterTerrorists,
 						BombPlanted:  true,
 						BombDefused:  true,
-						BombExploded: true,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -747,14 +766,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       19,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					19: {
+						TimeStart:    parseDurationNoErr(demo1Times["19Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["19End"]),
+						TeamWon:      common.TeamTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -787,14 +805,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       20,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					20: {
+						TimeStart:    parseDurationNoErr(demo1Times["20Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["20End"]),
+						TeamWon:      common.TeamTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -827,14 +844,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       21,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					21: {
+						TimeStart:    parseDurationNoErr(demo1Times["21Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["21End"]),
+						TeamWon:      common.TeamCounterTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",
@@ -867,14 +883,13 @@ func TestMyParser_Parse(t *testing.T) {
 							},
 						},
 					},
-					{
-						Number:       22,
-						TimeStart:    1,
-						TimeEnd:      1,
-						TeamWon:      "CT",
-						BombPlanted:  true,
-						BombDefused:  true,
-						BombExploded: true,
+					22: {
+						TimeStart:    parseDurationNoErr(demo1Times["22Start"]),
+						TimeEnd:      parseDurationNoErr(demo1Times["22End"]),
+						TeamWon:      common.TeamCounterTerrorists,
+						BombPlanted:  false,
+						BombDefused:  false,
+						BombExploded: false,
 						Players: []Player{
 							{
 								ID:          "TODO",

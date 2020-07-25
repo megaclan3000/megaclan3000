@@ -1,9 +1,16 @@
 package demoparser
 
-import "time"
+import (
+	"time"
+
+	common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
+)
 
 // Match represents a complete match (both sides) as parsed from a demo file.
 // It mainly consists of a slice of rounds that happened during that match.
+
+type Rounds map[int]*Round
+
 type Match struct {
 	// The ID of the match
 	ID string
@@ -16,26 +23,21 @@ type Match struct {
 
 	// The rounds of the match. This is the main source of information we can
 	// use later on.
-	Rounds []Round
+	Rounds Rounds
 }
 
 // Round holds the result of parsing all ticks of a match that correspond to a
 // single round.
 type Round struct {
 
-	// Round number
-	Number int
-
-	// Time in seconds at which the round started, relative to the beginning of
-	// the demo file
+	// Tick at which the round started
 	TimeStart time.Duration
 
-	// Time in seconds at which the round ended, relative to the beginning of
-	// the demo file
+	// Tick at which the round ended
 	TimeEnd time.Duration
 
 	// Team that won the round, either "T" or "CT"
-	TeamWon string
+	TeamWon common.Team
 
 	// If the bomb was planted during the round
 	BombPlanted bool
