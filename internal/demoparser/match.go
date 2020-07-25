@@ -26,11 +26,13 @@ type Round struct {
 	// Round number
 	Number int
 
-	// Tick at which the round started
-	TickStart int
+	// Time in seconds at which the round started, relative to the beginning of
+	// the demo file
+	TimeStart time.Duration
 
-	// Tick at which the round ended
-	TickEnd int
+	// Time in seconds at which the round ended, relative to the beginning of
+	// the demo file
+	TimeEnd time.Duration
 
 	// Team that won the round, either "T" or "CT"
 	TeamWon string
