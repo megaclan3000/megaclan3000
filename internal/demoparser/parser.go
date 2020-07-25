@@ -15,13 +15,21 @@ type MyParser struct {
 	parser demoinfocs.Parser
 	Result string
 	Match  Match
+	state  parsingState
 }
 
 func NewMyParser() MyParser {
+	return MyParser{
+		state: parsingState{
+			Round: 0,
+		},
+	}
+}
 
-	// p.RegisterEventHandler(handlerChatMessage)
-	return MyParser{}
-
+// Used while parsing to hold values while going through the ticks
+type parsingState struct {
+	// Current round
+	Round int
 }
 
 func (p *MyParser) Parse(path string) (Match, error) {
@@ -44,6 +52,7 @@ func (p *MyParser) Parse(path string) (Match, error) {
 	p.parser.RegisterEventHandler(p.handlerRoundStart)
 	p.parser.RegisterEventHandler(p.handlerRankUpdate)
 	p.parser.RegisterEventHandler(p.handlerPlayerHurt)
+	// p.RegisterEventHandler(handlerChatMessage)
 
 	// Parse header
 	if header, err = p.parser.ParseHeader(); err != nil {
@@ -82,7 +91,15 @@ func (p *MyParser) handlerRankUpdate(e events.RankUpdate) {
 }
 
 func (p *MyParser) handlerRoundStart(e events.RoundStart) {
-	//TODO
+
+	// An new round has started, increase counter and add it to slice of the
+	// output
+	p.state.Round += 1
+
+	p.Match.Rounds = append(p.Match.Rounds,
+		Round{
+			Number: p.state.Round,
+		})
 }
 
 func (p *MyParser) handlerRoundEnd(e events.RoundEnd) {
