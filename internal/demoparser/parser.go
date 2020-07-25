@@ -11,22 +11,27 @@ import (
 	events "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
 )
 
-var p demoinfocs.Parser
-
 type MyParser struct {
 	parser demoinfocs.Parser
 	Result string
+	Match  Match
 }
 
-func NewMyParser(path string) (MyParser, error) {
+func NewMyParser() MyParser {
 
-	var p MyParser
+	// p.RegisterEventHandler(handlerChatMessage)
+	return MyParser{}
+
+}
+
+func (p *MyParser) Parse(path string) (Match, error) {
+	// Register handlers for events we care about
 	var f *os.File
 	var err error
 	var header common.DemoHeader
 
 	if f, err = os.Open(path); err != nil {
-		return p, err
+		return p.Match, err
 	}
 
 	defer f.Close()
@@ -34,32 +39,25 @@ func NewMyParser(path string) (MyParser, error) {
 	p.parser = demoinfocs.NewParser(f)
 	defer p.parser.Close()
 
+	p.parser.RegisterEventHandler(p.handlerKill)
+	p.parser.RegisterEventHandler(p.handlerRoundEnd)
+	p.parser.RegisterEventHandler(p.handlerRoundStart)
+	p.parser.RegisterEventHandler(p.handlerRankUpdate)
+	p.parser.RegisterEventHandler(p.handlerPlayerHurt)
+
 	// Parse header
 	if header, err = p.parser.ParseHeader(); err != nil {
-		return p, err
+		return p.Match, err
 	}
 
 	fmt.Println("Map:", header.MapName)
 
-	// Register handlers for events we care about
-	p.parser.RegisterEventHandler(handlerKill)
-	p.parser.RegisterEventHandler(handlerRoundEnd)
-	p.parser.RegisterEventHandler(handlerRoundStart)
-	p.parser.RegisterEventHandler(handlerRankUpdate)
-	p.parser.RegisterEventHandler(handlerPlayerHurt)
-	// p.RegisterEventHandler(handlerChatMessage)
-
-	return p, nil
-
+	// Parse the demo
+	err = p.parser.ParseToEnd()
+	return p.Match, err
 }
 
-func (p *MyParser) Parse() error {
-	// Parse to end
-	err := p.parser.ParseToEnd()
-	return err
-}
-
-func handlerKill(e events.Kill) {
+func (p *MyParser) handlerKill(e events.Kill) {
 
 	var hs string
 	if e.IsHeadshot {
@@ -72,25 +70,23 @@ func handlerKill(e events.Kill) {
 	fmt.Printf("%s <%v%s%s> %s\n", formatPlayer(e.Killer), e.Weapon, hs, wallBang, formatPlayer(e.Victim))
 }
 
-func handlerPlayerHurt(e events.PlayerHurt) {
-
-}
+func (p *MyParser) handlerPlayerHurt(e events.PlayerHurt) {}
 
 // func handlerChatMessage(e events.ChatMessage) {
 // 	fmt.Printf("Chat - %s says: %s\n", formatPlayer(e.Sender), e.Text)
 // }
 
 // Handlers
-func handlerRankUpdate(e events.RankUpdate) {
+func (p *MyParser) handlerRankUpdate(e events.RankUpdate) {
 	fmt.Printf("Rank Update: %d went from rank %d to rank %d, change: %f\n", e.SteamID32, e.RankOld, e.RankNew, e.RankChange)
 }
 
-func handlerRoundStart(e events.RoundStart) {
+func (p *MyParser) handlerRoundStart(e events.RoundStart) {
 	//TODO
 }
 
-func handlerRoundEnd(e events.RoundEnd) {
-	gs := p.GameState()
+func (p *MyParser) handlerRoundEnd(e events.RoundEnd) {
+	gs := p.parser.GameState()
 	switch e.Winner {
 	case common.TeamTerrorists:
 		// Winner's score + 1 because it hasn't actually been updated yet

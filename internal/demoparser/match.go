@@ -11,6 +11,9 @@ type Match struct {
 	// The time and date when the match took place
 	Time time.Time
 
+	// Map of the match
+	Map string
+
 	// The rounds of the match. This is the main source of information we can
 	// use later on.
 	Rounds []Round
