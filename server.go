@@ -57,6 +57,8 @@ func main() {
 	r.HandleFunc("/contact", parseTemplates(handlerContact))
 	r.HandleFunc("/faq", parseTemplates(handlerFAQ))
 	r.HandleFunc("/player/{id}", parseTemplates(handlerDetails))
+	r.HandleFunc("/match/{id}", parseTemplates(handlerMatch))
+	r.HandleFunc("/scoreboard", parseTemplates(handlerScoreboard))
 	r.HandleFunc("/imprint", parseTemplates(handlerImprint))
 
 	// Set custom 404 page
@@ -175,6 +177,18 @@ func handlerStats(w http.ResponseWriter, r *http.Request) {
 
 func handlerContact(w http.ResponseWriter, r *http.Request) {
 	if err := t.ExecuteTemplate(w, "contact.html", nil); err != nil {
+		log.Warn(err)
+	}
+}
+
+func handlerScoreboard(w http.ResponseWriter, r *http.Request) {
+	if err := t.ExecuteTemplate(w, "scoreboard.html", nil); err != nil {
+		log.Warn(err)
+	}
+}
+
+func handlerMatch(w http.ResponseWriter, r *http.Request) {
+	if err := t.ExecuteTemplate(w, "match.html", nil); err != nil {
 		log.Warn(err)
 	}
 }
