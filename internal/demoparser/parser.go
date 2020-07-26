@@ -54,7 +54,7 @@ func (p *MyParser) Parse(path string) (Match, error) {
 	p.parser.RegisterEventHandler(p.handlerRoundEnd)
 	p.parser.RegisterEventHandler(p.handlerRoundStart)
 	p.parser.RegisterEventHandler(p.handlerRankUpdate)
-	p.parser.RegisterEventHandler(p.handlerPlayerHurt)
+	// p.parser.RegisterEventHandler(p.handlerPlayerHurt)
 	p.parser.RegisterEventHandler(p.handlerBombPlanted)
 	p.parser.RegisterEventHandler(p.handlerBombDefused)
 	p.parser.RegisterEventHandler(p.handlerBombExplode)
@@ -77,18 +77,33 @@ func (p *MyParser) Parse(path string) (Match, error) {
 
 func (p *MyParser) handlerKill(e events.Kill) {
 
-	// var hs string
-	// if e.IsHeadshot {
-	// 	hs = " (HS)"
-	// }
-	// var wallBang string
-	// if e.PenetratedObjects > 0 {
-	// 	wallBang = " (WB)"
-	// }
-	// fmt.Printf("%s <%v%s%s> %s\n", formatPlayer(e.Killer), e.Weapon, hs, wallBang, formatPlayer(e.Victim))
+	// Append kill to current round or to warmupKills
+	if p.parser.GameState().IsWarmupPeriod() {
+		p.Match.WarmupKills = append(p.Match.WarmupKills, e)
+	} else {
+		p.Match.Rounds[p.state.Round].Kills = append(p.Match.Rounds[p.state.Round].Kills, e)
+	}
 }
 
-func (p *MyParser) handlerPlayerHurt(e events.PlayerHurt) {}
+//TODO detect and save teamdamage, skipping for now
+// func (p *MyParser) handlerPlayerHurt(e events.PlayerHurt) {
+
+// 	// Not sure if the hurt handler is triggered during warump as no teamdamage
+// 	// is possible, better check anyway.
+// 	if !p.parser.GameState().IsWarmupPeriod() {
+
+// 		// Check if the player has done any damage at all in this round yet
+// 		if damageDone, ok1 := p.Match.Rounds[p.state.Round].TotalDamagesDone[e.Attacker.SteamID64]; ok1 {
+
+// 			// Check if the player has done damage to this victim in this round yet
+// 			if _, ok := damageDone.Victims[e.Player.SteamID64]; ok {
+// 				p.Match.Rounds[p.state.Round].TotalDamagesDone[e.Attacker.SteamID64].Victims[e.Player.SteamID64].Amount += e.HealthDamage
+// 			} else {
+// 				p.Match.Rounds[p.state.Round].TotalDamagesDone[e.Attacker.SteamID64].Victims[e.Player.SteamID64].Amount = e.HealthDamage
+// 			}
+// 		}
+// 	}
+// }
 
 // func handlerChatMessage(e events.ChatMessage) {
 // 	fmt.Printf("Chat - %s says: %s\n", formatPlayer(e.Sender), e.Text)
@@ -115,6 +130,7 @@ func (p *MyParser) handlerRoundStart(e events.RoundStart) {
 		BombDefused:  false,
 		BombExploded: false,
 	}
+
 }
 
 func (p *MyParser) handlerBombPlanted(e events.BombPlanted) {
@@ -134,7 +150,19 @@ func (p *MyParser) handlerRoundEnd(e events.RoundEnd) {
 	// Set round end time
 	p.Match.Rounds[p.state.Round].TimeEnd = p.parser.CurrentTime()
 
+	// Set the winning team
 	p.Match.Rounds[p.state.Round].TeamWon = e.Winner
+
+	currentPlayers := p.parser.GameState().Participants().Playing()
+
+	// p.Match.Rounds[p.state.Round].Players = make([]common.Player, len(currentPlayers))
+
+	for _, v := range currentPlayers {
+		p.Match.Rounds[p.state.Round].Players = append(p.Match.Rounds[p.state.Round].Players, *v)
+	}
+	// Set the players of the round (that where playing, no spectators)
+
+	// copy(p.Match.Rounds[p.state.Round].Players, currentPlayers)
 
 	// Set player scores. If a player has disconnected during the round he wont
 	// be credited for it since he is no longer in the Participants strcuts

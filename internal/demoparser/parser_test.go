@@ -1,10 +1,13 @@
 package demoparser
 
 import (
-	"github.com/google/go-cmp/cmp"
-	common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
+	// "github.com/google/go-cmp/cmp/cmpopts"
+	common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
 )
 
 func parseDurationNoErr(dur string) time.Duration {
@@ -71,36 +74,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					2: {
@@ -110,36 +94,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					3: {
@@ -149,36 +114,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					4: {
@@ -188,36 +134,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					5: {
@@ -227,36 +154,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					6: {
@@ -266,36 +174,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					7: {
@@ -305,36 +194,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					8: {
@@ -344,36 +214,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					9: {
@@ -383,36 +234,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					10: {
@@ -422,36 +254,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  true,
 						BombDefused:  true,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					11: {
@@ -461,36 +274,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					12: {
@@ -500,36 +294,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					13: {
@@ -539,36 +314,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					14: {
@@ -578,36 +334,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					15: {
@@ -617,36 +354,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					16: {
@@ -656,36 +374,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					17: {
@@ -695,36 +394,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  true,
 						BombDefused:  true,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					18: {
@@ -734,36 +414,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  true,
 						BombDefused:  true,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					19: {
@@ -773,36 +434,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					20: {
@@ -812,36 +454,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					21: {
@@ -851,36 +474,17 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 					22: {
@@ -890,40 +494,22 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []Player{
-							{
-								ID:          "TODO",
-								Team:        "TODO",
-								Won:         true,
-								Mvp:         true,
-								MvpReason:   "TODO",
-								BombPlanted: true,
-								BombDefused: true,
-								ShotsFired:  1,
-								ShotsHit:    1,
-								Headshots:   1,
-								Kills: []Kill{
-									{
-										Tick:         1,
-										Assist:       true,
-										VictimID:     "TODO",
-										AssistID:     "TODO",
-										AssistedID:   "TODO",
-										WeaponUsedID: 1,
-									},
-								},
-								Victims: []DamageVictim{
-									{
-										DamagedID:          "TODO",
-										MostDamageWeaponID: 1,
-										Amount:             1,
-									},
-								},
-							},
+						Players: []common.Player{
+							{}, // BOT has no steamID
+							{SteamID64: 76561197978562286},
+							{SteamID64: 76561198070048497},
+							{SteamID64: 76561198092006615},
+							{SteamID64: 76561198103322640},
+							{SteamID64: 76561198104947907},
+							{SteamID64: 76561198114207134},
+							{SteamID64: 76561198261800498},
+							{SteamID64: 76561198882848278},
+							{SteamID64: 76561199000235131},
 						},
 					},
 				},
 			},
+
 			wantErr: false,
 		},
 	}
@@ -936,9 +522,25 @@ func TestMyParser_Parse(t *testing.T) {
 				t.Errorf("MyParser.Parse() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if diff := cmp.Diff(tt.want, got); diff != "" {
+
+			// When comparing common.Player, just compare the SteamID64 to keep the test data shorter.
+			// BOTs have *no* steamID, so we must add a empty common.Player to
+			// the list of players in the test data if they are on a team
+			opt := cmp.Comparer(func(x, y common.Player) bool {
+				return x.SteamID64 == y.SteamID64
+			})
+
+			// Sort the slices by SteamID64 so the tests don't fail. The order
+			// in which they come from the parser is not reliably the same
+			// every run
+			sorter := cmpopts.SortSlices(func(x, y common.Player) bool { return x.SteamID64 < y.SteamID64 })
+			if diff := cmp.Diff(tt.want, got, sorter, opt); diff != "" {
 				t.Errorf("MyParser.Parse() mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}
 }
+
+// func less(x, y common.Player) bool {
+// 	return x.SteamID64 < y.SteamID64
+// }

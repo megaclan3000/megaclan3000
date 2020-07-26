@@ -25,6 +25,9 @@ type Match struct {
 	// The rounds of the match. This is the main source of information we can
 	// use later on.
 	Rounds Rounds
+
+	// Kills during warmup are saved here, as there is no round active
+	WarmupKills []events.Kill
 }
 
 // Round holds the result of parsing all ticks of a match that correspond to a
@@ -50,9 +53,9 @@ type Round struct {
 	BombExploded bool
 
 	// List of players that where presend in the round
-	Players []*common.Player
+	Players []common.Player
 
-	Kills []*events.Kill
+	Kills []events.Kill
 
 	PlayerHurt []*events.PlayerHurt
 }
