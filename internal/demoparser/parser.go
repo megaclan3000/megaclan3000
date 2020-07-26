@@ -4,6 +4,8 @@ package demoparser
 
 import (
 	"fmt"
+
+	"github.com/mitchellh/hashstructure"
 	"os"
 
 	demoinfocs "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs"
@@ -65,6 +67,13 @@ func (p *MyParser) Parse(path string) (Match, error) {
 	if header, err = p.parser.ParseHeader(); err != nil {
 		return p.Match, err
 	}
+
+	var hash uint64
+
+	if hash, err = hashstructure.Hash(header, nil); err != nil {
+		return p.Match, err
+	}
+	p.Match.ID = hash
 
 	// fmt.Println("Map:", header.MapName)
 

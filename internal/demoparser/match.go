@@ -13,8 +13,9 @@ import (
 type Rounds map[int]*Round
 
 type Match struct {
-	// The ID of the match
-	ID string
+	// The ID of the match. Since there seems to be no real id in the demo
+	// files, we use a hash of the header
+	ID uint64
 
 	// The time and date when the match took place
 	Time time.Time

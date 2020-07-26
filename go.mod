@@ -38,6 +38,7 @@ require (
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
 	github.com/mdempsky/gocode v0.0.0-20200405233807-4acdcbdea79d // indirect
 	github.com/mewkiz/flac v1.0.6 // indirect
+	github.com/mitchellh/hashstructure v1.0.0
 	github.com/nicksnyder/go-i18n v1.10.1 // indirect
 	github.com/pinpox/go-hashpass v0.0.0-20180326223907-3f5ba7ae5bae // indirect
 	github.com/pinpox/http-stressor v0.0.0-20200305140758-0e7a0baa900d // indirect
