@@ -5,9 +5,8 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
 
-	// "github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/google/go-cmp/cmp/cmpopts"
 	common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
 	"github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
 )
@@ -90,8 +89,8 @@ func TestMyParser_Parse(t *testing.T) {
 				ID: 4619025276304667104,
 
 				// TODO find out how to get the time when the match was played
-				Time: time.Date(2020, time.July, 1, 3, 4, 5, 6, time.UTC),
-				Map:  "de_mirage",
+				UploadTime: time.Date(2020, time.July, 1, 3, 4, 5, 6, time.UTC),
+				Map:        "de_mirage",
 
 				// Match in the demo took 22 rounds
 				// TODO fill in correct values
@@ -616,11 +615,13 @@ func TestMyParser_Parse(t *testing.T) {
 				return x.Killer.Name == y.Killer.Name && x.Victim.Name == y.Victim.Name
 			})
 
+			opt3 := cmpopts.IgnoreFields(Match{}, "UploadTime")
+
 			// Sort the slices by SteamID64 so the tests don't fail. The order
 			// in which they come from the parser is not reliably the same
 			// every run
 			sorter := cmpopts.SortSlices(func(x, y common.Player) bool { return x.SteamID64 < y.SteamID64 })
-			if diff := cmp.Diff(tt.want, got, sorter, opt1, opt2); diff != "" {
+			if diff := cmp.Diff(tt.want, got, sorter, opt1, opt2, opt3); diff != "" {
 				t.Errorf("MyParser.Parse() mismatch (-want +got):\n%s", diff)
 			}
 		})

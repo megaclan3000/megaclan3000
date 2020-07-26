@@ -17,8 +17,9 @@ type Match struct {
 	// files, we use a hash of the header
 	ID uint64
 
-	// The time and date when the match took place
-	Time time.Time
+	// The time the demo was uploaded. There seems to be no information about
+	// when the match took place in the demo files
+	UploadTime time.Time
 
 	// Map of the match
 	Map string
