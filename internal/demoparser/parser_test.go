@@ -6,8 +6,10 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+
 	// "github.com/google/go-cmp/cmp/cmpopts"
 	common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
+	"github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
 )
 
 func parseDurationNoErr(dur string) time.Duration {
@@ -47,6 +49,19 @@ func TestMyParser_Parse(t *testing.T) {
 		"22Start": "32m56.234409984s", "22End": "33m59.062462464s",
 	}
 
+	demo1AllPlayers := []common.Player{
+		{}, // BOT has no steamID
+		{SteamID64: 76561197978562286},
+		{SteamID64: 76561198070048497},
+		{SteamID64: 76561198092006615},
+		{SteamID64: 76561198103322640},
+		{SteamID64: 76561198104947907},
+		{SteamID64: 76561198114207134},
+		{SteamID64: 76561198261800498},
+		{SteamID64: 76561198882848278},
+		{SteamID64: 76561199000235131},
+	}
+
 	tests := []struct {
 		name    string
 		path    string
@@ -66,6 +81,84 @@ func TestMyParser_Parse(t *testing.T) {
 
 				// Match in the demo took 22 rounds
 				// TODO fill in correct values
+				WarmupKills: []events.Kill{
+					{
+						Victim: &common.Player{Name: "Allen"},
+						Killer: &common.Player{Name: "randolf"},
+					},
+					{
+						Victim: &common.Player{Name: "Scarlett O'Hara"},
+						Killer: &common.Player{Name: "randolf"},
+					},
+					{
+						Victim: &common.Player{Name: "Rhett Butler"},
+						Killer: &common.Player{Name: "randolf"},
+					},
+					{
+						Victim: &common.Player{Name: "Scarlett O'Hara"},
+						Killer: &common.Player{Name: "randolf"},
+					},
+					{
+						Victim: &common.Player{Name: "randolf"},
+						Killer: &common.Player{Name: "Lucifer"},
+					},
+					{
+						Victim: &common.Player{Name: "Rhett Butler"},
+						Killer: &common.Player{Name: "der rote Rivale"},
+					},
+					{
+						Victim: &common.Player{Name: "der rote Rivale"},
+						Killer: &common.Player{Name: "Lucifer"},
+					},
+					{
+						Victim: &common.Player{Name: "salatkopf"},
+						Killer: &common.Player{Name: "Wesley"},
+					},
+					{
+						Victim: &common.Player{Name: "Wesley"},
+						Killer: &common.Player{Name: "killer strike 2"},
+					},
+					{
+						Victim: &common.Player{Name: "randolf"},
+						Killer: &common.Player{Name: "Lucifer"},
+					},
+					{
+						Victim: &common.Player{Name: "randolf"},
+						Killer: &common.Player{Name: "my name is гон(дон)"},
+					},
+					{
+						Victim: &common.Player{Name: "my name is гон(дон)"},
+						Killer: &common.Player{Name: "killer strike 2"},
+					},
+					{
+						Victim: &common.Player{Name: "Scarlett O'Hara"},
+						Killer: &common.Player{Name: "der rote Rivale"},
+					},
+					{
+						Victim: &common.Player{Name: "afkR0多y-"},
+						Killer: &common.Player{Name: "der rote Rivale"},
+					},
+					{
+						Victim: &common.Player{Name: "Rhett Butler"},
+						Killer: &common.Player{Name: "der rote Rivale"},
+					},
+					{
+						Victim: &common.Player{Name: "randolf"},
+						Killer: &common.Player{Name: "my name is гон(дон)"},
+					},
+					{
+						Victim: &common.Player{Name: "my name is гон(дон)"},
+						Killer: &common.Player{Name: "killer strike 2"},
+					},
+					{
+						Victim: &common.Player{Name: "Lucifer"},
+						Killer: &common.Player{Name: "der rote Rivale"},
+					},
+					{
+						Victim: &common.Player{Name: "der rote Rivale"},
+						Killer: &common.Player{Name: "my name is гон(дон)"},
+					},
+				},
 				Rounds: Rounds{
 					1: {
 						TimeStart:    parseDurationNoErr(demo1Times["1Start"]),
@@ -74,18 +167,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					2: {
 						TimeStart:    parseDurationNoErr(demo1Times["2Start"]),
@@ -94,18 +176,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					3: {
 						TimeStart:    parseDurationNoErr(demo1Times["3Start"]),
@@ -114,18 +185,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					4: {
 						TimeStart:    parseDurationNoErr(demo1Times["4Start"]),
@@ -134,18 +194,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					5: {
 						TimeStart:    parseDurationNoErr(demo1Times["5Start"]),
@@ -154,18 +203,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					6: {
 						TimeStart:    parseDurationNoErr(demo1Times["6Start"]),
@@ -174,18 +212,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					7: {
 						TimeStart:    parseDurationNoErr(demo1Times["7Start"]),
@@ -194,18 +221,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					8: {
 						TimeStart:    parseDurationNoErr(demo1Times["8Start"]),
@@ -214,18 +230,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					9: {
 						TimeStart:    parseDurationNoErr(demo1Times["9Start"]),
@@ -234,18 +239,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					10: {
 						TimeStart:    parseDurationNoErr(demo1Times["10Start"]),
@@ -254,18 +248,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  true,
 						BombDefused:  true,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					11: {
 						TimeStart:    parseDurationNoErr(demo1Times["11Start"]),
@@ -274,18 +257,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					12: {
 						TimeStart:    parseDurationNoErr(demo1Times["12Start"]),
@@ -294,18 +266,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					13: {
 						TimeStart:    parseDurationNoErr(demo1Times["13Start"]),
@@ -314,18 +275,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					14: {
 						TimeStart:    parseDurationNoErr(demo1Times["14Start"]),
@@ -334,18 +284,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					15: {
 						TimeStart:    parseDurationNoErr(demo1Times["15Start"]),
@@ -354,18 +293,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					16: {
 						TimeStart:    parseDurationNoErr(demo1Times["16Start"]),
@@ -374,18 +302,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					17: {
 						TimeStart:    parseDurationNoErr(demo1Times["17Start"]),
@@ -394,18 +311,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  true,
 						BombDefused:  true,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					18: {
 						TimeStart:    parseDurationNoErr(demo1Times["18Start"]),
@@ -414,18 +320,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  true,
 						BombDefused:  true,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					19: {
 						TimeStart:    parseDurationNoErr(demo1Times["19Start"]),
@@ -434,18 +329,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					20: {
 						TimeStart:    parseDurationNoErr(demo1Times["20Start"]),
@@ -454,18 +338,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					21: {
 						TimeStart:    parseDurationNoErr(demo1Times["21Start"]),
@@ -474,18 +347,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 					22: {
 						TimeStart:    parseDurationNoErr(demo1Times["22Start"]),
@@ -494,18 +356,7 @@ func TestMyParser_Parse(t *testing.T) {
 						BombPlanted:  false,
 						BombDefused:  false,
 						BombExploded: false,
-						Players: []common.Player{
-							{}, // BOT has no steamID
-							{SteamID64: 76561197978562286},
-							{SteamID64: 76561198070048497},
-							{SteamID64: 76561198092006615},
-							{SteamID64: 76561198103322640},
-							{SteamID64: 76561198104947907},
-							{SteamID64: 76561198114207134},
-							{SteamID64: 76561198261800498},
-							{SteamID64: 76561198882848278},
-							{SteamID64: 76561199000235131},
-						},
+						Players:      demo1AllPlayers,
 					},
 				},
 			},
@@ -526,15 +377,20 @@ func TestMyParser_Parse(t *testing.T) {
 			// When comparing common.Player, just compare the SteamID64 to keep the test data shorter.
 			// BOTs have *no* steamID, so we must add a empty common.Player to
 			// the list of players in the test data if they are on a team
-			opt := cmp.Comparer(func(x, y common.Player) bool {
+			opt1 := cmp.Comparer(func(x, y common.Player) bool {
 				return x.SteamID64 == y.SteamID64
+			})
+
+			// When comoparing kills, just compare by attacker and victims Name
+			opt2 := cmp.Comparer(func(x, y events.Kill) bool {
+				return x.Killer.Name == y.Killer.Name && x.Victim.Name == y.Victim.Name
 			})
 
 			// Sort the slices by SteamID64 so the tests don't fail. The order
 			// in which they come from the parser is not reliably the same
 			// every run
 			sorter := cmpopts.SortSlices(func(x, y common.Player) bool { return x.SteamID64 < y.SteamID64 })
-			if diff := cmp.Diff(tt.want, got, sorter, opt); diff != "" {
+			if diff := cmp.Diff(tt.want, got, sorter, opt1, opt2); diff != "" {
 				t.Errorf("MyParser.Parse() mismatch (-want +got):\n%s", diff)
 			}
 		})
