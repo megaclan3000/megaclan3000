@@ -59,5 +59,5 @@ type Round struct {
 
 	Kills []events.Kill
 
-	PlayerHurt []*events.PlayerHurt
+	PlayerHurt []events.PlayerHurt
 }

@@ -79,6 +79,7 @@ func (p *MyParser) Parse(path string) (Match, error) {
 
 	// Parse the demo
 	err = p.parser.ParseToEnd()
+
 	return p.Match, err
 }
 

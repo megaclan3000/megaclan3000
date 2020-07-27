@@ -182,7 +182,31 @@ func handlerContact(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlerScoreboard(w http.ResponseWriter, r *http.Request) {
-	if err := t.ExecuteTemplate(w, "scoreboard.html", nil); err != nil {
+
+	players := []struct {
+		Name    string
+		Score   int
+		Kills   int
+		Deaths  int
+		Assists int
+	}{
+		{
+			Name:    "name1",
+			Score:   1000,
+			Kills:   100,
+			Deaths:  200,
+			Assists: 300,
+		},
+
+		{
+			Name:    "name2",
+			Score:   2000,
+			Kills:   200,
+			Deaths:  300,
+			Assists: 400,
+		},
+	}
+	if err := t.ExecuteTemplate(w, "scoreboard.html", players); err != nil {
 		log.Warn(err)
 	}
 }
