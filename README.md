@@ -18,7 +18,8 @@ Our custom CS:GO stats page: https://megaclan3000.de
 
 ## Suport the developers
 
-Buy the developers a coffee or a beer if you like this application!
+Buy the developers a coffee or a beer if you like this application! 
+Your contribution will **keep the server running** ;)
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B0B11UD8T)
 
