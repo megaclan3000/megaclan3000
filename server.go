@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"sort"
+	"strconv"
 	"text/template"
 
 	"net/http"
@@ -11,12 +12,11 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
-	"github.com/megaclan3000/megaclan3000/internal/database"
 	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 )
 
 var t *template.Template
-var datastorage *database.DataStorage
+var datastorage *DataStorage
 var steamClient *steamclient.SteamClient
 
 func main() {
@@ -37,14 +37,11 @@ func main() {
 	Formatter.FullTimestamp = true
 	log.SetFormatter(Formatter)
 
-	var err error
 	// Read config and pull initial data
 	steamClient = steamclient.NewSteamClient("./config.json")
 
-	log.Info("Creating datastorage")
-	if datastorage, err = database.NewDataStorage("./data.db", "./schema.sql"); err != nil {
-		log.Fatal("Failed to open database:", err)
-	}
+	log.Info("Creating datastorage and getting initial values")
+	datastorage = &DataStorage{Players: steamClient.GetPlayers()}
 
 	r := mux.NewRouter()
 
@@ -87,57 +84,16 @@ func parseTemplates(h http.HandlerFunc) http.HandlerFunc {
 
 		h(w, r)
 	}
-
 }
 
 func updateData() {
-	var err error
+
+	// Get PlayerInfo for all players periodically and store/cache in
+	// memory so we don't have to wait when retrieving it in the fronend
+
 	for {
-
-		// Get PlayerInfo for all players
-		players := steamClient.GetPlayers()
-
-		// Save to db
-		for _, v := range players {
-
-			log.Infof("Updating data for %v (%v)", v.PlayerSummary.Personaname, v.PlayerSummary.SteamID)
-			if err = datastorage.UpdatePlayerInfo(v); err != nil {
-				log.Fatal(err)
-			}
-
-			// get latest timestamp
-			lastUpdateTime := datastorage.GetPlayerHistoryLatestTime(v.PlayerSummary.SteamID)
-
-			// if part threshold, update
-			if time.Since(lastUpdateTime).Minutes() > float64(steamClient.Config.HistoryInterval) {
-				log.Infof("Updating history for %v (%v)", v.PlayerSummary.Personaname, v.PlayerSummary.SteamID)
-
-				entry := steamclient.PlayerHistoryEntry{
-
-					HitRatio:                   v.UserStatsForGame.Extra.HitRatio,
-					LastMatchADR:               v.UserStatsForGame.Extra.LastMatchADR,
-					LastMatchContributionScore: v.UserStatsForGame.Stats.LastMatchContributionScore,
-					LastMatchDamage:            v.UserStatsForGame.Stats.LastMatchDamage,
-					LastMatchDeaths:            v.UserStatsForGame.Stats.LastMatchDeaths,
-					LastMatchKD:                v.UserStatsForGame.Extra.LastMatchKD,
-					LastMatchKills:             v.UserStatsForGame.Stats.LastMatchKills,
-					LastMatchRounds:            v.UserStatsForGame.Stats.LastMatchRounds,
-					Playtime2Weeks:             v.RecentlyPlayedGames.Playtime2Weeks,
-					SteamID:                    v.PlayerSummary.SteamID,
-					Time:                       time.Now(),
-					TotalADR:                   v.UserStatsForGame.Extra.TotalADR,
-					TotalKD:                    v.UserStatsForGame.Extra.TotalKD,
-					TotalKills:                 v.UserStatsForGame.Stats.TotalKills,
-					TotalKillsHeadshot:         v.UserStatsForGame.Stats.TotalKillsHeadshot,
-					TotalShotsFired:            v.UserStatsForGame.Stats.TotalShotsFired,
-					TotalShotsHit:              v.UserStatsForGame.Stats.TotalShotsHit,
-				}
-				err = datastorage.UpdatePlayerHistory(entry)
-				if err != nil {
-					log.Fatal(err)
-				}
-			}
-		}
+		log.Debug("Updating player information")
+		datastorage.Players = steamClient.GetPlayers()
 
 		// Sleep for a predefined duration (in minutes)
 		time.Sleep(time.Duration(steamClient.Config.UpdateInterval) * time.Minute)
@@ -152,23 +108,12 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
 
 func handlerStats(w http.ResponseWriter, r *http.Request) {
 
-	var players []steamclient.PlayerInfo
-	var err error
-
-	if players, err = datastorage.GetAllPlayers(steamClient.Config.SteamIDs); err != nil {
-		log.Error("Error getting stats from database:", err)
-		if err := t.ExecuteTemplate(w, "404.html", nil); err != nil {
-			log.Warn(err)
-		}
-		return
-	}
-
 	// Stort players by Personastate (online status)
-	sort.Slice(players, func(i, j int) bool {
-		return players[i].PlayerSummary.Personastate > players[j].PlayerSummary.Personastate
+	sort.Slice(datastorage.Players, func(i, j int) bool {
+		return datastorage.Players[i].PlayerSummary.Personastate > datastorage.Players[j].PlayerSummary.Personastate
 	})
 
-	if err := t.ExecuteTemplate(w, "stats.html", players); err != nil {
+	if err := t.ExecuteTemplate(w, "stats.html", datastorage.Players); err != nil {
 		log.Warn(err)
 	}
 }
@@ -194,12 +139,18 @@ func handler404(w http.ResponseWriter, r *http.Request) {
 func handlerDetails(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	if p, err := datastorage.GetPlayerInfoBySteamID(vars["id"]); err == nil {
-		if err := t.ExecuteTemplate(w, "details.html", p); err != nil {
-			log.Warn(err)
+	var id uint64
+	var err error
+
+	if id, err = strconv.ParseUint(vars["id"], 10, 64); err == nil {
+		if p, err := datastorage.GetPlayerInfoBySteamID(id); err == nil {
+			if err := t.ExecuteTemplate(w, "details.html", p); err != nil {
+				log.Warn(err)
+			}
+			return
 		}
-		return
 	}
+
 	if err := t.ExecuteTemplate(w, "404.html", nil); err != nil {
 		log.Warn(err)
 	}
