@@ -172,11 +172,9 @@ type DataStorage struct {
 func (ds DataStorage) GetPlayerInfoBySteamID(steamID uint64) (steamclient.PlayerInfo, error) {
 
 	for _, v := range ds.Players {
-		//TODO we should use uint64 everywhere and avoid conversion to string
-		if v.PlayerSummary.SteamID == strconv.FormatUint(steamID, 10) {
+		if v.PlayerSummary.SteamID == steamID {
 			return v, nil
 		}
 	}
-	//TODO implement
 	return steamclient.PlayerInfo{}, errors.New("Player not found")
 }
