@@ -32,7 +32,7 @@ type playerSummariesData struct {
 			Realname                 string      `json:"realname"`
 			Steamid                  string      `json:"steamid"`
 			Timecreated              int         `json:"timecreated"`
-			SteamID                  string
+			SteamID                  uint64
 		} `json:"players"`
 	} `json:"response"`
 }
@@ -44,7 +44,7 @@ type PlayerSummary struct {
 	// Public Data
 
 	// 64bit SteamID of the user
-	SteamID string `db:"steamid"`
+	SteamID uint64 `db:"steamid"`
 
 	// The player's persona name (display name)
 	Personaname string `db:"personaname"`
@@ -156,6 +156,13 @@ func (sc *SteamClient) parsePlayerSummary(data playerSummariesData) (PlayerSumma
 		return PlayerSummary{}, errors.New("Failed to parse PlayerSummary")
 	}
 
+	var steamID uint64
+	var err error
+
+	if steamID, err = strconv.ParseUint(data.Response.Players[0].Steamid, 10, 64); err != nil {
+		return PlayerSummary{}, err
+	}
+
 	return PlayerSummary{
 		Lastlogoff:               strconv.Itoa(data.Response.Players[0].Lastlogoff),
 		Communityvisibilitystate: strconv.Itoa(data.Response.Players[0].Communityvisibilitystate),
@@ -177,6 +184,6 @@ func (sc *SteamClient) parsePlayerSummary(data playerSummariesData) (PlayerSumma
 		Primaryclanid:            data.Response.Players[0].Primaryclanid,
 		Profileurl:               data.Response.Players[0].Profileurl,
 		Realname:                 data.Response.Players[0].Realname,
-		SteamID:                  data.Response.Players[0].Steamid,
+		SteamID:                  steamID,
 	}, nil
 }
