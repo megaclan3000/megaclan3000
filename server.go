@@ -162,19 +162,3 @@ func handlerImprint(w http.ResponseWriter, r *http.Request) {
 		log.Warn(err)
 	}
 }
-
-// TODO this type was simplified to much we might aswell replace it with just a
-// map[uint64]steamclient.PlayerInfo
-type DataStorage struct {
-	Players []steamclient.PlayerInfo
-}
-
-func (ds DataStorage) GetPlayerInfoBySteamID(steamID uint64) (steamclient.PlayerInfo, error) {
-
-	for _, v := range ds.Players {
-		if v.PlayerSummary.SteamID == steamID {
-			return v, nil
-		}
-	}
-	return steamclient.PlayerInfo{}, errors.New("Player not found")
-}
