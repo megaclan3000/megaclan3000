@@ -159,7 +159,7 @@ func (sc *SteamClient) parsePlayerSummary(data playerSummariesData) (PlayerSumma
 	var steamID uint64
 	var err error
 
-	if steamID, err = strconv.ParseUint("42", 10, 64); err != nil {
+	if steamID, err = strconv.ParseUint(data.Response.Players[0].Steamid, 10, 64); err != nil {
 		return PlayerSummary{}, err
 	}
 

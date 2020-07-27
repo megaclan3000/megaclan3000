@@ -25,7 +25,7 @@ func TestSteamClient_parsePlayerSummary(t *testing.T) {
 		{
 			name: "Parse data for ID: 76561197962156894",
 			want: PlayerSummary{
-				SteamID:                  "76561197962156894",
+				SteamID:                  76561197962156894,
 				Personaname:              "mac5",
 				Profileurl:               "https://steamcommunity.com/profiles/76561197962156894/",
 				Avatar:                   "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/01/01b6a06e6946ef4c2525ba425c29d010795ec1ff.jpg",
