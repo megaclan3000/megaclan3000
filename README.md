@@ -36,9 +36,8 @@ example](./config.json.example) and copy it over or rename it to `config.json`
 
 ### Start the mongoDB container
 ```
-docker run -d -p 27017:27017 -v /data:/data/db mongo
+docker run -d -p 27017-27019:27017-27019 -v /home/pablo/.go/src/github.com/megaclan3000/megaclan3000/mongodb_data:/data/db --name mongodb mongo
 ```
-
 ### Service file
 
 While you can just start the compiled binary manually, you will probably want to
