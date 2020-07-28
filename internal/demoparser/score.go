@@ -1,9 +1,8 @@
 package demoparser
 
+// Score holds the information about one players score. It normally represents
+// the summarized information of all matches the player has played
 type Score struct {
-
-	//ID of the match (hash)
-	MatchId int `db:"matchid"`
 
 	//ID of the player
 	SteamId string `db:"steamid"`
