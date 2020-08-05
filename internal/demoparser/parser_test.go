@@ -86,7 +86,7 @@ func TestMyParser_Parse(t *testing.T) {
 			path: "testdata/demo1.dem",
 			want: Match{
 				// TODO find out how to get a proper ID
-				ID: 4619025276304667104,
+				Hash: 4619025276304667104,
 
 				// TODO find out how to get the time when the match was played
 				UploadTime: time.Date(2020, time.July, 1, 3, 4, 5, 6, time.UTC),

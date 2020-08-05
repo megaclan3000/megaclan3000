@@ -58,7 +58,6 @@ func (p *MyParser) Parse(path string) (Match, error) {
 	p.parser.RegisterEventHandler(p.handlerBombPlanted)
 	p.parser.RegisterEventHandler(p.handlerBombDefused)
 	p.parser.RegisterEventHandler(p.handlerBombExplode)
-
 	// p.RegisterEventHandler(handlerChatMessage)
 
 	// Parse header
@@ -71,7 +70,7 @@ func (p *MyParser) Parse(path string) (Match, error) {
 	if hash, err = hashstructure.Hash(header, nil); err != nil {
 		return p.Match, err
 	}
-	p.Match.ID = hash
+	p.Match.Hash = hash
 
 	// fmt.Println("Map:", header.MapName)
 
