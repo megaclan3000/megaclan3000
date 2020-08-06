@@ -157,7 +157,88 @@ func handlerScoreboard(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlerMatch(w http.ResponseWriter, r *http.Request) {
-	if err := t.ExecuteTemplate(w, "match.html", nil); err != nil {
+
+	type RoundKill struct {
+		KillerName      string
+		KillerAvatarURL string
+		KillerWeapon    string
+		VictimName      string
+	}
+
+	type ScoreboardRound struct {
+		TeamWon        int
+		WinReason      int
+		TeamAKills     []RoundKill
+		TeamASurvivors int
+		TeamBSurvivors int
+		TeamBKills     []RoundKill
+	}
+	type ScoreboardLine struct {
+		AvatarURL        string
+		Name             string
+		RankIconURL      string
+		Kills            int
+		Deaths           int
+		Assists          int
+		KDDiff           int
+		KD               float64
+		ADR              int
+		HSPrecent        int
+		FirstKills       int
+		FirstDeaths      int
+		TradeKills       int
+		TradeDeaths      int
+		TradeFirstKills  int
+		TradeFirstDeaths int
+		RoundsWonV5      int
+		RoundsWonV4      int
+		RoundsWonV3      int
+		RoundsWonV2      int
+		RoundsWonV1      int
+		Rounds5k         int
+		Rounds4k         int
+		Rounds3k         int
+		Rounds2k         int
+		Rounds1k         int
+		KAST             int
+		HLTV             int
+	}
+
+	type WeaponUser struct {
+		Kills     int
+		HSPercent int
+		Accuracy  int
+		Damage    int
+	}
+
+	type ScoreboardWeaponLine struct {
+		WeaponName    string
+		WeaponIconURL string
+		TeamA         []WeaponUser
+		TeamB         []WeaponUser
+	}
+
+	type MegacoinPlayer struct {
+		//TODO
+		ForCriteriaA int
+		ForCriteriaB int
+		ForCriteriaC int
+	}
+
+	type InfoStruct struct {
+		Scoreboard struct {
+			TeamA []ScoreboardLine
+			TeamB []ScoreboardLine
+		}
+		Rounds            []ScoreboardRound
+		Weapons           []ScoreboardWeaponLine
+		Duels             [][]int
+		HeatmapsImageURLs []string
+		Megacoins         []MegacoinPlayer
+	}
+	var info InfoStruct
+
+	if err := t.ExecuteTemplate(w, "match.html", info); err != nil {
 		log.Warn(err)
 	}
 }
