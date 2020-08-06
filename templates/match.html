@@ -11,6 +11,36 @@
 	<body>
 
 
+		<style type="text/css" media="screen">
+
+
+.scorediv {
+	text-align: center;
+	vertical-align: middle;
+	line-height: 90px;
+}
+
+
+.scoretitleimg{
+	height:200px;
+	object-fit: cover;
+
+}
+
+.tableimage{
+	height:30px;
+}
+
+.avatar{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+
+		</style>
+
 
 
 
@@ -18,55 +48,45 @@
 			<div class="col s12">
 				<div class="card">
 					<div class="card-image">
-						<img src="/public/img/maps/de_dust2.jpg" style="height:200px;">
+						<img class="scoretitleimg" src="/public/img/maps/de_dust2.jpg" >
 						<span class="card-title">{{.General.MapName}}</span>
 					</div>
 					<div class="card-content">
 
-		<div class="row">
-			<div class="col s1"> text</div>
-			<div class="col s1"> text</div>
-			<div class="col s1"> text</div>
-			<div class="col s1"> text</div>
-			<div class="col s1"> text</div>
+						<div class="row">
 
-			<div class="col s2"> text</div>
-
-			<div class="col s1"> text</div>
-			<div class="col s1"> text</div>
-			<div class="col s1"> text</div>
-			<div class="col s1"> text</div>
-			<div class="col s1"> text</div>
-		</div>
-
-  <div class="row">
-      <div class="col s6">
-						<ul class="collection">
 							{{range $p := .Scoreboard.TeamA}}
-							<li class="collection-item avatar">
-								<img src="{{$p.PlayerInfo.AvatarURL}}" alt="" class="circle">
-								<span class="title"> {{$p.PlayerInfo.Name}} </span>
-								<p>arsitoenart</p>
-							</li>
-						{{end}}
-						</ul>
+							<div class="col s1">
+								<span> <img class="avatar circle" src="{{$p.PlayerInfo.AvatarURL}}" alt=""> </span>
+								<span class="title truncate center-align"> {{$p.PlayerInfo.Name}} </span>
+								<span> <img src="{{$p.PlayerInfo.RankIconURL}}" style="height:30px;"alt=""> </span>
+							</div>
 
+							{{end}}
 
-      </div>
-      <div class="col s6">
-						<ul class="collection">
+							<div class="col s2 scorediv">
+
+								<h3>WIN</br>12:0</h3>
+
+							</div>
+
 							{{range $p := .Scoreboard.TeamB}}
-							<li class="collection-item avatar">
-								<img src="{{$p.PlayerInfo.AvatarURL}}" alt="" class="circle">
-								<span class="title"> <b>{{$p.PlayerInfo.Name}}</b> </span>
-								<img src="{{$p.PlayerInfo.RankIconURL}}" style="height:50px;float:right;"alt="">
-								<p class="orange-text"> {{$p.PlayerInfo.ClanTag}} </p>
-							</li>
-						{{end}}
-						</ul>
+							<div class="col s1">
+								<span> <img class="avatar circle" src="{{$p.PlayerInfo.AvatarURL}}" alt=""> </span>
+								<span class="title truncate center-align"> {{$p.PlayerInfo.Name}} </span>
+								<span> <img src="{{$p.PlayerInfo.RankIconURL}}" style="height:30px;"alt=""> </span>
+							</div>
 
-		  </div>
-    </div>
+							{{end}}
+
+
+						</div>
+
+
+						<!-- <p>Map Icon: {{.General.MapIconURL}}</p> -->
+						<!-- <p>Upload time: {{.General.UploadTime}}</p> -->
+						<!-- <p>Match duration: {{.General.MatchDuration}}</p> -->
+						<!-- <p>Demo Download link: {{.General.DemoLinkURL}}</p> -->
 					</div>
 				</div>
 			</div>
@@ -113,7 +133,7 @@
 
 			<div id="tab-scoreboard" class="col s12 white">
 
-				<h3>Score Outcome</h3>
+
 				<table class="highlight">
 					<thead>
 						<tr>
@@ -151,75 +171,72 @@
 
 
 						{{range $p := .Scoreboard.TeamA}}
-							<tr>
-								<td> <img style="width:30px;height:30px;" src="{{ $p.PlayerInfo.AvatarURL }}" alt=""> </td>
-								<td>{{ $p.PlayerInfo.ClanTag }} | {{ $p.PlayerInfo.Name }} </td>
-								<td>{{ $p.PlayerInfo.RankIconURL }}</td>
-								<td>{{ $p.Kills }}</td>
-								<td>{{ $p.Deaths }}</td>
-								<td>{{ $p.Assists }}</td>
-								<td>{{ $p.KDDiff }}</td>
-								<td>{{ $p.KD }}</td>
-								<td>{{ $p.ADR }}</td>
-								<td>{{ $p.HSPrecent }}</td>
-								<td>{{ $p.FirstKills }}</td>
-								<td>{{ $p.FirstDeaths }}</td>
-								<td>{{ $p.TradeKills }}</td>
-								<td>{{ $p.TradeDeaths }}</td>
-								<td>{{ $p.TradeFirstKills }}</td>
-								<td>{{ $p.TradeFirstDeaths }}</td>
-								<td>{{ $p.RoundsWonV5 }}</td>
-								<td>{{ $p.RoundsWonV4 }}</td>
-								<td>{{ $p.RoundsWonV3 }}</td>
-								<td>{{ $p.RoundsWonV2 }}</td>
-								<td>{{ $p.RoundsWonV1 }}</td>
-								<td>{{ $p.Rounds5k }}</td>
-								<td>{{ $p.Rounds4k }}</td>
-								<td>{{ $p.Rounds3k }}</td>
-								<td>{{ $p.Rounds2k }}</td>
-								<td>{{ $p.Rounds1k }}</td>
-								<td>{{ $p.KAST }}</td>
-								<td>{{ $p.HLTV}}</td>
-							</tr>
+						<tr>
+							<td> <img class="tableimage" src="{{ $p.PlayerInfo.AvatarURL }}" alt=""></img> </td>
+							<td>{{$p.PlayerInfo.Name}}<div class="orange-text">{{ $p.PlayerInfo.ClanTag }}</div></td>
+							<td> <img class="tableimage" src="{{ $p.PlayerInfo.RankIconURL }}" alt=""></img></td>
+							<td>{{ $p.Kills }}</td>
+							<td>{{ $p.Deaths }}</td>
+							<td>{{ $p.Assists }}</td>
+							<td>{{ $p.KDDiff }}</td>
+							<td>{{ $p.KD }}</td>
+							<td>{{ $p.ADR }}</td>
+							<td>{{ $p.HSPrecent }}</td>
+							<td>{{ $p.FirstKills }}</td>
+							<td>{{ $p.FirstDeaths }}</td>
+							<td>{{ $p.TradeKills }}</td>
+							<td>{{ $p.TradeDeaths }}</td>
+							<td>{{ $p.TradeFirstKills }}</td>
+							<td>{{ $p.TradeFirstDeaths }}</td>
+							<td>{{ $p.RoundsWonV5 }}</td>
+							<td>{{ $p.RoundsWonV4 }}</td>
+							<td>{{ $p.RoundsWonV3 }}</td>
+							<td>{{ $p.RoundsWonV2 }}</td>
+							<td>{{ $p.RoundsWonV1 }}</td>
+							<td>{{ $p.Rounds5k }}</td>
+							<td>{{ $p.Rounds4k }}</td>
+							<td>{{ $p.Rounds3k }}</td>
+							<td>{{ $p.Rounds2k }}</td>
+							<td>{{ $p.Rounds1k }}</td>
+							<td>{{ $p.KAST }}</td>
+							<td>{{ $p.HLTV}}</td>
+						</tr>
 						{{end}}
 
-						<tr>
-
-							<td></td>
-						</tr>
+						<tr><td></td></tr>
 
 						{{range $p := .Scoreboard.TeamB}}
-							<tr>
+						<tr>
+							<td> <img class="tableimage" src="{{ $p.PlayerInfo.AvatarURL }}" alt=""></img> </td>
+							<td>{{$p.PlayerInfo.Name}}<div class="orange-text">{{ $p.PlayerInfo.ClanTag }}</div></td>
+							<td> <img class="tableimage" src="{{ $p.PlayerInfo.RankIconURL }}" alt=""></img></td>
+							<td>{{ $p.Kills }}</td>
+							<td>{{ $p.Deaths }}</td>
+							<td>{{ $p.Assists }}</td>
+							<td>{{ $p.KDDiff }}</td>
+							<td>{{ $p.KD }}</td>
+							<td>{{ $p.ADR }}</td>
+							<td>{{ $p.HSPrecent }}</td>
+							<td>{{ $p.FirstKills }}</td>
+							<td>{{ $p.FirstDeaths }}</td>
+							<td>{{ $p.TradeKills }}</td>
+							<td>{{ $p.TradeDeaths }}</td>
+							<td>{{ $p.TradeFirstKills }}</td>
+							<td>{{ $p.TradeFirstDeaths }}</td>
+							<td>{{ $p.RoundsWonV5 }}</td>
+							<td>{{ $p.RoundsWonV4 }}</td>
+							<td>{{ $p.RoundsWonV3 }}</td>
+							<td>{{ $p.RoundsWonV2 }}</td>
+							<td>{{ $p.RoundsWonV1 }}</td>
+							<td>{{ $p.Rounds5k }}</td>
+							<td>{{ $p.Rounds4k }}</td>
+							<td>{{ $p.Rounds3k }}</td>
+							<td>{{ $p.Rounds2k }}</td>
+							<td>{{ $p.Rounds1k }}</td>
+							<td>{{ $p.KAST }}</td>
+							<td>{{ $p.HLTV}}</td>
 
-								<td> <img style="width:30px;height:30px;" src="{{ $p.PlayerInfo.AvatarURL }}" alt=""> </td>
-								<td>{{ $p.PlayerInfo.ClanTag }} | {{ $p.PlayerInfo.Name }} </td>
-								<td>{{ $p.PlayerInfo.RankIconURL }}</td>
-								<td>{{ $p.Kills }}</td>
-								<td>{{ $p.Deaths }}</td>
-								<td>{{ $p.Assists }}</td>
-								<td>{{ $p.KDDiff }}</td>
-								<td>{{ $p.KD }}</td>
-								<td>{{ $p.ADR }}</td>
-								<td>{{ $p.HSPrecent }}</td>
-								<td>{{ $p.FirstKills }}</td>
-								<td>{{ $p.FirstDeaths }}</td>
-								<td>{{ $p.TradeKills }}</td>
-								<td>{{ $p.TradeDeaths }}</td>
-								<td>{{ $p.TradeFirstKills }}</td>
-								<td>{{ $p.TradeFirstDeaths }}</td>
-								<td>{{ $p.RoundsWonV5 }}</td>
-								<td>{{ $p.RoundsWonV4 }}</td>
-								<td>{{ $p.RoundsWonV3 }}</td>
-								<td>{{ $p.RoundsWonV2 }}</td>
-								<td>{{ $p.RoundsWonV1 }}</td>
-								<td>{{ $p.Rounds5k }}</td>
-								<td>{{ $p.Rounds4k }}</td>
-								<td>{{ $p.Rounds3k }}</td>
-								<td>{{ $p.Rounds2k }}</td>
-								<td>{{ $p.Rounds1k }}</td>
-								<td>{{ $p.KAST }}</td>
-								<td>{{ $p.HLTV}}</td>
-							</tr>
+						</tr>
 						{{end}}
 
 					</tbody>
@@ -239,14 +256,7 @@
 			});
 		</script>
 
-		<h1>Match viewer</h1>
-		<h3>General</h3>
-		<p>Map Name: {{.General.MapName}}</p>
-		<p>Map Icon: {{.General.MapIconURL}}</p>
-		<p>Upload time: {{.General.UploadTime}}</p>
-		<p>Match duration: {{.General.MatchDuration}}</p>
-		<p>Demo Download link: {{.General.DemoLinkURL}}</p>
+		{{template "footer.html"}}
 	</body>
 </html>
 
-{{template "footer.html"}}
