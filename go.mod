@@ -55,7 +55,7 @@ require (
 	github.com/steveyen/gtreap v0.1.0 // indirect
 	github.com/urfave/cli v1.22.4 // indirect
 	github.com/vaughan0/go-ini v0.0.0-20130923145212-a98ad7ee00ec // indirect
-	github.com/wawandco/fako v0.0.0-20180828010250-c36a0bc97398 // indirect
+	github.com/wawandco/fako v0.0.0-20180828010250-c36a0bc97398
 	github.com/xi2/xz v0.0.0-20171230120015-48954b6210f8 // indirect
 	go.mongodb.org/mongo-driver v1.3.5
 	gocv.io/x/gocv v0.23.0 // indirect

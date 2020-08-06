@@ -3,8 +3,9 @@ package demoparser
 // https://github.com/markus-wa/demoinfocs-golang/blob/master/examples/print-events/print_events.go
 
 import (
-	"github.com/mitchellh/hashstructure"
+	// "github.com/mitchellh/hashstructure"
 	"os"
+	"time"
 
 	demoinfocs "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs"
 	common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
@@ -14,7 +15,7 @@ import (
 type MyParser struct {
 	parser demoinfocs.Parser
 	Result string
-	Match  Match
+	Match  *InfoStruct
 	state  parsingState
 }
 
@@ -23,26 +24,24 @@ func NewMyParser() MyParser {
 		state: parsingState{
 			Round: 0,
 		},
-		Match: Match{
-			Rounds: make(Rounds),
-		},
 	}
 }
 
 // Used while parsing to hold values while going through the ticks
 type parsingState struct {
 	// Current round
-	Round int
+	Round       int
+	WarmupKills []events.Kill
 }
 
-func (p *MyParser) Parse(path string) (Match, error) {
+func (p *MyParser) Parse(path string, m *InfoStruct) error {
 	// Register handlers for events we care about
+	p.Match = m
 	var f *os.File
 	var err error
-	var header common.DemoHeader
 
 	if f, err = os.Open(path); err != nil {
-		return p.Match, err
+		return err
 	}
 
 	defer f.Close()
@@ -60,35 +59,40 @@ func (p *MyParser) Parse(path string) (Match, error) {
 	p.parser.RegisterEventHandler(p.handlerBombExplode)
 	// p.RegisterEventHandler(handlerChatMessage)
 
-	// Parse header
+	// Parse header and set general values
+	p.setGeneral()
+
+	// Parse the demo returning errors
+	return p.parser.ParseToEnd()
+
+}
+
+func (p *MyParser) setGeneral() error {
+
+	var header common.DemoHeader
+	var err error
+
 	if header, err = p.parser.ParseHeader(); err != nil {
-		return p.Match, err
+		return err
 	}
 
-	var hash uint64
+	//TODO implement this
+	p.Match.General.MapName = header.MapName
+	p.Match.General.MapIconURL = header.MapName
+	p.Match.General.UploadTime = time.Now()
+	p.Match.General.DemoLinkURL = "https:TODO/"
 
-	if hash, err = hashstructure.Hash(header, nil); err != nil {
-		return p.Match, err
-	}
-	p.Match.Hash = hash
-
-	// fmt.Println("Map:", header.MapName)
-
-	p.Match.Map = header.MapName
-
-	// Parse the demo
-	err = p.parser.ParseToEnd()
-
-	return p.Match, err
+	return nil
 }
 
 func (p *MyParser) handlerKill(e events.Kill) {
 
 	// Append kill to current round or to warmupKills
 	if p.parser.GameState().IsWarmupPeriod() {
-		p.Match.WarmupKills = append(p.Match.WarmupKills, e)
+		p.state.WarmupKills = append(p.state.WarmupKills, e)
 	} else {
-		p.Match.Rounds[p.state.Round].Kills = append(p.Match.Rounds[p.state.Round].Kills, e)
+
+		// p.Match.Rounds[p.state.Round].Kills = append(p.Match.Rounds[p.state.Round].Kills, e)
 	}
 }
 
@@ -130,39 +134,21 @@ func (p *MyParser) handlerRoundStart(e events.RoundStart) {
 	// time when a round has ended but the new one has not yet started
 	p.state.Round += 1
 
-	p.Match.Rounds[p.state.Round] = &Round{
-		TimeStart: p.parser.CurrentTime(),
-		// TODO check if we can omit these, false shold be the default
-		// value anyway
-		BombPlanted:  false,
-		BombDefused:  false,
-		BombExploded: false,
-	}
-
 }
 
 func (p *MyParser) handlerBombPlanted(e events.BombPlanted) {
-	p.Match.Rounds[p.state.Round].BombPlanted = true
+
 }
 
 func (p *MyParser) handlerBombDefused(e events.BombDefused) {
-	p.Match.Rounds[p.state.Round].BombDefused = true
 }
 
 func (p *MyParser) handlerBombExplode(e events.BombExplode) {
-	p.Match.Rounds[p.state.Round].BombExploded = true
 }
 
 func (p *MyParser) handlerRoundEnd(e events.RoundEnd) {
 
-	// Set round end time
-	p.Match.Rounds[p.state.Round].TimeEnd = p.parser.CurrentTime()
-
 	// Set the winning team
 	p.Match.Rounds[p.state.Round].TeamWon = e.Winner
 
-	// Set the players of the round (that where playing, no spectators)
-	for _, v := range p.parser.GameState().Participants().Playing() {
-		p.Match.Rounds[p.state.Round].Players = append(p.Match.Rounds[p.state.Round].Players, *v)
-	}
 }
