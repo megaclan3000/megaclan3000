@@ -1,4 +1,6 @@
+{{template "header.html"}}
 
+<!-- vim: ft=gohtmltmpl -->
 <!DOCTYPE html>
 <html>
 	<head>
@@ -7,356 +9,244 @@
 		<title>Match</title>
 	</head>
 	<body>
+
+
+
+
+
+		<div class="row">
+			<div class="col s12">
+				<div class="card">
+					<div class="card-image">
+						<img src="/public/img/maps/de_dust2.jpg" style="height:200px;">
+						<span class="card-title">{{.General.MapName}}</span>
+					</div>
+					<div class="card-content">
+
+		<div class="row">
+			<div class="col s1"> text</div>
+			<div class="col s1"> text</div>
+			<div class="col s1"> text</div>
+			<div class="col s1"> text</div>
+			<div class="col s1"> text</div>
+
+			<div class="col s2"> text</div>
+
+			<div class="col s1"> text</div>
+			<div class="col s1"> text</div>
+			<div class="col s1"> text</div>
+			<div class="col s1"> text</div>
+			<div class="col s1"> text</div>
+		</div>
+
+  <div class="row">
+      <div class="col s6">
+						<ul class="collection">
+							{{range $p := .Scoreboard.TeamA}}
+							<li class="collection-item avatar">
+								<img src="{{$p.PlayerInfo.AvatarURL}}" alt="" class="circle">
+								<span class="title"> {{$p.PlayerInfo.Name}} </span>
+								<p>arsitoenart</p>
+							</li>
+						{{end}}
+						</ul>
+
+
+      </div>
+      <div class="col s6">
+						<ul class="collection">
+							{{range $p := .Scoreboard.TeamB}}
+							<li class="collection-item avatar">
+								<img src="{{$p.PlayerInfo.AvatarURL}}" alt="" class="circle">
+								<span class="title"> <b>{{$p.PlayerInfo.Name}}</b> </span>
+								<img src="{{$p.PlayerInfo.RankIconURL}}" style="height:50px;float:right;"alt="">
+								<p class="orange-text"> {{$p.PlayerInfo.ClanTag}} </p>
+							</li>
+						{{end}}
+						</ul>
+
+		  </div>
+    </div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="row blue-grey">
+			<div class="col s12">
+				<ul class="tabs blue-grey">
+					<li class="tab col">
+						<a href="#tab-scoreboard" class="active">
+							<i class="material-icons">timeline</i>Scoreboard
+						</a>
+					</li>
+					<li class="tab col">
+						<a href="#tab-rounds">
+							<i class="material-icons">multiline_chart</i>Rounds
+						</a>
+					</li>
+					<li class="tab col">
+						<a href="#tab-weapons">
+							<i class="material-icons">terrain</i>Weapons
+						</a>
+					</li>
+					</li>
+					<li class="tab col">
+						<a href="#tab-duels">
+							<i class="material-icons">whatshot</i>Duels
+						</a>
+					</li>
+					<li class="tab col">
+						<a href="#tab-heatmaps">
+							<i class="material-icons">whatshot</i>Heatmaps
+						</a>
+					</li>
+					<li class="tab col">
+						<a href="#tab-megacoins">
+							<i class="material-icons">whatshot</i>Megacoins
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<div id="tab-scoreboard" class="col s12 white">
+
+				<h3>Score Outcome</h3>
+				<table class="highlight">
+					<thead>
+						<tr>
+							<th>Avatar</th>
+							<th>Player</th>
+							<th>Rank</th>
+							<th>Kills</th>
+							<th>Deaths</th>
+							<th>A</th>
+							<th>+/-</th>
+							<th>K/D</th>
+							<th>ADR</th>
+							<th>HS%</th>
+							<th>FK</th>
+							<th>FD</th>
+							<th>K</th>
+							<th>D</th>
+							<th>FK</th>
+							<th>FD</th>
+							<th>1v5</th>
+							<th>1v4</th>
+							<th>1v3</th>
+							<th>1v2</th>
+							<th>1v1</th>
+							<th>5k</th>
+							<th>4k</th>
+							<th>3k</th>
+							<th>2k</th>
+							<th>1k</th>
+							<th>KAST</th>
+							<th>HLTV</th>
+						</tr>
+					</thead>
+					<tbody>
+
+
+						{{range $p := .Scoreboard.TeamA}}
+							<tr>
+								<td> <img style="width:30px;height:30px;" src="{{ $p.PlayerInfo.AvatarURL }}" alt=""> </td>
+								<td>{{ $p.PlayerInfo.ClanTag }} | {{ $p.PlayerInfo.Name }} </td>
+								<td>{{ $p.PlayerInfo.RankIconURL }}</td>
+								<td>{{ $p.Kills }}</td>
+								<td>{{ $p.Deaths }}</td>
+								<td>{{ $p.Assists }}</td>
+								<td>{{ $p.KDDiff }}</td>
+								<td>{{ $p.KD }}</td>
+								<td>{{ $p.ADR }}</td>
+								<td>{{ $p.HSPrecent }}</td>
+								<td>{{ $p.FirstKills }}</td>
+								<td>{{ $p.FirstDeaths }}</td>
+								<td>{{ $p.TradeKills }}</td>
+								<td>{{ $p.TradeDeaths }}</td>
+								<td>{{ $p.TradeFirstKills }}</td>
+								<td>{{ $p.TradeFirstDeaths }}</td>
+								<td>{{ $p.RoundsWonV5 }}</td>
+								<td>{{ $p.RoundsWonV4 }}</td>
+								<td>{{ $p.RoundsWonV3 }}</td>
+								<td>{{ $p.RoundsWonV2 }}</td>
+								<td>{{ $p.RoundsWonV1 }}</td>
+								<td>{{ $p.Rounds5k }}</td>
+								<td>{{ $p.Rounds4k }}</td>
+								<td>{{ $p.Rounds3k }}</td>
+								<td>{{ $p.Rounds2k }}</td>
+								<td>{{ $p.Rounds1k }}</td>
+								<td>{{ $p.KAST }}</td>
+								<td>{{ $p.HLTV}}</td>
+							</tr>
+						{{end}}
+
+						<tr>
+
+							<td></td>
+						</tr>
+
+						{{range $p := .Scoreboard.TeamB}}
+							<tr>
+
+								<td> <img style="width:30px;height:30px;" src="{{ $p.PlayerInfo.AvatarURL }}" alt=""> </td>
+								<td>{{ $p.PlayerInfo.ClanTag }} | {{ $p.PlayerInfo.Name }} </td>
+								<td>{{ $p.PlayerInfo.RankIconURL }}</td>
+								<td>{{ $p.Kills }}</td>
+								<td>{{ $p.Deaths }}</td>
+								<td>{{ $p.Assists }}</td>
+								<td>{{ $p.KDDiff }}</td>
+								<td>{{ $p.KD }}</td>
+								<td>{{ $p.ADR }}</td>
+								<td>{{ $p.HSPrecent }}</td>
+								<td>{{ $p.FirstKills }}</td>
+								<td>{{ $p.FirstDeaths }}</td>
+								<td>{{ $p.TradeKills }}</td>
+								<td>{{ $p.TradeDeaths }}</td>
+								<td>{{ $p.TradeFirstKills }}</td>
+								<td>{{ $p.TradeFirstDeaths }}</td>
+								<td>{{ $p.RoundsWonV5 }}</td>
+								<td>{{ $p.RoundsWonV4 }}</td>
+								<td>{{ $p.RoundsWonV3 }}</td>
+								<td>{{ $p.RoundsWonV2 }}</td>
+								<td>{{ $p.RoundsWonV1 }}</td>
+								<td>{{ $p.Rounds5k }}</td>
+								<td>{{ $p.Rounds4k }}</td>
+								<td>{{ $p.Rounds3k }}</td>
+								<td>{{ $p.Rounds2k }}</td>
+								<td>{{ $p.Rounds1k }}</td>
+								<td>{{ $p.KAST }}</td>
+								<td>{{ $p.HLTV}}</td>
+							</tr>
+						{{end}}
+
+					</tbody>
+					<th></th>
+				</table>
+			</div>
+			<div id="tab-rounds" class="col s12 white"> ROUNDS </div>
+			<div id="tab-weapons" class="col s12 white"> WEAPONS </div>
+			<div id="tab-duels" class="col s12 white"> DUELS</div>
+			<div id="tab-heatmaps" class="col s12 white"> HEATMAPS</div>
+			<div id="tab-megacoins" class="col s12 white"> MEGACOINS</div>
+		</div>
+
+		<script>
+			$(document).ready(function(){
+				$('.tabs').tabs();
+			});
+		</script>
+
 		<h1>Match viewer</h1>
-		<h2>Scoreboard</h2>
 		<h3>General</h3>
-		<p>Map Name</p>
-		<p>Map Icon</p>
-		<p>Upload time</p>
-		<p>Demo Download link</p>
-		<h3>Team 1 Members</h3>
-		<p>Names</p> <p>Ranks</p>
-		<h3>Team 2 Members</h3>
-		<p>Names</p> <p>Ranks</p>
-		<h3>Score Outcome</h3>
-		<table>
-			<thead>
-				<tr>
-					<th>Player</th>
-					<th>K</th>
-					<th>D</th>
-					<th>A</th>
-					<th>+/-</th>
-					<th>K/D</th>
-					<th>ADR</th>
-					<th>HS%</th>
-					<th>FK</th>
-					<th>FD</th>
-					<th>K</th>
-					<th>D</th>
-					<th>FK</th>
-					<th>FD</th>
-					<th>1v5</th>
-					<th>1v4</th>
-					<th>1v3</th>
-					<th>1v2</th>
-					<th>1v1</th>
-					<th>5k</th>
-					<th>4k</th>
-					<th>3k</th>
-					<th>KAST</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<th>Avatar, Name, Rank</th>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-				</tr>
-				<tr>
-					<th>Avatar, Name, Rank</th>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-				</tr>
-				<tr>
-					<th>Avatar, Name, Rank</th>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-				</tr>
-				<tr>
-					<th>Avatar, Name, Rank</th>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-				</tr>
-				<tr>
-					<th>Avatar, Name, Rank</th>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-				</tr>
-
-				<tr>
-					<th></th>
-					<td>+</td>
-					<td>+</td>
-					<td>+</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>+</td>
-					<td>+</td>
-					<td>+</td>
-					<td>+</td>
-					<td>+</td>
-					<td>+</td>
-					<td>+</td>
-					<td>+</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-				</tr>
-				<tr>
-					<th></th>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>+</td>
-					<td>+</td>
-					<td>+</td>
-					<td>+</td>
-					<td>+</td>
-					<td>+</td>
-					<td>+</td>
-					<td>+</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>+</td>
-					<td>+</td>
-					<td>+</td>
-				</tr>
-
-				<tr>
-					<th>Avatar, Name, Rank</th>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-				</tr>
-				<tr>
-					<th>Avatar, Name, Rank</th>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-				</tr>
-				<tr>
-					<th>Avatar, Name, Rank</th>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-				</tr>
-				<tr>
-					<th>Avatar, Name, Rank</th>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-				</tr>
-				<tr>
-					<th>Avatar, Name, Rank</th>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-					<td>0</td>
-				</tr>
-			</tbody>
-			<th></th>
-		</table>
-		<h2>Rounds</h2>
-		<h2>Weapons</h2>
-		<h2>Duels</h2>
-		<h2>Heatmaps</h2>
-		<h2>Earned Megascore per player per item</h2>
+		<p>Map Name: {{.General.MapName}}</p>
+		<p>Map Icon: {{.General.MapIconURL}}</p>
+		<p>Upload time: {{.General.UploadTime}}</p>
+		<p>Match duration: {{.General.MatchDuration}}</p>
+		<p>Demo Download link: {{.General.DemoLinkURL}}</p>
 	</body>
 </html>
+
+{{template "footer.html"}}

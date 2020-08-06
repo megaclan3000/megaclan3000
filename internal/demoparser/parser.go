@@ -5,6 +5,9 @@ package demoparser
 import (
 	// "github.com/mitchellh/hashstructure"
 	"os"
+
+	log "github.com/sirupsen/logrus"
+	// "strconv"
 	"time"
 
 	demoinfocs "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs"
@@ -35,6 +38,7 @@ type parsingState struct {
 }
 
 func (p *MyParser) Parse(path string, m *InfoStruct) error {
+	log.Warning("parsing file")
 	// Register handlers for events we care about
 	p.Match = m
 	var f *os.File
@@ -50,6 +54,7 @@ func (p *MyParser) Parse(path string, m *InfoStruct) error {
 	defer p.parser.Close()
 
 	p.parser.RegisterEventHandler(p.handlerKill)
+	p.parser.RegisterEventHandler(p.handlerMatchStart)
 	p.parser.RegisterEventHandler(p.handlerRoundEnd)
 	p.parser.RegisterEventHandler(p.handlerRoundStart)
 	p.parser.RegisterEventHandler(p.handlerRankUpdate)
@@ -61,6 +66,7 @@ func (p *MyParser) Parse(path string, m *InfoStruct) error {
 
 	// Parse header and set general values
 	p.setGeneral()
+	log.Warning("set mapname to:", p.Match.General.MapName)
 
 	// Parse the demo returning errors
 	return p.parser.ParseToEnd()
@@ -77,6 +83,7 @@ func (p *MyParser) setGeneral() error {
 	}
 
 	//TODO implement this
+	log.Warning("PARSING HEADER")
 	p.Match.General.MapName = header.MapName
 	p.Match.General.MapIconURL = header.MapName
 	p.Match.General.UploadTime = time.Now()
@@ -122,10 +129,75 @@ func (p *MyParser) handlerPlayerHurt(e events.PlayerHurt) {
 
 // Handlers
 func (p *MyParser) handlerRankUpdate(e events.RankUpdate) {
+
+	//TODO set ranks icon URL
+	// for e := range collection {
+
+	// }
+	// 			RankIconURL: "public/img/ranks/" + ct.Ran,
 	//TODO
 	// fmt.Printf("Rank Update: %d went from rank %d to rank %d, change: %f\n", e.SteamID32, e.RankOld, e.RankNew, e.RankChange)
 }
 
+func (p *MyParser) handlerMatchStart(e events.MatchStart) {
+
+	for _, ct := range p.parser.GameState().Participants().Playing() {
+		if ct.IsBot {
+			continue
+		}
+
+		avatarURL := "/public/img/avatars/other.jpg"
+
+		if ct.ClanTag() == "megaclan3000" {
+			//TODO fetch and use correct images
+			// avatarURL = "public/img/avatars" + strconv.FormatUint(ct.SteamID64, 10) + ".png"
+		}
+
+		line := ScoreboardLine{
+
+			PlayerInfo: ScoreboardTeamMemberInfo{
+				AvatarURL:   avatarURL,
+				Name:        ct.Name,
+				RankIconURL: "/public/img/ranks/17.png",
+				ClanTag:     ct.ClanTag(),
+			},
+			Kills:            0,
+			Deaths:           0,
+			Assists:          0,
+			KDDiff:           0,
+			KD:               0,
+			ADR:              0,
+			HSPrecent:        0,
+			FirstKills:       0,
+			FirstDeaths:      0,
+			TradeKills:       0,
+			TradeDeaths:      0,
+			TradeFirstKills:  0,
+			TradeFirstDeaths: 0,
+			RoundsWonV5:      0,
+			RoundsWonV4:      0,
+			RoundsWonV3:      0,
+			RoundsWonV2:      0,
+			RoundsWonV1:      0,
+			Rounds5k:         0,
+			Rounds4k:         0,
+			Rounds3k:         0,
+			Rounds2k:         0,
+			Rounds1k:         0,
+			KAST:             0,
+			HLTV:             0,
+		}
+
+		if ct.Team == common.TeamCounterTerrorists {
+			p.Match.Scoreboard.TeamA = append(p.Match.Scoreboard.TeamA, line)
+		}
+		if ct.Team == common.TeamTerrorists {
+			p.Match.Scoreboard.TeamB = append(p.Match.Scoreboard.TeamB, line)
+		}
+
+	}
+
+}
 func (p *MyParser) handlerRoundStart(e events.RoundStart) {
 
 	// An new round has started, increase counter and add it to slice of the
@@ -149,6 +221,6 @@ func (p *MyParser) handlerBombExplode(e events.BombExplode) {
 func (p *MyParser) handlerRoundEnd(e events.RoundEnd) {
 
 	// Set the winning team
-	p.Match.Rounds[p.state.Round].TeamWon = e.Winner
+	// p.Match.Rounds[p.state.Round].TeamWon = e.Winner
 
 }

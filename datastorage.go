@@ -1,11 +1,11 @@
 package main
 
 import (
-	"encoding/binary"
+	// "encoding/binary"
 	"errors"
 	// "strconv"
 
-	"github.com/megaclan3000/megaclan3000/internal/demoparser"
+	// "github.com/megaclan3000/megaclan3000/internal/demoparser"
 	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 	log "github.com/sirupsen/logrus"
 
@@ -14,7 +14,7 @@ import (
 
 	// "go.mongodb.org/mongo-driver/bson"
 	// "go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	// "go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	// "go.mongodb.org/mongo-driver/bson"
@@ -90,108 +90,108 @@ func (ds DataStorage) GetPlayerInfoBySteamID(steamID uint64) (steamclient.Player
 	return steamclient.PlayerInfo{}, errors.New("Player not found")
 }
 
-func (ds *DataStorage) SaveMatch(match demoparser.Match) error {
+//func (ds *DataStorage) SaveMatch(match demoparser.Match) error {
 
-	// , err := primitive.ObjectIDFromHex(strconv.FormatUint(match.Hash, 10))
+//	// , err := primitive.ObjectIDFromHex(strconv.FormatUint(match.Hash, 10))
 
-	// bMatch := demoparser.BsonMatch{
-	// 	ObjectID:   primitive.NewObjectID(),
-	// 	UploadTime: match.UploadTime,
-	// 	Map:        match.Map,
-	// }
+//	// bMatch := demoparser.BsonMatch{
+//	// 	ObjectID:   primitive.NewObjectID(),
+//	// 	UploadTime: match.UploadTime,
+//	// 	Map:        match.Map,
+//	// }
 
-	// var roundPlayerIDs []primitive.ObjectID
-	// var matchPlayerIDs []primitive.ObjectID
-	// // Save all players using steamID64 as objectID
-	// for _, r := range match.Rounds {
-	// 	for _, rp := range r.Players {
-	// 		if insertResult, err := ds.playersCollection.InsertOne(ds.ctx, demoparser.NewBsonPlayer(rp)); err != nil {
-	// 			return err
-	// 		} else {
-	// 			log.Debug("Inserted player: ", insertResult.InsertedID)
-	// 			roundPlayerIDs = append(roundPlayerIDs, insertResult.InsertedID.(primitive.ObjectID))
-	// 			matchPlayerIDs = append(matchPlayerIDs, insertResult.InsertedID.(primitive.ObjectID))
-	// 		}
-	// 	}
-	// }
+//	// var roundPlayerIDs []primitive.ObjectID
+//	// var matchPlayerIDs []primitive.ObjectID
+//	// // Save all players using steamID64 as objectID
+//	// for _, r := range match.Rounds {
+//	// 	for _, rp := range r.Players {
+//	// 		if insertResult, err := ds.playersCollection.InsertOne(ds.ctx, demoparser.NewBsonPlayer(rp)); err != nil {
+//	// 			return err
+//	// 		} else {
+//	// 			log.Debug("Inserted player: ", insertResult.InsertedID)
+//	// 			roundPlayerIDs = append(roundPlayerIDs, insertResult.InsertedID.(primitive.ObjectID))
+//	// 			matchPlayerIDs = append(matchPlayerIDs, insertResult.InsertedID.(primitive.ObjectID))
+//	// 		}
+//	// 	}
+//	// }
 
-	// Save the rounds
-	// for _, r := range match.Rounds {
-	// 	var roundKills []primitive.ObjectID
+//	// Save the rounds
+//	// for _, r := range match.Rounds {
+//	// 	var roundKills []primitive.ObjectID
 
-	// // Save kills of the round
-	// for _, rk := range r.Kills {
-	// 	bkill := demoparser.NewBsonKill(rk)
-	// 	if insertResult, err := ds.killsCollection.InsertOne(ds.ctx, bkill); err != nil {
-	// 		return err
-	// 	} else {
-	// 		log.Debug("Inserted kill: ", insertResult.InsertedID)
-	// 		roundKills = append(roundKills, insertResult.InsertedID.(primitive.ObjectID))
-	// 	}
-	// }
+//	// // Save kills of the round
+//	// for _, rk := range r.Kills {
+//	// 	bkill := demoparser.NewBsonKill(rk)
+//	// 	if insertResult, err := ds.killsCollection.InsertOne(ds.ctx, bkill); err != nil {
+//	// 		return err
+//	// 	} else {
+//	// 		log.Debug("Inserted kill: ", insertResult.InsertedID)
+//	// 		roundKills = append(roundKills, insertResult.InsertedID.(primitive.ObjectID))
+//	// 	}
+//	// }
 
-	// bRound := demoparser.BsonRound{
+//	// bRound := demoparser.BsonRound{
 
-	// 	ObjectID:     primitive.NewObjectID(),
-	// 	TimeStart:    r.TimeStart,
-	// 	TimeEnd:      r.TimeEnd,
-	// 	TeamWon:      r.TeamWon,
-	// 	BombPlanted:  r.BombPlanted,
-	// 	BombDefused:  r.BombDefused,
-	// 	BombExploded: r.BombExploded,
-	// 	// Players:      roundPlayerIDs,
-	// 	Kills: roundKills,
-	// }
+//	// 	ObjectID:     primitive.NewObjectID(),
+//	// 	TimeStart:    r.TimeStart,
+//	// 	TimeEnd:      r.TimeEnd,
+//	// 	TeamWon:      r.TeamWon,
+//	// 	BombPlanted:  r.BombPlanted,
+//	// 	BombDefused:  r.BombDefused,
+//	// 	BombExploded: r.BombExploded,
+//	// 	// Players:      roundPlayerIDs,
+//	// 	Kills: roundKills,
+//	// }
 
-	// }
+//	// }
 
-	var rounds []primitive.ObjectID
-	players := make(map[uint64]uint64)
+//	var rounds []primitive.ObjectID
+//	players := make(map[uint64]uint64)
 
-	for _, r := range match.Rounds {
+//	for _, r := range match.Rounds {
 
-		if insertResult, err := ds.roundsCollection.InsertOne(ds.ctx, demoparser.NewBsonRound(*r)); err != nil {
-			return err
-		} else {
-			log.Debug("Inserted round: ", insertResult.InsertedID)
-			rounds = append(rounds, insertResult.InsertedID.(primitive.ObjectID))
-			for _, p := range r.Players {
-				players[p.SteamID64] = p.SteamID64
-			}
-		}
-	}
+//		if insertResult, err := ds.roundsCollection.InsertOne(ds.ctx, demoparser.NewBsonRound(*r)); err != nil {
+//			return err
+//		} else {
+//			log.Debug("Inserted round: ", insertResult.InsertedID)
+//			rounds = append(rounds, insertResult.InsertedID.(primitive.ObjectID))
+//			for _, p := range r.Players {
+//				players[p.SteamID64] = p.SteamID64
+//			}
+//		}
+//	}
 
-	uniquePlayers := make([]uint64, 0, len(players))
+//	uniquePlayers := make([]uint64, 0, len(players))
 
-	for k := range players {
-		uniquePlayers = append(uniquePlayers, k)
-	}
+//	for k := range players {
+//		uniquePlayers = append(uniquePlayers, k)
+//	}
 
-	// bMatch.Players = matchPlayerIDs
-	bMatch := demoparser.BsonMatch{
-		ObjectID:   primitive.NewObjectID(),
-		UploadTime: match.UploadTime,
-		Map:        match.Map,
-		Players:    uniquePlayers,
-		Rounds:     rounds,
-	}
+//	// bMatch.Players = matchPlayerIDs
+//	bMatch := demoparser.BsonMatch{
+//		ObjectID:   primitive.NewObjectID(),
+//		UploadTime: match.UploadTime,
+//		Map:        match.Map,
+//		Players:    uniquePlayers,
+//		Rounds:     rounds,
+//	}
 
-	if insertResult, err := ds.matchesCollection.InsertOne(ds.ctx, bMatch); err != nil {
-		return err
-	} else {
-		log.Debug("Inserted match: ", insertResult.InsertedID)
-	}
+//	if insertResult, err := ds.matchesCollection.InsertOne(ds.ctx, bMatch); err != nil {
+//		return err
+//	} else {
+//		log.Debug("Inserted match: ", insertResult.InsertedID)
+//	}
 
-	return nil
-}
+//	return nil
+//}
 
-func (ds *DataStorage) GetPlayerObjectBySteamID(steamID uint64) (primitive.ObjectID, error) {
-	//TODO implement
-	return primitive.NewObjectID(), nil
-}
+//func (ds *DataStorage) GetPlayerObjectBySteamID(steamID uint64) (primitive.ObjectID, error) {
+//	//TODO implement
+//	return primitive.NewObjectID(), nil
+//}
 
-func objectIDFromUint64(i uint64) primitive.ObjectID {
-	var ID primitive.ObjectID
-	binary.LittleEndian.PutUint64(ID[:], uint64(i))
-	return ID
-}
+//func objectIDFromUint64(i uint64) primitive.ObjectID {
+//	var ID primitive.ObjectID
+//	binary.LittleEndian.PutUint64(ID[:], uint64(i))
+//	return ID
+//}

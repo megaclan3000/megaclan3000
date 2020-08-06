@@ -5,6 +5,7 @@ import (
 
 	// "github.com/golang/geo/r3"
 	common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
+	"github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
 	// "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
 	// "go.mongodb.org/mongo-driver/bson"
 	// "go.mongodb.org/mongo-driver/bson/primitive"
@@ -24,10 +25,21 @@ type InfoStruct struct {
 }
 
 type ScoreboardGeneral struct {
-	MapName     string
-	MapIconURL  string
-	UploadTime  time.Time
-	DemoLinkURL string
+	TeamWon       bool
+	MapName       string
+	MapIconURL    string
+	UploadTime    time.Time
+	MatchDuration time.Duration
+	DemoLinkURL   string
+	MembersTeamA  []ScoreboardTeamMemberInfo
+	MembersTeamB  []ScoreboardTeamMemberInfo
+}
+
+type ScoreboardTeamMemberInfo struct {
+	AvatarURL   string
+	Name        string
+	RankIconURL string
+	ClanTag     string
 }
 
 type RoundKill struct {
@@ -39,7 +51,7 @@ type RoundKill struct {
 
 type ScoreboardRound struct {
 	TeamWon        common.Team
-	WinReason      common.WinReason
+	WinReason      events.RoundEndReason
 	Duration       time.Duration
 	TeamAKills     []RoundKill
 	TeamASurvivors int
@@ -47,9 +59,7 @@ type ScoreboardRound struct {
 	TeamBKills     []RoundKill
 }
 type ScoreboardLine struct {
-	AvatarURL        string
-	Name             string
-	RankIconURL      string
+	PlayerInfo       ScoreboardTeamMemberInfo
 	Kills            int
 	Deaths           int
 	Assists          int
@@ -98,10 +108,11 @@ type MegacoinPlayer struct {
 	ForCriteriaC int
 }
 
-func GetMatchInfo(id int) InfoStruct {
+func GetMatchInfo(id int) (InfoStruct, error) {
 	//TODO
 	p := NewMyParser()
 	var info InfoStruct
-	p.Parse("", &info)
-	return info
+	//TODO get correct path for demo file
+	err := p.Parse("internal/demoparser/testdata/demo1.dem", &info)
+	return info, err
 }

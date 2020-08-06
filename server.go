@@ -139,8 +139,14 @@ func handlerScoreboard(w http.ResponseWriter, r *http.Request) {
 func handlerMatch(w http.ResponseWriter, r *http.Request) {
 
 	var info demoparser.InfoStruct
+	log.Warning("entering getmatchinfo")
+	var err error
+
 	//TODO get correct id
-	info = demoparser.GetMatchInfo(1)
+	info, err = demoparser.GetMatchInfo(1)
+	if err != nil {
+		panic(err)
+	}
 
 	if err := t.ExecuteTemplate(w, "match.html", info); err != nil {
 		log.Warn(err)
