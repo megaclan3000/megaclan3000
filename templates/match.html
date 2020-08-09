@@ -243,7 +243,39 @@
 					<th></th>
 				</table>
 			</div>
-			<div id="tab-rounds" class="col s12 white"> ROUNDS </div>
+			<div id="tab-rounds" class="col s12 white">
+<div id="tab-scoreboard" class="col s12 white">
+
+
+				<table class="highlight">
+					<thead>
+						<tr>
+							<th>Avatar</th>
+							<th>Player</th>
+							<th>Rank</th>
+						</tr>
+					</thead>
+					<tbody>
+
+
+						{{range $p := .Scoreboard.TeamA}}
+						<tr>
+
+							<td> <img class="tableimage" src="{{ $p.PlayerInfo.AvatarURL }}" alt=""></img> </td>
+							<td>{{$p.PlayerInfo.Name}}<div class="orange-text">{{ $p.PlayerInfo.ClanTag }}</div></td>
+							<td> <img class="tableimage" src="{{ $p.PlayerInfo.RankIconURL }}" alt=""></img></td>
+							<td>{{ $p.HLTV}}</td>
+						</tr>
+						{{end}}
+
+
+					</tbody>
+					<th></th>
+				</table>
+			</div>
+				ROUNDS 
+			</div>
+
 			<div id="tab-weapons" class="col s12 white"> WEAPONS </div>
 			<div id="tab-duels" class="col s12 white"> DUELS</div>
 			<div id="tab-heatmaps" class="col s12 white"> HEATMAPS</div>
