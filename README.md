@@ -37,6 +37,8 @@ example](./config.json.example) and copy it over or rename it to `config.json`
 ### Start the mongoDB container
 ```
 docker run -d -p 27017:27017 -v /data:/data/db mongo
+
+sudo docker run -v /home/pablo/.go/src/github.com/megaclan3000/megaclan3000:/var/megaclan3000 -p 8080:8080 pinpox/megaclan3000
 ```
 
 ### Service file
