@@ -33,7 +33,7 @@ func NewSteamConfig(configPath string) (SteamConfig, error) {
 	err = json.Unmarshal(byteValue, &conf)
 	if err != nil {
 		b, _ := ioutil.ReadAll(jsonFile)
-		log.Panicln(b)
+		log.Println(b)
 	}
 	return conf, err
 }
