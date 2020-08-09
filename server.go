@@ -24,13 +24,16 @@ func main() {
 
 	// -verbose flag to set logging level to DebugLevel
 	flagVerbose := flag.Bool("verbose", false, "Enable verbose output")
-	flagConfig = *flag.String("config", "./config", "Specify altenative config file location")
+
+	flag.StringVar(&flagConfig, "config", "./config.json", "path to config file")
 
 	flag.Parse()
 
 	if *flagVerbose {
 		log.SetLevel(log.DebugLevel)
 	}
+
+	log.Println("Starting with config file:", flagConfig)
 
 	// Output to stdout instead of the default stderr
 	// log.SetOutput(os.Stdout)
