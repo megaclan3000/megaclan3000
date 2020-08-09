@@ -33,6 +33,7 @@ func NewSteamConfig(configPath string) (SteamConfig, error) {
 	err = json.Unmarshal(byteValue, &conf)
 	if err != nil {
 		b, _ := ioutil.ReadAll(jsonFile)
+		log.Println("Error during startup. Config file used:", configPath)
 		log.Println(b)
 	}
 	return conf, err
