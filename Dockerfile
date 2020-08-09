@@ -24,4 +24,4 @@ RUN go build -o main .
 EXPOSE 3000
 
 # Command to run when starting the container
-CMD ["/app/main -config /var/megaclan3000/config.json"]
+CMD "/app/main -config /var/megaclan3000/config.json"
