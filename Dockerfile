@@ -21,7 +21,7 @@ COPY . .
 RUN go build -o main .
 
 # Export necessary port
-EXPOSE 3000
+EXPOSE 8080
 
 # Command to run when starting the container
 ENTRYPOINT ["/app/main", "-config", "/var/megaclan3000/config.json"]
