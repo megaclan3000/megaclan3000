@@ -18,11 +18,14 @@ import (
 var t *template.Template
 var datastorage *DataStorage
 var steamClient *steamclient.SteamClient
+var flagConfig string
 
 func main() {
 
 	// -verbose flag to set logging level to DebugLevel
 	flagVerbose := flag.Bool("verbose", false, "Enable verbose output")
+	flagConfig = *flag.String("config", "./config", "Specify altenative config file location")
+
 	flag.Parse()
 
 	if *flagVerbose {
@@ -38,7 +41,7 @@ func main() {
 	log.SetFormatter(Formatter)
 
 	// Read config and pull initial data
-	steamClient = steamclient.NewSteamClient("./config.json")
+	steamClient = steamclient.NewSteamClient(flagConfig)
 
 	log.Info("Creating datastorage and getting initial values")
 	datastorage = &DataStorage{Players: steamClient.GetPlayers()}
