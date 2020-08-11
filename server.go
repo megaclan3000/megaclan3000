@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"io/ioutil"
 	"sort"
 	"strconv"
 	"text/template"
@@ -79,6 +80,14 @@ func main() {
 }
 
 func parseTemplates(h http.HandlerFunc) http.HandlerFunc {
+
+	files, err := ioutil.ReadDir("./templates")
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, f := range files {
+		log.Println(f.Name())
+	}
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		var err error
