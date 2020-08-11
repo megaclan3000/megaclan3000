@@ -25,21 +25,35 @@ Your contribution will **keep the server running** ;)
 
 ## Deployment
 
-To setup the application, clone the repo to your server and build it using `go
-build`.
-
 ### Configuration `config.json`
 
 You will need to create a configuration with your Steam API-key and the IDs you
 want to include.  To get started use the provided [configuration
 example](./config.json.example) and copy it over or rename it to `config.json`
 
-### Start the mongoDB container
-```
-docker run -d -p 27017:27017 -v /data:/data/db mongo
+### Start with Docker
 
-sudo docker run -v /home/pablo/.go/src/github.com/megaclan3000/megaclan3000:/var/megaclan3000 -p 8080:8080 pinpox/megaclan3000
+The application is available as docker container, which is automatically build
+on new pushes to master (`latest` tag) and on releases (`vX.X` tag). It requires
+a docker volume with the configuration file to be mounted in
+`/var/megaclan3000/` inside the container. 
+
+To start the container pull the image and run a new container, exposing the 8080
+port to the host system. Place the config file as created above inside a folder
+and mount it.
+
 ```
+docker pull pinpox/megaclan3000
+docker run -v /path/to/local/data/folder:/var/megaclan3000 -p 8080:8080 pinpox/megaclan3000
+```
+
+You should see the container running with `docker ps` and be able to browse
+`localhost:8080` to view the application.
+
+### Start from binary
+
+To setup the application from source, clone the repo to your server and build it using `go
+build`.
 
 ### Service file
 
