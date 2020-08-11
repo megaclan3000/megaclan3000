@@ -14,8 +14,8 @@ import (
 type InfoStruct struct {
 	General    ScoreboardGeneral
 	Scoreboard struct {
-		TeamA []ScoreboardLine
-		TeamB []ScoreboardLine
+		TeamClan  []ScoreboardLine
+		TeamEnemy []ScoreboardLine
 	}
 	Rounds            []ScoreboardRound
 	Weapons           []ScoreboardWeaponLine
@@ -25,7 +25,7 @@ type InfoStruct struct {
 }
 
 type ScoreboardGeneral struct {
-	TeamWon       bool
+	ClanWonMatch  bool
 	MapName       string
 	MapIconURL    string
 	UploadTime    time.Time
@@ -42,19 +42,22 @@ type ScoreboardTeamMemberInfo struct {
 }
 
 type RoundKill struct {
-	VictimSteamID64 uint64
-	KillerSteamID64 uint64
-	KillerWeapon    string
+	VictimSteamID64  uint64
+	VictimTeamString string
+	KillerSteamID64  uint64
+	KillerTeamString string
+	KillerWeapon     string
 }
 
 type ScoreboardRound struct {
-	TeamWon        common.Team
-	WinReason      events.RoundEndReason
-	Duration       time.Duration
-	TeamAKills     []RoundKill
-	TeamASurvivors int
-	TeamBSurvivors int
-	TeamBKills     []RoundKill
+	TeamWon            common.Team
+	ClanWonRound       bool
+	WinReason          events.RoundEndReason
+	Duration           time.Duration
+	TeamClanKills      []RoundKill
+	TeamClanSurvivors  int
+	TeamEnemySurvivors int
+	TeamEnemyKills     []RoundKill
 }
 type ScoreboardLine struct {
 	PlayerSteamID64  uint64
@@ -95,8 +98,8 @@ type WeaponUser struct {
 type ScoreboardWeaponLine struct {
 	WeaponName    string
 	WeaponIconURL string
-	TeamA         []WeaponUser
-	TeamB         []WeaponUser
+	TeamClan      []WeaponUser
+	TeamEnemy     []WeaponUser
 }
 
 type MegacoinPlayer struct {

@@ -35,6 +35,7 @@ type parsingState struct {
 	// Current round
 	Round       int
 	WarmupKills []events.Kill
+	currentTeam common.Team
 }
 
 func (p *MyParser) Parse(path string, m *InfoStruct) error {
@@ -98,19 +99,35 @@ func (p *MyParser) handlerKill(e events.Kill) {
 	if p.parser.GameState().IsWarmupPeriod() {
 		p.state.WarmupKills = append(p.state.WarmupKills, e)
 	} else {
+		log.Warning(e.Weapon.String())
+		var weapon string
+		weapon = e.Weapon.String()
+		log.Printf("%T\n", weapon)
 		kill := RoundKill{
-			KillerWeapon:    e.Weapon.OriginalString,
-			KillerSteamID64: e.Killer.SteamID64,
-			VictimSteamID64: e.Victim.SteamID64,
+			KillerWeapon:     weapon,
+			KillerSteamID64:  e.Killer.SteamID64,
+			KillerTeamString: teamString(e.Killer.Team),
+			VictimTeamString: teamString(e.Victim.Team),
+			VictimSteamID64:  e.Victim.SteamID64,
 		}
 
-		if e.Killer.Team == common.TeamCounterTerrorists {
-			p.Match.Rounds[p.state.Round-1].TeamAKills = append(p.Match.Rounds[p.state.Round-1].TeamAKills, kill)
+		if e.Killer.Team == p.state.currentTeam {
+			p.Match.Rounds[p.state.Round-1].TeamClanKills = append(p.Match.Rounds[p.state.Round-1].TeamClanKills, kill)
+		} else {
+			p.Match.Rounds[p.state.Round-1].TeamEnemyKills = append(p.Match.Rounds[p.state.Round-1].TeamEnemyKills, kill)
 		}
+	}
+}
 
-		if e.Killer.Team == common.TeamTerrorists {
-			p.Match.Rounds[p.state.Round-1].TeamBKills = append(p.Match.Rounds[p.state.Round-1].TeamBKills, kill)
-		}
+func teamString(team common.Team) string {
+
+	switch team {
+	case common.TeamCounterTerrorists:
+		return "CT"
+	case common.TeamTerrorists:
+		return "T"
+	default:
+		return ""
 	}
 }
 
@@ -172,6 +189,20 @@ func (p *MyParser) handlerMatchStart(e events.MatchStart) {
 
 	p.Match.General.PlayerInfos = make(map[uint64]*ScoreboardTeamMemberInfo)
 
+	var clanStartTeam common.Team
+	for _, player := range p.parser.GameState().Participants().Playing() {
+		if player.ClanTag() == "megaclan3000" {
+			clanStartTeam = player.Team
+		}
+	}
+
+	p.Match.General.PlayerInfos[0] = &ScoreboardTeamMemberInfo{
+		AvatarURL:   getAvatarUrlFromSteamID64(0),
+		Name:        "BOT",
+		RankIconURL: getRankUrlFromSteamID64(0),
+		ClanTag:     "",
+	}
+
 	for _, ct := range p.parser.GameState().Participants().Playing() {
 		if ct.IsBot {
 			continue
@@ -226,16 +257,16 @@ func (p *MyParser) handlerMatchStart(e events.MatchStart) {
 			HLTV:             0,
 		}
 
-		if ct.Team == common.TeamCounterTerrorists {
-			p.Match.Scoreboard.TeamA = append(p.Match.Scoreboard.TeamA, line)
-		}
-		if ct.Team == common.TeamTerrorists {
-			p.Match.Scoreboard.TeamB = append(p.Match.Scoreboard.TeamB, line)
+		if ct.Team == clanStartTeam {
+			p.Match.Scoreboard.TeamClan = append(p.Match.Scoreboard.TeamClan, line)
+		} else {
+			p.Match.Scoreboard.TeamEnemy = append(p.Match.Scoreboard.TeamEnemy, line)
 		}
 
 	}
 
 }
+
 func (p *MyParser) handlerRoundStart(e events.RoundStart) {
 
 	// An new round has started, increase counter and add it to slice of the
@@ -243,6 +274,20 @@ func (p *MyParser) handlerRoundStart(e events.RoundStart) {
 	// handler, sice there might happen things "between" the rounds, i.e in the
 	// time when a round has ended but the new one has not yet started
 	p.state.Round += 1
+
+	for _, ct := range p.parser.GameState().TeamCounterTerrorists().Members() {
+		if ct.ClanTag() == "megaclan3000" {
+			p.state.currentTeam = common.TeamCounterTerrorists
+			break
+		}
+	}
+
+	for _, t := range p.parser.GameState().TeamTerrorists().Members() {
+		if t.ClanTag() == "megaclan3000" {
+			p.state.currentTeam = common.TeamTerrorists
+			break
+		}
+	}
 
 	round := ScoreboardRound{}
 	p.Match.Rounds = append(p.Match.Rounds, round)
@@ -263,5 +308,7 @@ func (p *MyParser) handlerRoundEnd(e events.RoundEnd) {
 
 	// Set the winning team
 	p.Match.Rounds[p.state.Round-1].TeamWon = e.Winner
+
+	p.Match.Rounds[p.state.Round-1].ClanWonRound = e.Winner == p.state.currentTeam
 
 }

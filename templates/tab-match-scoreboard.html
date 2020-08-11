@@ -38,7 +38,7 @@
 
 
 
-		{{range $p := .Scoreboard.TeamA}}
+		{{range $p := .Scoreboard.TeamClan}}
 {{$player:= index $infos .PlayerSteamID64}}
 		<tr>
 			<td> <img class="tableimage" src="{{ $player.AvatarURL }}" alt=""></img> </td>
@@ -74,7 +74,7 @@
 
 		<tr><td></td></tr>
 
-		{{range $p := .Scoreboard.TeamB}}
+		{{range $p := .Scoreboard.TeamEnemy}}
 {{$player:= index $infos .PlayerSteamID64}}
 		<tr>
 			<td> <img class="tableimage" src="{{ $player.AvatarURL }}" alt=""></img> </td>

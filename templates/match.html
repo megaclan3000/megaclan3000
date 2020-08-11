@@ -54,7 +54,7 @@
 
 							{{$infos:= .General.PlayerInfos}}
 
-							{{range  $p := .Scoreboard.TeamA}}
+							{{range  $p := .Scoreboard.TeamClan}}
 								{{$player:= index $infos .PlayerSteamID64}}
 								<div class="col s1">
 									<span> <img class="avatar circle" src="{{$player.AvatarURL}}" alt=""> </span>
@@ -67,7 +67,7 @@
 								<h3>WIN</br>12:0</h3>
 							</div>
 
-							{{range  $p := .Scoreboard.TeamB}}
+							{{range  $p := .Scoreboard.TeamEnemy}}
 								{{$player:= index $infos .PlayerSteamID64}}
 								<div class="col s1">
 									<span> <img class="avatar circle" src="{{$player.AvatarURL}}" alt=""> </span>

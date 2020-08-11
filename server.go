@@ -146,12 +146,13 @@ func handlerMatch(w http.ResponseWriter, r *http.Request) {
 
 	var info demoparser.InfoStruct
 	log.Warning("entering getmatchinfo")
-	var err error
 
 	//TODO get correct id
-	info, err = demoparser.GetMatchInfo(1)
-	if err != nil {
-		panic(err)
+	info, _ = demoparser.GetMatchInfo(1)
+	//TODO download avatar images
+
+	for e := range info.General.PlayerInfos {
+		info.General.PlayerInfos[e].AvatarURL = steamClient.GetAvatarUrl(e)
 	}
 
 	if err := t.ExecuteTemplate(w, "match.html", info); err != nil {
