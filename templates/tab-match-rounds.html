@@ -18,13 +18,15 @@
 <ul class="collapsible">
 
 	{{$infos:= .General.PlayerInfos}}
-	{{range $r := .Rounds}}
+	{{range $i, $r := .Rounds}}
 
 	<li>
 		<div class="collapsible-header valign-wrapper wrapper">
 
 			<div class="wrapped">
 				<img style="width:30px;" src="/public/img/teams/2.jpg" class="circle" alt="">
+				{{$i}}
+
 			</div>
 
 
@@ -49,7 +51,7 @@
 
 
 			<div class="center-align wrapped" style="font-size:20px;">
-				<span class="orange-text">5</span>:<span class="blue-text">1</span>
+				<span class="orange-text">{{$r.ScoreClan}}</span>:<span class="blue-text">{{$r.ScoreEnemy}}</span>
 			</div>
 			<div class="wrapped"> </div>
 
@@ -58,7 +60,7 @@
 			<div class="wrapped"> </div>
 
 			<div class="center-align wrapped" style="font-size:20px">
-				<span class="orange-text">5</span>:<span class="blue-text">1</span>
+				<span class="orange-text">{{$r.ScoreClan}}</span>:<span class="blue-text">{{$r.ScoreEnemy}}</span>
 			</div>
 
 			<div class="left-align wrapped" >
@@ -124,6 +126,7 @@
 				</div>
 
 				<span>
+
 
 				<span class="orange-text">5</span>:<span class="blue-text">1</span>
 </span> 

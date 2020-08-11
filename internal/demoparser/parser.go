@@ -309,6 +309,15 @@ func (p *MyParser) handlerRoundEnd(e events.RoundEnd) {
 	// Set the winning team
 	p.Match.Rounds[p.state.Round-1].TeamWon = e.Winner
 
-	p.Match.Rounds[p.state.Round-1].ClanWonRound = e.Winner == p.state.currentTeam
+	if e.Winner == p.state.currentTeam {
+		p.Match.Rounds[p.state.Round-1].ClanWonRound = true
+	}
 
+	if p.state.currentTeam == common.TeamCounterTerrorists {
+		p.Match.Rounds[p.state.Round-1].ScoreClan = p.parser.GameState().TeamCounterTerrorists().Score()
+		p.Match.Rounds[p.state.Round-1].ScoreEnemy = p.parser.GameState().TeamTerrorists().Score()
+	} else {
+		p.Match.Rounds[p.state.Round-1].ScoreEnemy = p.parser.GameState().TeamCounterTerrorists().Score()
+		p.Match.Rounds[p.state.Round-1].ScoreClan = p.parser.GameState().TeamTerrorists().Score()
+	}
 }

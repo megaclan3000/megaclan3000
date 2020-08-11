@@ -26,6 +26,8 @@ type InfoStruct struct {
 
 type ScoreboardGeneral struct {
 	ClanWonMatch  bool
+	ScoreClan     int
+	ScoreEnemy    int
 	MapName       string
 	MapIconURL    string
 	UploadTime    time.Time
@@ -57,6 +59,8 @@ type ScoreboardRound struct {
 	TeamClanKills      []RoundKill
 	TeamClanSurvivors  int
 	TeamEnemySurvivors int
+	ScoreClan          int
+	ScoreEnemy         int
 	TeamEnemyKills     []RoundKill
 }
 type ScoreboardLine struct {
