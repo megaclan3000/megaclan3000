@@ -14,6 +14,9 @@ Our custom CS:GO stats page: https://megaclan3000.de
 ![golangci-lint](https://github.com/megaclan3000/megaclan3000/workflows/golangci-lint/badge.svg)
 ![Labeler](https://github.com/megaclan3000/megaclan3000/workflows/Labeler/badge.svg)
 
+![Docker Pulls](https://img.shields.io/docker/pulls/pinpox/megaclan3000)
+![Docker Image Version (latest by date)](https://img.shields.io/docker/v/pinpox/megaclan3000)
+
 ![](https://i.imgur.com/tQzdzAd.png)
 
 ## Suport the developers
