@@ -31,8 +31,7 @@ type ScoreboardGeneral struct {
 	UploadTime    time.Time
 	MatchDuration time.Duration
 	DemoLinkURL   string
-	MembersTeamA  []ScoreboardTeamMemberInfo
-	MembersTeamB  []ScoreboardTeamMemberInfo
+	PlayerInfos   map[uint64]*ScoreboardTeamMemberInfo
 }
 
 type ScoreboardTeamMemberInfo struct {
@@ -43,10 +42,9 @@ type ScoreboardTeamMemberInfo struct {
 }
 
 type RoundKill struct {
-	KillerName      string
-	KillerAvatarURL string
+	VictimSteamID64 uint64
+	KillerSteamID64 uint64
 	KillerWeapon    string
-	VictimName      string
 }
 
 type ScoreboardRound struct {
@@ -59,7 +57,7 @@ type ScoreboardRound struct {
 	TeamBKills     []RoundKill
 }
 type ScoreboardLine struct {
-	PlayerInfo       ScoreboardTeamMemberInfo
+	PlayerSteamID64  uint64
 	Kills            int
 	Deaths           int
 	Assists          int

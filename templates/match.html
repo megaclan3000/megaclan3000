@@ -11,7 +11,9 @@
 	<body>
 
 
+		<!-- TODO put styles in public folder -->
 		<style type="text/css" media="screen">
+
 
 
 .scorediv {
@@ -19,7 +21,6 @@
 	vertical-align: middle;
 	line-height: 90px;
 }
-
 
 .scoretitleimg{
 	height:200px;
@@ -32,17 +33,13 @@
 }
 
 .avatar{
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
 }
 
-
 		</style>
-
-
-
 
 		<div class="row">
 			<div class="col s12">
@@ -55,30 +52,29 @@
 
 						<div class="row">
 
-							{{range $p := .Scoreboard.TeamA}}
-							<div class="col s1">
-								<span> <img class="avatar circle" src="{{$p.PlayerInfo.AvatarURL}}" alt=""> </span>
-								<span class="title truncate center-align"> {{$p.PlayerInfo.Name}} </span>
-								<span> <img src="{{$p.PlayerInfo.RankIconURL}}" style="height:30px;"alt=""> </span>
-							</div>
+							{{$infos:= .General.PlayerInfos}}
 
+							{{range  $p := .Scoreboard.TeamA}}
+								{{$player:= index $infos .PlayerSteamID64}}
+								<div class="col s1">
+									<span> <img class="avatar circle" src="{{$player.AvatarURL}}" alt=""> </span>
+									<span class="title truncate center-align"> {{$player.Name}} </span>
+									<span> <img src="{{$player.RankIconURL}}" style="height:30px;"alt=""> </span>
+								</div>
 							{{end}}
 
 							<div class="col s2 scorediv">
-
 								<h3>WIN</br>12:0</h3>
-
 							</div>
 
-							{{range $p := .Scoreboard.TeamB}}
-							<div class="col s1">
-								<span> <img class="avatar circle" src="{{$p.PlayerInfo.AvatarURL}}" alt=""> </span>
-								<span class="title truncate center-align"> {{$p.PlayerInfo.Name}} </span>
-								<span> <img src="{{$p.PlayerInfo.RankIconURL}}" style="height:30px;"alt=""> </span>
-							</div>
-
+							{{range  $p := .Scoreboard.TeamB}}
+								{{$player:= index $infos .PlayerSteamID64}}
+								<div class="col s1">
+									<span> <img class="avatar circle" src="{{$player.AvatarURL}}" alt=""> </span>
+									<span class="title truncate center-align"> {{$player.Name}} </span>
+									<span> <img src="{{$player.RankIconURL}}" style="height:30px;"alt=""> </span>
+								</div>
 							{{end}}
-
 
 						</div>
 
@@ -131,155 +127,12 @@
 				</ul>
 			</div>
 
-			<div id="tab-scoreboard" class="col s12 white">
-
-
-				<table class="highlight">
-					<thead>
-						<tr>
-							<th>Avatar</th>
-							<th>Player</th>
-							<th>Rank</th>
-							<th>Kills</th>
-							<th>Deaths</th>
-							<th>A</th>
-							<th>+/-</th>
-							<th>K/D</th>
-							<th>ADR</th>
-							<th>HS%</th>
-							<th>FK</th>
-							<th>FD</th>
-							<th>K</th>
-							<th>D</th>
-							<th>FK</th>
-							<th>FD</th>
-							<th>1v5</th>
-							<th>1v4</th>
-							<th>1v3</th>
-							<th>1v2</th>
-							<th>1v1</th>
-							<th>5k</th>
-							<th>4k</th>
-							<th>3k</th>
-							<th>2k</th>
-							<th>1k</th>
-							<th>KAST</th>
-							<th>HLTV</th>
-						</tr>
-					</thead>
-					<tbody>
-
-
-						{{range $p := .Scoreboard.TeamA}}
-						<tr>
-							<td> <img class="tableimage" src="{{ $p.PlayerInfo.AvatarURL }}" alt=""></img> </td>
-							<td>{{$p.PlayerInfo.Name}}<div class="orange-text">{{ $p.PlayerInfo.ClanTag }}</div></td>
-							<td> <img class="tableimage" src="{{ $p.PlayerInfo.RankIconURL }}" alt=""></img></td>
-							<td>{{ $p.Kills }}</td>
-							<td>{{ $p.Deaths }}</td>
-							<td>{{ $p.Assists }}</td>
-							<td>{{ $p.KDDiff }}</td>
-							<td>{{ $p.KD }}</td>
-							<td>{{ $p.ADR }}</td>
-							<td>{{ $p.HSPrecent }}</td>
-							<td>{{ $p.FirstKills }}</td>
-							<td>{{ $p.FirstDeaths }}</td>
-							<td>{{ $p.TradeKills }}</td>
-							<td>{{ $p.TradeDeaths }}</td>
-							<td>{{ $p.TradeFirstKills }}</td>
-							<td>{{ $p.TradeFirstDeaths }}</td>
-							<td>{{ $p.RoundsWonV5 }}</td>
-							<td>{{ $p.RoundsWonV4 }}</td>
-							<td>{{ $p.RoundsWonV3 }}</td>
-							<td>{{ $p.RoundsWonV2 }}</td>
-							<td>{{ $p.RoundsWonV1 }}</td>
-							<td>{{ $p.Rounds5k }}</td>
-							<td>{{ $p.Rounds4k }}</td>
-							<td>{{ $p.Rounds3k }}</td>
-							<td>{{ $p.Rounds2k }}</td>
-							<td>{{ $p.Rounds1k }}</td>
-							<td>{{ $p.KAST }}</td>
-							<td>{{ $p.HLTV}}</td>
-						</tr>
-						{{end}}
-
-						<tr><td></td></tr>
-
-						{{range $p := .Scoreboard.TeamB}}
-						<tr>
-							<td> <img class="tableimage" src="{{ $p.PlayerInfo.AvatarURL }}" alt=""></img> </td>
-							<td>{{$p.PlayerInfo.Name}}<div class="orange-text">{{ $p.PlayerInfo.ClanTag }}</div></td>
-							<td> <img class="tableimage" src="{{ $p.PlayerInfo.RankIconURL }}" alt=""></img></td>
-							<td>{{ $p.Kills }}</td>
-							<td>{{ $p.Deaths }}</td>
-							<td>{{ $p.Assists }}</td>
-							<td>{{ $p.KDDiff }}</td>
-							<td>{{ $p.KD }}</td>
-							<td>{{ $p.ADR }}</td>
-							<td>{{ $p.HSPrecent }}</td>
-							<td>{{ $p.FirstKills }}</td>
-							<td>{{ $p.FirstDeaths }}</td>
-							<td>{{ $p.TradeKills }}</td>
-							<td>{{ $p.TradeDeaths }}</td>
-							<td>{{ $p.TradeFirstKills }}</td>
-							<td>{{ $p.TradeFirstDeaths }}</td>
-							<td>{{ $p.RoundsWonV5 }}</td>
-							<td>{{ $p.RoundsWonV4 }}</td>
-							<td>{{ $p.RoundsWonV3 }}</td>
-							<td>{{ $p.RoundsWonV2 }}</td>
-							<td>{{ $p.RoundsWonV1 }}</td>
-							<td>{{ $p.Rounds5k }}</td>
-							<td>{{ $p.Rounds4k }}</td>
-							<td>{{ $p.Rounds3k }}</td>
-							<td>{{ $p.Rounds2k }}</td>
-							<td>{{ $p.Rounds1k }}</td>
-							<td>{{ $p.KAST }}</td>
-							<td>{{ $p.HLTV}}</td>
-
-						</tr>
-						{{end}}
-
-					</tbody>
-					<th></th>
-				</table>
-			</div>
-			<div id="tab-rounds" class="col s12 white">
-<div id="tab-scoreboard" class="col s12 white">
-
-
-				<table class="highlight">
-					<thead>
-						<tr>
-							<th>Avatar</th>
-							<th>Player</th>
-							<th>Rank</th>
-						</tr>
-					</thead>
-					<tbody>
-
-
-						{{range $p := .Scoreboard.TeamA}}
-						<tr>
-
-							<td> <img class="tableimage" src="{{ $p.PlayerInfo.AvatarURL }}" alt=""></img> </td>
-							<td>{{$p.PlayerInfo.Name}}<div class="orange-text">{{ $p.PlayerInfo.ClanTag }}</div></td>
-							<td> <img class="tableimage" src="{{ $p.PlayerInfo.RankIconURL }}" alt=""></img></td>
-							<td>{{ $p.HLTV}}</td>
-						</tr>
-						{{end}}
-
-
-					</tbody>
-					<th></th>
-				</table>
-			</div>
-				ROUNDS 
-			</div>
-
-			<div id="tab-weapons" class="col s12 white"> WEAPONS </div>
-			<div id="tab-duels" class="col s12 white"> DUELS</div>
-			<div id="tab-heatmaps" class="col s12 white"> HEATMAPS</div>
-			<div id="tab-megacoins" class="col s12 white"> MEGACOINS</div>
+			<div id="tab-scoreboard" class="col s12 white">{{template "tab-match-scoreboard.html" .}}</div>
+			<div id="tab-rounds" class="col s12 white">{{template "tab-match-rounds.html" .}}</div>
+			<div id="tab-weapons" class="col s12 white">{{template "tab-match-weapons.html" .}}</div>
+			<div id="tab-duels" class="col s12 white">{{template "tab-match-duels.html" .}}</div>
+			<div id="tab-heatmaps" class="col s12 white">{{template "tab-match-heatmaps.html" .}}</div>
+			<div id="tab-megacoins" class="col s12 white">{{template "tab-match-megacoins.html" .}}</div>
 		</div>
 
 		<script>

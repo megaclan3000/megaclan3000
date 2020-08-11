@@ -34,11 +34,16 @@
 	<tbody>
 
 
+{{$infos:= .General.PlayerInfos}}
+
+
+
 		{{range $p := .Scoreboard.TeamA}}
+{{$player:= index $infos .PlayerSteamID64}}
 		<tr>
-			<td> <img class="tableimage" src="{{ $p.PlayerInfo.AvatarURL }}" alt=""></img> </td>
-			<td>{{$p.PlayerInfo.Name}}<div class="orange-text">{{ $p.PlayerInfo.ClanTag }}</div></td>
-			<td> <img class="tableimage" src="{{ $p.PlayerInfo.RankIconURL }}" alt=""></img></td>
+			<td> <img class="tableimage" src="{{ $player.AvatarURL }}" alt=""></img> </td>
+			<td>{{$player.Name}}<div class="orange-text">{{ $player.ClanTag }}</div></td>
+			<td> <img class="tableimage" src="{{ $player.RankIconURL }}" alt=""></img></td>
 			<td>{{ $p.Kills }}</td>
 			<td>{{ $p.Deaths }}</td>
 			<td>{{ $p.Assists }}</td>
@@ -70,10 +75,11 @@
 		<tr><td></td></tr>
 
 		{{range $p := .Scoreboard.TeamB}}
+{{$player:= index $infos .PlayerSteamID64}}
 		<tr>
-			<td> <img class="tableimage" src="{{ $p.PlayerInfo.AvatarURL }}" alt=""></img> </td>
-			<td>{{$p.PlayerInfo.Name}}<div class="orange-text">{{ $p.PlayerInfo.ClanTag }}</div></td>
-			<td> <img class="tableimage" src="{{ $p.PlayerInfo.RankIconURL }}" alt=""></img></td>
+			<td> <img class="tableimage" src="{{ $player.AvatarURL }}" alt=""></img> </td>
+			<td>{{$player.Name}}<div class="orange-text">{{ $player.ClanTag }}</div></td>
+			<td> <img class="tableimage" src="{{ $player.RankIconURL }}" alt=""></img></td>
 			<td>{{ $p.Kills }}</td>
 			<td>{{ $p.Deaths }}</td>
 			<td>{{ $p.Assists }}</td>

@@ -7,7 +7,7 @@ import (
 	"os"
 
 	log "github.com/sirupsen/logrus"
-	// "strconv"
+	"strconv"
 	"time"
 
 	demoinfocs "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs"
@@ -98,8 +98,19 @@ func (p *MyParser) handlerKill(e events.Kill) {
 	if p.parser.GameState().IsWarmupPeriod() {
 		p.state.WarmupKills = append(p.state.WarmupKills, e)
 	} else {
+		kill := RoundKill{
+			KillerWeapon:    e.Weapon.OriginalString,
+			KillerSteamID64: e.Killer.SteamID64,
+			VictimSteamID64: e.Victim.SteamID64,
+		}
 
-		// p.Match.Rounds[p.state.Round].Kills = append(p.Match.Rounds[p.state.Round].Kills, e)
+		if e.Killer.Team == common.TeamCounterTerrorists {
+			p.Match.Rounds[p.state.Round-1].TeamAKills = append(p.Match.Rounds[p.state.Round-1].TeamAKills, kill)
+		}
+
+		if e.Killer.Team == common.TeamTerrorists {
+			p.Match.Rounds[p.state.Round-1].TeamBKills = append(p.Match.Rounds[p.state.Round-1].TeamBKills, kill)
+		}
 	}
 }
 
@@ -130,23 +141,55 @@ func (p *MyParser) handlerPlayerHurt(e events.PlayerHurt) {
 // Handlers
 func (p *MyParser) handlerRankUpdate(e events.RankUpdate) {
 
-	//TODO set ranks icon URL
-	// for e := range collection {
+	//for  := range p.Match.General.PlayerInfos {
+	//	// pl.RankIconURL = "/public/img/ranks/" + strconv.Itoa(e.RankOld) + ".png"
+	//	pl.RankIconURL = getRankUrlFromSteamID64(e.SteamID64())
+	//}
 
-	// }
-	// 			RankIconURL: "public/img/ranks/" + ct.Ran,
-	//TODO
-	// fmt.Printf("Rank Update: %d went from rank %d to rank %d, change: %f\n", e.SteamID32, e.RankOld, e.RankNew, e.RankChange)
+	////TODO set ranks icon URL
+	//// for e := range collection {
+
+	//// }
+	//// 			RankIconURL: "public/img/ranks/" + ct.Ran,
+	////TODO
+	log.Printf("Rank Update: %d went from rank %d to rank %d, change: %f\n", e.SteamID32, e.RankOld, e.RankNew, e.RankChange)
+	p.Match.General.PlayerInfos[e.Player.SteamID64].RankIconURL = "/public/img/ranks/" + strconv.Itoa(e.RankOld) + ".png"
+}
+
+func getAvatarUrlFromSteamID64(steamID uint64) string {
+
+	// TODO implement and use througout the parser
+	return "/public/img/avatars/other.jpg"
+}
+
+func getRankUrlFromSteamID64(steamID uint64) string {
+
+	// TODO implement and use througout the parser
+	return "/public/img/ranks/1.png"
 }
 
 func (p *MyParser) handlerMatchStart(e events.MatchStart) {
+
+	p.Match.General.PlayerInfos = make(map[uint64]*ScoreboardTeamMemberInfo)
 
 	for _, ct := range p.parser.GameState().Participants().Playing() {
 		if ct.IsBot {
 			continue
 		}
 
-		avatarURL := "/public/img/avatars/other.jpg"
+		p.Match.General.PlayerInfos[ct.SteamID64] = &ScoreboardTeamMemberInfo{
+			AvatarURL:   getAvatarUrlFromSteamID64(ct.SteamID64),
+			Name:        ct.Name,
+			RankIconURL: getRankUrlFromSteamID64(ct.SteamID64),
+			ClanTag:     ct.ClanTag(),
+		}
+
+		// info := ScoreboardTeamMemberInfo{
+		// 	AvatarURL:   getAvatarUrlFromSteamID64(ct.SteamID64),
+		// 	Name:        ct.Name,
+		// 	RankIconURL: getRankUrlFromSteamID64(ct.SteamID64),
+		// 	ClanTag:     ct.ClanTag(),
+		// }
 
 		if ct.ClanTag() == "megaclan3000" {
 			//TODO fetch and use correct images
@@ -155,12 +198,7 @@ func (p *MyParser) handlerMatchStart(e events.MatchStart) {
 
 		line := ScoreboardLine{
 
-			PlayerInfo: ScoreboardTeamMemberInfo{
-				AvatarURL:   avatarURL,
-				Name:        ct.Name,
-				RankIconURL: "/public/img/ranks/17.png",
-				ClanTag:     ct.ClanTag(),
-			},
+			PlayerSteamID64:  ct.SteamID64,
 			Kills:            0,
 			Deaths:           0,
 			Assists:          0,
@@ -206,6 +244,9 @@ func (p *MyParser) handlerRoundStart(e events.RoundStart) {
 	// time when a round has ended but the new one has not yet started
 	p.state.Round += 1
 
+	round := ScoreboardRound{}
+	p.Match.Rounds = append(p.Match.Rounds, round)
+
 }
 
 func (p *MyParser) handlerBombPlanted(e events.BombPlanted) {
@@ -221,6 +262,6 @@ func (p *MyParser) handlerBombExplode(e events.BombExplode) {
 func (p *MyParser) handlerRoundEnd(e events.RoundEnd) {
 
 	// Set the winning team
-	// p.Match.Rounds[p.state.Round].TeamWon = e.Winner
+	p.Match.Rounds[p.state.Round-1].TeamWon = e.Winner
 
 }
