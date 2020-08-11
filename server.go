@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"io/ioutil"
 	"sort"
 	"strconv"
 	"text/template"
@@ -64,7 +63,7 @@ func main() {
 	r.HandleFunc("/imprint", parseTemplates(handlerImprint))
 
 	// Set custom 404 page
-	r.NotFoundHandler = http.HandlerFunc(handler404)
+	r.NotFoundHandler = http.HandlerFunc(parseTemplates(handler404))
 
 	// Set up the HTTP-server
 	srv := &http.Server{
@@ -80,14 +79,6 @@ func main() {
 }
 
 func parseTemplates(h http.HandlerFunc) http.HandlerFunc {
-
-	files, err := ioutil.ReadDir("./templates")
-	if err != nil {
-		log.Fatal(err)
-	}
-	for _, f := range files {
-		log.Println(f.Name())
-	}
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		var err error
