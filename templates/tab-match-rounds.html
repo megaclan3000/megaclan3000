@@ -1,0 +1,48 @@
+
+
+
+
+<ul class="collapsible">
+	{{range $r := .Rounds}}
+
+	<li>
+		<div class="collapsible-header">
+
+			<i class="material-icons">filter_drama</i>
+			Team WON:	{{$r.TeamWon}} 
+			Duration: {{$r.Duration}}
+			WinReason: {{$r.WinReason}}
+		</div>
+		<div class="collapsible-body">
+
+			<span>TeamAKills {{ range $k := $r.TeamAKills}}
+				Killer: {{$k.KillerName}}
+				KillerAvatarURL: {{$k.KillerAvatarURL}}
+				Weapon: {{$k.KillerWeapon}}
+				Victim: {{$k.VictimName}}
+				{{end}}
+			</span>
+
+
+			<span>TeamBKills {{ range $k := $r.TeamBKills}}
+				Killer: {{$k.KillerName}}
+				KillerAvatarURL: {{$k.KillerAvatarURL}}
+				Weapon: {{$k.KillerWeapon}}
+				Victim: {{$k.VictimName}}
+				{{end}}
+			</span>
+
+		</div>
+	</li>
+
+	{{end}}
+</ul>
+
+<script charset="utf-8">
+	$(document).ready(function(){
+	$('.collapsible').collapsible();
+  });
+</script>
+
+
+ROUNDS

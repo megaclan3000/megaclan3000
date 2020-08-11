@@ -1,0 +1,109 @@
+<table class="highlight">
+	<thead>
+		<tr>
+			<th>Avatar</th>
+			<th>Player</th>
+			<th>Rank</th>
+			<th>Kills</th>
+			<th>Deaths</th>
+			<th>A</th>
+			<th>+/-</th>
+			<th>K/D</th>
+			<th>ADR</th>
+			<th>HS%</th>
+			<th>FK</th>
+			<th>FD</th>
+			<th>K</th>
+			<th>D</th>
+			<th>FK</th>
+			<th>FD</th>
+			<th>1v5</th>
+			<th>1v4</th>
+			<th>1v3</th>
+			<th>1v2</th>
+			<th>1v1</th>
+			<th>5k</th>
+			<th>4k</th>
+			<th>3k</th>
+			<th>2k</th>
+			<th>1k</th>
+			<th>KAST</th>
+			<th>HLTV</th>
+		</tr>
+	</thead>
+	<tbody>
+
+
+		{{range $p := .Scoreboard.TeamA}}
+		<tr>
+			<td> <img class="tableimage" src="{{ $p.PlayerInfo.AvatarURL }}" alt=""></img> </td>
+			<td>{{$p.PlayerInfo.Name}}<div class="orange-text">{{ $p.PlayerInfo.ClanTag }}</div></td>
+			<td> <img class="tableimage" src="{{ $p.PlayerInfo.RankIconURL }}" alt=""></img></td>
+			<td>{{ $p.Kills }}</td>
+			<td>{{ $p.Deaths }}</td>
+			<td>{{ $p.Assists }}</td>
+			<td>{{ $p.KDDiff }}</td>
+			<td>{{ $p.KD }}</td>
+			<td>{{ $p.ADR }}</td>
+			<td>{{ $p.HSPrecent }}</td>
+			<td>{{ $p.FirstKills }}</td>
+			<td>{{ $p.FirstDeaths }}</td>
+			<td>{{ $p.TradeKills }}</td>
+			<td>{{ $p.TradeDeaths }}</td>
+			<td>{{ $p.TradeFirstKills }}</td>
+			<td>{{ $p.TradeFirstDeaths }}</td>
+			<td>{{ $p.RoundsWonV5 }}</td>
+			<td>{{ $p.RoundsWonV4 }}</td>
+			<td>{{ $p.RoundsWonV3 }}</td>
+			<td>{{ $p.RoundsWonV2 }}</td>
+			<td>{{ $p.RoundsWonV1 }}</td>
+			<td>{{ $p.Rounds5k }}</td>
+			<td>{{ $p.Rounds4k }}</td>
+			<td>{{ $p.Rounds3k }}</td>
+			<td>{{ $p.Rounds2k }}</td>
+			<td>{{ $p.Rounds1k }}</td>
+			<td>{{ $p.KAST }}</td>
+			<td>{{ $p.HLTV}}</td>
+		</tr>
+		{{end}}
+
+		<tr><td></td></tr>
+
+		{{range $p := .Scoreboard.TeamB}}
+		<tr>
+			<td> <img class="tableimage" src="{{ $p.PlayerInfo.AvatarURL }}" alt=""></img> </td>
+			<td>{{$p.PlayerInfo.Name}}<div class="orange-text">{{ $p.PlayerInfo.ClanTag }}</div></td>
+			<td> <img class="tableimage" src="{{ $p.PlayerInfo.RankIconURL }}" alt=""></img></td>
+			<td>{{ $p.Kills }}</td>
+			<td>{{ $p.Deaths }}</td>
+			<td>{{ $p.Assists }}</td>
+			<td>{{ $p.KDDiff }}</td>
+			<td>{{ $p.KD }}</td>
+			<td>{{ $p.ADR }}</td>
+			<td>{{ $p.HSPrecent }}</td>
+			<td>{{ $p.FirstKills }}</td>
+			<td>{{ $p.FirstDeaths }}</td>
+			<td>{{ $p.TradeKills }}</td>
+			<td>{{ $p.TradeDeaths }}</td>
+			<td>{{ $p.TradeFirstKills }}</td>
+			<td>{{ $p.TradeFirstDeaths }}</td>
+			<td>{{ $p.RoundsWonV5 }}</td>
+			<td>{{ $p.RoundsWonV4 }}</td>
+			<td>{{ $p.RoundsWonV3 }}</td>
+			<td>{{ $p.RoundsWonV2 }}</td>
+			<td>{{ $p.RoundsWonV1 }}</td>
+			<td>{{ $p.Rounds5k }}</td>
+			<td>{{ $p.Rounds4k }}</td>
+			<td>{{ $p.Rounds3k }}</td>
+			<td>{{ $p.Rounds2k }}</td>
+			<td>{{ $p.Rounds1k }}</td>
+			<td>{{ $p.KAST }}</td>
+			<td>{{ $p.HLTV}}</td>
+
+		</tr>
+		{{end}}
+
+	</tbody>
+	<th></th>
+</table>
+
