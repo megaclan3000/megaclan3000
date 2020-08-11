@@ -18,16 +18,22 @@ import (
 var t *template.Template
 var datastorage *DataStorage
 var steamClient *steamclient.SteamClient
+var flagConfig string
 
 func main() {
 
 	// -verbose flag to set logging level to DebugLevel
 	flagVerbose := flag.Bool("verbose", false, "Enable verbose output")
+
+	flag.StringVar(&flagConfig, "config", "./config.json", "path to config file")
+
 	flag.Parse()
 
 	if *flagVerbose {
 		log.SetLevel(log.DebugLevel)
 	}
+
+	log.Println("Starting with config file:", flagConfig)
 
 	// Output to stdout instead of the default stderr
 	// log.SetOutput(os.Stdout)
@@ -38,7 +44,7 @@ func main() {
 	log.SetFormatter(Formatter)
 
 	// Read config and pull initial data
-	steamClient = steamclient.NewSteamClient("./config.json")
+	steamClient = steamclient.NewSteamClient(flagConfig)
 
 	log.Info("Creating datastorage and getting initial values")
 	datastorage = &DataStorage{Players: steamClient.GetPlayers()}
@@ -57,7 +63,7 @@ func main() {
 	r.HandleFunc("/imprint", parseTemplates(handlerImprint))
 
 	// Set custom 404 page
-	r.NotFoundHandler = http.HandlerFunc(handler404)
+	r.NotFoundHandler = http.HandlerFunc(parseTemplates(handler404))
 
 	// Set up the HTTP-server
 	srv := &http.Server{

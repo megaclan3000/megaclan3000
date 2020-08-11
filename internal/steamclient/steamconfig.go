@@ -2,6 +2,7 @@ package steamclient
 
 import (
 	"encoding/json"
+	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
 )
@@ -30,5 +31,10 @@ func NewSteamConfig(configPath string) (SteamConfig, error) {
 
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	err = json.Unmarshal(byteValue, &conf)
+	if err != nil {
+		b, _ := ioutil.ReadAll(jsonFile)
+		log.Println("Error during startup. Config file used:", configPath)
+		log.Println(b)
+	}
 	return conf, err
 }
