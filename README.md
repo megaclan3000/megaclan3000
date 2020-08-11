@@ -14,6 +14,9 @@ Our custom CS:GO stats page: https://megaclan3000.de
 ![golangci-lint](https://github.com/megaclan3000/megaclan3000/workflows/golangci-lint/badge.svg)
 ![Labeler](https://github.com/megaclan3000/megaclan3000/workflows/Labeler/badge.svg)
 
+![Docker Pulls](https://img.shields.io/docker/pulls/pinpox/megaclan3000)
+![Docker Image Version (latest by date)](https://img.shields.io/docker/v/pinpox/megaclan3000)
+
 ![](https://i.imgur.com/tQzdzAd.png)
 
 ## Suport the developers
@@ -25,19 +28,36 @@ Your contribution will **keep the server running** ;)
 
 ## Deployment
 
-To setup the application, clone the repo to your server and build it using `go
-build`.
-
 ### Configuration `config.json`
 
 You will need to create a configuration with your Steam API-key and the IDs you
 want to include.  To get started use the provided [configuration
 example](./config.json.example) and copy it over or rename it to `config.json`
 
-### Start the mongoDB container
+### Start with Docker
+
+The application is available as docker container, which is automatically build
+on new pushes to master (`latest` tag) and on releases (`vX.X` tag). It requires
+a docker volume with the configuration file to be mounted in
+`/var/megaclan3000/` inside the container. 
+
+To start the container pull the image and run a new container, exposing the 8080
+port to the host system. Place the config file as created above inside a folder
+and mount it.
+
 ```
-docker run -d -p 27017-27019:27017-27019 -v /home/pablo/.go/src/github.com/megaclan3000/megaclan3000/mongodb_data:/data/db --name mongodb mongo
+docker pull pinpox/megaclan3000
+docker run -v /path/to/local/data/folder:/var/megaclan3000 -p 8080:8080 pinpox/megaclan3000
 ```
+
+You should see the container running with `docker ps` and be able to browse
+`localhost:8080` to view the application.
+
+### Start from binary
+
+To setup the application from source, clone the repo to your server and build it using `go
+build`.
+
 ### Service file
 
 While you can just start the compiled binary manually, you will probably want to
