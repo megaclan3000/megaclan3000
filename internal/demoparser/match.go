@@ -36,11 +36,47 @@ type ScoreboardGeneral struct {
 	PlayerInfos   map[uint64]*ScoreboardTeamMemberInfo
 }
 
+func (sg ScoreboardGeneral) TopWeaponsByKills() []common.EquipmentType {
+	return []common.EquipmentType{
+		common.EqAK47,
+		common.EqAWP,
+		common.EqM4A1,
+		common.EqBizon,
+	}
+}
+
+func (sg ScoreboardGeneral) ByKills(common.EquipmentType) map[uint64]*ScoreboardTeamMemberInfo {
+	//TODO implement sorting
+	return sg.PlayerInfos
+}
+
+func (sg ScoreboardGeneral) ByHS(common.EquipmentType) map[uint64]*ScoreboardTeamMemberInfo {
+	//TODO implement sorting
+	return sg.PlayerInfos
+}
+
+func (sg ScoreboardGeneral) ByAccuracy(common.EquipmentType) map[uint64]*ScoreboardTeamMemberInfo {
+	//TODO implement sorting
+	return sg.PlayerInfos
+}
+
+func (sg ScoreboardGeneral) ByDamage(common.EquipmentType) map[uint64]*ScoreboardTeamMemberInfo {
+	//TODO implement sorting
+	return sg.PlayerInfos
+}
+
 type ScoreboardTeamMemberInfo struct {
 	AvatarURL   string
 	Name        string
 	RankIconURL string
 	ClanTag     string
+	WeaponStats map[common.EquipmentType]WeaponStat
+}
+
+type WeaponStat struct {
+	Kills     int
+	Headshots int
+	Damage    int
 }
 
 type RoundKill struct {
@@ -48,7 +84,7 @@ type RoundKill struct {
 	VictimTeamString string
 	KillerSteamID64  uint64
 	KillerTeamString string
-	KillerWeapon     string
+	KillerWeapon     common.EquipmentType
 }
 
 type ScoreboardRound struct {

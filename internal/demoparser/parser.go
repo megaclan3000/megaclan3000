@@ -4,6 +4,7 @@ package demoparser
 
 import (
 	// "github.com/mitchellh/hashstructure"
+	"math/rand"
 	"os"
 
 	log "github.com/sirupsen/logrus"
@@ -39,7 +40,6 @@ type parsingState struct {
 }
 
 func (p *MyParser) Parse(path string, m *InfoStruct) error {
-	log.Warning("parsing file")
 	// Register handlers for events we care about
 	p.Match = m
 	var f *os.File
@@ -63,14 +63,16 @@ func (p *MyParser) Parse(path string, m *InfoStruct) error {
 	p.parser.RegisterEventHandler(p.handlerBombPlanted)
 	p.parser.RegisterEventHandler(p.handlerBombDefused)
 	p.parser.RegisterEventHandler(p.handlerBombExplode)
+	p.parser.RegisterEventHandler(p.handlerScoreUpdated)
 	// p.RegisterEventHandler(handlerChatMessage)
 
 	// Parse header and set general values
 	p.setGeneral()
-	log.Warning("set mapname to:", p.Match.General.MapName)
 
 	// Parse the demo returning errors
-	return p.parser.ParseToEnd()
+	err = p.parser.ParseToEnd()
+	p.mockWeaponStats()
+	return err
 
 }
 
@@ -84,13 +86,84 @@ func (p *MyParser) setGeneral() error {
 	}
 
 	//TODO implement this
-	log.Warning("PARSING HEADER")
 	p.Match.General.MapName = header.MapName
 	p.Match.General.MapIconURL = header.MapName
 	p.Match.General.UploadTime = time.Now()
 	p.Match.General.DemoLinkURL = "https:TODO/"
+	p.Match.General.ScoreClan = 0
+	p.Match.General.ScoreEnemy = 0
 
 	return nil
+}
+
+func (p *MyParser) mockWeaponStats() {
+
+	var weaponTypes = []common.EquipmentType{
+		common.EqAK47,
+		common.EqAUG,
+		common.EqAWP,
+		common.EqBizon,
+		common.EqBomb,
+		common.EqCZ,
+		common.EqDeagle,
+		common.EqDecoy,
+		common.EqDefuseKit,
+		common.EqDualBerettas,
+		common.EqFamas,
+		common.EqFiveSeven,
+		common.EqFlash,
+		common.EqG3SG1,
+		common.EqGalil,
+		common.EqGlock,
+		common.EqHE,
+		common.EqHelmet,
+		common.EqIncendiary,
+		common.EqKevlar,
+		common.EqKnife,
+		common.EqM249,
+		common.EqM4A1,
+		common.EqM4A4,
+		common.EqMP5,
+		common.EqMP7,
+		common.EqMP9,
+		common.EqMac10,
+		common.EqMag7,
+		common.EqMolotov,
+		common.EqNegev,
+		common.EqNova,
+		common.EqP2000,
+		common.EqP250,
+		common.EqP90,
+		common.EqRevolver,
+		common.EqSG553,
+		common.EqSG556,
+		common.EqSSG08,
+		common.EqSawedOff,
+		common.EqScar20,
+		common.EqScout,
+		common.EqSmoke,
+		common.EqSwag7,
+		common.EqTec9,
+		common.EqUMP,
+		common.EqUSP,
+		common.EqUnknown,
+		common.EqWorld,
+		common.EqXM1014,
+		common.EqZeus,
+	}
+
+	for _, v := range p.Match.General.PlayerInfos {
+		v.WeaponStats = make(map[common.EquipmentType]WeaponStat)
+		for _, w := range weaponTypes {
+
+			v.WeaponStats[w] = WeaponStat{
+				Kills:     rand.Intn(20),
+				Headshots: rand.Intn(20),
+				Damage:    rand.Intn(20),
+			}
+		}
+	}
+
 }
 
 func (p *MyParser) handlerKill(e events.Kill) {
@@ -99,12 +172,8 @@ func (p *MyParser) handlerKill(e events.Kill) {
 	if p.parser.GameState().IsWarmupPeriod() {
 		p.state.WarmupKills = append(p.state.WarmupKills, e)
 	} else {
-		log.Warning(e.Weapon.String())
-		var weapon string
-		weapon = e.Weapon.String()
-		log.Printf("%T\n", weapon)
 		kill := RoundKill{
-			KillerWeapon:     weapon,
+			KillerWeapon:     e.Weapon.Type,
 			KillerSteamID64:  e.Killer.SteamID64,
 			KillerTeamString: teamString(e.Killer.Team),
 			VictimTeamString: teamString(e.Victim.Team),
@@ -304,6 +373,37 @@ func (p *MyParser) handlerBombDefused(e events.BombDefused) {
 func (p *MyParser) handlerBombExplode(e events.BombExplode) {
 }
 
+func (p *MyParser) handlerScoreUpdated(e events.ScoreUpdated) {
+
+	scoreCT := p.parser.GameState().TeamCounterTerrorists().Score()
+	scoreT := p.parser.GameState().TeamTerrorists().Score()
+
+	log.Warning("Updated Scores", scoreCT, scoreT)
+
+	if p.state.currentTeam == common.TeamCounterTerrorists {
+		p.Match.Rounds[p.state.Round-1].ScoreClan = scoreCT
+		p.Match.Rounds[p.state.Round-1].ScoreEnemy = scoreT
+		p.Match.General.ScoreClan = scoreCT
+		p.Match.General.ScoreEnemy = scoreT
+		log.Warning("Updated saved scores", p.Match.General.ScoreClan, p.Match.General.ScoreEnemy, p.state.currentTeam)
+		return
+	}
+
+	if p.state.currentTeam == common.TeamTerrorists {
+		p.Match.Rounds[p.state.Round-1].ScoreClan = scoreT
+		p.Match.Rounds[p.state.Round-1].ScoreEnemy = scoreCT
+		p.Match.General.ScoreClan = scoreT
+		p.Match.General.ScoreEnemy = scoreCT
+		log.Warning("Updated saved scores", p.Match.General.ScoreClan, p.Match.General.ScoreEnemy, p.state.currentTeam)
+		return
+	}
+
+	log.Warning("Scoreparsing did something strange")
+
+	// panic("no score found")
+
+}
+
 func (p *MyParser) handlerRoundEnd(e events.RoundEnd) {
 
 	// Set the winning team
@@ -311,13 +411,9 @@ func (p *MyParser) handlerRoundEnd(e events.RoundEnd) {
 
 	if e.Winner == p.state.currentTeam {
 		p.Match.Rounds[p.state.Round-1].ClanWonRound = true
+		p.Match.General.ScoreClan++
+	} else {
+		p.Match.General.ScoreEnemy++
 	}
 
-	if p.state.currentTeam == common.TeamCounterTerrorists {
-		p.Match.Rounds[p.state.Round-1].ScoreClan = p.parser.GameState().TeamCounterTerrorists().Score()
-		p.Match.Rounds[p.state.Round-1].ScoreEnemy = p.parser.GameState().TeamTerrorists().Score()
-	} else {
-		p.Match.Rounds[p.state.Round-1].ScoreEnemy = p.parser.GameState().TeamCounterTerrorists().Score()
-		p.Match.Rounds[p.state.Round-1].ScoreClan = p.parser.GameState().TeamTerrorists().Score()
-	}
 }

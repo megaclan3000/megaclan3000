@@ -86,7 +86,11 @@ func parseTemplates(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var err error
 		// Parse all templates
-		t, err = template.ParseGlob("./templates/*")
+		t, err = template.New("hello.gohtml").Funcs(template.FuncMap{
+			"inc": func(i int) int {
+				return i + 1
+			},
+		}).ParseGlob("./templates/*")
 		if err != nil {
 			log.Panic("Cannot parse templates", err)
 		}
