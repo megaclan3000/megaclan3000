@@ -1,6 +1,7 @@
 package main
 
 import (
+	// "encoding/json"
 	"flag"
 	"sort"
 	"strconv"
@@ -20,6 +21,7 @@ var t *template.Template
 var datastorage *DataStorage
 var steamClient *steamclient.SteamClient
 var flagConfig string
+var demoInfo demoparser.InfoStruct
 
 func main() {
 
@@ -65,8 +67,23 @@ func main() {
 	r.HandleFunc("/scoreboard", parseTemplates(handlerScoreboard))
 	r.HandleFunc("/imprint", parseTemplates(handlerImprint))
 
+	// API for json data retrieval
+	r.HandleFunc("/api/{endpoint}", parseTemplates(handlerAPI))
+	r.HandleFunc("/api/{endpoint}/{steamid}", parseTemplates(handlerAPI))
+
 	// Set custom 404 page
 	r.NotFoundHandler = http.HandlerFunc(parseTemplates(handler404))
+
+	//TODO this is only for testing////////////////////////////////
+
+	//TODO get correct id
+	demoInfo, _ = demoparser.GetMatchInfo(1)
+	//TODO download avatar images
+
+	for e := range demoInfo.General.PlayerInfos {
+		demoInfo.General.PlayerInfos[e].AvatarURL = steamClient.GetAvatarUrl(e)
+	}
+	//////////////////////////////////////////////////////////////
 
 	// Set up the HTTP-server
 	srv := &http.Server{
@@ -148,18 +165,7 @@ func handlerScoreboard(w http.ResponseWriter, r *http.Request) {
 
 func handlerMatch(w http.ResponseWriter, r *http.Request) {
 
-	var info demoparser.InfoStruct
-	log.Warning("entering getmatchinfo")
-
-	//TODO get correct id
-	info, _ = demoparser.GetMatchInfo(1)
-	//TODO download avatar images
-
-	for e := range info.General.PlayerInfos {
-		info.General.PlayerInfos[e].AvatarURL = steamClient.GetAvatarUrl(e)
-	}
-
-	if err := t.ExecuteTemplate(w, "match.html", info); err != nil {
+	if err := t.ExecuteTemplate(w, "match.html", demoInfo); err != nil {
 		log.Warn(err)
 	}
 }
@@ -174,6 +180,12 @@ func handler404(w http.ResponseWriter, r *http.Request) {
 	if err := t.ExecuteTemplate(w, "404.html", nil); err != nil {
 		log.Warn(err)
 	}
+}
+
+func handlerAPI(w http.ResponseWriter, r *http.Request) {
+	byt := apiHandler(mux.Vars(r))
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(byt)
 }
 
 func handlerDetails(w http.ResponseWriter, r *http.Request) {

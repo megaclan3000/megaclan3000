@@ -1,13 +1,12 @@
 
 <style type="text/css" media="screen">
-
+	
 .weaponcardimg{
-	height:200px;
+	height:150px;
 	object-fit: cover;
-
 }
-</style>
 
+</style>
 
 {{ range $weapon := .General.TopWeaponsByKills}}
 
@@ -16,52 +15,167 @@
 		<img class="weaponcardimg" src="/public/img/weapons/{{$weapon.String}}.jpg" >
 		<span class="card-title black-text">{{$weapon}}</span>
 	</div>
-	<div class="card-content">
-		<p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-	</div>
 	<div class="card-tabs">
 		<ul class="tabs tabs-fixed-width orange-text">
-			<li class="tab"><a href="#tab-weapon-1"> <span class="orange-text">Kills</span></a></li>
-			<li class="tab"><a href="#tab-weapon-2"> <span class="orange-text">Headshots</span></a></li>
-			<li class="tab"><a href="#tab-weapon-3"> <span class="orange-text">Accuracy</span></a></li>
-			<li class="tab"><a href="#tab-weapon-4"> <span class="orange-text">Damage</span></a></li>
+			<li class="tab"><a href="#tab-weapon-1{{$weapon}}"> <span class="orange-text">Kills</span></a></li>
+			<li class="tab"><a href="#tab-weapon-2{{$weapon}}"> <span class="orange-text">Headshots</span></a></li>
+			<li class="tab"><a href="#tab-weapon-3{{$weapon}}"> <span class="orange-text">Accuracy</span></a></li>
+			<li class="tab"><a href="#tab-weapon-4{{$weapon}}"> <span class="orange-text">Damage</span></a></li>
 		</ul>
 	</div>
 
-
-
 	<div class="card-content">
-
-
-		<div id="tab-weapon-1">
+		<div id="tab-weapon-1{{$weapon}}">
 			<div class="row">
-
-				<div id="chart-bubble"></div>
-				{{ template "chart-match-weapons.html" $weapon }}
-				<table>
-					<th>
-						<tr>
-
-							<td>Player</td>
-							<td>Headshots</td>
-						</tr>
-					</th>
-
-					{{range $player := $.General.ByHS $weapon}}
-					<tr>
-						<td> {{$player.Name}} </td>
-						{{$stat := index $player.WeaponStats $weapon}}
-						<td> {{$stat.Headshots}} </td>
-					</tr>
-					{{end}}
-
-				</table>
-				<figure class="highcharts-figure"> <p class="highcharts-description"> </p> </figure>
+				<div class="container">
+					<div class="row">
+						<div class="col s6">
+							<table style="table-layout: fixed ; width: 100% ;" >
+								{{range $player := $.General.ByKills $weapon}} {{ if $player.ClanMember }} {{ if ne $player.Name "BOT"}}
+								<tr>
+									<td style="width: 50%;" class="right-align"> {{$player.Name}} </td>
+									{{$stat := index $player.WeaponStats $weapon}}
+									<td class="orange-text left-align"> {{$stat.Kills}} </td>
+								</tr>
+								{{end}}{{end}}{{end}} </table>
+						</div>
+						<div class="col s6">
+							<table id="table1" style="table-layout: fixed ; width: 100% ;" >
+								{{range $player := $.General.ByKills $weapon}} {{ if not $player.ClanMember }} {{ if ne $player.Name "BOT"}}
+								<tr>
+									<td style="width: 50%;" class="right-align"> {{$player.Name}} </td>
+									{{$stat := index $player.WeaponStats $weapon}}
+									<td class="orange-text left-align"> {{$stat.Kills}} </td>
+								</tr>
+								{{end}}{{end}}{{end}} </table>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div id="tab-weapon-2">Headshots</div>
-		<div id="tab-weapon-3">Accuracy</div>
-		<div id="tab-weapon-4">Damage</div>
+		<div id="tab-weapon-2{{$weapon}}">
+			<div class="row">
+				<div class="container">
+					<div class="row">
+						<div class="col s6">
+							<table style="table-layout: fixed ; width: 100% ;" >
+								{{range $player := $.General.ByHS $weapon}}
+								{{ if $player.ClanMember }}
+								{{ if ne $player.Name "BOT"}}
+								<tr>
+									<td style="width: 50%;" class="right-align"> {{$player.Name}} </td>
+									{{$stat := index $player.WeaponStats $weapon}}
+									<td class="orange-text left-align"> {{$stat.Headshots}} </td>
+								</tr>
+								{{end}}
+								{{end}}
+								{{end}}
+							</table>
+
+						</div>
+						<div class="col s6">
+
+							<table id="table1" style="table-layout: fixed ; width: 100% ;" >
+								{{range $player := $.General.ByHS $weapon}}
+								{{ if not $player.ClanMember }}
+								{{ if ne $player.Name "BOT"}}
+								<tr>
+
+									<td style="width: 50%;" class="right-align"> {{$player.Name}} </td>
+									{{$stat := index $player.WeaponStats $weapon}}
+									<td class="orange-text left-align"> {{$stat.Headshots}} </td>
+								</tr>
+								{{end}}
+								{{end}}
+								{{end}}
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="tab-weapon-3{{$weapon}}">
+			<div class="row">
+				<div class="container">
+					<div class="row">
+						<div class="col s6">
+							<table style="table-layout: fixed ; width: 100% ;" >
+								{{range $player := $.General.ByAccuracy $weapon}}
+								{{ if $player.ClanMember }}
+								{{ if ne $player.Name "BOT"}}
+								<tr>
+									<td style="width: 50%;" class="right-align"> {{$player.Name}} </td>
+									{{$stat := index $player.WeaponStats $weapon}}
+									<td class="orange-text left-align"> {{$stat.Accuracy}} </td>
+								</tr>
+								{{end}}
+								{{end}}
+								{{end}}
+							</table>
+
+						</div>
+						<div class="col s6">
+
+							<table id="table1" style="table-layout: fixed ; width: 100% ;" >
+								{{range $player := $.General.ByAccuracy $weapon}}
+								{{ if not $player.ClanMember }}
+								{{ if ne $player.Name "BOT"}}
+								<tr>
+
+									<td style="width: 50%;" class="right-align"> {{$player.Name}} </td>
+									{{$stat := index $player.WeaponStats $weapon}}
+									<td class="orange-text left-align"> {{$stat.Accuracy}} </td>
+								</tr>
+								{{end}}
+								{{end}}
+								{{end}}
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="tab-weapon-4{{$weapon}}">
+			<div class="row">
+				<div class="container">
+					<div class="row">
+						<div class="col s6">
+							<table style="table-layout: fixed ; width: 100% ;" >
+								{{range $player := $.General.ByDamage $weapon}}
+								{{ if $player.ClanMember }}
+								{{ if ne $player.Name "BOT"}}
+								<tr>
+									<td style="width: 50%;" class="right-align"> {{$player.Name}} </td>
+									{{$stat := index $player.WeaponStats $weapon}}
+									<td class="orange-text left-align"> {{$stat.Damage}} </td>
+								</tr>
+								{{end}}
+								{{end}}
+								{{end}}
+							</table>
+
+						</div>
+						<div class="col s6">
+
+							<table id="table1" style="table-layout: fixed ; width: 100% ;" >
+								{{range $player := $.General.ByDamage $weapon}}
+								{{ if not $player.ClanMember }}
+								{{ if ne $player.Name "BOT"}}
+								<tr>
+
+									<td style="width: 50%;" class="right-align"> {{$player.Name}} </td>
+									{{$stat := index $player.WeaponStats $weapon}}
+									<td class="orange-text left-align"> {{$stat.Damage}} </td>
+								</tr>
+								{{end}}
+								{{end}}
+								{{end}}
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 {{end}}

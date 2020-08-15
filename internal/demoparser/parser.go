@@ -160,6 +160,7 @@ func (p *MyParser) mockWeaponStats() {
 				Kills:     rand.Intn(20),
 				Headshots: rand.Intn(20),
 				Damage:    rand.Intn(20),
+				Accuracy:  rand.Intn(20),
 			}
 		}
 	}
@@ -258,6 +259,7 @@ func (p *MyParser) handlerMatchStart(e events.MatchStart) {
 
 	p.Match.General.PlayerInfos = make(map[uint64]*ScoreboardTeamMemberInfo)
 
+	// Determine start team of clan
 	var clanStartTeam common.Team
 	for _, player := range p.parser.GameState().Participants().Playing() {
 		if player.ClanTag() == "megaclan3000" {
@@ -280,6 +282,7 @@ func (p *MyParser) handlerMatchStart(e events.MatchStart) {
 		p.Match.General.PlayerInfos[ct.SteamID64] = &ScoreboardTeamMemberInfo{
 			AvatarURL:   getAvatarUrlFromSteamID64(ct.SteamID64),
 			Name:        ct.Name,
+			ClanMember:  ct.Team == clanStartTeam,
 			RankIconURL: getRankUrlFromSteamID64(ct.SteamID64),
 			ClanTag:     ct.ClanTag(),
 		}

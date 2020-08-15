@@ -70,12 +70,14 @@ type ScoreboardTeamMemberInfo struct {
 	Name        string
 	RankIconURL string
 	ClanTag     string
+	ClanMember  bool
 	WeaponStats map[common.EquipmentType]WeaponStat
 }
 
 type WeaponStat struct {
 	Kills     int
 	Headshots int
+	Accuracy  int
 	Damage    int
 }
 
