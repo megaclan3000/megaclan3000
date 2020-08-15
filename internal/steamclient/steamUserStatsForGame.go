@@ -56,25 +56,25 @@ type UserStatsForGame struct {
 type GameExtras struct {
 
 	// SteamID of the player
-	SteamID uint64 `db:"steamid"`
+	SteamID uint64
 
 	// Total KD ratio
-	TotalKD string `db:"total_kd"`
+	TotalKD string
 
 	// KD ratio of the last match
-	LastMatchKD string `db:"last_match_kd"`
+	LastMatchKD string
 
 	// Total hit ratio
-	HitRatio string `db:"hit_ratio"`
+	HitRatio string
 
 	// Total played hours
-	PlayedHours string `db:"played_hours"`
+	PlayedHours string
 
 	// Total Average damage per round
-	TotalADR string `db:"total_adr"`
+	TotalADR string
 
 	// Last match average damage per round
-	LastMatchADR string `db:"last_match_adr"`
+	LastMatchADR string
 }
 
 func (sc *SteamClient) parseUserStatsForGame(data userStatsForGameData) (UserStatsForGame, error) {

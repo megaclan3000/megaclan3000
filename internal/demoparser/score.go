@@ -5,68 +5,68 @@ package demoparser
 type Score struct {
 
 	//ID of the player
-	SteamId string `db:"steamid"`
+	SteamId string
 
 	//Points earned from won matches
-	ScoreMatch int `db:"score_match"`
+	ScoreMatch int
 
 	//Points earned from won rounds
-	ScoreRound int `db:"score_round"`
+	ScoreRound int
 
 	//Points earned from planting bomb
-	ScorePlant int `db:"score_plant"`
+	ScorePlant int
 
 	//Points earned from defusing bomb
-	ScoreDefuse int `db:"score_defuse"`
+	ScoreDefuse int
 
 	//Points earned from MVP stars
-	ScoreMvp int `db:"score_mvp"`
+	ScoreMvp int
 
 	//Points earned from kills
-	ScoreKill int `db:"score_kill"`
+	ScoreKill int
 
 	//Points earned from assist
-	ScoreAssist int `db:"score_assist"`
+	ScoreAssist int
 
 	//Points earned from 3-kills
-	Score3k int `db:"score_3k"`
+	Score3k int
 
 	//Points earned from 4-kills
-	Score4k int `db:"score_4k"`
+	Score4k int
 
 	//Points earned from aces
-	Score5k int `db:"score_5k"`
+	Score5k int
 
 	//Points earned from entryfrag
-	ScoreEntryfrag int `db:"score_entryfrag"`
+	ScoreEntryfrag int
 
 	//Points earned from clutches v1
-	ScoreClutchv1 int `db:"score_clutchv1"`
+	ScoreClutchv1 int
 
 	//Points earned from clutches v2
-	ScoreClutchv2 int `db:"score_clutchv2"`
+	ScoreClutchv2 int
 
 	//Points earned from clutches v3
-	ScoreClutchv3 int `db:"score_clutchv3"`
+	ScoreClutchv3 int
 
 	//Points earned from clutches v4
-	ScoreClutchv4 int `db:"score_clutchv4"`
+	ScoreClutchv4 int
 
 	//Points earned from clutches v5
-	ScoreClutchv5 int `db:"score_clutchv5"`
+	ScoreClutchv5 int
 
 	//Points lost due to teamkills
-	ScoreTeamkill int `db:"score_teamkill"`
+	ScoreTeamkill int
 
 	//Points lost due to teamflashes
-	ScoreTeamflash int `db:"score_teamflash"`
+	ScoreTeamflash int
 
 	//Points lost due to teamdamage
-	ScoreTeamdamage int `db:"score_teamdamage"`
+	ScoreTeamdamage int
 
 	//Points lost due to kick
-	ScoreKick int `db:"score_kick"`
+	ScoreKick int
 
 	//Points lost due to dying with HE/knive
-	ScoreNoWeapon int `db:"score_noweapon"`
+	ScoreNoWeapon int
 }
