@@ -68,8 +68,9 @@ func main() {
 	r.HandleFunc("/imprint", parseTemplates(handlerImprint))
 
 	// API for json data retrieval
-	r.HandleFunc("/api/{endpoint}", parseTemplates(handlerAPI))
-	r.HandleFunc("/api/{endpoint}/{steamid}", parseTemplates(handlerAPI))
+	r.HandleFunc("/api/test", parseTemplates(handlerAPITest))
+	r.HandleFunc("/api/playerinfo/{steamid}", parseTemplates(handlerAPIPlayerinfo))
+	r.HandleFunc("/api/matchinfo/{matchid}/{endpoint}", parseTemplates(handlerAPIMatchinfo))
 
 	// Set custom 404 page
 	r.NotFoundHandler = http.HandlerFunc(parseTemplates(handler404))
@@ -180,12 +181,6 @@ func handler404(w http.ResponseWriter, r *http.Request) {
 	if err := t.ExecuteTemplate(w, "404.html", nil); err != nil {
 		log.Warn(err)
 	}
-}
-
-func handlerAPI(w http.ResponseWriter, r *http.Request) {
-	byt := apiHandler(mux.Vars(r))
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(byt)
 }
 
 func handlerDetails(w http.ResponseWriter, r *http.Request) {
