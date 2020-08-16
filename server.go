@@ -77,8 +77,12 @@ func main() {
 
 	//TODO this is only for testing////////////////////////////////
 
+	var err error
 	//TODO get correct id
-	demoInfo, _ = demoparser.GetMatchInfo(1)
+	demoInfo, err = demoparser.GetMatchInfo("1")
+	if err != nil {
+		panic(err)
+	}
 	//TODO download avatar images
 
 	for e := range demoInfo.General.PlayerInfos {

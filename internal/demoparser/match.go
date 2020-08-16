@@ -151,11 +151,11 @@ type MegacoinPlayer struct {
 	ForCriteriaC int
 }
 
-func GetMatchInfo(id int) (InfoStruct, error) {
+func GetMatchInfo(id string) (InfoStruct, error) {
 	//TODO
 	p := NewMyParser()
 	var info InfoStruct
 	//TODO get correct path for demo file
-	err := p.Parse("internal/demoparser/testdata/demo1.dem", &info)
+	err := p.Parse("internal/demoparser/testdata/demo"+id+".dem", &info)
 	return info, err
 }
