@@ -12,7 +12,7 @@ import (
 // 	w.Write(byt)
 // }
 
-func handlerAPITest(w http.ResponseWriter, r *http.Request) {
+func handlerAPIExample(w http.ResponseWriter, r *http.Request) {
 	log.Debug("API request to:", r.RequestURI)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(`

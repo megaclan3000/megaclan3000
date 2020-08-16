@@ -13,7 +13,7 @@
 
 	$(document).ready(function() {
 
-	var options_test = {
+	var options_example = {
 		chart: {
 			renderTo: 'container',
 			type: 'spline'
@@ -39,16 +39,16 @@
 		options_damage_transfer.series[0].keys =  ['from', 'to', 'weight'];
 		options_damage_transfer.series[0].name = 'Sankey demo series';
 
-		console.log("Data damaget_tranfser");
-		console.log(data_damage_transfer);
-		var chart_test = new Highcharts.Chart(options_damage_transfer);
+//		console.log("Data damaget_tranfser");
+//		console.log(data_damage_transfer);
+		var chart_damage_transfer = new Highcharts.Chart(options_damage_transfer);
 	});
 
-	$.getJSON("/api/test",  function(data_test) {
-		options_test.series[0].data = data_test;
-		console.log("Data test");
-		console.log(data_test);
-		var chart_test = new Highcharts.Chart(options_test);
+	$.getJSON("/api/example",  function(data_example) {
+		options_example.series[0].data = data_example;
+		console.log("Data example");
+		console.log(data_example);
+		var chart_example = new Highcharts.Chart(options_example);
 	});
 });
 </script>
