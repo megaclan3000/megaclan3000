@@ -1,6 +1,9 @@
 package steamclient
 
-import common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
+import (
+	"encoding/json"
+	common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
+)
 
 // GameStats holds the players stats data from the steam API
 // endpoint UserStatsForGame
@@ -232,6 +235,32 @@ type weaponstat struct {
 	Hits   int
 	Shots  int
 	Kills  int
+}
+
+func (ws weaponstat) MarshalJSON() ([]byte, error) {
+
+	var accuracy float64 = 0
+
+	if ws.Shots != 0 {
+		accuracy = float64(ws.Hits) / float64(ws.Shots)
+	}
+
+	return json.Marshal(&struct {
+		Weapon   string  `json:"weapon"`
+		Hits     int     `json:"hits"`
+		Shots    int     `json:"shots"`
+		Kills    int     `json:"kills"`
+		Accuracy float64 `json:"accuracy"`
+		IconPath string  `json:"iconpath"`
+	}{
+		Weapon:   ws.Weapon.String(),
+		Hits:     ws.Hits,
+		Shots:    ws.Shots,
+		Kills:    ws.Kills,
+		Accuracy: accuracy,
+		IconPath: "/public/img/weapons/" + ws.Weapon.String() + ".jpg",
+	})
+
 }
 
 func (gs GameStats) WeaponStats() []weaponstat {

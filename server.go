@@ -69,7 +69,7 @@ func main() {
 
 	// API for json data retrieval
 	r.HandleFunc("/api/example", parseTemplates(handlerAPIExample))
-	r.HandleFunc("/api/playerinfo/{steamid}", parseTemplates(handlerAPIPlayerinfo))
+	r.HandleFunc("/api/playerinfo/{steamid}/{endpoint}", parseTemplates(handlerAPIPlayerinfo))
 	r.HandleFunc("/api/matchinfo/{matchid}/{endpoint}", parseTemplates(handlerAPIMatchinfo))
 
 	// Set custom 404 page

@@ -3,7 +3,7 @@ function CreateTableFromJSON(tableid, jsonurl) {
 	var table = document.getElementById(tableid);
 		var tbody = document.createElement("tbody");
 
-		$.getJSON(url,  function( data) {
+		$.getJSON(jsonurl,  function( data) {
 		for (var row = 0; row < data.length; row++) {
 
 			var tr = document.createElement("tr");
