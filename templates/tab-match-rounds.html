@@ -15,6 +15,14 @@
 	height: 300px;
 }
 
+<!-- .col { -->
+<!-- 	border: 1px solid red; -->
+<!-- } -->
+
+<!-- .row{ -->
+<!-- 	border: 1px solid green; -->
+<!-- } -->
+
 
 </style>
 
@@ -80,88 +88,93 @@
 
 
 
+<!-- NEW -->
 
 <ul class="collapsible">
 
 	{{$infos:= .General.PlayerInfos}}
 	{{range $i, $r := .Rounds}}
 	<li>
-		<div class="collapsible-header">
-			<div style="width:100%;" class="container">
-				<div class="row">
-				  <div class="col s1">TEAM</div>
-				  <div class="col s3">
+		<div class="collapsible-header hoverable" style="padding:0px;">
+			<div style="width:100%;padding:0px" class="container">
+				<div class="row valign-wrapper" style="margin:10px">
+				  <div class="col s1">
+					<img style="width:30px;" src="/public/img/teams/2.jpg" class="circle" alt="">
+					</div>
+				  <div class="col s3 valign-wrapper">
 					{{range  $p := $r.TeamClanKills}}
 					{{$killer:= index $infos .KillerSteamID64}}
 					{{$victim:= index $infos .VictimSteamID64}}
-					{{if ne $killer.Name $victim.Name}} <img style="width:30px;height:30px;" src="{{$killer.AvatarURL}}" alt=""> {{end}}
+					{{if ne $killer.Name $victim.Name}}
+					<div style="padding:2px;"> <img style="width:35px;height:35px;" src="{{$killer.AvatarURL}}" alt=""> </div>
+					{{end}}
 					{{end}}
 				  </div>
-				  <div class="col s1">
-					{{ if $r.ClanWonRound}} <img src="/public/img/win_reason/{{$r.WinReason}}.png" class="" alt=""> {{end}}
+				  <div class="col s1 center-align valign-wrapper">
+					{{ if $r.ClanWonRound}} <img src="/public/img/win_reason/{{$r.WinReason}}.png" style="width:20px" class="" alt=""> {{end}}
 				  </div>
-				  <div class="col s2"> 
+				  <div class="col s2 center-align valign-wrapper"> 
 					<span class="orange-text">{{$r.ScoreClan}}</span>:<span class="blue-text">{{$r.ScoreEnemy}}</span>
 				  </div>
-				  <div class="col s1"> 
-					{{ if not $r.ClanWonRound}} <img src="/public/img/win_reason/{{$r.WinReason}}.png" class="" alt=""> {{end}}
+				  <div class="col s1 center-align valign-wrapper"> 
+					{{ if not $r.ClanWonRound}} <img src="/public/img/win_reason/{{$r.WinReason}}.png" style="width:20px" class="" alt=""> {{end}}
 				  </div>
-				  <div class="col s3">
+				  <div class="col s3 valign-wrapper">
 					{{range  $p := $r.TeamEnemyKills}}
 					{{$killer:= index $infos .KillerSteamID64}}
 					{{$victim:= index $infos .VictimSteamID64}}
-					{{if ne $killer.Name $victim.Name}} <img style="width:30px;height:30px;" src="{{$killer.AvatarURL}}" alt=""> {{end}}
+					{{if ne $killer.Name $victim.Name}} 
+					<div style="padding:2;px;"> <img style="width:35px;height:35px;" src="{{$killer.AvatarURL}}" alt=""> </div>
+					{{end}}
 					{{end}}
 				  </div>
-				  <div class="col s1">TIME</div>
+				  <div class="col s1 grey-text">TIME</div>
 				</div>
 			</div>
 		</div>
-		<div class="collapsible-body blue-grey lighten-5">
+		<div class="collapsible-body blue-grey lighten-4">
 
 			<div style="width:100%;" class="container">
 				<div class="row">
 				  <div class="col s6">
 					<table>
 						<tbody>
-						  <tr>
-							<td>Player 1</td>
-							<td>AK-47</td>
-							<td>Player 2</td>
-						  </tr>
-						  <tr>
-							<td>Player 1</td>
-							<td>AK-47</td>
-							<td>Player 2</td>
-						  </tr>
-						  <tr>
-							<td>Player 1</td>
-							<td>AK-47</td>
-							<td>Player 2</td>
-						  </tr>
-						  <tr>
-							<td>Player 1</td>
-							<td>AK-47</td>
-							<td>Player 2</td>
-						  </tr>
+							{{ range $k := $r.TeamClanKills}}
+							{{$killer:= index $infos .KillerSteamID64}}
+							{{$victim := index $infos .VictimSteamID64}}
+							{{if ne $killer.Name $victim.Name}}
+							<tr>
+								{{ $color_class := "orange-text"}} {{ if eq $k.KillerTeamString "CT"}} {{ $color_class = "blue-text" }} {{ end }}
+								<td class="{{ $color_class}}"> {{$killer.Name}} </td >
+								<td> {{$k.KillerWeapon}} </td>
+								{{ $color_class := "orange-text"}} {{ if eq $k.VictimTeamString "CT"}} {{ $color_class = "blue-text" }} {{ end }}
+								<td class="{{$color_class}}"> {{$victim.Name}} </td >
+							</tr>
+							{{end}}
+							{{end}}
 						</tbody>
 					</table>
-					  </div>
+				  </div>
 
 				  <div class="col s6">
-
-
 					<table>
 						<tbody>
-						  <tr>
-							<td>Player 1</td>
-							<td>AK-47</td>
-							<td>Player 2</td>
-						  </tr>
+							{{ range $k := $r.TeamEnemyKills}}
+							{{$killer:= index $infos .KillerSteamID64}}
+							{{$victim := index $infos .VictimSteamID64}}
+							{{if ne $killer.Name $victim.Name}}
+							<tr>
+								{{ $color_class := "orange-text"}} {{ if eq $k.KillerTeamString "CT"}} {{ $color_class = "blue-text" }} {{ end }}
+								<td class="{{ $color_class}}"> {{$killer.Name}} </td >
+								<td> {{$k.KillerWeapon}} </td>
+								{{ $color_class := "orange-text"}} {{ if eq $k.VictimTeamString "CT"}} {{ $color_class = "blue-text" }} {{ end }}
+								<td class="{{$color_class}}"> {{$victim.Name}} </td >
+							</tr>
+							{{end}}
+							{{end}}
 						</tbody>
 					</table>
-					  </div>
-
+				  </div>
 				</div>
 			</div>
 
@@ -170,143 +183,8 @@
 	{{end}}
 </ul>
 
+<!-- OLD -->
 
-<ul class="collapsible">
-
-	{{$infos:= .General.PlayerInfos}}
-	{{range $i, $r := .Rounds}}
-
-	<li>
-		<div class="collapsible-header valign-wrapper wrapper hoverable">
-
-			<div class="wrapped">
-				<img style="width:30px;" src="/public/img/teams/2.jpg" class="circle" alt="">
-			</div>
-
-			<div class="right-align wrapped">
-				{{range  $p := $r.TeamClanKills}}
-				{{$killer:= index $infos .KillerSteamID64}}
-				{{$victim:= index $infos .VictimSteamID64}}
-				{{if ne $killer.Name $victim.Name}} <img style="width:30px;height:30px;" src="{{$killer.AvatarURL}}" alt=""> {{end}}
-				{{end}}
-			</div>
-
-			{{ if $r.ClanWonRound}}
-
-			<div class="right-align wrapped">
-				<span>
-					<img src="/public/img/win_reason/{{$r.WinReason}}.png" class="" alt="">
-				</span>
-			</div>
-
-
-			<div class="center-align wrapped" style="font-size:20px;">
-				<span class="orange-text">{{$r.ScoreClan}}</span>:<span class="blue-text">{{$r.ScoreEnemy}}</span>
-			</div>
-			<div class="wrapped"> </div>
-
-			{{ else }}
-
-			<div class="wrapped"> </div>
-
-			<div class="center-align wrapped" style="font-size:20px">
-				<span class="orange-text">{{$r.ScoreClan}}</span>:<span class="blue-text">{{$r.ScoreEnemy}}</span>
-			</div>
-
-			<div class="left-align wrapped" >
-				<img src="/public/img/win_reason/{{$r.WinReason}}.png" class="center-align" alt="">
-			</div>
-			{{ end }}
-
-			<div class="wrapped">
-				{{range  $p := $r.TeamEnemyKills}}
-				{{$killer:= index $infos .KillerSteamID64}}
-				{{$victim:= index $infos .VictimSteamID64}}
-				{{if ne $killer.Name $victim.Name}}
-				<img style="width:30px;height:30px;" src="{{$killer.AvatarURL}}" alt="">
-				{{end}}
-				{{end}}
-			</div>
-
-			<div class="right-align grey-text wrapped">
-				Round {{inc $i  }} ({{$r.Duration}})
-			</div>
-		</div>
-
-		<div class="collapsible-body blue-grey lighten-5">
-			<div class="collapsible-header wrapper blue-grey lighten-5">
-
-				<div class="wrapped">
-					<ul class="collection">
-						{{ range $k := $r.TeamClanKills}}
-						{{$killer:= index $infos .KillerSteamID64}}
-						{{$victim := index $infos .VictimSteamID64}}
-
-						{{if ne $killer.Name $victim.Name}} 
-						<li class="collection-item blue-grey lighten-5">
-							<div class="wrapper">
-								{{ if eq $k.KillerTeamString  "CT"}}
-								<div class="blue-text left right-align wrapped">
-								{{else}}
-								<div class="orange-text left right-align wrapped">
-								{{end}}
-									{{$killer.Name}}
-								</div >
-
-								<div style="text-align: center;" class="wrapped" > {{$k.KillerWeapon}} </div>
-
-								{{ if eq $k.VictimTeamString  "CT"}}
-								<div class="blue-text right wrapped">
-								{{else}}
-								<div class="orange-text right wrapped">
-								{{end}}
-									{{$victim.Name}}
-								</div >
-							</div>
-						</li>
-						{{end}}
-						{{end}}
-					</ul>
-				</div>
-
-				<span><span class="orange-text">5</span>:<span class="blue-text">1</span></span>
-
-				<div class="right-align wrapped blue-grey ligthen-5">
-					<ul class="collection">
-						{{ range $k := $r.TeamEnemyKills}}
-						{{$killer:= index $infos .KillerSteamID64}}
-						{{$victim := index $infos .VictimSteamID64}}
-						{{if ne $killer.Name $victim.Name}} 
-						<li class="collection-item blue-grey lighten-5">
-							<div class="wrapper">
-								{{ if eq $k.KillerTeamString  "CT"}}
-								<div class="blue-text left right-align wrapped">
-								{{else}}
-								<div class="orange-text left right-align wrapped">
-								{{end}}
-									{{$killer.Name}}
-								</div >
-
-								<div style="text-align: center;" class="wrapped"> {{$k.KillerWeapon}} </div>
-
-								{{ if eq $k.VictimTeamString  "CT"}}
-								<div class="blue-text left-align right wrapped">
-								{{else}}
-								<div class="orange-text left-align right wrapped">
-								{{end}}
-									{{$victim.Name}}
-								</div >
-							</div>
-						</li>
-						{{end}}
-						{{end}}
-					</ul>
-				</div>
-			</div>
-		</div>
-	</li>
-	{{end}}
-</ul>
 
 <script charset="utf-8">
 	$(document).ready(function(){
