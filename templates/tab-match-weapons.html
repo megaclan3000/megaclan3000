@@ -8,6 +8,147 @@
 
 </style>
 
+<style type="text/css" media="screen">
+.wrapper {
+	display: flex;
+	width:100%;
+}
+
+
+.wrapped {
+	flex-basis: 100%;
+}
+
+#chartcontainer-match-weapons {
+	height: 300px;
+}
+
+
+</style>
+
+<div id="chartcontainer-match-weapons"> </div>
+
+<script charset="utf-8">
+
+
+Highcharts.chart('chartcontainer-match-weapons', {
+    chart: {
+        type: 'packedbubble',
+        height: 300,
+    },
+    title: null,
+    tooltip: {
+        useHTML: true,
+        pointFormat: '<b>{point.name}:</b> {point.value}'
+    },
+    plotOptions: {
+        packedbubble: {
+            minSize: '20%',
+            maxSize: '100%',
+            layoutAlgorithm: {
+                gravitationalConstant: 0.05,
+                splitSeries: true,
+                seriesInteraction: false,
+                dragBetweenSeries: true,
+                parentNodeLimit: true
+            },
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}',
+                filter: {
+                    property: 'y',
+                    operator: '>',
+                    value: 250
+                },
+                style: {
+                    color: 'black',
+                    textOutline: 'none',
+                    fontWeight: 'normal'
+                }
+            }
+        }
+    },
+    series: [
+	{
+        name: 'Weapon 1',
+        data: [
+		{ name: 'Player 1',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 2',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 3',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 4',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 5',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 6',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 7',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 8',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 9',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 10',  value: Math.floor(Math.random() * 11) },
+		]
+    },
+	{
+        name: 'Weapon 2',
+        data: [
+		{ name: 'Player 1',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 2',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 3',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 4',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 5',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 6',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 7',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 8',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 9',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 10',  value: Math.floor(Math.random() * 11) },
+		]
+    },
+	{
+        name: 'Weapon 3',
+        data: [
+		{ name: 'Player 1',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 2',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 3',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 4',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 5',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 6',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 7',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 8',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 9',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 10',  value: Math.floor(Math.random() * 11) },
+		]
+    },
+	{
+        name: 'Weapon 4',
+        data: [
+		{ name: 'Player 1',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 2',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 3',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 4',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 5',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 6',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 7',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 8',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 9',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 10',  value: Math.floor(Math.random() * 11) },
+		]
+    },
+	{
+        name: 'Weapon 5',
+        data: [
+		{ name: 'Player 1',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 2',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 3',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 4',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 5',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 6',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 7',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 8',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 9',  value: Math.floor(Math.random() * 11) },
+		{ name: 'Player 10',  value: Math.floor(Math.random() * 11) },
+		]
+    },
+	]
+});
+
+</script>
+
 {{ range $weapon := .General.TopWeaponsByKills}}
 
 <div class="card">

@@ -24,6 +24,16 @@ func handlerAPIPlayerinfo(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	switch vars["endpoint"] {
+	case "maps":
+
+		info, err := datastorage.GetPlayerInfoBySteamID(steamID)
+
+		//TODO handle error
+		if err != nil {
+			panic(err)
+		}
+
+		byt, err = json.Marshal(info.UserStatsForGame.Stats.MapStats())
 	case "weapons":
 
 		info, err := datastorage.GetPlayerInfoBySteamID(steamID)

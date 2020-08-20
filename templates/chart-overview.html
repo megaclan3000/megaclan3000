@@ -1,163 +1,132 @@
-<div class="row">
 
-	<div class="col s4">
-		<div>
-			<p class="right-align">
-
-			<div class="card blue-grey darken-3">
-				<div class="card-content white-text right-align">
-				<div class="row">
-					<div class="col s2 right-align">
-						<span class="orange-text">KILLS</span>
-						<span style="font-size:40">{{.UserStatsForGame.Stats.TotalKills}}</span>
-					</div>
-					<div class="col s2 offset-s2 right-align">
-						<img height="60" src="/public/img/icons/kills.svg">
-					</div>
-				</div>
-				</div>
-			</div>
-
-			<div class="card blue-grey darken-2">
-				<div class="card-content white-text right-align">
-
-				<div class="row">
-					<div class="col s2 right-align">
-						<span class="orange-text">TIME PLAYED</span>
-						<span style="font-size:40">{{.UserStatsForGame.Extra.PlayedHours}}h</span>
-					</div>
-					<div class="col s2 offset-s2 right-align">
-						<img height="60" src="/public/img/icons/timer.svg">
-					</div>
-				</div>
-
-				</div>
-			</div>
-			<div class="card blue-grey darken-1">
-				<div class="card-content white-text right-align">
-
-
-
-
-				<div class="row">
-					<div class="col s2 right-align">
-						<span class="orange-text">WIN</span>
-						<span style="font-size:40">{{.Calc.PercentWin}}%</span>
-					</div>
-					<div class="col s2 offset-s2 right-align">
-						<img height="60" src="/public/img/icons/win-cup.svg">
-					</div>
-				</div>
-
-
-				</div>
-			</div>
-			</p>
-		</div>
-	</div>
-	<div class="col s4">
-		<p class="center-align">
-		<div id="container-kd" style="width:100%; height:300px;"></div>
-		</p>
-	</div>
-	<div class="col s4">
-		<p class="left-align">
-
-		<div class="card blue-grey darken-3">
-			<div class="card-content white-text">
-				<div class="row">
-					<div class="col s2">
-						<img height="60" src="/public/img/icons/target.svg">
-					</div>
-					<div class="col s2 offset-s2">
-						<span class="orange-text">ACCURACY</span>
-						<span style="font-size:40">{{.Calc.PercentAccuracy}}%</span>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="card blue-grey darken-2">
-			<div class="card-content white-text">
-				<div class="row">
-					<div class="col s2">
-						<img height="60" src="/public/img/icons/headshot.svg">
-					</div>
-					<div class="col s2 offset-s2">
-						<span class="orange-text">HEADSHOT</span>
-						<span style="font-size:40">{{.Calc.PercentHeadshot}}%</span>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="card blue-grey darken-1">
-			<div class="card-content white-text">
-				<div class="row">
-					<div class="col s2">
-						<img height="60" src="/public/img/icons/star.svg">
-					</div>
-					<div class="col s2 offset-s2">
-						<span class="orange-text">MVPs</span>
-						<span style="font-size:40">{{.UserStatsForGame.Stats.TotalMvps}}</span>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		</p>
-	</div>
-
-</div>
-
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
-<script charset="utf-8">
-
-var chartKd = document.getElementById("container-kd");
-var myChartOverview = echarts.init(chartKd);
-var app = {};
-option = null;
-
-	option = {
-	tooltip: {
-		trigger: 'item',
-		formatter: '{b}: {c} ({d}%)'
-	},
-	series: [
-		{
-			name: '',
-			type: 'pie',
-			radius: ['50%', '70%'],
-			avoidLabelOverlap: true,
-			label: {
-				show: true,
-						formatter: '{{.UserStatsForGame.Extra.TotalKD}}',
-						fontSize: '40',
-
-				position: 'center'
-			},
-			emphasis: {
-				label: {
-					show: false,
-					fontSize: '60',
-					fontWeight: 'bold'
-				}
-			},
-			labelLine: {
-				show: false
-			},
-			data: [
-				{value: {{.UserStatsForGame.Stats.TotalKills}}, name: 'Kills'},
-				{value: {{.UserStatsForGame.Stats.TotalDeaths}}, name: 'Deaths'}
-			]
-		}
-	]
-};
-
-if (option && typeof option === "object") {
-	myChartOverview.setOption(option, true);
+<style type="text/css" media="screen">
+.col {
+	<!-- border: 1px solid red; -->
+}
+.chart-overview-row {
+	height: 80px;
 }
 
-$(window).resize(function() {
-	myChartOverview.resize();
+</style>
+
+<div class="row">
+	<div class="col s4">
+		<div class="card blue-grey">
+			<div class="card-content blue-grey darken-3 white-text">
+				<div class="container">
+					<div class="row chart-overview-row valign-wrapper">
+						<div class="col s7">
+							<p class="orange-text">KILLS</p>
+							<p> {{.UserStatsForGame.Stats.TotalKills}} </p>
+						</div>
+						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/kills.svg"> </div>
+					</div>
+					<div class="row chart-overview-row valign-wrapper">
+						<div class="col s7">
+							<p class="orange-text">TIME</p>
+							<p> {{.UserStatsForGame.Extra.PlayedHours}}h </p>
+						</div>
+						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/timer.svg"> </div>
+					</div>
+					<div class="row chart-overview-row valign-wrapper">
+						<div class="col s7">
+							<p class="orange-text">WIN</p>
+							<p>	{{.Calc.PercentWin}}% </p>
+						</div>
+						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/win-cup.svg"> </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col s4" id="details-kd-chart"> </div>
+
+	<div class="col s4">
+		<div class="card blue-grey">
+			<div class="card-content blue-grey darken-3 white-text">
+				<div class="container">
+					<div class="row chart-overview-row valign-wrapper right-align">
+						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/target.svg"> </div>
+						<div class="col s7">
+							<p class="orange-text">ACCURACY</p>
+							<p> {{.Calc.PercentAccuracy}}% </p>
+						</div>
+					</div>
+					<div class="row chart-overview-row valign-wrapper right-align">
+						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/headshot.svg"> </div>
+						<div class="col s7">
+							<p class="orange-text">HEADSHOT</p>
+							<p> {{.Calc.PercentHeadshot}}% </p>
+						</div>
+					</div>
+					<div class="row chart-overview-row valign-wrapper right-align">
+						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/star.svg"> </div>
+						<div class="col s7">
+							<p class="orange-text">MVPs</p>
+							<p> {{.UserStatsForGame.Stats.TotalMvps}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<script charset="utf-8">
+
+	Highcharts.chart('details-kd-chart', {
+	chart: {
+		plotBackgroundColor: null,
+		plotBorderWidth: 0,
+		plotShadow: false
+	},
+	title: {
+		text: '{{.UserStatsForGame.Extra.TotalKD}}',
+		align: 'center',
+		verticalAlign: 'middle',
+	},
+	tooltip: {
+		pointFormat: '<b>{point.y:.0f}</b>'
+	},
+	accessibility: {
+		point: {
+			valueSuffix: '%'
+		}
+	},
+	plotOptions: {
+		pie: {
+			dataLabels: {
+				enabled: true,
+				distance: -50,
+				style: {
+					fontWeight: 'bold',
+					color: 'white'
+				}
+			},
+			startAngle: 0,
+			endAngle: 0,
+		}
+	},
+	series: [{
+		type: 'pie',
+		name: 'Percentage',
+		innerSize: '50%',
+		data: [
+			{
+				name: "Kills",
+				y: {{.UserStatsForGame.Stats.TotalKills}},
+				color: 'darkblue',
+			},
+			{
+				name: 'Deaths',
+				y: {{.UserStatsForGame.Stats.TotalDeaths}},
+				color: 'darkred',
+
+			}
+		]
+	}]
 });
 </script>

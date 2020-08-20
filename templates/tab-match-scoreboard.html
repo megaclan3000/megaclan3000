@@ -1,37 +1,155 @@
-<table class="highlight">
+
+
+
+<style type="text/css" media="screen">
+.wrapper {
+	display: flex;
+	width:100%;
+}
+
+.scoretable tr {
+	line-height: 10px;
+	padding: 5px;
+}
+
+.scoretable td {
+	line-height: 10px;
+	padding: 5px;
+}
+
+
+.wrapped {
+	flex-basis: 100%;
+}
+
+.scoretable {
+  table-layout: fixed ;
+  width: 100% ;
+}
+
+.scoretablenum{
+	width: 30px;
+	text-align: center;
+}
+
+th span {
+  transform-origin: 0 50%;
+  transform: rotate(-90deg); 
+  white-space: nowrap; 
+  display: block;
+  left: 50%;
+}
+
+#chartcontainer-match-players {
+	height: 300px;
+}
+
+
+</style>
+
+<div  id="chartcontainer-match-players"></div>
+
+<script charset="utf-8">
+	Highcharts.chart('chartcontainer-match-players', {
+    chart: {
+        type: 'column'
+    },
+    title:  null,
+    xAxis: {
+        categories: [
+		'Player 1',
+		'Player 2',
+		'Player 3',
+		'Player 4',
+		'Player 5',
+		'Player 6',
+		'Player 7',
+		'Player 8',
+		'Player 9',
+		'Player 10',
+        ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: null,
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} HP</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.1,
+            borderWidth: 0
+        }
+    },
+    series: [
+
+	{
+        name: 'Kills',
+        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1]
+    }, 
+	{
+        name: 'Deaths',
+        data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1 ]
+
+    },
+	{
+        name: 'Assists',
+        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1]
+    }, 
+	]
+});
+</script>
+
+
+
+
+<script charset="utf-8">
+	$(document).ready(function(){
+	$('.collapsible').collapsible();
+  });
+</script>
+<table class="scoretable highlight">
 	<thead>
 		<tr>
-			<th>Avatar</th>
-			<th>Player</th>
-			<th>Rank</th>
-			<th>K</th>
-			<th>D</th>
-			<th>A</th>
-			<th>+/-</th>
-			<th>K/D</th>
-			<th>ADR</th>
-			<th>HS%</th>
-			<th>FK</th>
-			<th>FD</th>
-			<th>K</th>
-			<th>D</th>
-			<th>FK</th>
-			<th>FD</th>
-			<th>1v5</th>
-			<th>1v4</th>
-			<th>1v3</th>
-			<th>1v2</th>
-			<th>1v1</th>
-			<th>5k</th>
-			<th>4k</th>
-			<th>3k</th>
-			<th>2k</th>
-			<th>1k</th>
+			<th style="width:40px;"></th>
+			<th style="width:140px;"></th>
+			<th style="width:80px;"></th>
+			<th class="scoretablenum">K</th>
+			<th class="scoretablenum">D</th>
+			<th class="scoretablenum">A</th>
+			<th class="scoretablenum">+/-</th>
+			<th class="scoretablenum">K/D</th>
+			<th class="scoretablenum">ADR</th>
+			<th class="scoretablenum">HS</th>
+			<th class="scoretablenum">FK</th>
+			<th class="scoretablenum">FD</th>
+			<th class="scoretablenum">K</th>
+			<th class="scoretablenum">D</th>
+			<th class="scoretablenum">FK</th>
+			<th class="scoretablenum">FD</th>
+			<th class="scoretablenum">1v5</th>
+			<th class="scoretablenum">1v4</th>
+			<th class="scoretablenum">1v3</th>
+			<!-- <th>1v2</th> -->
+			<!-- <th>1v1</th> -->
+			<th class="scoretablenum">5k</th>
+			<th class="scoretablenum">4k</th>
+			<th class="scoretablenum">3k</th>
+			<!-- <th>2k</th> -->
+			<!-- <th>1k</th> -->
 			<!-- <th>KAST</th> -->
 			<!-- <th>HLTV</th> -->
 		</tr>
 	</thead>
 	<tbody>
+
 
 
 {{$infos:= .General.PlayerInfos}}
@@ -44,35 +162,73 @@
 			<td> <img class="tableimage" src="{{ $player.AvatarURL }}" alt=""></img> </td>
 			<td>{{$player.Name}}<div class="orange-text">{{ $player.ClanTag }}</div></td>
 			<td> <img class="tableimage" src="{{ $player.RankIconURL }}" alt=""></img></td>
-			<td>{{ $p.Kills }}</td>
-			<td>{{ $p.Deaths }}</td>
-			<td>{{ $p.Assists }}</td>
-			<td>{{ $p.KDDiff }}</td>
-			<td>{{ $p.KD }}</td>
-			<td>{{ $p.ADR }}</td>
-			<td>{{ $p.HSPrecent }}</td>
-			<td>{{ $p.FirstKills }}</td>
-			<td>{{ $p.FirstDeaths }}</td>
-			<td>{{ $p.TradeKills }}</td>
-			<td>{{ $p.TradeDeaths }}</td>
-			<td>{{ $p.TradeFirstKills }}</td>
-			<td>{{ $p.TradeFirstDeaths }}</td>
-			<td>{{ $p.RoundsWonV5 }}</td>
-			<td>{{ $p.RoundsWonV4 }}</td>
-			<td>{{ $p.RoundsWonV3 }}</td>
-			<td>{{ $p.RoundsWonV2 }}</td>
-			<td>{{ $p.RoundsWonV1 }}</td>
-			<td>{{ $p.Rounds5k }}</td>
-			<td>{{ $p.Rounds4k }}</td>
-			<td>{{ $p.Rounds3k }}</td>
-			<td>{{ $p.Rounds2k }}</td>
-			<td>{{ $p.Rounds1k }}</td>
+			<td class="scoretablenum">{{ $p.Kills }}</td>
+			<td class="scoretablenum">{{ $p.Deaths }}</td>
+			<td class="scoretablenum">{{ $p.Assists }}</td>
+			<td class="scoretablenum">{{ $p.KDDiff }}</td>
+			<td class="scoretablenum">{{ $p.KD }}</td>
+			<td class="scoretablenum">{{ $p.ADR }}</td>
+			<td class="scoretablenum">{{ $p.HSPrecent }}</td>
+			<td class="scoretablenum">{{ $p.FirstKills }}</td>
+			<td class="scoretablenum">{{ $p.FirstDeaths }}</td>
+			<td class="scoretablenum">{{ $p.TradeKills }}</td>
+			<td class="scoretablenum">{{ $p.TradeDeaths }}</td>
+			<td class="scoretablenum">{{ $p.TradeFirstKills }}</td>
+			<td class="scoretablenum">{{ $p.TradeFirstDeaths }}</td>
+			<td class="scoretablenum">{{ $p.RoundsWonV5 }}</td>
+			<td class="scoretablenum">{{ $p.RoundsWonV4 }}</td>
+			<td class="scoretablenum">{{ $p.RoundsWonV3 }}</td>
+			<!-- <td>{{ $p.RoundsWonV2 }}</td> -->
+			<!-- <td>{{ $p.RoundsWonV1 }}</td> -->
+			<td class="scoretablenum">{{ $p.Rounds5k }}</td>
+			<td class="scoretablenum">{{ $p.Rounds4k }}</td>
+			<td class="scoretablenum">{{ $p.Rounds3k }}</td>
+			<!-- <td>{{ $p.Rounds2k }}</td> -->
+			<!-- <td>{{ $p.Rounds1k }}</td> -->
 			<!-- <td>{{ $p.KAST }}</td> -->
 			<!-- <td>{{ $p.HLTV}}</td> -->
 		</tr>
 		{{end}}
 
-		<tr><td></td></tr>
+	</tbody>
+	<th></th>
+</table>
+
+<table class="scoretable highlight">
+	<thead>
+		<tr>
+			<th style="width:40px;"></th>
+			<th style="width:140px;"></th>
+			<th style="width:80px;"></th>
+			<th class="scoretablenum">K</th>
+			<th class="scoretablenum">D</th>
+			<th class="scoretablenum">A</th>
+			<th class="scoretablenum">+/-</th>
+			<th class="scoretablenum">K/D</th>
+			<th class="scoretablenum">ADR</th>
+			<th class="scoretablenum">HS</th>
+			<th class="scoretablenum">FK</th>
+			<th class="scoretablenum">FD</th>
+			<th class="scoretablenum">K</th>
+			<th class="scoretablenum">D</th>
+			<th class="scoretablenum">FK</th>
+			<th class="scoretablenum">FD</th>
+			<th class="scoretablenum">1v5</th>
+			<th class="scoretablenum">1v4</th>
+			<th class="scoretablenum">1v3</th>
+			<!-- <th>1v2</th> -->
+			<!-- <th>1v1</th> -->
+			<th class="scoretablenum">5k</th>
+			<th class="scoretablenum">4k</th>
+			<th class="scoretablenum">3k</th>
+			<!-- <th>2k</th> -->
+			<!-- <th>1k</th> -->
+			<!-- <th>KAST</th> -->
+			<!-- <th>HLTV</th> -->
+		</tr>
+	</thead>
+	<tbody>
+
 
 		{{range $p := .Scoreboard.TeamEnemy}}
 {{$player:= index $infos .PlayerSteamID64}}
@@ -80,29 +236,29 @@
 			<td> <img class="tableimage" src="{{ $player.AvatarURL }}" alt=""></img> </td>
 			<td>{{$player.Name}}<div class="orange-text">{{ $player.ClanTag }}</div></td>
 			<td> <img class="tableimage" src="{{ $player.RankIconURL }}" alt=""></img></td>
-			<td>{{ $p.Kills }}</td>
-			<td>{{ $p.Deaths }}</td>
-			<td>{{ $p.Assists }}</td>
-			<td>{{ $p.KDDiff }}</td>
-			<td>{{ $p.KD }}</td>
-			<td>{{ $p.ADR }}</td>
-			<td>{{ $p.HSPrecent }}</td>
-			<td>{{ $p.FirstKills }}</td>
-			<td>{{ $p.FirstDeaths }}</td>
-			<td>{{ $p.TradeKills }}</td>
-			<td>{{ $p.TradeDeaths }}</td>
-			<td>{{ $p.TradeFirstKills }}</td>
-			<td>{{ $p.TradeFirstDeaths }}</td>
-			<td>{{ $p.RoundsWonV5 }}</td>
-			<td>{{ $p.RoundsWonV4 }}</td>
-			<td>{{ $p.RoundsWonV3 }}</td>
-			<td>{{ $p.RoundsWonV2 }}</td>
-			<td>{{ $p.RoundsWonV1 }}</td>
-			<td>{{ $p.Rounds5k }}</td>
-			<td>{{ $p.Rounds4k }}</td>
-			<td>{{ $p.Rounds3k }}</td>
-			<td>{{ $p.Rounds2k }}</td>
-			<td>{{ $p.Rounds1k }}</td>
+			<td class="scoretablenum">{{ $p.Kills }}</td>
+			<td class="scoretablenum">{{ $p.Deaths }}</td>
+			<td class="scoretablenum">{{ $p.Assists }}</td>
+			<td class="scoretablenum">{{ $p.KDDiff }}</td>
+			<td class="scoretablenum">{{ $p.KD }}</td>
+			<td class="scoretablenum">{{ $p.ADR }}</td>
+			<td class="scoretablenum">{{ $p.HSPrecent }}</td>
+			<td class="scoretablenum">{{ $p.FirstKills }}</td>
+			<td class="scoretablenum">{{ $p.FirstDeaths }}</td>
+			<td class="scoretablenum">{{ $p.TradeKills }}</td>
+			<td class="scoretablenum">{{ $p.TradeDeaths }}</td>
+			<td class="scoretablenum">{{ $p.TradeFirstKills }}</td>
+			<td class="scoretablenum">{{ $p.TradeFirstDeaths }}</td>
+			<td class="scoretablenum">{{ $p.RoundsWonV5 }}</td>
+			<td class="scoretablenum">{{ $p.RoundsWonV4 }}</td>
+			<td class="scoretablenum">{{ $p.RoundsWonV3 }}</td>
+			<!-- <td>{{ $p.RoundsWonV2 }}</td> -->
+			<!-- <td>{{ $p.RoundsWonV1 }}</td> -->
+			<td class="scoretablenum">{{ $p.Rounds5k }}</td>
+			<td class="scoretablenum">{{ $p.Rounds4k }}</td>
+			<td class="scoretablenum">{{ $p.Rounds3k }}</td>
+			<!-- <td>{{ $p.Rounds2k }}</td> -->
+			<!-- <td>{{ $p.Rounds1k }}</td> -->
 			<!-- <td>{{ $p.KAST }}</td> -->
 			<!-- <td>{{ $p.HLTV}}</td> -->
 

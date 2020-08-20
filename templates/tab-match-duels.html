@@ -1,26 +1,28 @@
 
 
-<div id="container"></div>
-<div id="container2"></div>
+<!-- <div id="container"></div> -->
+<div style="height:300px;" id="chartcontainer-match-duels"></div>
 
 
 <script charset="utf-8">
 
 	$(document).ready(function() {
 
-	var options_example = {
-		chart: {
-			renderTo: 'container',
-			type: 'spline'
-		},
-		series: [{}]
-	};
-
+//	var options_example = {
+//		chart: {
+//			renderTo: 'container',
+//			type: 'spline'
+//		},
+//		series: [{}]
+//	};
+//
 	var options_damage_transfer = {
 		chart: {
-			renderTo: 'container2',
+			renderTo: 'chartcontainer-match-duels',
 			type: 'sankey',
 		},
+		title: null,
+        height: 300,
 		series: [{}],
 		accessibility: {
 			point: {
@@ -39,12 +41,18 @@
 		var chart_damage_transfer = new Highcharts.Chart(options_damage_transfer);
 	});
 
-	$.getJSON("/api/example",  function(data_example) {
-		options_example.series[0].data = data_example;
-		console.log("Data example");
-		console.log(data_example);
-		var chart_example = new Highcharts.Chart(options_example);
-	});
+//	$.getJSON("/api/example",  function(data_example) {
+//		options_example.series[0].data = data_example;
+//		console.log("Data example");
+//		console.log(data_example);
+//		var chart_example = new Highcharts.Chart(options_example);
+//	});
 });
+</script>
+
+<table id="testtable"> </table>
+
+<script charset="utf-8">
+	CreateTableFromJSON("testtable", "/api/example");
 </script>
 

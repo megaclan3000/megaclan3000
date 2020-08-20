@@ -11,13 +11,6 @@
 	<body>
 
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/sankey.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
-
-
 		<!-- TODO put styles in public folder -->
 		<style type="text/css" media="screen">
 
@@ -103,7 +96,7 @@
 
 		<div class="row blue-grey">
 			<div class="col s12">
-				<ul class="tabs blue-grey">
+				<ul class="tabs tabs-fixed-width tabs-transparent blue-grey">
 					<li class="tab col">
 						<a href="#tab-scoreboard" class="active">
 							<i class="material-icons">timeline</i>Scoreboard
@@ -148,7 +141,12 @@
 
 		<script>
 			$(document).ready(function(){
-				$('.tabs').tabs();
+				$('.tabs').tabs( { 
+					onShow: function(tab) {
+						//alert(tab);
+					}
+				});
+
 			});
 		</script>
 
