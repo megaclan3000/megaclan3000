@@ -2,7 +2,9 @@ package main
 
 import (
 	// "encoding/binary"
+	"encoding/json"
 	"errors"
+
 	// "strconv"
 
 	// "github.com/megaclan3000/megaclan3000/internal/demoparser"
@@ -88,6 +90,61 @@ func (ds DataStorage) GetPlayerInfoBySteamID(steamID uint64) (steamclient.Player
 		}
 	}
 	return steamclient.PlayerInfo{}, errors.New("Player not found")
+}
+
+type matchstat struct {
+	Time         time.Time
+	ScoreClan    int
+	ScoreEnemy   int
+	PlayersClan  []string
+	PlayersEnemy []string
+}
+
+func (ms matchstat) MarshalJSON() ([]byte, error) {
+
+	return json.Marshal(&struct {
+		Time         time.Time `json:"time"`
+		ScoreClan    int       `json:"score_clan"`
+		ScoreEnemy   int       `json:"score_enemy"`
+		PlayersClan  []string  `json:"players_clan"`
+		PlayersEnemy []string  `json:"players_enemy"`
+	}{
+
+		Time:         ms.Time,
+		ScoreClan:    ms.ScoreClan,
+		ScoreEnemy:   ms.ScoreEnemy,
+		PlayersClan:  ms.PlayersClan,
+		PlayersEnemy: ms.PlayersEnemy,
+	})
+
+}
+
+func (ds DataStorage) GetMatches() []matchstat {
+
+	return []matchstat{
+		{
+			Time:         time.Now(),
+			ScoreClan:    1,
+			ScoreEnemy:   2,
+			PlayersClan:  []string{"player1", "player2"},
+			PlayersEnemy: []string{"player3", "player4"},
+		},
+		{
+			Time:         time.Now(),
+			ScoreClan:    1,
+			ScoreEnemy:   2,
+			PlayersClan:  []string{"player1", "player2"},
+			PlayersEnemy: []string{"player3", "player4"},
+		},
+
+		{
+			Time:         time.Now(),
+			ScoreClan:    1,
+			ScoreEnemy:   2,
+			PlayersClan:  []string{"player1", "player2"},
+			PlayersEnemy: []string{"player3", "player4"},
+		},
+	}
 }
 
 //func (ds *DataStorage) SaveMatch(match demoparser.Match) error {

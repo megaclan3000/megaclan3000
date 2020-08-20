@@ -2,8 +2,9 @@ package main
 
 import (
 	// "github.com/gorilla/mux"
-	log "github.com/sirupsen/logrus"
 	"net/http"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // func handlerAPI(w http.ResponseWriter, r *http.Request) {

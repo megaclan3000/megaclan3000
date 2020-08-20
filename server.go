@@ -64,12 +64,14 @@ func main() {
 	r.HandleFunc("/faq", parseTemplates(handlerFAQ))
 	r.HandleFunc("/player/{id}", parseTemplates(handlerDetails))
 	r.HandleFunc("/match/{id}", parseTemplates(handlerMatch))
+	r.HandleFunc("/matches", parseTemplates(handlerMatches))
 	r.HandleFunc("/scoreboard", parseTemplates(handlerScoreboard))
 	r.HandleFunc("/imprint", parseTemplates(handlerImprint))
 
 	// API for json data retrieval
 	r.HandleFunc("/api/example", parseTemplates(handlerAPIExample))
 	r.HandleFunc("/api/playerinfo/{steamid}/{endpoint}", parseTemplates(handlerAPIPlayerinfo))
+	r.HandleFunc("/api/claninfo/{endpoint}", parseTemplates(handlerAPIClaninfo))
 	r.HandleFunc("/api/matchinfo/{matchid}/{endpoint}", parseTemplates(handlerAPIMatchinfo))
 
 	// Set custom 404 page
@@ -171,6 +173,13 @@ func handlerScoreboard(w http.ResponseWriter, r *http.Request) {
 func handlerMatch(w http.ResponseWriter, r *http.Request) {
 
 	if err := t.ExecuteTemplate(w, "match.html", demoInfo); err != nil {
+		log.Warn(err)
+	}
+}
+
+func handlerMatches(w http.ResponseWriter, r *http.Request) {
+
+	if err := t.ExecuteTemplate(w, "matches.html", nil); err != nil {
 		log.Warn(err)
 	}
 }

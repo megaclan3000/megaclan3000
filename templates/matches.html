@@ -1,0 +1,56 @@
+
+{{template "header.html"}}
+
+
+<script id="matchesTemplate" type="text/x-jquery-tmpl">
+	<tr>
+
+		<td >${matchesTime}</td>
+		<td >${matchesScoreClan}</td>
+		<td >${matchesSCoreEnemy}</td>
+		<td >${matchesResult}</td>
+		<td >${matchesPlayersClan}</td>
+		<td >${matchesPlayersEnemy}</td>
+	</tr>
+</script>
+
+<table id="generated_matches_table" class="white-text">
+	<tbody>
+	</tbody>
+</table>
+
+
+<script charset="utf-8">
+
+$(document).ready(function(){
+	// TODO use correct id
+	var url = "/api/claninfo/matches"
+	$.getJSON(url,  function( data) {
+
+		data.sort((a, b) => b.time - a.time)
+
+
+		for (var row = 0; row < data.length; row++) {
+
+
+
+			console.log(data[row])
+
+			var matchstat = {
+				matchesTime: data[row].time,
+				matchesScoreClan: data[row].score_clan,
+				matchesScoreEnemy: data[row].score_enemy,
+				matchesResult: data[row].result,
+				matchesPlayersClan: data[row].players_clan,
+				matchesPlayersEnemy: data[row].players_enemy,
+			}
+			$( "#matchesTemplate" ).tmpl(matchstat).appendTo( "#generated_matches_table tbody" );
+		}
+	});
+
+});
+
+</script>
+
+
+{{template "footer.html"}}
