@@ -95,7 +95,7 @@
 	{{$infos:= .General.PlayerInfos}}
 	{{range $i, $r := .Rounds}}
 	<li>
-		<div class="collapsible-header hoverable" style="padding:0px;">
+		<div class="collapsible-header hoverable blue-grey lighten-5" style="padding:0px;">
 			<div style="width:100%;padding:0px" class="container">
 				<div class="row valign-wrapper" style="margin:10px">
 				  <div class="col s1">
@@ -113,17 +113,17 @@
 				  <div class="col s1 center-align valign-wrapper">
 					{{ if $r.ClanWonRound}} <img src="/public/img/win_reason/{{$r.WinReason}}.png" style="width:20px" class="" alt=""> {{end}}
 				  </div>
-				  <div class="col s2 center-align valign-wrapper"> 
-					<span class="orange-text">{{$r.ScoreClan}}</span>:<span class="blue-text">{{$r.ScoreEnemy}}</span>
+				  <div class="col s2 center-align">
+					  <h6> <span class="orange-text">{{$r.ScoreClan}}</span>:<span class="blue-text">{{$r.ScoreEnemy}}</span > </h6>
 				  </div>
-				  <div class="col s1 center-align valign-wrapper"> 
+				  <div class="col s1 center-align valign-wrapper">
 					{{ if not $r.ClanWonRound}} <img src="/public/img/win_reason/{{$r.WinReason}}.png" style="width:20px" class="" alt=""> {{end}}
 				  </div>
 				  <div class="col s3 valign-wrapper">
 					{{range  $p := $r.TeamEnemyKills}}
 					{{$killer:= index $infos .KillerSteamID64}}
 					{{$victim:= index $infos .VictimSteamID64}}
-					{{if ne $killer.Name $victim.Name}} 
+					{{if ne $killer.Name $victim.Name}}
 					<div style="padding:2;px;"> <img style="width:35px;height:35px;" src="{{$killer.AvatarURL}}" alt=""> </div>
 					{{end}}
 					{{end}}
@@ -133,7 +133,6 @@
 			</div>
 		</div>
 		<div class="collapsible-body blue-grey lighten-4">
-
 			<div style="width:100%;" class="container">
 				<div class="row">
 				  <div class="col s6">
@@ -182,9 +181,6 @@
 	</li>
 	{{end}}
 </ul>
-
-<!-- OLD -->
-
 
 <script charset="utf-8">
 	$(document).ready(function(){

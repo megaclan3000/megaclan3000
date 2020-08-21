@@ -3,7 +3,7 @@
 	
 .weaponcardimg{
 	height:150px;
-	object-fit: cover;
+	object-fit: contain;
 }
 
 </style>
@@ -151,13 +151,13 @@ Highcharts.chart('chartcontainer-match-weapons', {
 
 {{ range $weapon := .General.TopWeaponsByKills}}
 
-<div class="card">
+<div class="card blue-grey lighten-5">
 	<div class="card-image">
 		<img class="weaponcardimg" src="/public/img/weapons/{{$weapon.String}}.jpg" >
 		<span class="card-title black-text">{{$weapon}}</span>
 	</div>
 	<div class="card-tabs">
-		<ul class="tabs tabs-fixed-width orange-text">
+		<ul class="tabs tabs-fixed-width orange-text blue-grey lighten-5">
 			<li class="tab"><a href="#tab-weapon-1{{$weapon}}"> <span class="orange-text">Kills</span></a></li>
 			<li class="tab"><a href="#tab-weapon-2{{$weapon}}"> <span class="orange-text">Headshots</span></a></li>
 			<li class="tab"><a href="#tab-weapon-3{{$weapon}}"> <span class="orange-text">Accuracy</span></a></li>
