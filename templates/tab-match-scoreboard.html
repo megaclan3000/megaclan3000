@@ -1,4 +1,5 @@
 
+{{$infos:= .General.PlayerInfos}}
 
 
 <style type="text/css" media="screen">
@@ -56,17 +57,13 @@ th span {
     },
     title:  null,
     xAxis: {
+
         categories: [
-		'Player 1',
-		'Player 2',
-		'Player 3',
-		'Player 4',
-		'Player 5',
-		'Player 6',
-		'Player 7',
-		'Player 8',
-		'Player 9',
-		'Player 10',
+		{{range $p := .Scoreboard.TeamClan}} {{$player:= index $infos .PlayerSteamID64}}
+		'{{$player.Name}}',
+		{{end}} {{range $p := .Scoreboard.TeamEnemy}} {{$player:= index $infos .PlayerSteamID64}}
+		'{{$player.Name}}',
+		{{end}}
         ],
         crosshair: true
     },
@@ -92,17 +89,34 @@ th span {
 
 	{
         name: 'Kills',
-        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1]
-    }, 
+        data: [
+		{{range $p := .Scoreboard.TeamClan}}
+		'{{$p.Kills}}',
+		{{end}} {{range $p := .Scoreboard.TeamEnemy}}
+		'{{$p.Kills}}',
+		{{end}}
+		]
+    },
 	{
         name: 'Deaths',
-        data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1 ]
-
+        data: [
+		{{range $p := .Scoreboard.TeamClan}} 
+		'{{$p.Deaths}}',
+		{{end}} {{range $p := .Scoreboard.TeamEnemy}}
+		'{{$p.Deaths}}',
+		{{end}}
+		]
     },
 	{
         name: 'Assists',
-        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1]
-    }, 
+        data: [
+		{{range $p := .Scoreboard.TeamClan}}
+		'{{$p.Assists}}',
+		{{end}} {{range $p := .Scoreboard.TeamEnemy}}
+		'{{$p.Assists}}',
+		{{end}}
+		]
+    },
 	]
 });
 </script>
@@ -115,7 +129,7 @@ th span {
 	$('.collapsible').collapsible();
   });
 </script>
-<table class="scoretable highlight blue-grey lighten-5">
+<table id="scoretableClan" class="scoretable highlight blue-grey lighten-5">
 	<thead>
 		<tr>
 			<th style="width:40px;"></th>
@@ -137,27 +151,17 @@ th span {
 			<th class="scoretablenum">1v5</th>
 			<th class="scoretablenum">1v4</th>
 			<th class="scoretablenum">1v3</th>
-			<!-- <th>1v2</th> -->
-			<!-- <th>1v1</th> -->
 			<th class="scoretablenum">5k</th>
 			<th class="scoretablenum">4k</th>
 			<th class="scoretablenum">3k</th>
-			<!-- <th>2k</th> -->
-			<!-- <th>1k</th> -->
-			<!-- <th>KAST</th> -->
-			<!-- <th>HLTV</th> -->
 		</tr>
 	</thead>
 	<tbody>
-
-
-
-{{$infos:= .General.PlayerInfos}}
 
 
 
 		{{range $p := .Scoreboard.TeamClan}}
-{{$player:= index $infos .PlayerSteamID64}}
+		{{$player:= index $infos .PlayerSteamID64}}
 		<tr>
 			<td> <img class="tableimage" src="{{ $player.AvatarURL }}" alt=""></img> </td>
 			<td>{{$player.Name}}<div class="orange-text">{{ $player.ClanTag }}</div></td>
@@ -178,23 +182,16 @@ th span {
 			<td class="scoretablenum">{{ $p.RoundsWonV5 }}</td>
 			<td class="scoretablenum">{{ $p.RoundsWonV4 }}</td>
 			<td class="scoretablenum">{{ $p.RoundsWonV3 }}</td>
-			<!-- <td>{{ $p.RoundsWonV2 }}</td> -->
-			<!-- <td>{{ $p.RoundsWonV1 }}</td> -->
 			<td class="scoretablenum">{{ $p.Rounds5k }}</td>
 			<td class="scoretablenum">{{ $p.Rounds4k }}</td>
 			<td class="scoretablenum">{{ $p.Rounds3k }}</td>
-			<!-- <td>{{ $p.Rounds2k }}</td> -->
-			<!-- <td>{{ $p.Rounds1k }}</td> -->
-			<!-- <td>{{ $p.KAST }}</td> -->
-			<!-- <td>{{ $p.HLTV}}</td> -->
 		</tr>
 		{{end}}
-
 	</tbody>
 	<th></th>
 </table>
 
-<table class="scoretable highlight blue-grey lighten-5">
+<table id="scoretableEnemy" class="scoretable highlight blue-grey lighten-5">
 	<thead>
 		<tr>
 			<th style="width:40px;"></th>
@@ -216,56 +213,62 @@ th span {
 			<th class="scoretablenum">1v5</th>
 			<th class="scoretablenum">1v4</th>
 			<th class="scoretablenum">1v3</th>
-			<!-- <th>1v2</th> -->
-			<!-- <th>1v1</th> -->
 			<th class="scoretablenum">5k</th>
 			<th class="scoretablenum">4k</th>
 			<th class="scoretablenum">3k</th>
-			<!-- <th>2k</th> -->
-			<!-- <th>1k</th> -->
-			<!-- <th>KAST</th> -->
-			<!-- <th>HLTV</th> -->
 		</tr>
 	</thead>
 	<tbody>
-
-
-		{{range $p := .Scoreboard.TeamEnemy}}
-{{$player:= index $infos .PlayerSteamID64}}
-		<tr>
-			<td> <img class="tableimage" src="{{ $player.AvatarURL }}" alt=""></img> </td>
-			<td>{{$player.Name}}<div class="orange-text">{{ $player.ClanTag }}</div></td>
-			<td> <img class="tableimage" src="{{ $player.RankIconURL }}" alt=""></img></td>
-			<td class="scoretablenum">{{ $p.Kills }}</td>
-			<td class="scoretablenum">{{ $p.Deaths }}</td>
-			<td class="scoretablenum">{{ $p.Assists }}</td>
-			<td class="scoretablenum">{{ $p.KDDiff }}</td>
-			<td class="scoretablenum">{{ $p.KD }}</td>
-			<td class="scoretablenum">{{ $p.ADR }}</td>
-			<td class="scoretablenum">{{ $p.HSPrecent }}</td>
-			<td class="scoretablenum">{{ $p.FirstKills }}</td>
-			<td class="scoretablenum">{{ $p.FirstDeaths }}</td>
-			<td class="scoretablenum">{{ $p.TradeKills }}</td>
-			<td class="scoretablenum">{{ $p.TradeDeaths }}</td>
-			<td class="scoretablenum">{{ $p.TradeFirstKills }}</td>
-			<td class="scoretablenum">{{ $p.TradeFirstDeaths }}</td>
-			<td class="scoretablenum">{{ $p.RoundsWonV5 }}</td>
-			<td class="scoretablenum">{{ $p.RoundsWonV4 }}</td>
-			<td class="scoretablenum">{{ $p.RoundsWonV3 }}</td>
-			<!-- <td>{{ $p.RoundsWonV2 }}</td> -->
-			<!-- <td>{{ $p.RoundsWonV1 }}</td> -->
-			<td class="scoretablenum">{{ $p.Rounds5k }}</td>
-			<td class="scoretablenum">{{ $p.Rounds4k }}</td>
-			<td class="scoretablenum">{{ $p.Rounds3k }}</td>
-			<!-- <td>{{ $p.Rounds2k }}</td> -->
-			<!-- <td>{{ $p.Rounds1k }}</td> -->
-			<!-- <td>{{ $p.KAST }}</td> -->
-			<!-- <td>{{ $p.HLTV}}</td> -->
-
-		</tr>
-		{{end}}
-
 	</tbody>
-	<th></th>
 </table>
 
+<script id="matchScoreboardTemplate" type="text/x-jquery-tmpl">
+		<tr>
+			<td> <img class="tableimage" src="${avatar_url}" alt=""></img> </td>
+			<td>${name}<div class="orange-text">${clantag}</div></td>
+			<td> <img class="tableimage" src="/public/img/ranks/${rank}.png" alt="{$rank}"></img></td>
+			<td class="scoretablenum">${kills}</td>
+			<td class="scoretablenum">${deaths}</td>
+			<td class="scoretablenum">${assists}</td>
+			<td class="scoretablenum">${kddiff}</td>
+			<td class="scoretablenum">${kd}</td>
+			<td class="scoretablenum">${adr}</td>
+			<td class="scoretablenum">${hsprecent}</td>
+			<td class="scoretablenum">${firstkills}</td>
+			<td class="scoretablenum">${firstdeaths}</td>
+			<td class="scoretablenum">${tradekills}</td>
+			<td class="scoretablenum">${tradedeaths}</td>
+			<td class="scoretablenum">${tradefirstkills}</td>
+			<td class="scoretablenum">${tradefirstdeaths}</td>
+			<td class="scoretablenum">${roundswonv5}</td>
+			<td class="scoretablenum">${roundswonv4}</td>
+			<td class="scoretablenum">${roundswonv3}</td>
+			<td class="scoretablenum">${rounds5k}</td>
+			<td class="scoretablenum">${rounds4k}</td>
+			<td class="scoretablenum">${rounds3k}</td>
+		</tr>
+</script>
+
+
+<script charset="utf-8">
+
+$(document).ready(function(){
+
+	// TODO use correct id
+	var url = "/api/matchinfo/1/scoreboard"
+	$.getJSON(url,  function( data) {
+
+		//data.sort((a, b) => b.shots - a.shots)
+
+		for (var row = 0; row < data.clan.length; row++) {
+			$( "#matchScoreboardTemplate" ).tmpl(data.clan[row]).appendTo( "#scoretableClan tbody" );
+		}
+
+
+		for (var row = 0; row < data.enemy.length; row++) {
+			$( "#matchScoreboardTemplate" ).tmpl(data.enemy[row]).appendTo( "#scoretableEnemy tbody" );
+		}
+	});
+});
+
+</script>

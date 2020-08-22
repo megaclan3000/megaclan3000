@@ -3,9 +3,9 @@ package main
 import (
 	// "encoding/json"
 	"flag"
+	"html/template"
 	"sort"
 	"strconv"
-	"text/template"
 
 	"net/http"
 	"time"

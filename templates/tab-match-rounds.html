@@ -95,7 +95,9 @@
 	{{$infos:= .General.PlayerInfos}}
 	{{range $i, $r := .Rounds}}
 	<li>
-		<div class="collapsible-header hoverable blue-grey lighten-5" style="padding:0px;">
+
+		{{ $color_class := "red"}} {{ if $r.ClanWonRound}} {{ $color_class = "green" }} {{ end }}
+		<div class="collapsible-header hoverable {{$color_class}} lighten-5" style="padding:0px;">
 			<div style="width:100%;padding:0px" class="container">
 				<div class="row valign-wrapper" style="margin:10px">
 				  <div class="col s1">
