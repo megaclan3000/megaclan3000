@@ -1,5 +1,4 @@
 
-{{$infos:= .General.PlayerInfos}}
 
 
 <style type="text/css" media="screen">
@@ -51,20 +50,13 @@ th span {
 <div  id="chartcontainer-match-players"></div>
 
 <script charset="utf-8">
-	Highcharts.chart('chartcontainer-match-players', {
+	scoreboardChart = Highcharts.chart('chartcontainer-match-players', {
     chart: {
         type: 'column'
     },
     title:  null,
     xAxis: {
-
-        categories: [
-		{{range $p := .Scoreboard.TeamClan}} {{$player:= index $infos .PlayerSteamID64}}
-		'{{$player.Name}}',
-		{{end}} {{range $p := .Scoreboard.TeamEnemy}} {{$player:= index $infos .PlayerSteamID64}}
-		'{{$player.Name}}',
-		{{end}}
-        ],
+        categories: [ "p1", "p2"],
         crosshair: true
     },
     yAxis: {
@@ -89,33 +81,15 @@ th span {
 
 	{
         name: 'Kills',
-        data: [
-		{{range $p := .Scoreboard.TeamClan}}
-		'{{$p.Kills}}',
-		{{end}} {{range $p := .Scoreboard.TeamEnemy}}
-		'{{$p.Kills}}',
-		{{end}}
-		]
+        data: [],
     },
 	{
         name: 'Deaths',
-        data: [
-		{{range $p := .Scoreboard.TeamClan}} 
-		'{{$p.Deaths}}',
-		{{end}} {{range $p := .Scoreboard.TeamEnemy}}
-		'{{$p.Deaths}}',
-		{{end}}
-		]
+        data: [],
     },
 	{
         name: 'Assists',
-        data: [
-		{{range $p := .Scoreboard.TeamClan}}
-		'{{$p.Assists}}',
-		{{end}} {{range $p := .Scoreboard.TeamEnemy}}
-		'{{$p.Assists}}',
-		{{end}}
-		]
+		data: [],
     },
 	]
 });
@@ -160,31 +134,30 @@ th span {
 
 
 
-		{{range $p := .Scoreboard.TeamClan}}
-		{{$player:= index $infos .PlayerSteamID64}}
+		{{range $p := .Players.Clan}}
 		<tr>
-			<td> <img class="tableimage" src="{{ $player.AvatarURL }}" alt=""></img> </td>
-			<td>{{$player.Name}}<div class="orange-text">{{ $player.ClanTag }}</div></td>
-			<td> <img class="tableimage" src="{{ $player.RankIconURL }}" alt=""></img></td>
+			<td> <img class="tableimage" src="{{ $p.AvatarURL }}" alt=""></img> </td>
+			<td>{{$p.Name}}<div class="orange-text">{{ $p.Clantag }}</div></td>
+			<td> <img class="tableimage" src="/public/{{ $p.Rank }}" alt=""></img></td>
 			<td class="scoretablenum">{{ $p.Kills }}</td>
 			<td class="scoretablenum">{{ $p.Deaths }}</td>
 			<td class="scoretablenum">{{ $p.Assists }}</td>
-			<td class="scoretablenum">{{ $p.KDDiff }}</td>
-			<td class="scoretablenum">{{ $p.KD }}</td>
-			<td class="scoretablenum">{{ $p.ADR }}</td>
-			<td class="scoretablenum">{{ $p.HSPrecent }}</td>
-			<td class="scoretablenum">{{ $p.FirstKills }}</td>
-			<td class="scoretablenum">{{ $p.FirstDeaths }}</td>
-			<td class="scoretablenum">{{ $p.TradeKills }}</td>
-			<td class="scoretablenum">{{ $p.TradeDeaths }}</td>
-			<td class="scoretablenum">{{ $p.TradeFirstKills }}</td>
-			<td class="scoretablenum">{{ $p.TradeFirstDeaths }}</td>
-			<td class="scoretablenum">{{ $p.RoundsWonV5 }}</td>
-			<td class="scoretablenum">{{ $p.RoundsWonV4 }}</td>
-			<td class="scoretablenum">{{ $p.RoundsWonV3 }}</td>
-			<td class="scoretablenum">{{ $p.Rounds5k }}</td>
-			<td class="scoretablenum">{{ $p.Rounds4k }}</td>
-			<td class="scoretablenum">{{ $p.Rounds3k }}</td>
+			<td class="scoretablenum">{{ $p.Kddiff }}</td>
+			<td class="scoretablenum">{{ $p.Kd }}</td>
+			<td class="scoretablenum">{{ $p.Adr }}</td>
+			<td class="scoretablenum">{{ $p.Hsprecent }}</td>
+			<td class="scoretablenum">{{ $p.Firstkills }}</td>
+			<td class="scoretablenum">{{ $p.Firstdeaths }}</td>
+			<td class="scoretablenum">{{ $p.Tradekills }}</td>
+			<td class="scoretablenum">{{ $p.Tradedeaths }}</td>
+			<td class="scoretablenum">{{ $p.Tradefirstkills }}</td>
+			<td class="scoretablenum">{{ $p.Tradefirstdeaths }}</td>
+			<td class="scoretablenum">{{ $p.Roundswonv5 }}</td>
+			<td class="scoretablenum">{{ $p.Roundswonv4 }}</td>
+			<td class="scoretablenum">{{ $p.Roundswonv3 }}</td>
+			<td class="scoretablenum">{{ $p.Rounds5K }}</td>
+			<td class="scoretablenum">{{ $p.Rounds4K }}</td>
+			<td class="scoretablenum">{{ $p.Rounds3K }}</td>
 		</tr>
 		{{end}}
 	</tbody>
@@ -260,14 +233,37 @@ $(document).ready(function(){
 
 		//data.sort((a, b) => b.shots - a.shots)
 
+		var arrPlayers = [];
+		var arrKills = [];
+		var arrDeaths = [];
+		var arrAssists = [];
+
 		for (var row = 0; row < data.clan.length; row++) {
+			arrKills.push(data.clan[row].kills);
+			arrDeaths.push(data.clan[row].deaths);
+			arrAssists.push(data.clan[row].assists);
+			arrPlayers.push(data.clan[row].name);
 			$( "#matchScoreboardTemplate" ).tmpl(data.clan[row]).appendTo( "#scoretableClan tbody" );
 		}
 
 
 		for (var row = 0; row < data.enemy.length; row++) {
+			arrKills.push(data.enemy[row].kills);
+			arrDeaths.push(data.enemy[row].deaths);
+			arrAssists.push(data.enemy[row].assists);
+			arrPlayers.push(data.enemy[row].name);
 			$( "#matchScoreboardTemplate" ).tmpl(data.enemy[row]).appendTo( "#scoretableEnemy tbody" );
 		}
+
+		scoreboardChart.categories = arrPlayers;
+
+        scoreboardChart.xAxis[0].setCategories(arrPlayers); //setting category
+		scoreboardChart.series[0].setData(arrKills);
+		scoreboardChart.series[1].setData(arrDeaths);
+		scoreboardChart.series[2].setData(arrAssists);
+
+		//https://api.highcharts.com/class-reference/Highcharts.Chart.html#addSeries
+		// https://api.highcharts.com/class-reference/Highcharts.Series#setData
 	});
 });
 

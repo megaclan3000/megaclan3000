@@ -7,9 +7,9 @@ import (
 	"math/rand"
 	"os"
 
-	log "github.com/sirupsen/logrus"
-	"strconv"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 
 	demoinfocs "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs"
 	common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
@@ -72,6 +72,16 @@ func (p *MyParser) Parse(path string, m *InfoStruct) error {
 	// Parse the demo returning errors
 	err = p.parser.ParseToEnd()
 	p.mockWeaponStats()
+
+	for _, r := range p.Match.Rounds {
+		for _, k := range r.TeamClanKills {
+			log.Warning(k)
+		}
+
+		for _, k := range r.TeamEnemyKills {
+			log.Warning(k)
+		}
+	}
 	return err
 
 }
@@ -152,11 +162,10 @@ func (p *MyParser) mockWeaponStats() {
 		common.EqZeus,
 	}
 
-	for _, v := range p.Match.General.PlayerInfos {
-		v.WeaponStats = make(map[common.EquipmentType]WeaponStat)
+	for _, p := range p.Match.Players.Players {
 		for _, w := range weaponTypes {
-
-			v.WeaponStats[w] = WeaponStat{
+			p.WeaponStats[w] = WeaponStat{
+				//TODO use real numbers
 				Kills:     rand.Intn(20),
 				Headshots: rand.Intn(20),
 				Damage:    rand.Intn(20),
@@ -167,18 +176,79 @@ func (p *MyParser) mockWeaponStats() {
 
 }
 
+func (p *MyParser) AddScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
+
+	name := "BOT"
+
+	if !player.IsBot {
+		name = player.Name
+	}
+
+	return ScoreboardPlayer{
+		IsClanMember:     player.Team == p.state.currentTeam,
+		Name:             name,
+		Rank:             0,
+		Clantag:          player.ClanTag(),
+		Steamid64:        player.SteamID64,
+		Kills:            0,
+		Deaths:           0,
+		Assists:          0,
+		Kddiff:           0,
+		Kd:               0,
+		Adr:              0,
+		Hsprecent:        0,
+		Firstkills:       0,
+		Firstdeaths:      0,
+		Tradekills:       0,
+		Tradedeaths:      0,
+		Tradefirstkills:  0,
+		Tradefirstdeaths: 0,
+		Roundswonv5:      0,
+		Roundswonv4:      0,
+		Roundswonv3:      0,
+		Rounds5K:         0,
+		Rounds4K:         0,
+		Rounds3K:         0,
+		WeaponStats:      make(map[common.EquipmentType]WeaponStat),
+	}
+}
+
 func (p *MyParser) handlerKill(e events.Kill) {
 
 	// Append kill to current round or to warmupKills
 	if p.parser.GameState().IsWarmupPeriod() {
 		p.state.WarmupKills = append(p.state.WarmupKills, e)
+		log.Warning("Kill during Warmup")
 	} else {
+		log.Warning("Kill", e)
+
+		killer, err := p.Match.Players.PlayerByID(e.Killer.SteamID64)
+
+		if err != nil {
+			log.Error("Killer not found")
+			p.AddScoreBoardPlayer(e.Killer)
+		}
+
+		victim, err := p.Match.Players.PlayerByID(e.Victim.SteamID64)
+
+		if err != nil {
+			log.Error("Victim not found")
+			p.AddScoreBoardPlayer(e.Victim)
+		}
+
 		kill := RoundKill{
-			KillerWeapon:     e.Weapon.Type,
-			KillerSteamID64:  e.Killer.SteamID64,
-			KillerTeamString: teamString(e.Killer.Team),
-			VictimTeamString: teamString(e.Victim.Team),
-			VictimSteamID64:  e.Victim.SteamID64,
+			KillerWeapon: e.Weapon.Type,
+			Killer:       killer,
+			Victim:       victim,
+		}
+
+		if e.Assister != nil {
+
+			if err != nil {
+				log.Error("Assister not found")
+				p.AddScoreBoardPlayer(e.Assister)
+			}
+
 		}
 
 		if e.Killer.Team == p.state.currentTeam {
@@ -228,115 +298,62 @@ func (p *MyParser) handlerPlayerHurt(e events.PlayerHurt) {
 // Handlers
 func (p *MyParser) handlerRankUpdate(e events.RankUpdate) {
 
-	//for  := range p.Match.General.PlayerInfos {
-	//	// pl.RankIconURL = "/public/img/ranks/" + strconv.Itoa(e.RankOld) + ".png"
-	//	pl.RankIconURL = getRankUrlFromSteamID64(e.SteamID64())
-	//}
-
-	////TODO set ranks icon URL
-	//// for e := range collection {
-
-	//// }
-	//// 			RankIconURL: "public/img/ranks/" + ct.Ran,
-	////TODO
-	log.Printf("Rank Update: %d went from rank %d to rank %d, change: %f\n", e.SteamID32, e.RankOld, e.RankNew, e.RankChange)
-	p.Match.General.PlayerInfos[e.Player.SteamID64].RankIconURL = "/public/img/ranks/" + strconv.Itoa(e.RankOld) + ".png"
-}
-
-func getAvatarUrlFromSteamID64(steamID uint64) string {
-
-	// TODO implement and use througout the parser
-	return "/public/img/avatars/other.jpg"
-}
-
-func getRankUrlFromSteamID64(steamID uint64) string {
-
-	// TODO implement and use througout the parser
-	return "/public/img/ranks/1.png"
+	for _, v := range p.Match.Players.Players {
+		if v.Steamid64 == e.SteamID64() {
+			v.Rank = e.RankNew
+			return
+		}
+	}
+	//TODO handle error
+	panic("player not found setting rank")
 }
 
 func (p *MyParser) handlerMatchStart(e events.MatchStart) {
 
-	p.Match.General.PlayerInfos = make(map[uint64]*ScoreboardTeamMemberInfo)
-
 	// Determine start team of clan
-	var clanStartTeam common.Team
 	for _, player := range p.parser.GameState().Participants().Playing() {
 		if player.ClanTag() == "megaclan3000" {
-			clanStartTeam = player.Team
+			p.state.currentTeam = player.Team
 		}
 	}
 
-	p.Match.General.PlayerInfos[0] = &ScoreboardTeamMemberInfo{
-		AvatarURL:   getAvatarUrlFromSteamID64(0),
-		Name:        "BOT",
-		RankIconURL: getRankUrlFromSteamID64(0),
-		ClanTag:     "",
-	}
-
+	// Add all players to the match, that are no bots
 	for _, ct := range p.parser.GameState().Participants().Playing() {
+
 		if ct.IsBot {
 			continue
 		}
 
-		p.Match.General.PlayerInfos[ct.SteamID64] = &ScoreboardTeamMemberInfo{
-			AvatarURL:   getAvatarUrlFromSteamID64(ct.SteamID64),
-			Name:        ct.Name,
-			ClanMember:  ct.Team == clanStartTeam,
-			RankIconURL: getRankUrlFromSteamID64(ct.SteamID64),
-			ClanTag:     ct.ClanTag(),
-		}
-
-		// info := ScoreboardTeamMemberInfo{
-		// 	AvatarURL:   getAvatarUrlFromSteamID64(ct.SteamID64),
-		// 	Name:        ct.Name,
-		// 	RankIconURL: getRankUrlFromSteamID64(ct.SteamID64),
-		// 	ClanTag:     ct.ClanTag(),
-		// }
-
-		if ct.ClanTag() == "megaclan3000" {
-			//TODO fetch and use correct images
-			// avatarURL = "public/img/avatars" + strconv.FormatUint(ct.SteamID64, 10) + ".png"
-		}
-
-		line := ScoreboardLine{
-
-			PlayerSteamID64:  ct.SteamID64,
+		player := ScoreboardPlayer{
+			IsClanMember:     p.state.currentTeam == ct.Team,
+			Name:             ct.Name,
+			Rank:             0,
+			Clantag:          ct.ClanTag(),
+			Steamid64:        ct.SteamID64,
 			Kills:            0,
 			Deaths:           0,
 			Assists:          0,
-			KDDiff:           0,
-			KD:               0,
-			ADR:              0,
-			HSPrecent:        0,
-			FirstKills:       0,
-			FirstDeaths:      0,
-			TradeKills:       0,
-			TradeDeaths:      0,
-			TradeFirstKills:  0,
-			TradeFirstDeaths: 0,
-			RoundsWonV5:      0,
-			RoundsWonV4:      0,
-			RoundsWonV3:      0,
-			RoundsWonV2:      0,
-			RoundsWonV1:      0,
-			Rounds5k:         0,
-			Rounds4k:         0,
-			Rounds3k:         0,
-			Rounds2k:         0,
-			Rounds1k:         0,
-			KAST:             0,
-			HLTV:             0,
+			Kddiff:           0,
+			Kd:               0,
+			Adr:              0,
+			Hsprecent:        0,
+			Firstkills:       0,
+			Firstdeaths:      0,
+			Tradekills:       0,
+			Tradedeaths:      0,
+			Tradefirstkills:  0,
+			Tradefirstdeaths: 0,
+			Roundswonv5:      0,
+			Roundswonv4:      0,
+			Roundswonv3:      0,
+			Rounds5K:         0,
+			Rounds4K:         0,
+			Rounds3K:         0,
+			WeaponStats:      make(map[common.EquipmentType]WeaponStat),
 		}
 
-		if ct.Team == clanStartTeam {
-			p.Match.Scoreboard.TeamClan = append(p.Match.Scoreboard.TeamClan, line)
-		} else {
-			p.Match.Scoreboard.TeamEnemy = append(p.Match.Scoreboard.TeamEnemy, line)
-		}
-
+		p.Match.Players.Players = append(p.Match.Players.Players, player)
 	}
-
 }
 
 func (p *MyParser) handlerRoundStart(e events.RoundStart) {
@@ -381,7 +398,7 @@ func (p *MyParser) handlerScoreUpdated(e events.ScoreUpdated) {
 	scoreCT := p.parser.GameState().TeamCounterTerrorists().Score()
 	scoreT := p.parser.GameState().TeamTerrorists().Score()
 
-	log.Warning("Updated Scores", scoreCT, scoreT)
+	// log.Warning("Updated Scores", scoreCT, scoreT)
 
 	if p.state.currentTeam == common.TeamCounterTerrorists {
 		p.Match.Rounds[p.state.Round-1].ScoreClan = scoreCT
@@ -401,7 +418,7 @@ func (p *MyParser) handlerScoreUpdated(e events.ScoreUpdated) {
 		return
 	}
 
-	log.Warning("Scoreparsing did something strange")
+	log.Warning("Scoreparsing did something strange", p.state.currentTeam)
 
 	// panic("no score found")
 

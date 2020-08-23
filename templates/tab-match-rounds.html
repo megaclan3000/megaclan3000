@@ -90,47 +90,37 @@
 
 <!-- NEW -->
 
-<ul class="collapsible">
+<ul class="collapsible" id="roundscontainer">
 
-	{{$infos:= .General.PlayerInfos}}
-	{{range $i, $r := .Rounds}}
+</ul>
+
+
+<script id="matchRoundsTemplate" type="text/x-jquery-tmpl">
 	<li>
-
-		{{ $color_class := "red"}} {{ if $r.ClanWonRound}} {{ $color_class = "green" }} {{ end }}
-		<div class="collapsible-header hoverable {{$color_class}} lighten-5" style="padding:0px;">
+		<div class="collapsible-header hoverable ${roundcolor} lighten-5" style="padding:0px;">
 			<div style="width:100%;padding:0px" class="container">
 				<div class="row valign-wrapper" style="margin:10px">
 				  <div class="col s1">
 					<img style="width:30px;" src="/public/img/teams/2.jpg" class="circle" alt="">
 					</div>
 				  <div class="col s3 valign-wrapper">
-					{{range  $p := $r.TeamClanKills}}
-					{{$killer:= index $infos .KillerSteamID64}}
-					{{$victim:= index $infos .VictimSteamID64}}
-					{{if ne $killer.Name $victim.Name}}
-					<div style="padding:2px;"> <img style="width:35px;height:35px;" src="{{$killer.AvatarURL}}" alt=""> </div>
-					{{end}}
-					{{end}}
+				  <!-- TODO loop over kills -->
+					<div style="padding:2px;"> <img style="width:35px;height:35px;" src="${killer_avatar}" alt=""> </div>
 				  </div>
 				  <div class="col s1 center-align valign-wrapper">
-					{{ if $r.ClanWonRound}} <img src="/public/img/win_reason/{{$r.WinReason}}.png" style="width:20px" class="" alt=""> {{end}}
+					 <img src="/public/img/win_reason/${winreason}.png" style="width:20px" class="" alt="">
 				  </div>
 				  <div class="col s2 center-align">
-					  <h6> <span class="orange-text">{{$r.ScoreClan}}</span>:<span class="blue-text">{{$r.ScoreEnemy}}</span > </h6>
+					  <h6> <span class="orange-text">${scoreclan}</span>:<span class="blue-text">${scoreenemy}</span > </h6>
 				  </div>
 				  <div class="col s1 center-align valign-wrapper">
-					{{ if not $r.ClanWonRound}} <img src="/public/img/win_reason/{{$r.WinReason}}.png" style="width:20px" class="" alt=""> {{end}}
+					 <img src="/public/img/win_reason/${winreason}.png" style="width:20px" class="" alt="">
 				  </div>
 				  <div class="col s3 valign-wrapper">
-					{{range  $p := $r.TeamEnemyKills}}
-					{{$killer:= index $infos .KillerSteamID64}}
-					{{$victim:= index $infos .VictimSteamID64}}
-					{{if ne $killer.Name $victim.Name}}
-					<div style="padding:2;px;"> <img style="width:35px;height:35px;" src="{{$killer.AvatarURL}}" alt=""> </div>
-					{{end}}
-					{{end}}
+				  <!-- TODO loop over kills -->
+					<div style="padding:2;px;"> <img style="width:35px;height:35px;" src="${killer_avatar}" alt=""> </div>
 				  </div>
-				  <div class="col s1 grey-text">TIME</div>
+				  <div class="col s1 grey-text">${time}</div>
 				</div>
 			</div>
 		</div>
@@ -140,19 +130,12 @@
 				  <div class="col s6">
 					<table>
 						<tbody>
-							{{ range $k := $r.TeamClanKills}}
-							{{$killer:= index $infos .KillerSteamID64}}
-							{{$victim := index $infos .VictimSteamID64}}
-							{{if ne $killer.Name $victim.Name}}
+				  <!-- TODO loop over kills -->
 							<tr>
-								{{ $color_class := "orange-text"}} {{ if eq $k.KillerTeamString "CT"}} {{ $color_class = "blue-text" }} {{ end }}
-								<td class="{{ $color_class}}"> {{$killer.Name}} </td >
-								<td> {{$k.KillerWeapon}} </td>
-								{{ $color_class := "orange-text"}} {{ if eq $k.VictimTeamString "CT"}} {{ $color_class = "blue-text" }} {{ end }}
-								<td class="{{$color_class}}"> {{$victim.Name}} </td >
+								<td class="${killercolor}"> KILLERNAME </td >
+								<td>${killerweapon}</td>
+								<td class="${victimcolor}"> VICTIMNAME </td >
 							</tr>
-							{{end}}
-							{{end}}
 						</tbody>
 					</table>
 				  </div>
@@ -160,32 +143,50 @@
 				  <div class="col s6">
 					<table>
 						<tbody>
-							{{ range $k := $r.TeamEnemyKills}}
-							{{$killer:= index $infos .KillerSteamID64}}
-							{{$victim := index $infos .VictimSteamID64}}
-							{{if ne $killer.Name $victim.Name}}
 							<tr>
-								{{ $color_class := "orange-text"}} {{ if eq $k.KillerTeamString "CT"}} {{ $color_class = "blue-text" }} {{ end }}
-								<td class="{{ $color_class}}"> {{$killer.Name}} </td >
-								<td> {{$k.KillerWeapon}} </td>
-								{{ $color_class := "orange-text"}} {{ if eq $k.VictimTeamString "CT"}} {{ $color_class = "blue-text" }} {{ end }}
-								<td class="{{$color_class}}"> {{$victim.Name}} </td >
+								<td class="${killercolor}"> KILLERNAME </td >
+								<td>${killerweapon}</td>
+								<td class="${victimcolor}"> VICTIMNAME </td >
 							</tr>
-							{{end}}
-							{{end}}
 						</tbody>
 					</table>
 				  </div>
 				</div>
 			</div>
-
 		</div>
 	</li>
-	{{end}}
-</ul>
+</script>
 
 <script charset="utf-8">
-	$(document).ready(function(){
+
+$(document).ready(function(){
+
 	$('.collapsible').collapsible();
-  });
+
+	// TODO use correct id
+	var url = "/api/matchinfo/1/rounds"
+	$.getJSON(url,  function( data) {
+
+		//data.sort((a, b) => b.shots - a.shots)
+
+		for (var round = 0; row < data.length; round++) {
+			//arrKills.push(data.enemy[row].kills);
+			//arrDeaths.push(data.enemy[row].deaths);
+			//arrAssists.push(data.enemy[row].assists);
+			//arrPlayers.push(data.enemy[row].name);
+			$( "#matchRoundsTemplate" ).tmpl(data.enemy[row]).appendTo( "#roundscontainer" );
+		}
+
+		//scoreboardChart.categories = arrPlayers;
+
+        //scoreboardChart.xAxis[0].setCategories(arrPlayers); //setting category
+		//scoreboardChart.series[0].setData(arrKills);
+		//scoreboardChart.series[1].setData(arrDeaths);
+		//scoreboardChart.series[2].setData(arrAssists);
+
+		//https://api.highcharts.com/class-reference/Highcharts.Chart.html#addSeries
+		// https://api.highcharts.com/class-reference/Highcharts.Series#setData
+	});
+});
+
 </script>

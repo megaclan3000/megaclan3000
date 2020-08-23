@@ -51,14 +51,12 @@
 
 						<div class="row">
 
-							{{$infos:= .General.PlayerInfos}}
 
-							{{range  $p := .Scoreboard.TeamClan}}
-								{{$player:= index $infos .PlayerSteamID64}}
+							{{range  $p := .Players.Clan}}
 								<div class="col s1">
-									<span> <img class="avatar circle" src="{{$player.AvatarURL}}" alt=""> </span>
-									<span class="title truncate center-align"> {{$player.Name}} </span>
-									<span> <img src="{{$player.RankIconURL}}" style="height:30px;"alt=""> </span>
+									<span> <img class="avatar circle" src="{{$p.AvatarURL}}" alt=""> </span>
+									<span class="title truncate center-align"> {{$p.Name}} </span>
+									<span> <img src="/public/{{$p.Rank}}" style="height:30px;"alt=""> </span>
 								</div>
 							{{end}}
 
@@ -70,12 +68,11 @@
 							{{end}}
 							</div>
 
-							{{range  $p := .Scoreboard.TeamEnemy}}
-								{{$player:= index $infos .PlayerSteamID64}}
+							{{range  $p := .Players.Enemy}}
 								<div class="col s1">
-									<span> <img class="avatar circle" src="{{$player.AvatarURL}}" alt=""> </span>
-									<span class="title truncate center-align"> {{$player.Name}} </span>
-									<span> <img src="{{$player.RankIconURL}}" style="height:30px;"alt=""> </span>
+									<span> <img class="avatar circle" src="{{$p.AvatarURL}}" alt=""> </span>
+									<span class="title truncate center-align"> {{$p.Name}} </span>
+									<span> <img src="/public/{{$p.Rank}}" style="height:30px;"alt=""> </span>
 								</div>
 							{{end}}
 

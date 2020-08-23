@@ -85,10 +85,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	//TODO download avatar images
-
-	for e := range demoInfo.General.PlayerInfos {
-		demoInfo.General.PlayerInfos[e].AvatarURL = steamClient.GetAvatarUrl(e)
+	//TODO download avatar images in a better place
+	for _, v := range demoInfo.Players.Players {
+		v.AvatarURL = steamClient.GetAvatarUrl(v.Steamid64)
 	}
 	//////////////////////////////////////////////////////////////
 

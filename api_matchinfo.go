@@ -2,6 +2,7 @@ package main
 
 import (
 	// "github.com/gorilla/mux"
+	"encoding/json"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -18,128 +19,20 @@ func handlerAPIMatchinfo(w http.ResponseWriter, r *http.Request) {
 	log.Debug("API request to:", r.RequestURI)
 
 	var byt []byte
+	var err error
 
 	vars := mux.Vars(r)
 	switch vars["endpoint"] {
 
 	case "scoreboard":
-		byt = []byte(`
-{
-    "clan": [
-        {
-            "name": "Player1",
-            "clantag": "megaclan3000",
-            "avatar_url": "/public/TODO",
-            "rank": "7",
+		if byt, err = json.Marshal(demoInfo.GetScoreboard()); err != nil {
+			panic(err)
+		}
 
-            "steamid64": "TODO",
-            "kills": "TODO",
-            "deaths": "TODO",
-            "assists": "TODO",
-            "kddiff": "TODO",
-            "kd": "TODO",
-            "adr": "TODO",
-            "hsprecent": "TODO",
-            "firstkills": "TODO",
-            "firstdeaths": "TODO",
-            "tradekills": "TODO",
-            "tradedeaths": "TODO",
-            "tradefirstkills": "TODO",
-            "tradefirstdeaths": "TODO",
-            "roundswonv5": "TODO",
-            "roundswonv4": "TODO",
-            "roundswonv3": "TODO",
-            "rounds5k": "TODO",
-            "rounds4k": "TODO",
-            "rounds3k": "TODO"
-        },
-        {
-            "name": "Player2",
-            "clantag": "megaclan3000",
-            "avatar_url": "/public/TODO",
-            "rank": "7",
-
-            "steamid64": "TODO",
-            "kills": "TODO",
-            "deaths": "TODO",
-            "assists": "TODO",
-            "kddiff": "TODO",
-            "kd": "TODO",
-            "adr": "TODO",
-            "hsprecent": "TODO",
-            "firstkills": "TODO",
-            "firstdeaths": "TODO",
-            "tradekills": "TODO",
-            "tradedeaths": "TODO",
-            "tradefirstkills": "TODO",
-            "tradefirstdeaths": "TODO",
-            "roundswonv5": "TODO",
-            "roundswonv4": "TODO",
-            "roundswonv3": "TODO",
-            "rounds5k": "TODO",
-            "rounds4k": "TODO",
-            "rounds3k": "TODO"
-        }
-    ],
-    "enemy": [
-        {
-            "name": "Player3",
-            "clantag": "enemyclan",
-            "avatar_url": "/public/TODO",
-            "rank": "7",
-
-            "steamid64": "TODO",
-            "kills": "TODO",
-            "deaths": "TODO",
-            "assists": "TODO",
-            "kddiff": "TODO",
-            "kd": "TODO",
-            "adr": "TODO",
-            "hsprecent": "TODO",
-            "firstkills": "TODO",
-            "firstdeaths": "TODO",
-            "tradekills": "TODO",
-            "tradedeaths": "TODO",
-            "tradefirstkills": "TODO",
-            "tradefirstdeaths": "TODO",
-            "roundswonv5": "TODO",
-            "roundswonv4": "TODO",
-            "roundswonv3": "TODO",
-            "rounds5k": "TODO",
-            "rounds4k": "TODO",
-            "rounds3k": "TODO"
-        },
-        {
-            "name": "Player4",
-            "clantag": "enemyclan",
-            "avatar_url": "/public/TODO",
-            "rank": "7",
-
-            "steamid64": "TODO",
-            "kills": "TODO",
-            "deaths": "TODO",
-            "assists": "TODO",
-            "kddiff": "TODO",
-            "kd": "TODO",
-            "adr": "TODO",
-            "hsprecent": "TODO",
-            "firstkills": "TODO",
-            "firstdeaths": "TODO",
-            "tradekills": "TODO",
-            "tradedeaths": "TODO",
-            "tradefirstkills": "TODO",
-            "tradefirstdeaths": "TODO",
-            "roundswonv5": "TODO",
-            "roundswonv4": "TODO",
-            "roundswonv3": "TODO",
-            "rounds5k": "TODO",
-            "rounds4k": "TODO",
-            "rounds3k": "TODO"
-        }
-    ]
-}`)
-		// TODO
 	case "rounds":
+		if byt, err = json.Marshal(demoInfo.GetRounds()); err != nil {
+			panic(err)
+		}
 		byt = []byte(`
 "rounds": [
 	{
