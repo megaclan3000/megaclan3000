@@ -33,66 +33,7 @@ func handlerAPIMatchinfo(w http.ResponseWriter, r *http.Request) {
 		if byt, err = json.Marshal(demoInfo.GetRounds()); err != nil {
 			panic(err)
 		}
-		byt = []byte(`
-"rounds": [
-	{
-		"score_clan": 2,
-		"score_enemy": 1,
-		"win_reason": 1,
-		"total_damage_taken": 100,
-		"total_damage_given": 200,
-		"winner_team": "CT",
-		"kills_clan": [
-			{
-				"killer": "Player1",
-				"victim": "Player2",
-				"weapon": "USP"
-			},
-			{
-				"killer": "Player1",
-				"victim": "Player3",
-				"weapon": "AK-47"
-			}
-		],
-		"kills_enemy": [
-			{
-				"killer": "Player4",
-				"victim": "Player1",
-				"weapon": "Glock-18"
-			},
-			{
-				"killer": "Player4",
-				"victim": "Player5",
-				"weapon": "M4A4"
-			}
-		],
-		"duration": "1:20"
-	},
-	{
-		"score_clan": 3,
-		"score_enemy": 1,
-		"win_reason": 2,
-		"total_damage_taken": 100,
-		"total_damage_given": 200,
-		"winner_team": "T",
-		"kills_clan": [
-			{
-				"killer": "Player1",
-				"victim": "Player2",
-				"weapon": "USP"
-			},
-			{
-				"killer": "Player1",
-				"victim": "Player3",
-				"weapon": "AK-47"
-			}
-		],
-		"kills_enemy": [],
-		"duration": "1:30"
-	}
-]
 
-`)
 	// TODO
 	case "weapons":
 		byt = []byte(`

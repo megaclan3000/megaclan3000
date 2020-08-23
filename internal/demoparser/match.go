@@ -1,15 +1,12 @@
 package demoparser
 
 import (
-	"errors"
-	"log"
-	"strconv"
 	"time"
 
 	// "github.com/golang/geo/r3"
 	common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
 	"github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
-	// "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
+	log "github.com/sirupsen/logrus"
 	// "go.mongodb.org/mongo-driver/bson"
 	// "go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -60,19 +57,6 @@ type RoundKill struct {
 	Killer             *ScoreboardPlayer
 	Assister           *ScoreboardPlayer
 	KillerWeapon       common.EquipmentType
-}
-
-type ScoreboardRound struct {
-	TeamWon            common.Team
-	ClanWonRound       bool
-	WinReason          events.RoundEndReason
-	Duration           time.Duration
-	TeamClanSurvivors  int
-	TeamEnemySurvivors int
-	ScoreClan          int
-	ScoreEnemy         int
-	TeamEnemyKills     []RoundKill
-	TeamClanKills      []RoundKill
 }
 
 // type ScoreboardLine struct {
@@ -131,124 +115,35 @@ func GetMatchInfo(id string) (InfoStruct, error) {
 // API methods
 // Scoreboard
 func (is InfoStruct) GetScoreboard() ScoreboardPlayers {
-	//TODO implement
 	return is.Players
-	// out := Scoreboard{
-	// 	Clan: []ScoreboardPlayer{
-	// 		{
-	// 			Name:             "randolf",
-	// 			Clantag:          "megaclan3000",
-	// 			AvatarURL:        "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
-	// 			Rank:             7,
-	// 			Steamid64:        1,
-	// 			Kills:            2,
-	// 			Deaths:           3,
-	// 			Assists:          4,
-	// 			Kddiff:           5,
-	// 			Kd:               6,
-	// 			Adr:              7,
-	// 			Hsprecent:        8,
-	// 			Firstkills:       9,
-	// 			Firstdeaths:      10,
-	// 			Tradekills:       11,
-	// 			Tradedeaths:      12,
-	// 			Tradefirstkills:  13,
-	// 			Tradefirstdeaths: 14,
-	// 			Roundswonv5:      15,
-	// 			Roundswonv4:      16,
-	// 			Roundswonv3:      17,
-	// 			Rounds5K:         18,
-	// 			Rounds4K:         19,
-	// 			Rounds3K:         20,
-	// 		},
-	// 		{
-	// 			Name:             "Player 2",
-	// 			Clantag:          "megaclan3000",
-	// 			AvatarURL:        "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
-	// 			Rank:             7,
-	// 			Steamid64:        1,
-	// 			Kills:            2,
-	// 			Deaths:           3,
-	// 			Assists:          4,
-	// 			Kddiff:           5,
-	// 			Kd:               6,
-	// 			Adr:              7,
-	// 			Hsprecent:        8,
-	// 			Firstkills:       9,
-	// 			Firstdeaths:      10,
-	// 			Tradekills:       11,
-	// 			Tradedeaths:      12,
-	// 			Tradefirstkills:  13,
-	// 			Tradefirstdeaths: 14,
-	// 			Roundswonv5:      15,
-	// 			Roundswonv4:      16,
-	// 			Roundswonv3:      17,
-	// 			Rounds5K:         18,
-	// 			Rounds4K:         19,
-	// 			Rounds3K:         20,
-	// 		},
-	// 	},
-
-	// 	Enemy: []ScoreboardPlayer{
-	// 		{
-	// 			Name:             "Player 3",
-	// 			Clantag:          "megaclan3000",
-	// 			AvatarURL:        "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
-	// 			Rank:             7,
-	// 			Steamid64:        1,
-	// 			Kills:            2,
-	// 			Deaths:           3,
-	// 			Assists:          4,
-	// 			Kddiff:           5,
-	// 			Kd:               6,
-	// 			Adr:              7,
-	// 			Hsprecent:        8,
-	// 			Firstkills:       9,
-	// 			Firstdeaths:      10,
-	// 			Tradekills:       11,
-	// 			Tradedeaths:      12,
-	// 			Tradefirstkills:  13,
-	// 			Tradefirstdeaths: 14,
-	// 			Roundswonv5:      15,
-	// 			Roundswonv4:      16,
-	// 			Roundswonv3:      17,
-	// 			Rounds5K:         18,
-	// 			Rounds4K:         19,
-	// 			Rounds3K:         20,
-	// 		},
-	// 		{
-	// 			Name:             "Player 4",
-	// 			Clantag:          "megaclan3000",
-	// 			AvatarURL:        "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
-	// 			Rank:             7,
-	// 			Steamid64:        1,
-	// 			Kills:            2,
-	// 			Deaths:           3,
-	// 			Assists:          4,
-	// 			Kddiff:           5,
-	// 			Kd:               6,
-	// 			Adr:              7,
-	// 			Hsprecent:        8,
-	// 			Firstkills:       9,
-	// 			Firstdeaths:      10,
-	// 			Tradekills:       11,
-	// 			Tradedeaths:      12,
-	// 			Tradefirstkills:  13,
-	// 			Tradefirstdeaths: 14,
-	// 			Roundswonv5:      15,
-	// 			Roundswonv4:      16,
-	// 			Roundswonv3:      17,
-	// 			Rounds5K:         18,
-	// 			Rounds4K:         19,
-	// 			Rounds3K:         20,
-	// 		},
-	// 	},
-	// }
-	// return out
 }
 
 type ScoreboardPlayers struct {
 	Players []ScoreboardPlayer
+}
+
+func (sp *ScoreboardPlayers) AddKill(steamID uint64) {
+	for k := range sp.Players {
+		if sp.Players[k].Steamid64 == steamID {
+			sp.Players[k].Kills += 1
+		}
+	}
+}
+
+func (sp *ScoreboardPlayers) AddDeath(steamID uint64) {
+	for k := range sp.Players {
+		if sp.Players[k].Steamid64 == steamID {
+			sp.Players[k].Deaths += 1
+		}
+	}
+}
+
+func (sp *ScoreboardPlayers) AddAssist(steamID uint64) {
+	for k := range sp.Players {
+		if sp.Players[k].Steamid64 == steamID {
+			sp.Players[k].Assists += 1
+		}
+	}
 }
 
 func (sp ScoreboardPlayers) Clan() []ScoreboardPlayer {
@@ -276,15 +171,19 @@ func (sp ScoreboardPlayers) Enemy() []ScoreboardPlayer {
 	return out
 }
 
-func (sb ScoreboardPlayers) PlayerByID(steamID uint64) (*ScoreboardPlayer, error) {
+func (p *MyParser) PlayerByID(player *common.Player) *ScoreboardPlayer {
 
-	for k := range sb.Players {
-		if sb.Players[k].Steamid64 == steamID {
-			return &sb.Players[k], nil
+	for _, v := range p.Match.Players.Players {
+		if v.Steamid64 == player.SteamID64 {
+			return &v
 		}
 	}
 
-	return nil, errors.New("Could not find player by ID: " + strconv.FormatUint(steamID, 10))
+	log.Warning("Created new player for ID:", player.SteamID64)
+	newplayer := p.NewScoreBoardPlayer(player)
+	p.Match.Players.Players = append(p.Match.Players.Players, newplayer)
+
+	return &newplayer
 }
 
 type ScoreboardPlayer struct {
@@ -317,65 +216,67 @@ type ScoreboardPlayer struct {
 	Rounds3K         int     `json:"rounds3k"`
 }
 
-type Round struct {
-	ScoreClan        int           `json:"score_clan"`
-	ScoreEnemy       int           `json:"score_enemy"`
-	WinReason        int           `json:"win_reason"`
-	TotalDamageTaken int           `json:"total_damage_taken"`
-	TotalDamageGiven int           `json:"total_damage_given"`
-	WinnerTeam       common.Team   `json:"winner_team"`
-	KillsClan        []RoundKill   `json:"kills_clan"`
-	KillsEnemy       []RoundKill   `json:"kills_enemy"`
-	Duration         time.Duration `json:"duration"`
+type ScoreboardRound struct {
+	ClanWonRound     bool
+	Duration         time.Duration         `json:"duration"`
+	ClanKills        []RoundKill           `json:"kills_clan"`
+	EnemyKills       []RoundKill           `json:"kills_enemy"`
+	ScoreClan        int                   `json:"score_clan"`
+	ScoreEnemy       int                   `json:"score_enemy"`
+	ClanSurvivors    int                   `json:"survivivors_clan"`
+	EnemySurvivors   int                   `json:"survivors_enemy"`
+	TeamWon          common.Team           `json:"team_won"`
+	TotalDamageGiven int                   `json:"total_damage_given"`
+	TotalDamageTaken int                   `json:"total_damage_taken"`
+	WinReason        events.RoundEndReason `json:"win_reason"`
+	WinnerTeam       common.Team           `json:"winner_team"`
 }
 
-func (is InfoStruct) GetRounds() []Round {
+func (is InfoStruct) GetRounds() []ScoreboardRound {
 
-	if len(is.Players.Clan()) == 0 {
-		log.Fatal("no players found for getrounds", is.Players.Clan(), is.Players.Enemy())
-	}
 	//TODO implement with real data
-	return []Round{
-		{
+	return is.Rounds
+	// return []Round{
+	// 	{
 
-			ScoreClan:        2,
-			ScoreEnemy:       1,
-			WinReason:        1,
-			TotalDamageTaken: 900,
-			TotalDamageGiven: 1200,
-			WinnerTeam:       common.TeamCounterTerrorists,
-			KillsClan: []RoundKill{
-				{
-					Killer:             &is.Players.Clan()[0],
-					Assister:           &is.Players.Clan()[3],
-					Victim:             &is.Players.Enemy()[0],
-					KillerTeamString:   "T",
-					VictimTeamString:   "CT",
-					AssisterTeamString: "CT",
-					KillerWeapon:       common.EqAK47,
-				},
-				{
-					Killer:             &is.Players.Clan()[1],
-					Assister:           &is.Players.Clan()[3],
-					Victim:             &is.Players.Enemy()[0],
-					KillerTeamString:   "T",
-					VictimTeamString:   "CT",
-					AssisterTeamString: "CT",
-					KillerWeapon:       common.EqAK47,
-				},
-			},
-			KillsEnemy: []RoundKill{
-				{
-					Assister:           &is.Players.Enemy()[1],
-					Killer:             &is.Players.Enemy()[3],
-					Victim:             &is.Players.Clan()[0],
-					KillerTeamString:   "T",
-					VictimTeamString:   "CT",
-					AssisterTeamString: "CT",
-					KillerWeapon:       common.EqAK47,
-				},
-			},
-			Duration: time.Hour,
-		},
-	}
+	// 		ScoreClan:        2,
+	// 		ScoreEnemy:       1,
+	// 		WinReason:        1,
+	// 		TotalDamageTaken: 900,
+	// 		TotalDamageGiven: 1200,
+	// 		WinnerTeam:       common.TeamCounterTerrorists,
+	// 		KillsClan: []RoundKill{
+	// 			{
+	// 				Killer:             &is.Players.Clan()[0],
+	// 				Assister:           &is.Players.Clan()[3],
+	// 				Victim:             &is.Players.Enemy()[0],
+	// 				KillerTeamString:   "T",
+	// 				VictimTeamString:   "CT",
+	// 				AssisterTeamString: "CT",
+	// 				KillerWeapon:       common.EqAK47,
+	// 			},
+	// 			{
+	// 				Killer:             &is.Players.Clan()[1],
+	// 				Assister:           &is.Players.Clan()[3],
+	// 				Victim:             &is.Players.Enemy()[0],
+	// 				KillerTeamString:   "T",
+	// 				VictimTeamString:   "CT",
+	// 				AssisterTeamString: "CT",
+	// 				KillerWeapon:       common.EqAK47,
+	// 			},
+	// 		},
+	// 		KillsEnemy: []RoundKill{
+	// 			{
+	// 				Assister:           &is.Players.Enemy()[1],
+	// 				Killer:             &is.Players.Enemy()[3],
+	// 				Victim:             &is.Players.Clan()[0],
+	// 				KillerTeamString:   "T",
+	// 				VictimTeamString:   "CT",
+	// 				AssisterTeamString: "CT",
+	// 				KillerWeapon:       common.EqAK47,
+	// 			},
+	// 		},
+	// 		Duration: time.Hour,
+	// 	},
+	// }
 }

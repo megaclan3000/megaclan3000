@@ -73,15 +73,6 @@ func (p *MyParser) Parse(path string, m *InfoStruct) error {
 	err = p.parser.ParseToEnd()
 	p.mockWeaponStats()
 
-	for _, r := range p.Match.Rounds {
-		for _, k := range r.TeamClanKills {
-			log.Warning(k)
-		}
-
-		for _, k := range r.TeamEnemyKills {
-			log.Warning(k)
-		}
-	}
 	return err
 
 }
@@ -176,7 +167,7 @@ func (p *MyParser) mockWeaponStats() {
 
 }
 
-func (p *MyParser) AddScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
+func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 
 	name := "BOT"
 
@@ -218,23 +209,14 @@ func (p *MyParser) handlerKill(e events.Kill) {
 	// Append kill to current round or to warmupKills
 	if p.parser.GameState().IsWarmupPeriod() {
 		p.state.WarmupKills = append(p.state.WarmupKills, e)
-		log.Warning("Kill during Warmup")
 	} else {
-		log.Warning("Kill", e)
 
-		killer, err := p.Match.Players.PlayerByID(e.Killer.SteamID64)
+		p.Match.Players.AddKill(e.Killer.SteamID64)
+		killer := p.PlayerByID(e.Killer)
+		killer.Kills += 1
 
-		if err != nil {
-			log.Error("Killer not found")
-			p.AddScoreBoardPlayer(e.Killer)
-		}
-
-		victim, err := p.Match.Players.PlayerByID(e.Victim.SteamID64)
-
-		if err != nil {
-			log.Error("Victim not found")
-			p.AddScoreBoardPlayer(e.Victim)
-		}
+		p.Match.Players.AddDeath(e.Victim.SteamID64)
+		victim := p.PlayerByID(e.Victim)
 
 		kill := RoundKill{
 			KillerWeapon: e.Weapon.Type,
@@ -244,17 +226,15 @@ func (p *MyParser) handlerKill(e events.Kill) {
 
 		if e.Assister != nil {
 
-			if err != nil {
-				log.Error("Assister not found")
-				p.AddScoreBoardPlayer(e.Assister)
-			}
-
+			assister := p.PlayerByID(e.Assister)
+			p.Match.Players.AddAssist(e.Assister.SteamID64)
+			kill.Assister = assister
 		}
 
 		if e.Killer.Team == p.state.currentTeam {
-			p.Match.Rounds[p.state.Round-1].TeamClanKills = append(p.Match.Rounds[p.state.Round-1].TeamClanKills, kill)
+			p.Match.Rounds[p.state.Round-1].ClanKills = append(p.Match.Rounds[p.state.Round-1].ClanKills, kill)
 		} else {
-			p.Match.Rounds[p.state.Round-1].TeamEnemyKills = append(p.Match.Rounds[p.state.Round-1].TeamEnemyKills, kill)
+			p.Match.Rounds[p.state.Round-1].EnemyKills = append(p.Match.Rounds[p.state.Round-1].EnemyKills, kill)
 		}
 	}
 }

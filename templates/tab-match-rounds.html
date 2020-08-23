@@ -87,13 +87,7 @@
 </script>
 
 
-
-<!-- NEW -->
-
-<ul class="collapsible" id="roundscontainer">
-
-</ul>
-
+<ul class="collapsible" id="roundscontainer"> </ul>
 
 <script id="matchRoundsTemplate" type="text/x-jquery-tmpl">
 	<li>
@@ -143,6 +137,7 @@
 				  <div class="col s6">
 					<table>
 						<tbody>
+				  <!-- TODO loop over kills -->
 							<tr>
 								<td class="${killercolor}"> KILLERNAME </td >
 								<td>${killerweapon}</td>
@@ -166,26 +161,9 @@ $(document).ready(function(){
 	// TODO use correct id
 	var url = "/api/matchinfo/1/rounds"
 	$.getJSON(url,  function( data) {
-
-		//data.sort((a, b) => b.shots - a.shots)
-
-		for (var round = 0; row < data.length; round++) {
-			//arrKills.push(data.enemy[row].kills);
-			//arrDeaths.push(data.enemy[row].deaths);
-			//arrAssists.push(data.enemy[row].assists);
-			//arrPlayers.push(data.enemy[row].name);
-			$( "#matchRoundsTemplate" ).tmpl(data.enemy[row]).appendTo( "#roundscontainer" );
+		for (var round = 0; round < data.length; round++) {
+			$( "#matchRoundsTemplate" ).tmpl(data[round]).appendTo( "#roundscontainer" );
 		}
-
-		//scoreboardChart.categories = arrPlayers;
-
-        //scoreboardChart.xAxis[0].setCategories(arrPlayers); //setting category
-		//scoreboardChart.series[0].setData(arrKills);
-		//scoreboardChart.series[1].setData(arrDeaths);
-		//scoreboardChart.series[2].setData(arrAssists);
-
-		//https://api.highcharts.com/class-reference/Highcharts.Chart.html#addSeries
-		// https://api.highcharts.com/class-reference/Highcharts.Series#setData
 	});
 });
 

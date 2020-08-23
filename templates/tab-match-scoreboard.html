@@ -103,6 +103,7 @@ th span {
 	$('.collapsible').collapsible();
   });
 </script>
+
 <table id="scoretableClan" class="scoretable highlight blue-grey lighten-5">
 	<thead>
 		<tr>
@@ -131,37 +132,7 @@ th span {
 		</tr>
 	</thead>
 	<tbody>
-
-
-
-		{{range $p := .Players.Clan}}
-		<tr>
-			<td> <img class="tableimage" src="{{ $p.AvatarURL }}" alt=""></img> </td>
-			<td>{{$p.Name}}<div class="orange-text">{{ $p.Clantag }}</div></td>
-			<td> <img class="tableimage" src="/public/{{ $p.Rank }}" alt=""></img></td>
-			<td class="scoretablenum">{{ $p.Kills }}</td>
-			<td class="scoretablenum">{{ $p.Deaths }}</td>
-			<td class="scoretablenum">{{ $p.Assists }}</td>
-			<td class="scoretablenum">{{ $p.Kddiff }}</td>
-			<td class="scoretablenum">{{ $p.Kd }}</td>
-			<td class="scoretablenum">{{ $p.Adr }}</td>
-			<td class="scoretablenum">{{ $p.Hsprecent }}</td>
-			<td class="scoretablenum">{{ $p.Firstkills }}</td>
-			<td class="scoretablenum">{{ $p.Firstdeaths }}</td>
-			<td class="scoretablenum">{{ $p.Tradekills }}</td>
-			<td class="scoretablenum">{{ $p.Tradedeaths }}</td>
-			<td class="scoretablenum">{{ $p.Tradefirstkills }}</td>
-			<td class="scoretablenum">{{ $p.Tradefirstdeaths }}</td>
-			<td class="scoretablenum">{{ $p.Roundswonv5 }}</td>
-			<td class="scoretablenum">{{ $p.Roundswonv4 }}</td>
-			<td class="scoretablenum">{{ $p.Roundswonv3 }}</td>
-			<td class="scoretablenum">{{ $p.Rounds5K }}</td>
-			<td class="scoretablenum">{{ $p.Rounds4K }}</td>
-			<td class="scoretablenum">{{ $p.Rounds3K }}</td>
-		</tr>
-		{{end}}
 	</tbody>
-	<th></th>
 </table>
 
 <table id="scoretableEnemy" class="scoretable highlight blue-grey lighten-5">
@@ -238,21 +209,17 @@ $(document).ready(function(){
 		var arrDeaths = [];
 		var arrAssists = [];
 
-		for (var row = 0; row < data.clan.length; row++) {
-			arrKills.push(data.clan[row].kills);
-			arrDeaths.push(data.clan[row].deaths);
-			arrAssists.push(data.clan[row].assists);
-			arrPlayers.push(data.clan[row].name);
-			$( "#matchScoreboardTemplate" ).tmpl(data.clan[row]).appendTo( "#scoretableClan tbody" );
-		}
+		for (var row = 0; row < data.Players.length; row++) {
+			arrKills.push(data.Players[row].kills);
+			arrDeaths.push(data.Players[row].deaths);
+			arrAssists.push(data.Players[row].assists);
+			arrPlayers.push(data.Players[row].name);
 
-
-		for (var row = 0; row < data.enemy.length; row++) {
-			arrKills.push(data.enemy[row].kills);
-			arrDeaths.push(data.enemy[row].deaths);
-			arrAssists.push(data.enemy[row].assists);
-			arrPlayers.push(data.enemy[row].name);
-			$( "#matchScoreboardTemplate" ).tmpl(data.enemy[row]).appendTo( "#scoretableEnemy tbody" );
+			if (data.Players[row].isclanmember) {
+				$( "#matchScoreboardTemplate" ).tmpl(data.Players[row]).appendTo( "#scoretableClan tbody" );
+			} else {
+				$( "#matchScoreboardTemplate" ).tmpl(data.Players[row]).appendTo( "#scoretableEnemy tbody" );
+			}
 		}
 
 		scoreboardChart.categories = arrPlayers;
