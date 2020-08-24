@@ -18,7 +18,7 @@
 .scorediv {
 	text-align: center;
 	vertical-align: middle;
-	line-height: 90px;
+	font-size: 40;
 }
 
 .scoretitleimg{
@@ -38,7 +38,6 @@
 	width: 100%;
 }
 
-
 		</style>
 		<div class="row">
 			<div class="col s12">
@@ -53,7 +52,9 @@
 
 
 							<div id="match-clan-players">
+
 								{{range  $p := .Players.Clan}}
+
 								{{if not $p.IsBot }}
 								<div class="col s1">
 									<span> <img class="avatar circle" src="{{$p.AvatarURL}}" alt=""> </span>
@@ -64,16 +65,11 @@
 								{{end}}
 							</div>
 
-							<div class="col s2 scorediv">
-								{{if .General.ClanWonMatch}}
-								<h3 class="green-text">WON</br>
-								{{else}}
-								<h3 class="red-text">LOST</br>
-								{{end}}
-									<div id="match-score-clan" class="left"> </div> : <div class="right" id="match-score-enemy"> </divid="match-score-clan">
-								</h3>
+							{{$color_class := "red-text"}} {{if .General.ClanWonMatch}} {{$color_class = "green-text"}} {{end}}
+							{{$text := "LOST"}} {{if .General.ClanWonMatch}} {{$text ="WON"}} {{end}}
+							<div class="col s2 scorediv {{$color_class}}">
+								{{$text}} </br> <span id="match-score-clan"></span><span>:</span><span id="match-score-enemy"></span>
 							</div>
-
 
 							<div id="match-enemy-players">
 								{{range  $p := .Players.Enemy}}
@@ -156,7 +152,6 @@
 			});
 		</script>
 
-		{{template "footer.html"}}
 
 
 
@@ -166,5 +161,6 @@
 			var animScoreClan = new countUp.CountUp('match-score-clan', {{.General.ScoreClan}} );
 			var animScoreEnemy = new countUp.CountUp('match-score-enemy', {{.General.ScoreEnemy}});
 			animScoreClan.start();
-		animScoreEnemy.start();
+			animScoreEnemy.start();
 		</script>
+		{{template "footer.html"}}
