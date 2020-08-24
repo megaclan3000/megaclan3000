@@ -38,8 +38,8 @@
 	width: 100%;
 }
 
-		</style>
 
+		</style>
 		<div class="row">
 			<div class="col s12">
 				<div class="card">
@@ -52,33 +52,40 @@
 						<div class="row">
 
 
-							{{range  $p := .Players.Clan}}
-							{{if not $p.IsBot }}
+							<div id="match-clan-players">
+								{{range  $p := .Players.Clan}}
+								{{if not $p.IsBot }}
 								<div class="col s1">
 									<span> <img class="avatar circle" src="{{$p.AvatarURL}}" alt=""> </span>
 									<span class="title truncate center-align"> {{$p.Name}} </span>
 									<span> <img src="/public/img/ranks/{{$p.Rank}}.png" style="height:30px;"alt=""> </span>
 								</div>
-							{{end}}
-							{{end}}
+								{{end}}
+								{{end}}
+							</div>
 
 							<div class="col s2 scorediv">
 								{{if .General.ClanWonMatch}}
-									<h3 class="green-text">WIN</br>{{.General.ScoreClan}}:0</h3>
-							{{else}}
-								<h3 class="red-text">LOSE</br>{{.General.ScoreClan}}:0</h3>
-							{{end}}
+								<h3 class="green-text">WON</br>
+								{{else}}
+								<h3 class="red-text">LOST</br>
+								{{end}}
+									<div id="match-score-clan" class="left"> </div> : <div class="right" id="match-score-enemy"> </divid="match-score-clan">
+								</h3>
 							</div>
 
-							{{range  $p := .Players.Enemy}}
-							{{if not $p.IsBot }}
+
+							<div id="match-enemy-players">
+								{{range  $p := .Players.Enemy}}
+								{{if not $p.IsBot }}
 								<div class="col s1">
 									<span> <img class="avatar circle" src="{{$p.AvatarURL}}" alt=""> </span>
 									<span class="title truncate center-align"> {{$p.Name}} </span>
 									<span> <img src="/public/img/ranks/{{$p.Rank}}.png" style="height:30px;"alt=""> </span>
 								</div>
-							{{end}}
-							{{end}}
+								{{end}}
+								{{end}}
+							</div>
 						</div>
 
 
@@ -140,7 +147,7 @@
 
 		<script>
 			$(document).ready(function(){
-				$('.tabs').tabs( { 
+				$('.tabs').tabs( {
 					onShow: function(tab) {
 						//alert(tab);
 					}
@@ -151,3 +158,13 @@
 
 		{{template "footer.html"}}
 
+
+
+		<script src="/public/js/countUp.umd.js"></script>
+
+		<script charset="utf-8">
+			var animScoreClan = new countUp.CountUp('match-score-clan', {{.General.ScoreClan}} );
+			var animScoreEnemy = new countUp.CountUp('match-score-enemy', {{.General.ScoreEnemy}});
+			animScoreClan.start();
+		animScoreEnemy.start();
+		</script>
