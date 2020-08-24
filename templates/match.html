@@ -53,11 +53,13 @@
 
 
 							{{range  $p := .Players.Clan}}
+							{{if not $p.IsBot }}
 								<div class="col s1">
 									<span> <img class="avatar circle" src="{{$p.AvatarURL}}" alt=""> </span>
 									<span class="title truncate center-align"> {{$p.Name}} </span>
 									<span> <img src="/public/{{$p.Rank}}" style="height:30px;"alt=""> </span>
 								</div>
+							{{end}}
 							{{end}}
 
 							<div class="col s2 scorediv">
@@ -69,13 +71,14 @@
 							</div>
 
 							{{range  $p := .Players.Enemy}}
+							{{if not $p.IsBot }}
 								<div class="col s1">
 									<span> <img class="avatar circle" src="{{$p.AvatarURL}}" alt=""> </span>
 									<span class="title truncate center-align"> {{$p.Name}} </span>
 									<span> <img src="/public/{{$p.Rank}}" style="height:30px;"alt=""> </span>
 								</div>
 							{{end}}
-
+							{{end}}
 						</div>
 
 

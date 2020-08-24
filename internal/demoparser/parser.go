@@ -176,6 +176,7 @@ func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 	}
 
 	return ScoreboardPlayer{
+		IsBot:            player.IsBot,
 		IsClanMember:     player.Team == p.state.currentTeam,
 		Name:             name,
 		Rank:             0,
@@ -304,6 +305,7 @@ func (p *MyParser) handlerMatchStart(e events.MatchStart) {
 
 		//TODO Use NewScoreBoardPlayer function here
 		player := ScoreboardPlayer{
+			IsBot:            ct.IsBot,
 			IsClanMember:     p.state.currentTeam == ct.Team,
 			Name:             ct.Name,
 			Rank:             0,

@@ -189,6 +189,7 @@ func (p *MyParser) PlayerByID(player *common.Player) *ScoreboardPlayer {
 type ScoreboardPlayer struct {
 	WeaponStats map[common.EquipmentType]WeaponStat
 
+	IsBot            bool    `json:"isbot"`
 	IsClanMember     bool    `json:"isclanmember"`
 	Steamid64        uint64  `json:"steamid64"`
 	Name             string  `json:"name"`
