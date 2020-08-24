@@ -36,8 +36,6 @@ func main() {
 		log.SetLevel(log.DebugLevel)
 	}
 
-	log.Println("Starting with config file:", flagConfig)
-
 	// Output to stdout instead of the default stderr
 	// log.SetOutput(os.Stdout)
 
@@ -45,6 +43,8 @@ func main() {
 	Formatter.TimestampFormat = "02-01-2006 15:04:05"
 	Formatter.FullTimestamp = true
 	log.SetFormatter(Formatter)
+
+	log.Println("Starting with config file:", flagConfig)
 
 	// Read config and pull initial data
 	steamClient = steamclient.NewSteamClient(flagConfig)
@@ -99,7 +99,7 @@ func main() {
 		ReadTimeout:  15 * time.Second,
 	}
 
-	log.Info("Server started:", srv.Addr)
+	log.Info("Server started on: ", srv.Addr)
 
 	//start updating data every 5 minutes asynchroniusly
 	go updateData()
