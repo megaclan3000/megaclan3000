@@ -213,7 +213,6 @@ func (p *MyParser) handlerKill(e events.Kill) {
 
 		p.Match.Players.AddKill(e.Killer.SteamID64)
 		killer := p.PlayerByID(e.Killer)
-		killer.Kills += 1
 
 		p.Match.Players.AddDeath(e.Victim.SteamID64)
 		victim := p.PlayerByID(e.Victim)
@@ -225,7 +224,6 @@ func (p *MyParser) handlerKill(e events.Kill) {
 		}
 
 		if e.Assister != nil {
-
 			assister := p.PlayerByID(e.Assister)
 			p.Match.Players.AddAssist(e.Assister.SteamID64)
 			kill.Assister = assister
@@ -278,9 +276,9 @@ func (p *MyParser) handlerPlayerHurt(e events.PlayerHurt) {
 // Handlers
 func (p *MyParser) handlerRankUpdate(e events.RankUpdate) {
 
-	for _, v := range p.Match.Players.Players {
+	for k, v := range p.Match.Players.Players {
 		if v.Steamid64 == e.SteamID64() {
-			v.Rank = e.RankNew
+			p.Match.Players.Players[k].Rank = e.RankNew
 			return
 		}
 	}
@@ -304,6 +302,7 @@ func (p *MyParser) handlerMatchStart(e events.MatchStart) {
 			continue
 		}
 
+		//TODO Use NewScoreBoardPlayer function here
 		player := ScoreboardPlayer{
 			IsClanMember:     p.state.currentTeam == ct.Team,
 			Name:             ct.Name,
@@ -364,7 +363,6 @@ func (p *MyParser) handlerRoundStart(e events.RoundStart) {
 }
 
 func (p *MyParser) handlerBombPlanted(e events.BombPlanted) {
-
 }
 
 func (p *MyParser) handlerBombDefused(e events.BombDefused) {
@@ -378,14 +376,11 @@ func (p *MyParser) handlerScoreUpdated(e events.ScoreUpdated) {
 	scoreCT := p.parser.GameState().TeamCounterTerrorists().Score()
 	scoreT := p.parser.GameState().TeamTerrorists().Score()
 
-	// log.Warning("Updated Scores", scoreCT, scoreT)
-
 	if p.state.currentTeam == common.TeamCounterTerrorists {
 		p.Match.Rounds[p.state.Round-1].ScoreClan = scoreCT
 		p.Match.Rounds[p.state.Round-1].ScoreEnemy = scoreT
 		p.Match.General.ScoreClan = scoreCT
 		p.Match.General.ScoreEnemy = scoreT
-		log.Warning("Updated saved scores", p.Match.General.ScoreClan, p.Match.General.ScoreEnemy, p.state.currentTeam)
 		return
 	}
 
@@ -394,14 +389,10 @@ func (p *MyParser) handlerScoreUpdated(e events.ScoreUpdated) {
 		p.Match.Rounds[p.state.Round-1].ScoreEnemy = scoreCT
 		p.Match.General.ScoreClan = scoreT
 		p.Match.General.ScoreEnemy = scoreCT
-		log.Warning("Updated saved scores", p.Match.General.ScoreClan, p.Match.General.ScoreEnemy, p.state.currentTeam)
 		return
 	}
 
 	log.Warning("Scoreparsing did something strange", p.state.currentTeam)
-
-	// panic("no score found")
-
 }
 
 func (p *MyParser) handlerRoundEnd(e events.RoundEnd) {
