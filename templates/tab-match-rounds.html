@@ -15,27 +15,18 @@
 	height: 300px;
 }
 
-<!-- .col { -->
-<!-- 	border: 1px solid red; -->
-<!-- } -->
-
-<!-- .row{ -->
-<!-- 	border: 1px solid green; -->
-<!-- } -->
-
-
 </style>
 
 <div  id="chartcontainer-match-rounds"></div>
 
 <script charset="utf-8">
 	Highcharts.chart('chartcontainer-match-rounds', {
-    chart: {
-        type: 'column'
-    },
-    title:  null,
-    xAxis: {
-        categories: [
+	chart: {
+		type: 'column'
+	},
+	title:  null,
+	xAxis: {
+		categories: [
 		'Round 1',
 		'Round 2',
 		'Round 3',
@@ -54,35 +45,35 @@
 		'Round 16',
 		'Round 17',
 		'Round 18'
-        ],
-        crosshair: true
-    },
-    yAxis: {
-        min: 0,
-        title: null,
-    },
-    tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f} HP</b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true
-    },
-    plotOptions: {
-        column: {
-            pointPadding: 0.1,
-            borderWidth: 0
-        }
-    },
-    series: [{
-        name: 'Given',
-        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-    }, {
-        name: 'Taken',
-        data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
+		],
+		crosshair: true
+	},
+	yAxis: {
+		min: 0,
+		title: null,
+	},
+	tooltip: {
+		headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+			'<td style="padding:0"><b>{point.y:.1f} HP</b></td></tr>',
+		footerFormat: '</table>',
+		shared: true,
+		useHTML: true
+	},
+	plotOptions: {
+		column: {
+			pointPadding: 0.1,
+			borderWidth: 0
+		}
+	},
+	series: [{
+		name: 'Given',
+		data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+	}, {
+		name: 'Taken',
+		data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
 
-    }]
+	}]
 });
 </script>
 
@@ -90,7 +81,6 @@
 <ul class="collapsible" id="roundscontainer"> </ul>
 
 <script id="matchRoundsTemplate" type="text/x-jquery-tmpl">
-	<li>
 		<div class="collapsible-header hoverable ${roundcolor} lighten-5" style="padding:0px;">
 			<div style="width:100%;padding:0px" class="container">
 				<div class="row valign-wrapper" style="margin:10px">
@@ -125,11 +115,6 @@
 					<table>
 						<tbody>
 				  <!-- TODO loop over kills -->
-							<tr>
-								<td class="${killercolor}"> KILLERNAME </td >
-								<td>${killerweapon}</td>
-								<td class="${victimcolor}"> VICTIMNAME </td >
-							</tr>
 						</tbody>
 					</table>
 				  </div>
@@ -138,23 +123,31 @@
 					<table>
 						<tbody>
 				  <!-- TODO loop over kills -->
-							<tr>
-								<td class="${killercolor}"> KILLERNAME </td >
-								<td>${killerweapon}</td>
-								<td class="${victimcolor}"> VICTIMNAME </td >
-							</tr>
 						</tbody>
 					</table>
 				  </div>
 				</div>
 			</div>
 		</div>
-	</li>
+</script>
+
+<ul class="collapsible" id="roundscontainer"> </ul>
+
+<script id="matchRoundsHeaderTemplate" type="text/x-jquery-tmpl">
+	<div style="padding:2px;"> <img style="width:35px;height:35px;" src="${killer_avatar}" alt=""> </div>
+</script>
+
+<script id="matchRoundsBodyTemplate" type="text/x-jquery-tmpl">
+	<tr>
+		<td class="${killercolor}">${killername}</td >
+		<td>${killerweapon}</td>
+		<td class="${victimcolor}">${victimname}</td >
+	</tr>
 </script>
 
 <script charset="utf-8">
 
-$(document).ready(function(){
+	$(document).ready(function(){
 
 	$('.collapsible').collapsible();
 
@@ -162,7 +155,16 @@ $(document).ready(function(){
 	var url = "/api/matchinfo/1/rounds"
 	$.getJSON(url,  function( data) {
 		for (var round = 0; round < data.length; round++) {
-			$( "#matchRoundsTemplate" ).tmpl(data[round]).appendTo( "#roundscontainer" );
+
+
+		  var roundline = document.createElement("li");    // Create with DOM
+
+			$( "#matchRoundsTemplate" ).tmpl(data[round]).appendTo(roundline);
+
+			for (var kill =0; kill < data[round].kills; kill++) {
+
+			}
+			roundline.appendTo("#roundscontainer");
 		}
 	});
 });
