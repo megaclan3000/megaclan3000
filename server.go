@@ -86,8 +86,8 @@ func main() {
 		panic(err)
 	}
 	//TODO download avatar images in a better place
-	for _, v := range demoInfo.Players.Players {
-		v.AvatarURL = steamClient.GetAvatarUrl(v.Steamid64)
+	for k, v := range demoInfo.Players.Players {
+		demoInfo.Players.Players[k].AvatarURL = steamClient.GetAvatarUrl(v.Steamid64)
 	}
 	//////////////////////////////////////////////////////////////
 
@@ -98,6 +98,8 @@ func main() {
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
+
+	log.Info("Server started:", srv.Addr)
 
 	//start updating data every 5 minutes asynchroniusly
 	go updateData()
