@@ -95,7 +95,7 @@
 					 <img src="/public/img/win_reason/${winreason}.png" style="width:20px" class="" alt="">
 				  </div>
 				  <div class="col s2 center-align">
-					  <h6> <span class="orange-text">${scoreclan}</span>:<span class="blue-text">${scoreenemy}</span > </h6>
+					  <h6> <span class="orange-text">${score_clan}</span>:<span class="blue-text">${score_enemy}</span > </h6>
 				  </div>
 				  <div class="col s1 center-align valign-wrapper">
 					 <img src="/public/img/win_reason/${winreason}.png" style="width:20px" class="" alt="">
@@ -104,7 +104,7 @@
 				  <!-- TODO loop over kills -->
 					<div style="padding:2;px;"> <img style="width:35px;height:35px;" src="${killer_avatar}" alt=""> </div>
 				  </div>
-				  <div class="col s1 grey-text">${time}</div>
+				  <div class="col s1 grey-text">${duration}</div>
 				</div>
 			</div>
 		</div>
@@ -134,13 +134,13 @@
 <ul class="collapsible" id="roundscontainer"> </ul>
 
 <script id="matchRoundsHeaderTemplate" type="text/x-jquery-tmpl">
-	<div style="padding:2px;"> <img style="width:35px;height:35px;" src="${killer_avatar}" alt=""> </div>
+	<div style="padding:2px;"> <img style="width:35px;height:35px;" src="${Killer.avatar_url}" alt=""> </div>
 </script>
 
 <script id="matchRoundsBodyTemplate" type="text/x-jquery-tmpl">
 	<tr>
 		<td class="${killercolor}">${killername}</td >
-		<td>${killerweapon}</td>
+		<td>WEAPON ${killerweapon}</td>
 		<td class="${victimcolor}">${victimname}</td >
 	</tr>
 </script>
@@ -156,15 +156,18 @@
 	$.getJSON(url,  function( data) {
 		for (var round = 0; round < data.length; round++) {
 
-
-		  var roundline = document.createElement("li");    // Create with DOM
-
+			var roundline = document.createElement("li");
 			$( "#matchRoundsTemplate" ).tmpl(data[round]).appendTo(roundline);
 
-			for (var kill =0; kill < data[round].kills; kill++) {
+			var roundkills_clan = data[round];
 
+console.log(roundkills_clan);
+
+			for (var kill = 0; kill < data[round].kills_clan; kill++) {
+
+				//$( "#matchRoundsBodyTemplate" ).tmpl(data[round][kill_clan]).appendTo(roundline);
 			}
-			roundline.appendTo("#roundscontainer");
+			$("#roundscontainer").append(roundline);
 		}
 	});
 });

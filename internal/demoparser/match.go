@@ -197,6 +197,7 @@ type ScoreboardPlayer struct {
 	AvatarURL        string  `json:"avatar_url"`
 	Rank             int     `json:"rank"`
 	Kills            int     `json:"kills"`
+	MVPs             int     `json:"mvps"`
 	Deaths           int     `json:"deaths"`
 	Assists          int     `json:"assists"`
 	Kddiff           int     `json:"kddiff"`

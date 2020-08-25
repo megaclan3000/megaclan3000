@@ -71,10 +71,59 @@ func (p *MyParser) Parse(path string, m *InfoStruct) error {
 
 	// Parse the demo returning errors
 	err = p.parser.ParseToEnd()
+	p.calculate()
 	p.mockWeaponStats()
 
 	return err
 
+}
+
+func (p *MyParser) playersBySteamID(steamID uint64) *common.Player {
+	for _, v := range p.parser.GameState().Participants().All() {
+		if v.SteamID64 == steamID {
+			return v
+		}
+	}
+	panic("player not found")
+}
+
+func (p *MyParser) calculate() {
+
+	for k, player := range p.Match.Players.Players {
+
+		// Set Kills, Deaths, Assists, MVPs
+		p.Match.Players.Players[k].Kills = p.playersBySteamID(player.Steamid64).Kills()
+		p.Match.Players.Players[k].Deaths = p.playersBySteamID(player.Steamid64).Deaths()
+		p.Match.Players.Players[k].Assists = p.playersBySteamID(player.Steamid64).Assists()
+		p.Match.Players.Players[k].MVPs = p.playersBySteamID(player.Steamid64).MVPs()
+
+		// Calculate player's K/D
+		if p.Match.Players.Players[k].Deaths != 0 {
+			p.Match.Players.Players[k].Kd = float64(p.Match.Players.Players[k].Kills) / float64(p.Match.Players.Players[k].Deaths)
+		}
+
+		// Set player's 3k, 4k, 5k rounds
+		for _, round := range p.Match.Rounds {
+			roundKills := 0
+			for _, kill := range append(round.EnemyKills, round.ClanKills...) {
+				if kill.Killer.Steamid64 == player.Steamid64 {
+					roundKills++
+				}
+			}
+
+			if roundKills == 5 {
+				p.Match.Players.Players[k].Rounds5K++
+			}
+
+			if roundKills == 4 {
+				p.Match.Players.Players[k].Rounds4K++
+			}
+
+			if roundKills == 3 {
+				p.Match.Players.Players[k].Rounds3K++
+			}
+		}
+	}
 }
 
 func (p *MyParser) setGeneral() error {
@@ -212,10 +261,12 @@ func (p *MyParser) handlerKill(e events.Kill) {
 		p.state.WarmupKills = append(p.state.WarmupKills, e)
 	} else {
 
-		p.Match.Players.AddKill(e.Killer.SteamID64)
+		// p.Match.Players.AddKill(e.Killer.SteamID64)
+
+		// if p.parser.GameState().Participants().Playing()[0].IsAlive()
 		killer := p.PlayerByID(e.Killer)
 
-		p.Match.Players.AddDeath(e.Victim.SteamID64)
+		// p.Match.Players.AddDeath(e.Victim.SteamID64)
 		victim := p.PlayerByID(e.Victim)
 
 		kill := RoundKill{
@@ -303,35 +354,7 @@ func (p *MyParser) handlerMatchStart(e events.MatchStart) {
 			continue
 		}
 
-		//TODO Use NewScoreBoardPlayer function here
-		player := ScoreboardPlayer{
-			IsBot:            ct.IsBot,
-			IsClanMember:     p.state.currentTeam == ct.Team,
-			Name:             ct.Name,
-			Rank:             0,
-			Clantag:          ct.ClanTag(),
-			Steamid64:        ct.SteamID64,
-			Kills:            0,
-			Deaths:           0,
-			Assists:          0,
-			Kddiff:           0,
-			Kd:               0,
-			Adr:              0,
-			Hsprecent:        0,
-			Firstkills:       0,
-			Firstdeaths:      0,
-			Tradekills:       0,
-			Tradedeaths:      0,
-			Tradefirstkills:  0,
-			Tradefirstdeaths: 0,
-			Roundswonv5:      0,
-			Roundswonv4:      0,
-			Roundswonv3:      0,
-			Rounds5K:         0,
-			Rounds4K:         0,
-			Rounds3K:         0,
-			WeaponStats:      make(map[common.EquipmentType]WeaponStat),
-		}
+		player := p.NewScoreBoardPlayer(ct)
 
 		p.Match.Players.Players = append(p.Match.Players.Players, player)
 	}
