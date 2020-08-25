@@ -107,6 +107,7 @@ th span {
 <table id="scoretableClan" class="scoretable highlight blue-grey lighten-5">
 	<thead>
 		<tr>
+
 			<th style="width:40px;"></th>
 			<th style="width:140px;"></th>
 			<th style="width:80px;"></th>
@@ -119,10 +120,10 @@ th span {
 			<th class="scoretablenum">HS</th>
 			<th class="scoretablenum">FK</th>
 			<th class="scoretablenum">FD</th>
-			<th class="scoretablenum">K</th>
-			<th class="scoretablenum">D</th>
-			<th class="scoretablenum">FK</th>
-			<th class="scoretablenum">FD</th>
+			<th class="scoretablenum">TK</th>
+			<th class="scoretablenum">TD</th>
+			<th class="scoretablenum">TFK</th>
+			<th class="scoretablenum">TFD</th>
 			<th class="scoretablenum">1v5</th>
 			<th class="scoretablenum">1v4</th>
 			<th class="scoretablenum">1v3</th>
@@ -150,10 +151,10 @@ th span {
 			<th class="scoretablenum">HS</th>
 			<th class="scoretablenum">FK</th>
 			<th class="scoretablenum">FD</th>
-			<th class="scoretablenum">K</th>
-			<th class="scoretablenum">D</th>
-			<th class="scoretablenum">FK</th>
-			<th class="scoretablenum">FD</th>
+			<th class="scoretablenum">TK</th>
+			<th class="scoretablenum">TD</th>
+			<th class="scoretablenum">TFK</th>
+			<th class="scoretablenum">TFD</th>
 			<th class="scoretablenum">1v5</th>
 			<th class="scoretablenum">1v4</th>
 			<th class="scoretablenum">1v3</th>
@@ -174,10 +175,10 @@ th span {
 			<td class="scoretablenum">${kills}</td>
 			<td class="scoretablenum">${deaths}</td>
 			<td class="scoretablenum">${assists}</td>
-			<td class="scoretablenum">${kddiff}</td>
-			<td class="scoretablenum">${kd}</td>
+			<td class="scoretablenum">${kills - deaths}</td>
+			<td class="scoretablenum">${kd.toFixed(2)}</td>
 			<td class="scoretablenum">${adr}</td>
-			<td class="scoretablenum">${hsprecent}</td>
+			<td class="scoretablenum">${hsprecent.toFixed(0)}%</td>
 			<td class="scoretablenum">${firstkills}</td>
 			<td class="scoretablenum">${firstdeaths}</td>
 			<td class="scoretablenum">${tradekills}</td>

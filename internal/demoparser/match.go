@@ -53,34 +53,12 @@ type RoundKill struct {
 	KillerTeamString   string
 	VictimTeamString   string
 	AssisterTeamString string
+	IsHeadshot         bool
 	Victim             *ScoreboardPlayer
 	Killer             *ScoreboardPlayer
 	Assister           *ScoreboardPlayer
 	KillerWeapon       common.EquipmentType
 }
-
-// type ScoreboardLine struct {
-// 	PlayerSteamID64  uint64
-// 	Kills            int
-// 	Deaths           int
-// 	Assists          int
-// 	KDDiff           int
-// 	KD               float64
-// 	ADR              int
-// 	HSPrecent        int
-// 	FirstKills       int
-// 	FirstDeaths      int
-// 	TradeKills       int
-// 	TradeDeaths      int
-// 	TradeFirstKills  int
-// 	TradeFirstDeaths int
-// 	RoundsWonV5      int
-// 	RoundsWonV4      int
-// 	RoundsWonV3      int
-// 	Rounds5k         int
-// 	Rounds4k         int
-// 	Rounds3k         int
-// }
 
 type WeaponUser struct {
 	Kills     int
@@ -200,10 +178,10 @@ type ScoreboardPlayer struct {
 	MVPs             int     `json:"mvps"`
 	Deaths           int     `json:"deaths"`
 	Assists          int     `json:"assists"`
-	Kddiff           int     `json:"kddiff"`
 	Kd               float64 `json:"kd"`
 	Adr              int     `json:"adr"`
-	Hsprecent        int     `json:"hsprecent"`
+	Headshots        int     `json:"headshots"`
+	Hsprecent        float64 `json:"hsprecent"`
 	Firstkills       int     `json:"firstkills"`
 	Firstdeaths      int     `json:"firstdeaths"`
 	Tradekills       int     `json:"tradekills"`

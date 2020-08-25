@@ -96,29 +96,38 @@ func (p *MyParser) calculate() {
 		p.Match.Players.Players[k].Deaths = p.playersBySteamID(player.Steamid64).Deaths()
 		p.Match.Players.Players[k].Assists = p.playersBySteamID(player.Steamid64).Assists()
 		p.Match.Players.Players[k].MVPs = p.playersBySteamID(player.Steamid64).MVPs()
+		// p.Match.Players.Players[k].Adr = p.playersBySteamID(player.Steamid64).Damage
 
 		// Calculate player's K/D
 		if p.Match.Players.Players[k].Deaths != 0 {
 			p.Match.Players.Players[k].Kd = float64(p.Match.Players.Players[k].Kills) / float64(p.Match.Players.Players[k].Deaths)
 		}
 
-		// Set player's 3k, 4k, 5k rounds
 		for _, round := range p.Match.Rounds {
+
+			// Find player's kills and hs
 			roundKills := 0
 			for _, kill := range append(round.EnemyKills, round.ClanKills...) {
 				if kill.Killer.Steamid64 == player.Steamid64 {
+					if kill.IsHeadshot {
+						p.Match.Players.Players[k].Headshots++
+					}
 					roundKills++
 				}
 			}
 
+			// Calculate player's he percentage
+			if p.Match.Players.Players[k].Kills != 0 {
+				p.Match.Players.Players[k].Hsprecent = float64(p.Match.Players.Players[k].Headshots) / float64(p.Match.Players.Players[k].Kills) * 100
+			}
+
+			// Set player's 3k, 4k, 5k rounds
 			if roundKills == 5 {
 				p.Match.Players.Players[k].Rounds5K++
 			}
-
 			if roundKills == 4 {
 				p.Match.Players.Players[k].Rounds4K++
 			}
-
 			if roundKills == 3 {
 				p.Match.Players.Players[k].Rounds3K++
 			}
@@ -234,7 +243,6 @@ func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 		Kills:            0,
 		Deaths:           0,
 		Assists:          0,
-		Kddiff:           0,
 		Kd:               0,
 		Adr:              0,
 		Hsprecent:        0,
@@ -261,8 +269,6 @@ func (p *MyParser) handlerKill(e events.Kill) {
 		p.state.WarmupKills = append(p.state.WarmupKills, e)
 	} else {
 
-		// p.Match.Players.AddKill(e.Killer.SteamID64)
-
 		// if p.parser.GameState().Participants().Playing()[0].IsAlive()
 		killer := p.PlayerByID(e.Killer)
 
@@ -270,6 +276,7 @@ func (p *MyParser) handlerKill(e events.Kill) {
 		victim := p.PlayerByID(e.Victim)
 
 		kill := RoundKill{
+			IsHeadshot:   e.IsHeadshot,
 			KillerWeapon: e.Weapon.Type,
 			Killer:       killer,
 			Victim:       victim,
