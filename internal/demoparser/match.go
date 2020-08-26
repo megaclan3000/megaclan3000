@@ -1,6 +1,7 @@
 package demoparser
 
 import (
+	"errors"
 	"time"
 
 	// "github.com/golang/geo/r3"
@@ -94,6 +95,15 @@ func GetMatchInfo(id string) (InfoStruct, error) {
 // Scoreboard
 func (is InfoStruct) GetScoreboard() ScoreboardPlayers {
 	return is.Players
+}
+
+func (sp ScoreboardPlayers) PlayerNumByID(steamID uint64) (int, error) {
+	for k, v := range sp.Players {
+		if v.Steamid64 == steamID {
+			return k, nil
+		}
+	}
+	return 0, errors.New("Player Number not found")
 }
 
 type ScoreboardPlayers struct {

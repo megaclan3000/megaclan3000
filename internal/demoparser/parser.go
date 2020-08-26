@@ -124,6 +124,27 @@ func (p *MyParser) calculate() {
 				}
 			}
 
+			// // Find firstkill and firstdeath for clan
+			// if len(round.ClanKills) != 0 {
+			// 	if player.Steamid64 == round.ClanKills[0].Killer.Steamid64 {
+			// 		p.Match.Players.Players[k].Firstkills += 1
+			// 	}
+
+			// 	if player.Steamid64 == round.ClanKills[0].Victim.Steamid64 {
+			// 		p.Match.Players.Players[k].Firstdeaths += 1
+			// 	}
+			// }
+
+			// // Find firstkill and firstdeath for enemy
+			// if len(round.EnemyKills) != 0 {
+			// 	if player.Steamid64 == round.EnemyKills[0].Killer.Steamid64 {
+			// 		p.Match.Players.Players[k].Firstkills += 1
+			// 	}
+
+			// 	if player.Steamid64 == round.EnemyKills[0].Victim.Steamid64 {
+			// 		p.Match.Players.Players[k].Firstdeaths += 1
+			// 	}
+			// }
 			// Calculate player's he percentage
 			if p.Match.Players.Players[k].Kills != 0 {
 				p.Match.Players.Players[k].Hsprecent = float64(p.Match.Players.Players[k].Headshots) / float64(p.Match.Players.Players[k].Kills) * 100
@@ -297,9 +318,27 @@ func (p *MyParser) handlerKill(e events.Kill) {
 			kill.Assister = assister
 		}
 
+		// Find fistkills and firstdeaths
+		killerNum, err := p.Match.Players.PlayerNumByID(e.Killer.SteamID64)
+		if err != nil {
+			panic(err)
+		}
+		victimNum, err := p.Match.Players.PlayerNumByID(e.Victim.SteamID64)
+		if err != nil {
+			panic(err)
+		}
+
 		if e.Killer.Team == p.state.currentTeam {
+			if len(p.Match.Rounds[p.state.Round-1].ClanKills) == 0 {
+				p.Match.Players.Players[killerNum].Firstkills += 1
+				p.Match.Players.Players[victimNum].Firstdeaths += 1
+			}
 			p.Match.Rounds[p.state.Round-1].ClanKills = append(p.Match.Rounds[p.state.Round-1].ClanKills, kill)
 		} else {
+			if len(p.Match.Rounds[p.state.Round-1].EnemyKills) == 0 {
+				p.Match.Players.Players[killerNum].Firstkills += 1
+				p.Match.Players.Players[victimNum].Firstdeaths += 1
+			}
 			p.Match.Rounds[p.state.Round-1].EnemyKills = append(p.Match.Rounds[p.state.Round-1].EnemyKills, kill)
 		}
 	}
