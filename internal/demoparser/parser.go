@@ -98,6 +98,14 @@ func (p *MyParser) calculate() {
 		p.Match.Players.Players[k].MVPs = p.playersBySteamID(player.Steamid64).MVPs()
 		// p.Match.Players.Players[k].Adr = p.playersBySteamID(player.Steamid64).Damage
 
+		var playeradr int = 0
+
+		for _, v := range p.Match.Players.Players[k].Damages {
+			playeradr += v
+		}
+
+		p.Match.Players.Players[k].Adr = playeradr / len(p.Match.Rounds)
+
 		// Calculate player's K/D
 		if p.Match.Players.Players[k].Deaths != 0 {
 			p.Match.Players.Players[k].Kd = float64(p.Match.Players.Players[k].Kills) / float64(p.Match.Players.Players[k].Deaths)
@@ -259,6 +267,7 @@ func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 		Rounds4K:         0,
 		Rounds3K:         0,
 		WeaponStats:      make(map[common.EquipmentType]WeaponStat),
+		Damages:          make(map[uint64]int),
 	}
 }
 
@@ -310,22 +319,16 @@ func teamString(team common.Team) string {
 
 func (p *MyParser) handlerPlayerHurt(e events.PlayerHurt) {
 
-	//TODO detect and save teamdamage, skipping for now
-	// Not sure if the hurt handler is triggered during warump as no teamdamage
-	// is possible, better check anyway.
-	// if !p.parser.GameState().IsWarmupPeriod() {
+	if e.Attacker == nil || e.Player == nil {
+		return
+	}
 
-	// 	// Check if the player has done any damage at all in this round yet
-	// 	if damageDone, ok1 := p.Match.Rounds[p.state.Round].TotalDamagesDone[e.Attacker.SteamID64]; ok1 {
-
-	// 		// Check if the player has done damage to this victim in this round yet
-	// 		if _, ok := damageDone.Victims[e.Player.SteamID64]; ok {
-	// 			p.Match.Rounds[p.state.Round].TotalDamagesDone[e.Attacker.SteamID64].Victims[e.Player.SteamID64].Amount += e.HealthDamage
-	// 		} else {
-	// 			p.Match.Rounds[p.state.Round].TotalDamagesDone[e.Attacker.SteamID64].Victims[e.Player.SteamID64].Amount = e.HealthDamage
-	// 		}
-	// 	}
-	// }
+	for k, v := range p.Match.Players.Players {
+		if v.Steamid64 == e.Attacker.SteamID64 {
+			p.Match.Players.Players[k].Damages[e.Player.SteamID64] += e.HealthDamage
+			return
+		}
+	}
 }
 
 // func handlerChatMessage(e events.ChatMessage) {

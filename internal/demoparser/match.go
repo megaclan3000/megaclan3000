@@ -167,33 +167,34 @@ func (p *MyParser) PlayerByID(player *common.Player) *ScoreboardPlayer {
 type ScoreboardPlayer struct {
 	WeaponStats map[common.EquipmentType]WeaponStat
 
-	IsBot            bool    `json:"isbot"`
-	IsClanMember     bool    `json:"isclanmember"`
-	Steamid64        uint64  `json:"steamid64"`
-	Name             string  `json:"name"`
-	Clantag          string  `json:"clantag"`
-	AvatarURL        string  `json:"avatar_url"`
-	Rank             int     `json:"rank"`
-	Kills            int     `json:"kills"`
-	MVPs             int     `json:"mvps"`
-	Deaths           int     `json:"deaths"`
-	Assists          int     `json:"assists"`
-	Kd               float64 `json:"kd"`
-	Adr              int     `json:"adr"`
-	Headshots        int     `json:"headshots"`
-	Hsprecent        float64 `json:"hsprecent"`
-	Firstkills       int     `json:"firstkills"`
-	Firstdeaths      int     `json:"firstdeaths"`
-	Tradekills       int     `json:"tradekills"`
-	Tradedeaths      int     `json:"tradedeaths"`
-	Tradefirstkills  int     `json:"tradefirstkills"`
-	Tradefirstdeaths int     `json:"tradefirstdeaths"`
-	Roundswonv5      int     `json:"roundswonv5"`
-	Roundswonv4      int     `json:"roundswonv4"`
-	Roundswonv3      int     `json:"roundswonv3"`
-	Rounds5K         int     `json:"rounds5k"`
-	Rounds4K         int     `json:"rounds4k"`
-	Rounds3K         int     `json:"rounds3k"`
+	IsBot            bool           `json:"isbot"`
+	IsClanMember     bool           `json:"isclanmember"`
+	Steamid64        uint64         `json:"steamid64"`
+	Name             string         `json:"name"`
+	Clantag          string         `json:"clantag"`
+	AvatarURL        string         `json:"avatar_url"`
+	Rank             int            `json:"rank"`
+	Kills            int            `json:"kills"`
+	MVPs             int            `json:"mvps"`
+	Deaths           int            `json:"deaths"`
+	Assists          int            `json:"assists"`
+	Kd               float64        `json:"kd"`
+	Adr              int            `json:"adr"`
+	Headshots        int            `json:"headshots"`
+	Hsprecent        float64        `json:"hsprecent"`
+	Firstkills       int            `json:"firstkills"`
+	Firstdeaths      int            `json:"firstdeaths"`
+	Tradekills       int            `json:"tradekills"`
+	Tradedeaths      int            `json:"tradedeaths"`
+	Tradefirstkills  int            `json:"tradefirstkills"`
+	Tradefirstdeaths int            `json:"tradefirstdeaths"`
+	Roundswonv5      int            `json:"roundswonv5"`
+	Roundswonv4      int            `json:"roundswonv4"`
+	Roundswonv3      int            `json:"roundswonv3"`
+	Rounds5K         int            `json:"rounds5k"`
+	Rounds4K         int            `json:"rounds4k"`
+	Rounds3K         int            `json:"rounds3k"`
+	Damages          map[uint64]int `json:"damages"`
 }
 
 type ScoreboardRound struct {
@@ -213,50 +214,5 @@ type ScoreboardRound struct {
 }
 
 func (is InfoStruct) GetRounds() []ScoreboardRound {
-
-	//TODO implement with real data
 	return is.Rounds
-	// return []Round{
-	// 	{
-
-	// 		ScoreClan:        2,
-	// 		ScoreEnemy:       1,
-	// 		WinReason:        1,
-	// 		TotalDamageTaken: 900,
-	// 		TotalDamageGiven: 1200,
-	// 		WinnerTeam:       common.TeamCounterTerrorists,
-	// 		KillsClan: []RoundKill{
-	// 			{
-	// 				Killer:             &is.Players.Clan()[0],
-	// 				Assister:           &is.Players.Clan()[3],
-	// 				Victim:             &is.Players.Enemy()[0],
-	// 				KillerTeamString:   "T",
-	// 				VictimTeamString:   "CT",
-	// 				AssisterTeamString: "CT",
-	// 				KillerWeapon:       common.EqAK47,
-	// 			},
-	// 			{
-	// 				Killer:             &is.Players.Clan()[1],
-	// 				Assister:           &is.Players.Clan()[3],
-	// 				Victim:             &is.Players.Enemy()[0],
-	// 				KillerTeamString:   "T",
-	// 				VictimTeamString:   "CT",
-	// 				AssisterTeamString: "CT",
-	// 				KillerWeapon:       common.EqAK47,
-	// 			},
-	// 		},
-	// 		KillsEnemy: []RoundKill{
-	// 			{
-	// 				Assister:           &is.Players.Enemy()[1],
-	// 				Killer:             &is.Players.Enemy()[3],
-	// 				Victim:             &is.Players.Clan()[0],
-	// 				KillerTeamString:   "T",
-	// 				VictimTeamString:   "CT",
-	// 				AssisterTeamString: "CT",
-	// 				KillerWeapon:       common.EqAK47,
-	// 			},
-	// 		},
-	// 		Duration: time.Hour,
-	// 	},
-	// }
 }
