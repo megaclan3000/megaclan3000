@@ -341,7 +341,29 @@ func (p *MyParser) handlerKill(e events.Kill) {
 			}
 			p.Match.Rounds[p.state.Round-1].EnemyKills = append(p.Match.Rounds[p.state.Round-1].EnemyKills, kill)
 		}
+
+		// Find 1v5, 1v4, 1v3
+		if p.matesAlive(e.Killer) == 1 {
+			switch p.matesAlive(e.Victim) {
+			case 5:
+				p.Match.Players.Players[killerNum].Roundswonv5 += 1
+			case 4:
+				p.Match.Players.Players[killerNum].Roundswonv4 += 1
+			case 3:
+				p.Match.Players.Players[killerNum].Roundswonv3 += 1
+			}
+		}
 	}
+}
+
+func (p MyParser) matesAlive(player *common.Player) int {
+	alive := 0
+	for _, v := range p.parser.GameState().Participants().Playing() {
+		if v.IsAlive() && v.Team == player.Team {
+			alive++
+		}
+	}
+	return alive
 }
 
 func teamString(team common.Team) string {
