@@ -34,9 +34,11 @@ func NewMyParser() MyParser {
 // Used while parsing to hold values while going through the ticks
 type parsingState struct {
 	// Current round
-	Round       int
-	WarmupKills []events.Kill
-	currentTeam common.Team
+	Round        int
+	WarmupKills  []events.Kill
+	currentTeam  common.Team
+	lastKill     events.Kill
+	lastKillTime time.Time
 }
 
 func (p *MyParser) Parse(path string, m *InfoStruct) error {
@@ -96,7 +98,6 @@ func (p *MyParser) calculate() {
 		p.Match.Players.Players[k].Deaths = p.playersBySteamID(player.Steamid64).Deaths()
 		p.Match.Players.Players[k].Assists = p.playersBySteamID(player.Steamid64).Assists()
 		p.Match.Players.Players[k].MVPs = p.playersBySteamID(player.Steamid64).MVPs()
-		// p.Match.Players.Players[k].Adr = p.playersBySteamID(player.Steamid64).Damage
 
 		var playeradr int = 0
 
@@ -124,27 +125,6 @@ func (p *MyParser) calculate() {
 				}
 			}
 
-			// // Find firstkill and firstdeath for clan
-			// if len(round.ClanKills) != 0 {
-			// 	if player.Steamid64 == round.ClanKills[0].Killer.Steamid64 {
-			// 		p.Match.Players.Players[k].Firstkills += 1
-			// 	}
-
-			// 	if player.Steamid64 == round.ClanKills[0].Victim.Steamid64 {
-			// 		p.Match.Players.Players[k].Firstdeaths += 1
-			// 	}
-			// }
-
-			// // Find firstkill and firstdeath for enemy
-			// if len(round.EnemyKills) != 0 {
-			// 	if player.Steamid64 == round.EnemyKills[0].Killer.Steamid64 {
-			// 		p.Match.Players.Players[k].Firstkills += 1
-			// 	}
-
-			// 	if player.Steamid64 == round.EnemyKills[0].Victim.Steamid64 {
-			// 		p.Match.Players.Players[k].Firstdeaths += 1
-			// 	}
-			// }
 			// Calculate player's he percentage
 			if p.Match.Players.Players[k].Kills != 0 {
 				p.Match.Players.Players[k].Hsprecent = float64(p.Match.Players.Players[k].Headshots) / float64(p.Match.Players.Players[k].Kills) * 100
@@ -294,66 +274,87 @@ func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 
 func (p *MyParser) handlerKill(e events.Kill) {
 
-	// Append kill to current round or to warmupKills
+	// Skip all calculations for kills during warmup
 	if p.parser.GameState().IsWarmupPeriod() {
 		p.state.WarmupKills = append(p.state.WarmupKills, e)
+		return
+	}
+
+	// Find killer
+	killer := p.PlayerByID(e.Killer)
+	killerNum, err := p.Match.Players.PlayerNumByID(e.Killer.SteamID64)
+	if err != nil {
+		panic(err)
+	}
+
+	// Find victim
+	victim := p.PlayerByID(e.Victim)
+	victimNum, err := p.Match.Players.PlayerNumByID(e.Victim.SteamID64)
+	if err != nil {
+		panic(err)
+	}
+
+	kill := RoundKill{
+		Time:         p.parser.CurrentTime(),
+		IsHeadshot:   e.IsHeadshot,
+		KillerWeapon: e.Weapon.Type,
+		Killer:       killer,
+		Victim:       victim,
+	}
+
+	if e.Assister != nil {
+		assister := p.PlayerByID(e.Assister)
+		p.Match.Players.AddAssist(e.Assister.SteamID64)
+		kill.Assister = assister
+	}
+
+	// Find fistkills and firstdeaths
+	if e.Killer.Team == p.state.currentTeam {
+
+		// Check if it's the first kill of the round
+		if len(p.Match.Rounds[p.state.Round-1].ClanKills) == 0 {
+			p.Match.Players.Players[killerNum].Firstkills += 1
+			p.Match.Players.Players[victimNum].Firstdeaths += 1
+		}
+		// TODO check if victim has killed a teammate of the killer less than X seconds ago
+
+		for _, v := range p.Match.Rounds[p.state.Round-1].ClanKills {
+			if v.Killer.Steamid64 == e.Victim.SteamID64 && ((p.parser.CurrentTime() - v.Time) < (10 * time.Second)) {
+				log.Warning("found tradekill")
+			}
+		}
+
+		// Append to clankills
+		p.Match.Rounds[p.state.Round-1].ClanKills = append(p.Match.Rounds[p.state.Round-1].ClanKills, kill)
 	} else {
 
-		// if p.parser.GameState().Participants().Playing()[0].IsAlive()
-		killer := p.PlayerByID(e.Killer)
-
-		// p.Match.Players.AddDeath(e.Victim.SteamID64)
-		victim := p.PlayerByID(e.Victim)
-
-		kill := RoundKill{
-			IsHeadshot:   e.IsHeadshot,
-			KillerWeapon: e.Weapon.Type,
-			Killer:       killer,
-			Victim:       victim,
+		// Check if it's the first kill of the round
+		if len(p.Match.Rounds[p.state.Round-1].EnemyKills) == 0 {
+			p.Match.Players.Players[killerNum].Firstkills += 1
+			p.Match.Players.Players[victimNum].Firstdeaths += 1
 		}
 
-		if e.Assister != nil {
-			assister := p.PlayerByID(e.Assister)
-			p.Match.Players.AddAssist(e.Assister.SteamID64)
-			kill.Assister = assister
-		}
-
-		// Find fistkills and firstdeaths
-		killerNum, err := p.Match.Players.PlayerNumByID(e.Killer.SteamID64)
-		if err != nil {
-			panic(err)
-		}
-		victimNum, err := p.Match.Players.PlayerNumByID(e.Victim.SteamID64)
-		if err != nil {
-			panic(err)
-		}
-
-		if e.Killer.Team == p.state.currentTeam {
-			if len(p.Match.Rounds[p.state.Round-1].ClanKills) == 0 {
-				p.Match.Players.Players[killerNum].Firstkills += 1
-				p.Match.Players.Players[victimNum].Firstdeaths += 1
+		for _, v := range p.Match.Rounds[p.state.Round-1].EnemyKills {
+			if v.Killer.Steamid64 == e.Victim.SteamID64 && p.parser.CurrentTime()-v.Time < 10*time.Second {
+				log.Warning("found tradekill")
 			}
-			p.Match.Rounds[p.state.Round-1].ClanKills = append(p.Match.Rounds[p.state.Round-1].ClanKills, kill)
-		} else {
-			if len(p.Match.Rounds[p.state.Round-1].EnemyKills) == 0 {
-				p.Match.Players.Players[killerNum].Firstkills += 1
-				p.Match.Players.Players[victimNum].Firstdeaths += 1
-			}
-			p.Match.Rounds[p.state.Round-1].EnemyKills = append(p.Match.Rounds[p.state.Round-1].EnemyKills, kill)
 		}
+		// Append to enemykills
+		p.Match.Rounds[p.state.Round-1].EnemyKills = append(p.Match.Rounds[p.state.Round-1].EnemyKills, kill)
+	}
 
-		// Find 1v5, 1v4, 1v3
-		if p.matesAlive(e.Killer) == 1 {
-			switch p.matesAlive(e.Victim) {
-			case 5:
-				p.Match.Players.Players[killerNum].Roundswonv5 += 1
-			case 4:
-				p.Match.Players.Players[killerNum].Roundswonv4 += 1
-			case 3:
-				p.Match.Players.Players[killerNum].Roundswonv3 += 1
-			}
+	// Find 1v5, 1v4, 1v3
+	if p.matesAlive(e.Killer) == 1 {
+		switch p.matesAlive(e.Victim) {
+		case 5:
+			p.Match.Players.Players[killerNum].Roundswonv5 += 1
+		case 4:
+			p.Match.Players.Players[killerNum].Roundswonv4 += 1
+		case 3:
+			p.Match.Players.Players[killerNum].Roundswonv3 += 1
 		}
 	}
+
 }
 
 func (p MyParser) matesAlive(player *common.Player) int {

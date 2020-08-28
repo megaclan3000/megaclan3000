@@ -2,6 +2,7 @@ package demoparser
 
 import (
 	"errors"
+	"strconv"
 	"time"
 
 	// "github.com/golang/geo/r3"
@@ -51,6 +52,7 @@ type WeaponStat struct {
 }
 
 type RoundKill struct {
+	Time               time.Duration
 	KillerTeamString   string
 	VictimTeamString   string
 	AssisterTeamString string
@@ -103,7 +105,7 @@ func (sp ScoreboardPlayers) PlayerNumByID(steamID uint64) (int, error) {
 			return k, nil
 		}
 	}
-	return 0, errors.New("Player Number not found")
+	return 0, errors.New("Player Number not found" + strconv.FormatUint(steamID, 10))
 }
 
 type ScoreboardPlayers struct {

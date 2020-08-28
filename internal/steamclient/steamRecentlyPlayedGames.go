@@ -3,7 +3,6 @@ package steamclient
 import (
 	"errors"
 
-	log "github.com/sirupsen/logrus"
 	"strconv"
 )
 
@@ -84,8 +83,6 @@ type RecentlyPlayedGames struct {
 }
 
 func (sc *SteamClient) parseRecentlyPlayedGames(data recentlyPlayedGamesData, steamID string) (RecentlyPlayedGames, error) {
-
-	log.Debugf("Parsing recentlyPlayedGamesData for steamID: %v", steamID)
 
 	for _, v := range data.Response.Games {
 		if v.Appid == 730 {
