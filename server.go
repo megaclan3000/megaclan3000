@@ -81,14 +81,13 @@ func main() {
 
 	var err error
 	//TODO get correct id
-	demoInfo, err = demoparser.GetMatchInfo("1")
+	demoInfo, err = demoparser.GetMatchInfo("1", steamClient)
 	if err != nil {
 		panic(err)
 	}
 	//TODO download avatar images in a better place
-	for k, v := range demoInfo.Players.Players {
-		demoInfo.Players.Players[k].AvatarURL = steamClient.GetAvatarUrl(v.Steamid64)
-	}
+	// for k, v := range demoInfo.Players.Players {
+	// }
 	//////////////////////////////////////////////////////////////
 
 	// Set up the HTTP-server

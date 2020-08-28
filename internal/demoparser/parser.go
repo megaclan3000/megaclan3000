@@ -9,6 +9,7 @@ import (
 
 	"time"
 
+	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 	log "github.com/sirupsen/logrus"
 
 	demoinfocs "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs"
@@ -17,14 +18,16 @@ import (
 )
 
 type MyParser struct {
-	parser demoinfocs.Parser
-	Result string
-	Match  *InfoStruct
-	state  parsingState
+	steamClient *steamclient.SteamClient
+	parser      demoinfocs.Parser
+	Result      string
+	Match       *InfoStruct
+	state       parsingState
 }
 
-func NewMyParser() MyParser {
+func NewMyParser(client *steamclient.SteamClient) MyParser {
 	return MyParser{
+		steamClient: client,
 		state: parsingState{
 			Round: 0,
 		},
@@ -249,6 +252,7 @@ func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 		Rank:             0,
 		Clantag:          player.ClanTag(),
 		Steamid64:        player.SteamID64,
+		AvatarURL:        p.steamClient.GetAvatarUrl(player.SteamID64),
 		Kills:            0,
 		Deaths:           0,
 		Assists:          0,

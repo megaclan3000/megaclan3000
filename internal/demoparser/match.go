@@ -1,6 +1,7 @@
 package demoparser
 
 import (
+	"encoding/json"
 	"errors"
 	"strconv"
 	"time"
@@ -8,6 +9,7 @@ import (
 	// "github.com/golang/geo/r3"
 	common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
 	"github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
+	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 	log "github.com/sirupsen/logrus"
 	// "go.mongodb.org/mongo-driver/bson"
 	// "go.mongodb.org/mongo-driver/bson/primitive"
@@ -63,6 +65,33 @@ type RoundKill struct {
 	KillerWeapon       common.EquipmentType
 }
 
+func (rk *RoundKill) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&struct {
+		Time               time.Duration        `json:"time"`
+		KillerTeamString   string               `json:"killer_team_string"`
+		VictimTeamString   string               `json:"victim_team_string"`
+		AssisterTeamString string               `json:"assister_team_string"`
+		IsHeadshot         bool                 `json:"is_headshot"`
+		Victim             *ScoreboardPlayer    `json:"victim"`
+		Killer             *ScoreboardPlayer    `json:"killer"`
+		Assister           *ScoreboardPlayer    `json:"assister"`
+		KillerWeapon       common.EquipmentType `json:"weapon"`
+		KillerWeaponName   string               `json:"weapon_name"`
+	}{
+
+		Time:               rk.Time,
+		KillerTeamString:   rk.KillerTeamString,
+		VictimTeamString:   rk.VictimTeamString,
+		AssisterTeamString: rk.AssisterTeamString,
+		IsHeadshot:         rk.IsHeadshot,
+		Victim:             rk.Victim,
+		Killer:             rk.Killer,
+		Assister:           rk.Assister,
+		KillerWeapon:       rk.KillerWeapon,
+		KillerWeaponName:   rk.KillerWeapon.String(),
+	})
+}
+
 type WeaponUser struct {
 	Kills     int
 	HSPercent int
@@ -84,9 +113,9 @@ type MegacoinPlayer struct {
 	ForCriteriaC int
 }
 
-func GetMatchInfo(id string) (InfoStruct, error) {
+func GetMatchInfo(id string, steamClient *steamclient.SteamClient) (InfoStruct, error) {
 	//TODO
-	p := NewMyParser()
+	p := NewMyParser(steamClient)
 	var info InfoStruct
 	//TODO get correct path for demo file
 	err := p.Parse("internal/demoparser/testdata/demo"+id+".dem", &info)
@@ -223,8 +252,4 @@ type ScoreboardRound struct {
 	TotalDamageTaken int                   `json:"total_damage_taken"`
 	WinReason        events.RoundEndReason `json:"win_reason"`
 	WinnerTeam       common.Team           `json:"winner_team"`
-}
-
-func (is InfoStruct) GetRounds() []ScoreboardRound {
-	return is.Rounds
 }

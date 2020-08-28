@@ -20,6 +20,7 @@
 <div  id="chartcontainer-match-rounds"></div>
 
 <script charset="utf-8">
+	//TODO use real data
 	Highcharts.chart('chartcontainer-match-rounds', {
 	chart: {
 		type: 'column'
@@ -81,15 +82,17 @@
 <ul class="collapsible" id="roundscontainer"> </ul>
 
 <script id="matchRoundsTemplate" type="text/x-jquery-tmpl">
+	<div id="test"> </div>
 		<div class="collapsible-header hoverable ${roundcolor} lighten-5" style="padding:0px;">
 			<div style="width:100%;padding:0px" class="container">
 				<div class="row valign-wrapper" style="margin:10px">
 				  <div class="col s1">
-					<img style="width:30px;" src="/public/img/teams/2.jpg" class="circle" alt="">
+					<img style="width:30px;" src="/public/img/teams/${team_won}.jpg" class="circle" alt="">
 					</div>
-				  <div class="col s3 valign-wrapper">
-				  <!-- TODO loop over kills -->
-					<div style="padding:2px;"> <img style="width:35px;height:35px;" src="${killer_avatar}" alt=""> </div>
+				  <div class="col s3 valign-wrapper" id="kill-avatars-clan-${round}">
+					{{`{{each(prop, val) kills_clan}}`}}
+						<div style="padding:2px;"> <img style="width:35px;height:35px;" src="${val.victim.avatar_url}" alt="${val.killer.name}"> </div>
+					{{`{{/each}}`}}
 				  </div>
 				  <div class="col s1 center-align valign-wrapper">
 					 <img src="/public/img/win_reason/${winreason}.png" style="width:20px" class="" alt="">
@@ -100,9 +103,10 @@
 				  <div class="col s1 center-align valign-wrapper">
 					 <img src="/public/img/win_reason/${winreason}.png" style="width:20px" class="" alt="">
 				  </div>
-				  <div class="col s3 valign-wrapper">
-				  <!-- TODO loop over kills -->
-					<div style="padding:2;px;"> <img style="width:35px;height:35px;" src="${killer_avatar}" alt=""> </div>
+				  <div class="col s3 valign-wrapper kill-avatars-enemy">
+					{{`{{each(prop, val) kills_enemy}}`}}
+						<div style="padding:2px;"> <img style="width:35px;height:35px;" src="${val.victim.avatar_url}" alt="${val.killer.name}"> </div>
+					{{`{{/each}}`}}
 				  </div>
 				  <div class="col s1 grey-text">${duration}</div>
 				</div>
@@ -114,7 +118,13 @@
 				  <div class="col s6">
 					<table>
 						<tbody>
-				  <!-- TODO loop over kills -->
+							{{`{{each(prop, val) kills_clan}}`}}
+							<tr>
+								<td>${val.killer.name}</td >
+								<td>${val.weapon_name}</td>
+								<td>${val.victim.name}</td >
+							</tr>
+							{{`{{/each}}`}}
 						</tbody>
 					</table>
 				  </div>
@@ -122,7 +132,13 @@
 				  <div class="col s6">
 					<table>
 						<tbody>
-				  <!-- TODO loop over kills -->
+							{{`{{each(prop, val) kills_enemy}}`}}
+							<tr>
+								<td>${val.killer.name}</td >
+								<td>${val.weapon_name}</td>
+								<td>${val.victim.name}</td >
+							</tr>
+							{{`{{/each}}`}}
 						</tbody>
 					</table>
 				  </div>
@@ -134,16 +150,11 @@
 <ul class="collapsible" id="roundscontainer"> </ul>
 
 <script id="matchRoundsHeaderTemplate" type="text/x-jquery-tmpl">
-	<div style="padding:2px;"> <img style="width:35px;height:35px;" src="${Killer.avatar_url}" alt=""> </div>
 </script>
 
 <script id="matchRoundsBodyTemplate" type="text/x-jquery-tmpl">
-	<tr>
-		<td class="${killercolor}">${killername}</td >
-		<td>WEAPON ${killerweapon}</td>
-		<td class="${victimcolor}">${victimname}</td >
-	</tr>
 </script>
+
 
 <script charset="utf-8">
 
@@ -157,17 +168,21 @@
 		for (var round = 0; round < data.length; round++) {
 
 			var roundline = document.createElement("li");
+
+			console.log(data[round]);
 			$( "#matchRoundsTemplate" ).tmpl(data[round]).appendTo(roundline);
-
-			var roundkills_clan = data[round];
-
-console.log(roundkills_clan);
-
-			for (var kill = 0; kill < data[round].kills_clan; kill++) {
-
-				//$( "#matchRoundsBodyTemplate" ).tmpl(data[round][kill_clan]).appendTo(roundline);
-			}
 			$("#roundscontainer").append(roundline);
+
+
+
+			//$( "#roundKillAvatar" ).tmpl(avatarDataClan).appendTo("#kill-avatars-clan-"+round);
+
+//			if(data[round].kills_clan) {
+//				for (var kill = 0; kill < data[round].kills_clan.length; kill++) {
+
+				//}
+
+			//}
 		}
 	});
 });

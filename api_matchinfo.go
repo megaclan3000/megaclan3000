@@ -30,7 +30,7 @@ func handlerAPIMatchinfo(w http.ResponseWriter, r *http.Request) {
 		}
 
 	case "rounds":
-		if byt, err = json.Marshal(demoInfo.GetRounds()); err != nil {
+		if byt, err = json.Marshal(demoInfo.Rounds); err != nil {
 			panic(err)
 		}
 
