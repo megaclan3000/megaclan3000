@@ -95,13 +95,17 @@
 					{{`{{/each}}`}}
 				  </div>
 				  <div class="col s1 center-align valign-wrapper">
-					 <img src="/public/img/win_reason/${winreason}.png" style="width:20px" class="" alt="">
+					 {{`{{if ClanWonRound }}`}}
+					 <img src="/public/img/win_reason/${win_reason}.png" style="width:20px" class="" alt="">
+					 {{`{{/if}}`}}
 				  </div>
 				  <div class="col s2 center-align">
 					  <h6> <span class="orange-text">${score_clan}</span>:<span class="blue-text">${score_enemy}</span > </h6>
 				  </div>
 				  <div class="col s1 center-align valign-wrapper">
-					 <img src="/public/img/win_reason/${winreason}.png" style="width:20px" class="" alt="">
+					{{`{{if !ClanWonRound }}`}}
+					<img src="/public/img/win_reason/${win_reason}.png" style="width:20px" class="" alt="">
+					{{`{{/if}}`}}
 				  </div>
 				  <div class="col s3 valign-wrapper kill-avatars-enemy">
 					{{`{{each(prop, val) kills_enemy}}`}}
@@ -169,7 +173,7 @@
 
 			var roundline = document.createElement("li");
 
-			console.log(data[round]);
+			console.log(data[round].ClanWonRound);
 			$( "#matchRoundsTemplate" ).tmpl(data[round]).appendTo(roundline);
 			$("#roundscontainer").append(roundline);
 
