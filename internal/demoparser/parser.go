@@ -319,8 +319,9 @@ func (p *MyParser) handlerKill(e events.Kill) {
 		// TODO check if victim has killed a teammate of the killer less than X seconds ago
 
 		for _, v := range p.Match.Rounds[p.state.Round-1].ClanKills {
-			if v.Killer.Steamid64 == e.Victim.SteamID64 && ((p.parser.CurrentTime() - v.Time) < (10 * time.Second)) {
-				log.Warning("found tradekill")
+			if v.Killer.Steamid64 == e.Victim.SteamID64 && ((p.parser.CurrentTime() - v.Time) < (5 * time.Second)) {
+				p.Match.Players.Players[killerNum].Tradekills += 1
+				p.Match.Players.Players[victimNum].Tradedeaths += 1
 			}
 		}
 
@@ -334,11 +335,13 @@ func (p *MyParser) handlerKill(e events.Kill) {
 			p.Match.Players.Players[victimNum].Firstdeaths += 1
 		}
 
-		for _, v := range p.Match.Rounds[p.state.Round-1].EnemyKills {
-			if v.Killer.Steamid64 == e.Victim.SteamID64 && p.parser.CurrentTime()-v.Time < 10*time.Second {
-				log.Warning("found tradekill")
+		for _, v := range p.Match.Rounds[p.state.Round-1].ClanKills {
+			if v.Killer.Steamid64 == e.Victim.SteamID64 && ((p.parser.CurrentTime() - v.Time) < (5 * time.Second)) {
+				p.Match.Players.Players[killerNum].Tradekills += 1
+				p.Match.Players.Players[victimNum].Tradedeaths += 1
 			}
 		}
+
 		// Append to enemykills
 		p.Match.Rounds[p.state.Round-1].EnemyKills = append(p.Match.Rounds[p.state.Round-1].EnemyKills, kill)
 	}
