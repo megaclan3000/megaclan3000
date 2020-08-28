@@ -19,7 +19,6 @@ type InfoStruct struct {
 	General           ScoreboardGeneral
 	Players           ScoreboardPlayers
 	Rounds            []ScoreboardRound
-	Weapons           []ScoreboardWeaponLine
 	Duels             [][]int
 	HeatmapsImageURLs []string
 	Megacoins         []MegacoinPlayer
@@ -97,13 +96,6 @@ type WeaponUser struct {
 	HSPercent int
 	Accuracy  int
 	Damage    int
-}
-
-type ScoreboardWeaponLine struct {
-	WeaponName    string
-	WeaponIconURL string
-	TeamClan      []WeaponUser
-	TeamEnemy     []WeaponUser
 }
 
 type MegacoinPlayer struct {
