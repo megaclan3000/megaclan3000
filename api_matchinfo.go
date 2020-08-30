@@ -42,6 +42,7 @@ func handlerAPIMatchinfo(w http.ResponseWriter, r *http.Request) {
 		// 	panic(err)
 		// }
 		byt = []byte(`
+{ "weapons": 
 [
     {
         "name": "AWP",
@@ -225,7 +226,7 @@ func handlerAPIMatchinfo(w http.ResponseWriter, r *http.Request) {
             ]
         }
     }
-]`)
+]}`)
 	// TODO
 	case "duels":
 		byt = []byte(`

@@ -153,43 +153,44 @@
 <!-- TODO loop over top weapons -->
 
 <script id="matchWeaponTemplate" type="text/x-jsrender">
+	{{for weapons}}
 <div class="card blue-grey lighten-5">
 	<div class="card-image">
-		<img class="weaponcardimg" src="/public/img/weapons/${data.name}.jpg" >
-		<span class="card-title black-text">${data.name}</span>
+		<img class="weaponcardimg" src="/public/img/weapons/{{:name}}.jpg" >
+		<span class="card-title black-text">{{:name}}</span>
 	</div>
 	<div class="card-tabs">
 		<ul class="tabs tabs-fixed-width orange-text blue-grey lighten-5">
-			<li class="tab"><a href="#tab-weapon-${num}-kills"> <span class="orange-text">Kills</span></a></li>
-			<li class="tab"><a href="#tab-weapon-${num}-accuracy"> <span class="orange-text">Accuracy</span></a></li>
-			<li class="tab"><a href="#tab-weapon-${num}-headshots"> <span class="orange-text">Headshots</span></a></li>
-			<li class="tab"><a href="#tab-weapon-${num}-damage"> <span class="orange-text">Damage</span></a></li>
+			<li class="tab"><a href="#tab-weapon-{{:#index}}-kills"> <span class="orange-text">Kills</span></a></li>
+			<li class="tab"><a href="#tab-weapon-{{:#index}}-accuracy"> <span class="orange-text">Accuracy</span></a></li>
+			<li class="tab"><a href="#tab-weapon-{{:#index}}-headshots"> <span class="orange-text">Headshots</span></a></li>
+			<li class="tab"><a href="#tab-weapon-{{:#index}}-damage"> <span class="orange-text">Damage</span></a></li>
 		</ul>
 	</div>
 
 	<div class="card-content  blue-grey lighten-4">
-		<div id="tab-weapon-${num}-kills">
+		<div id="tab-weapon-{{:#index}}-kills">
 				<div class="row">
 					<div class="container red">
 						<div class="row">
 							<div class="col s6">
 								<table style="table-layout: fixed ; width: 100% ;" >
-									{{each(prop, val) data.kills.clan}}
+									{{for kills.clan}}
 									<tr>
-										<td style="width: 50%;" class="right-align">${val.name}</td>
-										<td class="orange-text left-align">${val.amount}</td>
+										<td style="width: 50%;" class="right-align">{{:name}}</td>
+										<td class="orange-text left-align">{{:amount}}</td>
 									</tr>
-									{{/each}}
+									{{/for}}
 								</table>
 							</div>
 							<div class="col s6">
 								<table style="table-layout: fixed ; width: 100% ;" >
-									{{each(prop, val) data.kills.enemy}}
+									{{for kills.enemy}}
 									<tr>
-										<td style="width: 50%;" class="right-align">${val.name}</td>
-										<td class="orange-text left-align">${val.amount}</td>
+										<td style="width: 50%;" class="right-align">{{:name}}</td>
+										<td class="orange-text left-align">{{:amount}}</td>
 									</tr>
-									{{/each}}
+									{{/for}}
 								</table>
 							</div>
 						</div>
@@ -197,28 +198,28 @@
 				</div>
 			</div>
 		</div>
-		<div id="tab-weapon-${num}-accuracy">
+		<div id="tab-weapon-{{:#index}}-accuracy">
 				<div class="row">
 					<div class="container green">
 						<div class="row">
 							<div class="col s6">
 								<table style="table-layout: fixed ; width: 100% ;" >
-									{{each(prop, val) data.kills.clan}}
+									{{for kills.clan}}
 									<tr>
-										<td style="width: 50%;" class="right-align">${val.name}</td>
-										<td class="orange-text left-align">${val.amount}</td>
+										<td style="width: 50%;" class="right-align">{{:name}}</td>
+										<td class="orange-text left-align">{{:amount}}</td>
 									</tr>
-									{{/each}}
+									{{/for}}
 								</table>
 							</div>
 							<div class="col s6">
 								<table style="table-layout: fixed ; width: 100% ;" >
-									{{each(prop, val) data.kills.enemy}}
+									{{for kills.enemy}}
 									<tr>
-										<td style="width: 50%;" class="right-align">${val.name}</td>
-										<td class="orange-text left-align">${val.amount}</td>
+										<td style="width: 50%;" class="right-align">{{:name}}</td>
+										<td class="orange-text left-align">{{:amount}}</td>
 									</tr>
-									{{/each}}
+									{{/for}}
 								</table>
 							</div>
 						</div>
@@ -228,6 +229,7 @@
 		</div>
 	</div>
 </div>
+{{/for}}
 </script>
 
 
@@ -240,19 +242,7 @@ $(document).ready(function(){
 	// TODO use correct id
 	var url = "/api/matchinfo/1/weapons"
 	$.getJSON(url,  function( data) {
-
-
-			for (var weapon = 0; weapon < data.length; weapon++) {
-
-				console.log(data[weapon]);
-				var templateInput = {
-				data: data[weapon],
-				num: weapon
-				}
-
-				//$("#weaponscontainer").append( $.templates( "#matchWeaponTemplate" ).render(templateInput));
-
-			}
+				$("#weaponscontainer").append( $.templates( "#matchWeaponTemplate" ).render(data));
 			});
 
 
