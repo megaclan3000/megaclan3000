@@ -151,40 +151,25 @@
 </script>
 
 <script id="matchWeaponTemplate" type="text/x-jsrender">
+{{for weapons}}
  <div class="card">
     <div class="card-content">
       <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
     </div>
     <div class="card-tabs">
       <ul class="tabs tabs-fixed-width black-text">
-		<li class="tab red"><a href="#test4">Test 1</a></li>
-        <li class="tab red"><a href="#test5">Test 2</a></li>
-        <li class="tab red"><a href="#test6">Test 3</a></li>
+		<li class="tab red"><a href="#test4{{:#index}}">Test 1{{:#index}}</a></li>
+        <li class="tab red"><a href="#test5{{:#index}}">Test 2{{:#index}}</a></li>
+        <li class="tab red"><a href="#test6{{:#index}}">Test 3{{:#index}}</a></li>
       </ul>
     </div>
     <div class="card-content grey lighten-4">
-	  <div id="test4">Test 1 </div>
-      <div id="test5">Test 2 </div>
-      <div id="test6">Test 3 </div>
+	  <div id="test4{{:#index}}">Test 1{{:#index}}</div>
+	  <div id="test5{{:#index}}">Test 2{{:#index}}</div>
+      <div id="test6{{:#index}}">Test 3{{:#index}}</div>
     </div>
   </div>
- <div class="card">
-    <div class="card-content">
-      <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-    </div>
-    <div class="card-tabs">
-      <ul class="tabs tabs-fixed-width black-text">
-		<li class="tab red"><a href="#test4a">Test 1</a></li>
-        <li class="tab red"><a href="#test5a">Test 2</a></li>
-        <li class="tab red"><a href="#test6a">Test 3</a></li>
-      </ul>
-    </div>
-    <div class="card-content grey lighten-4">
-	  <div id="test4a">Test 1 </div>
-      <div id="test5a">Test 2 </div>
-      <div id="test6a">Test 3 </div>
-    </div>
-  </div>
+{{/for}}
 </script>
 
 
