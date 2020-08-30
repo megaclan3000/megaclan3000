@@ -36,6 +36,11 @@ func handlerAPIMatchinfo(w http.ResponseWriter, r *http.Request) {
 
 	// TODO
 	case "weapons":
+
+		//TODO implement the backend
+		// if byt, err = json.Marshal(demoInfo.Weapons); err != nil {
+		// 	panic(err)
+		// }
 		byt = []byte(`
 [
     {

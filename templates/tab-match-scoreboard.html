@@ -167,30 +167,30 @@ th span {
 	</tbody>
 </table>
 
-<script id="matchScoreboardTemplate" type="text/x-jquery-tmpl">
+<script id="matchScoreboardTemplate" type="text/x-jsrender">
 		<tr>
 			<td> <img class="tableimage" src="${avatar_url}" alt=""></img> </td>
 			<td>${name}<div class="orange-text">${clantag}</div></td>
 			<td> <img class="tableimage" src="/public/img/ranks/${rank}.png" alt="{$rank}"></img></td>
-			<td class="scoretablenum">${kills}</td>
-			<td class="scoretablenum">${deaths}</td>
-			<td class="scoretablenum">${assists}</td>
-			<td class="scoretablenum">${kills - deaths}</td>
-			<td class="scoretablenum">${kd.toFixed(2)}</td>
-			<td class="scoretablenum">${adr}</td>
-			<td class="scoretablenum">${hsprecent.toFixed(0)}%</td>
-			<td class="scoretablenum">${firstkills}</td>
-			<td class="scoretablenum">${firstdeaths}</td>
-			<td class="scoretablenum">${tradekills}</td>
-			<td class="scoretablenum">${tradedeaths}</td>
-			<td class="scoretablenum">${tradefirstkills}</td>
-			<td class="scoretablenum">${tradefirstdeaths}</td>
-			<td class="scoretablenum">${roundswonv5}</td>
-			<td class="scoretablenum">${roundswonv4}</td>
-			<td class="scoretablenum">${roundswonv3}</td>
-			<td class="scoretablenum">${rounds5k}</td>
-			<td class="scoretablenum">${rounds4k}</td>
-			<td class="scoretablenum">${rounds3k}</td>
+			<td class="scoretablenum">{{`{{:kills}}`}}</td>
+			<td class="scoretablenum">{{`{{:deaths}}`}}</td>
+			<td class="scoretablenum">{{`{{:assists}}`}}</td>
+			<td class="scoretablenum">{{`{{:kills - deaths}}`}}</td>
+			<td class="scoretablenum">{{`{{:kd.toFixed(2)}}`}}</td>
+			<td class="scoretablenum">{{`{{:adr}}`}}</td>
+			<td class="scoretablenum">{{`{{:hsprecent.toFixed(0)}}`}}%</td>
+			<td class="scoretablenum">{{`{{:firstkills}}`}}</td>
+			<td class="scoretablenum">{{`{{:firstdeaths}}`}}</td>
+			<td class="scoretablenum">{{`{{:tradekills}}`}}</td>
+			<td class="scoretablenum">{{`{{:tradedeaths}}`}}</td>
+			<td class="scoretablenum">{{`{{:tradefirstkills}}`}}</td>
+			<td class="scoretablenum">{{`{{:tradefirstdeaths}}`}}</td>
+			<td class="scoretablenum">{{`{{:roundswonv5}}`}}</td>
+			<td class="scoretablenum">{{`{{:roundswonv4}}`}}</td>
+			<td class="scoretablenum">{{`{{:roundswonv3}}`}}</td>
+			<td class="scoretablenum">{{`{{:rounds5k}}`}}</td>
+			<td class="scoretablenum">{{`{{:rounds4k}}`}}</td>
+			<td class="scoretablenum">{{`{{:rounds3k}}`}}</td>
 		</tr>
 </script>
 
@@ -222,9 +222,9 @@ $(document).ready(function(){
 			arrPlayers.push(data.Players[row].name);
 
 			if (data.Players[row].isclanmember) {
-				$( "#matchScoreboardTemplate" ).tmpl(data.Players[row]).appendTo( "#scoretableClan tbody" );
+				$("#scoretableClan tbody" ).append( $.templates( "#matchScoreboardTemplate" ).render(data.Players[row]) );
 			} else {
-				$( "#matchScoreboardTemplate" ).tmpl(data.Players[row]).appendTo( "#scoretableEnemy tbody" );
+				$("#scoretableEnemy tbody" ).append( $.templates( "#matchScoreboardTemplate" ).render(data.Players[row]) );
 			}
 		}
 

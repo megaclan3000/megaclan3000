@@ -80,7 +80,8 @@
 
 <ul class="collapsible" id="roundscontainer"> </ul>
 
-<script id="matchRoundsTemplate" type="text/x-jquery-tmpl">
+<script id="matchRoundsTemplate" type="text/x-jsrender">
+ 
 	<div id="test"> </div>
 		<div class="collapsible-header hoverable ${roundcolor} lighten-5" style="padding:0px;">
 			<div style="width:100%;padding:0px" class="container">
@@ -163,8 +164,8 @@
 		$.getJSON(url,  function( data) {
 			for (var round = 0; round < data.length; round++) {
 				var roundline = document.createElement("li");
-				$( "#matchRoundsTemplate" ).tmpl(data[round]).appendTo(roundline);
-				$("#roundscontainer").append(roundline);
+				roundline.append( $.templates("#matchRoundsTemplate").render(data[round]));
+				//$("#roundscontainer").append(roundline);
 			}
 		});
 	});

@@ -19,6 +19,7 @@ type InfoStruct struct {
 	General           ScoreboardGeneral
 	Players           ScoreboardPlayers
 	Rounds            []ScoreboardRound
+	Weapons           map[common.EquipmentType]map[*ScoreboardPlayer]WeaponStat
 	Duels             [][]int
 	HeatmapsImageURLs []string
 	Megacoins         []MegacoinPlayer
