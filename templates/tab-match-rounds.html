@@ -81,38 +81,44 @@
 <ul class="collapsible" id="roundscontainer"> </ul>
 
 <script id="matchRoundsTemplate" type="text/x-jsrender">
+	<li>
  
 	<div id="test"> </div>
-		<div class="collapsible-header hoverable ${roundcolor} lighten-5" style="padding:0px;">
+		<div class="collapsible-header hoverable {{:roundcolor}} lighten-5" style="padding:0px;">
 			<div style="width:100%;padding:0px" class="container">
 				<div class="row valign-wrapper" style="margin:10px">
 				  <div class="col s1">
-					<img style="width:30px;" src="/public/img/teams/${team_won}.jpg" class="circle" alt="">
+					<img style="width:30px;" src="/public/img/teams/{{:team_won}}.jpg" class="circle" alt="">
 					</div>
 				  <div class="col s3">
-					{{each(prop, val) kills_clan}}
-						<div style="padding:2px;" class="right"> <img style="width:35px;height:35px;" src="${val.victim.avatar_url}" alt="${val.killer.name}"> </div>
-					{{/each}}
+				  {{if kills_clan}}
+					{{for kills_clan}}
+						<div style="padding:2px;" class="right"> <img style="width:35px;height:35px;" src="{{:victim.avatar_url}}" alt="{{:killer.name}}"> </div>
+					{{/for }}
+				  {{/if}}
 				  </div>
 				  <div class="col s1 center-align">
 					 {{if ClanWonRound }}
-					 <img src="/public/img/win_reason/${win_reason}.png" style="width:20px" class="" alt="">
+					 <img src="/public/img/win_reason/{{:win_reason}}.png" style="width:20px" class="" alt="">
 					 {{/if}}
 				  </div>
 				  <div class="col s2 center-align">
-					  <h6> <span class="orange-text">${score_clan}</span>:<span class="blue-text">${score_enemy}</span > </h6>
+					  <h6> <span class="orange-text">{{:score_clan}}</span>:<span class="blue-text">{{:score_enemy}}</span > </h6>
 				  </div>
 				  <div class="col s1 center-align">
 					{{if !ClanWonRound }}
-					<img src="/public/img/win_reason/${win_reason}.png" style="width:20px" class="" alt="">
+					<img src="/public/img/win_reason/{{:win_reason}}.png" style="width:20px" class="" alt="">
 					{{/if}}
 				  </div>
 				  <div class="col s3 kill-avatars-enemy">
-					{{each(prop, val) kills_enemy}}
-						<div style="padding:2px;" class="left"> <img style="width:35px;height:35px;" src="${val.victim.avatar_url}" alt="${val.killer.name}"> </div>
-					{{/each}}
+
+				  {{if kills_enemy}}
+					{{for kills_enemy}}
+						<div style="padding:2px;" class="left"> <img style="width:35px;height:35px;" src="{{:victim.avatar_url}}" alt="{{:killer.name}}"> </div>
+					{{/for}}
 				  </div>
-				  <div class="col s1 grey-text">${duration}</div>
+				  {{/if}}
+				  <div class="col s1 grey-text">{{:duration}}</div>
 				</div>
 			</div>
 		</div>
@@ -122,13 +128,15 @@
 				  <div class="col s6">
 					<table class="centered">
 						<tbody>
-							{{each(prop, val) kills_clan}}
+							{{if kills_clan}}
+							{{for kills_clan}}
 							<tr>
-								<td>${val.killer.name}</td >
-								<td>${val.weapon_name}</td>
-								<td>${val.victim.name}</td >
+								<td>{{:killer.name}}</td >
+								<td>{{:weapon_name}}</td>
+								<td>{{:victim.name}}</td >
 							</tr>
-							{{/each}}
+							{{/for }}
+							{{/if}}
 						</tbody>
 					</table>
 				  </div>
@@ -136,19 +144,23 @@
 				  <div class="col s6">
 					<table class="centered">
 						<tbody>
-							{{each(prop, val) kills_enemy}}
+							{{if kills_enemy}}
+							{{for kills_enemy}}
 							<tr>
-								<td>${val.killer.name}</td >
-								<td>${val.weapon_name}</td>
-								<td>${val.victim.name}</td >
+								<td>{{:killer.name}}</td >
+								<td>{{:weapon_name}}</td>
+								<td>{{:victim.name}}</td >
 							</tr>
-							{{/each}}
+							{{/for }}
+							{{/if}}
 						</tbody>
 					</table>
 				  </div>
 				</div>
 			</div>
 		</div>
+
+	</li>
 </script>
 
 <ul class="collapsible" id="roundscontainer"></ul>
@@ -163,9 +175,7 @@
 		var url = "/api/matchinfo/1/rounds"
 		$.getJSON(url,  function( data) {
 			for (var round = 0; round < data.length; round++) {
-				var roundline = document.createElement("li");
-				roundline.append( $.templates("#matchRoundsTemplate").render(data[round]));
-				//$("#roundscontainer").append(roundline);
+				$("#roundscontainer").append( $.templates("#matchRoundsTemplate").render(data[round]));
 			}
 		});
 	});
