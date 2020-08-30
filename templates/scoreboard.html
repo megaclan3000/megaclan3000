@@ -1,4 +1,4 @@
-{{template "header.html"}}
+<<template "header.html">>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -17,17 +17,17 @@
 				<th>Deaths</th>
 			</tr>
 
-	{{range $val := .}}
+	<<range $val := .>>
 	<tr>
-		<td>{{$val.Name}}</td>
-		<td>{{$val.Score}}</td>
-		<td>{{$val.Kills}}</td>
-		<td>{{$val.Assists}}</td>
-		<td>{{$val.Deaths}}</td>
+		<td><<$val.Name>></td>
+		<td><<$val.Score>></td>
+		<td><<$val.Kills>></td>
+		<td><<$val.Assists>></td>
+		<td><<$val.Deaths>></td>
 	</tr>
-					{{end}}
+					<<end>>
 		</table>
 	</body>
 </html>
 
-{{template "footer.html"}}
+<<template "footer.html">>

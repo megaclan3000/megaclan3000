@@ -1,4 +1,4 @@
-{{template "header.html"}}
+<<template "header.html">>
 <script>
 	$( "#header-link-stats" ).addClass( "active" );
 </script>
@@ -9,19 +9,19 @@
 	</div>
 </div>
 <div class="row">
-	{{range $val := .}}
+	<<range $val := .>>
 	<div class="col s12 m12 l6">
-		<a href="player/{{$val.PlayerSummary.SteamID}}" class="clickable-card">
+		<a href="player/<<$val.PlayerSummary.SteamID>>" class="clickable-card">
 			<div class="card blue-grey darken-2">
 				<div class="card-content">
 					<p class="card-title white-text">
-					<img src="{{$val.PlayerSummary.Avatarfull}}" class="stats-profile-pic" alt="">&nbsp;&nbsp;{{$val.PlayerSummary.Personaname}}
+					<img src="<<$val.PlayerSummary.Avatarfull>>" class="stats-profile-pic" alt="">&nbsp;&nbsp;<<$val.PlayerSummary.Personaname>>
 
-					{{if eq $val.PlayerSummary.Personastate "0"}}
+					<<if eq $val.PlayerSummary.Personastate "0">>
 					<span class="new badge red" data-badge-caption="">offline</span>
-					{{else}}
+					<<else>>
 					<span class="new badge green" data-badge-caption="">online</span>
-					{{end}}
+					<<end>>
 
 					</p>
 					<br>
@@ -30,12 +30,12 @@
 							<td>
 								<i class="medium material-icons stats-icon" title="number of wins">beenhere</i>
 								&nbsp;&nbsp;
-								{{$val.UserStatsForGame.Stats.TotalWins}}
+								<<$val.UserStatsForGame.Stats.TotalWins>>
 							</td>
 							<td>
 								<i class="medium material-icons stats-icon" title="number of played hours">timer</i>
 								&nbsp;&nbsp;
-								{{$val.RecentlyPlayedGames.PlaytimeForever}} h
+								<<$val.RecentlyPlayedGames.PlaytimeForever>> h
 							</td>
 						</tr>
 					</table>
@@ -43,18 +43,18 @@
 					<table class="centered white-text">
 						<tr>
 							<th>K / D</th>
-							<td> {{$val.UserStatsForGame.Stats.TotalKills}} / {{$val.UserStatsForGame.Stats.TotalDeaths}}</td>
-							<td>{{$val.UserStatsForGame.Extra.TotalKD}}</td>
+							<td> <<$val.UserStatsForGame.Stats.TotalKills>> / <<$val.UserStatsForGame.Stats.TotalDeaths>></td>
+							<td><<$val.UserStatsForGame.Extra.TotalKD>></td>
 						</tr>
 						<tr>
 							<th>K / D (Last Match)</th>
-							<td> {{$val.UserStatsForGame.Stats.LastMatchKills}} / {{$val.UserStatsForGame.Stats.LastMatchDeaths}}</td>
-							<td>{{$val.UserStatsForGame.Extra.LastMatchKD}}</td>
+							<td> <<$val.UserStatsForGame.Stats.LastMatchKills>> / <<$val.UserStatsForGame.Stats.LastMatchDeaths>></td>
+							<td><<$val.UserStatsForGame.Extra.LastMatchKD>></td>
 						</tr>
 						<tr>
 							<th>shots hit / fired</th>
-							<td>{{$val.UserStatsForGame.Stats.TotalShotsHit}} / {{$val.UserStatsForGame.Stats.TotalShotsFired}}</td>
-							<td>{{$val.UserStatsForGame.Extra.HitRatio}}</td>
+							<td><<$val.UserStatsForGame.Stats.TotalShotsHit>> / <<$val.UserStatsForGame.Stats.TotalShotsFired>></td>
+							<td><<$val.UserStatsForGame.Extra.HitRatio>></td>
 						</tr>
 					</table>
 				</div>
@@ -62,7 +62,7 @@
 		</a>
 	</div>
 
-	{{end}}
+	<<end>>
 </div>
 
-{{template "footer.html"}}
+<<template "footer.html">>

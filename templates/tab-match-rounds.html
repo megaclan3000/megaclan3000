@@ -90,27 +90,27 @@
 					<img style="width:30px;" src="/public/img/teams/${team_won}.jpg" class="circle" alt="">
 					</div>
 				  <div class="col s3">
-					{{`{{each(prop, val) kills_clan}}`}}
+					{{each(prop, val) kills_clan}}
 						<div style="padding:2px;" class="right"> <img style="width:35px;height:35px;" src="${val.victim.avatar_url}" alt="${val.killer.name}"> </div>
-					{{`{{/each}}`}}
+					{{/each}}
 				  </div>
 				  <div class="col s1 center-align">
-					 {{`{{if ClanWonRound }}`}}
+					 {{if ClanWonRound }}
 					 <img src="/public/img/win_reason/${win_reason}.png" style="width:20px" class="" alt="">
-					 {{`{{/if}}`}}
+					 {{/if}}
 				  </div>
 				  <div class="col s2 center-align">
 					  <h6> <span class="orange-text">${score_clan}</span>:<span class="blue-text">${score_enemy}</span > </h6>
 				  </div>
 				  <div class="col s1 center-align">
-					{{`{{if !ClanWonRound }}`}}
+					{{if !ClanWonRound }}
 					<img src="/public/img/win_reason/${win_reason}.png" style="width:20px" class="" alt="">
-					{{`{{/if}}`}}
+					{{/if}}
 				  </div>
 				  <div class="col s3 kill-avatars-enemy">
-					{{`{{each(prop, val) kills_enemy}}`}}
+					{{each(prop, val) kills_enemy}}
 						<div style="padding:2px;" class="left"> <img style="width:35px;height:35px;" src="${val.victim.avatar_url}" alt="${val.killer.name}"> </div>
-					{{`{{/each}}`}}
+					{{/each}}
 				  </div>
 				  <div class="col s1 grey-text">${duration}</div>
 				</div>
@@ -122,13 +122,13 @@
 				  <div class="col s6">
 					<table class="centered">
 						<tbody>
-							{{`{{each(prop, val) kills_clan}}`}}
+							{{each(prop, val) kills_clan}}
 							<tr>
 								<td>${val.killer.name}</td >
 								<td>${val.weapon_name}</td>
 								<td>${val.victim.name}</td >
 							</tr>
-							{{`{{/each}}`}}
+							{{/each}}
 						</tbody>
 					</table>
 				  </div>
@@ -136,13 +136,13 @@
 				  <div class="col s6">
 					<table class="centered">
 						<tbody>
-							{{`{{each(prop, val) kills_enemy}}`}}
+							{{each(prop, val) kills_enemy}}
 							<tr>
 								<td>${val.killer.name}</td >
 								<td>${val.weapon_name}</td>
 								<td>${val.victim.name}</td >
 							</tr>
-							{{`{{/each}}`}}
+							{{/each}}
 						</tbody>
 					</table>
 				  </div>

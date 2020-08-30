@@ -22,13 +22,13 @@ optionAdr = {
     xAxis: {
         type: 'category',
         boundaryGap: false,
-		data: [{{range.PlayerHistory.Data}} '{{.Time}}', {{end}}]
+		data: [<<range.PlayerHistory.Data>> '<<.Time>>', <<end>>]
     },
     yAxis: {
         type: 'value'
     },
     series: [{
-        data: [{{ range.PlayerHistory.Data }} {{ .TotalADR}}, {{ end }}],
+        data: [<< range.PlayerHistory.Data >> << .TotalADR>>, << end >>],
         type: 'line',
         areaStyle: {}
     }]

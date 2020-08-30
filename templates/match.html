@@ -1,4 +1,4 @@
-{{template "header.html"}}
+<<template "header.html">>
 
 <!DOCTYPE html>
 <html>
@@ -44,7 +44,7 @@
 				<div class="card">
 					<div class="card-image">
 						<img class="scoretitleimg" src="/public/img/maps/de_dust2.jpg" >
-						<span class="card-title">{{.General.MapName}}</span>
+						<span class="card-title"><<.General.MapName>></span>
 					</div>
 					<div class="card-content">
 
@@ -53,42 +53,42 @@
 
 							<div id="match-clan-players">
 
-								{{range  $p := .Players.Clan}}
+								<<range  $p := .Players.Clan>>
 
-								{{if not $p.IsBot }}
+								<<if not $p.IsBot >>
 								<div class="col s1">
-									<span> <img class="avatar circle" src="{{$p.AvatarURL}}" alt=""> </span>
-									<span class="title truncate center-align"> {{$p.Name}} </span>
-									<span> <img src="/public/img/ranks/{{$p.Rank}}.png" style="height:30px;"alt=""> </span>
+									<span> <img class="avatar circle" src="<<$p.AvatarURL>>" alt=""> </span>
+									<span class="title truncate center-align"> <<$p.Name>> </span>
+									<span> <img src="/public/img/ranks/<<$p.Rank>>.png" style="height:30px;"alt=""> </span>
 								</div>
-								{{end}}
-								{{end}}
+								<<end>>
+								<<end>>
 							</div>
 
-							{{$color_class := "red-text"}} {{if .General.ClanWonMatch}} {{$color_class = "green-text"}} {{end}}
-							{{$text := "LOST"}} {{if .General.ClanWonMatch}} {{$text ="WON"}} {{end}}
-							<div class="col s2 scorediv {{$color_class}}">
-								{{$text}} </br> <span id="match-score-clan"></span><span>:</span><span id="match-score-enemy"></span>
+							<<$color_class := "red-text">> <<if .General.ClanWonMatch>> <<$color_class = "green-text">> <<end>>
+							<<$text := "LOST">> <<if .General.ClanWonMatch>> <<$text ="WON">> <<end>>
+							<div class="col s2 scorediv <<$color_class>>">
+								<<$text>> </br> <span id="match-score-clan"></span><span>:</span><span id="match-score-enemy"></span>
 							</div>
 
 							<div id="match-enemy-players">
-								{{range  $p := .Players.Enemy}}
-								{{if not $p.IsBot }}
+								<<range  $p := .Players.Enemy>>
+								<<if not $p.IsBot >>
 								<div class="col s1">
-									<span> <img class="avatar circle" src="{{$p.AvatarURL}}" alt=""> </span>
-									<span class="title truncate center-align"> {{$p.Name}} </span>
-									<span> <img src="/public/img/ranks/{{$p.Rank}}.png" style="height:30px;"alt=""> </span>
+									<span> <img class="avatar circle" src="<<$p.AvatarURL>>" alt=""> </span>
+									<span class="title truncate center-align"> <<$p.Name>> </span>
+									<span> <img src="/public/img/ranks/<<$p.Rank>>.png" style="height:30px;"alt=""> </span>
 								</div>
-								{{end}}
-								{{end}}
+								<<end>>
+								<<end>>
 							</div>
 						</div>
 
 
-						<!-- <p>Map Icon: {{.General.MapIconURL}}</p> -->
-						<!-- <p>Upload time: {{.General.UploadTime}}</p> -->
-						<!-- <p>Match duration: {{.General.MatchDuration}}</p> -->
-						<!-- <p>Demo Download link: {{.General.DemoLinkURL}}</p> -->
+						<!-- <p>Map Icon: <<.General.MapIconURL>></p> -->
+						<!-- <p>Upload time: <<.General.UploadTime>></p> -->
+						<!-- <p>Match duration: <<.General.MatchDuration>></p> -->
+						<!-- <p>Demo Download link: <<.General.DemoLinkURL>></p> -->
 					</div>
 				</div>
 			</div>
@@ -133,12 +133,12 @@
 				</ul>
 			</div>
 
-			<div id="tab-scoreboard" class="col s12 white">{{template "tab-match-scoreboard.html" .}}</div>
-			<div id="tab-rounds" class="col s12 white">{{template "tab-match-rounds.html" .}}</div>
-			<div id="tab-weapons" class="col s12 white">{{template "tab-match-weapons.html" .}}</div>
-			<div id="tab-duels" class="col s12 white">{{template "tab-match-duels.html" .}}</div>
-			<div id="tab-heatmaps" class="col s12 white">{{template "tab-match-heatmaps.html" .}}</div>
-			<div id="tab-megacoins" class="col s12 white">{{template "tab-match-megacoins.html" .}}</div>
+			<div id="tab-scoreboard" class="col s12 white"><<template "tab-match-scoreboard.html" .>></div>
+			<div id="tab-rounds" class="col s12 white"><<template "tab-match-rounds.html" .>></div>
+			<div id="tab-weapons" class="col s12 white"><<template "tab-match-weapons.html" .>></div>
+			<div id="tab-duels" class="col s12 white"><<template "tab-match-duels.html" .>></div>
+			<div id="tab-heatmaps" class="col s12 white"><<template "tab-match-heatmaps.html" .>></div>
+			<div id="tab-megacoins" class="col s12 white"><<template "tab-match-megacoins.html" .>></div>
 		</div>
 
 		<script>
@@ -158,9 +158,9 @@
 		<script src="/public/js/countUp.umd.js"></script>
 
 		<script charset="utf-8">
-			var animScoreClan = new countUp.CountUp('match-score-clan', {{.General.ScoreClan}} );
-			var animScoreEnemy = new countUp.CountUp('match-score-enemy', {{.General.ScoreEnemy}});
+			var animScoreClan = new countUp.CountUp('match-score-clan', <<.General.ScoreClan>> );
+			var animScoreEnemy = new countUp.CountUp('match-score-enemy', <<.General.ScoreEnemy>>);
 			animScoreClan.start();
 			animScoreEnemy.start();
 		</script>
-		{{template "footer.html"}}
+		<<template "footer.html">>

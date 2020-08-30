@@ -17,21 +17,21 @@
 					<div class="row chart-overview-row valign-wrapper">
 						<div class="col s7">
 							<p class="orange-text">KILLS</p>
-							<p> {{.UserStatsForGame.Stats.TotalKills}} </p>
+							<p> <<.UserStatsForGame.Stats.TotalKills>> </p>
 						</div>
 						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/kills.svg"> </div>
 					</div>
 					<div class="row chart-overview-row valign-wrapper">
 						<div class="col s7">
 							<p class="orange-text">TIME</p>
-							<p> {{.UserStatsForGame.Extra.PlayedHours}}h </p>
+							<p> <<.UserStatsForGame.Extra.PlayedHours>>h </p>
 						</div>
 						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/timer.svg"> </div>
 					</div>
 					<div class="row chart-overview-row valign-wrapper">
 						<div class="col s7">
 							<p class="orange-text">WIN</p>
-							<p>	{{.Calc.PercentWin}}% </p>
+							<p>	<<.Calc.PercentWin>>% </p>
 						</div>
 						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/win-cup.svg"> </div>
 					</div>
@@ -50,21 +50,21 @@
 						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/target.svg"> </div>
 						<div class="col s7">
 							<p class="orange-text">ACCURACY</p>
-							<p> {{.Calc.PercentAccuracy}}% </p>
+							<p> <<.Calc.PercentAccuracy>>% </p>
 						</div>
 					</div>
 					<div class="row chart-overview-row valign-wrapper right-align">
 						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/headshot.svg"> </div>
 						<div class="col s7">
 							<p class="orange-text">HEADSHOT</p>
-							<p> {{.Calc.PercentHeadshot}}% </p>
+							<p> <<.Calc.PercentHeadshot>>% </p>
 						</div>
 					</div>
 					<div class="row chart-overview-row valign-wrapper right-align">
 						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/star.svg"> </div>
 						<div class="col s7">
 							<p class="orange-text">MVPs</p>
-							<p> {{.UserStatsForGame.Stats.TotalMvps}}</p>
+							<p> <<.UserStatsForGame.Stats.TotalMvps>></p>
 						</div>
 					</div>
 				</div>
@@ -84,7 +84,7 @@
 		plotShadow: false
 	},
 	title: {
-		text: '{{.UserStatsForGame.Extra.TotalKD}}',
+		text: '<<.UserStatsForGame.Extra.TotalKD>>',
 		align: 'center',
 		verticalAlign: 'middle',
 	},
@@ -117,12 +117,12 @@
 		data: [
 			{
 				name: "Kills",
-				y: {{.UserStatsForGame.Stats.TotalKills}},
+				y: <<.UserStatsForGame.Stats.TotalKills>>,
 				color: 'darkblue',
 			},
 			{
 				name: 'Deaths',
-				y: {{.UserStatsForGame.Stats.TotalDeaths}},
+				y: <<.UserStatsForGame.Stats.TotalDeaths>>,
 				color: 'darkred',
 
 			}

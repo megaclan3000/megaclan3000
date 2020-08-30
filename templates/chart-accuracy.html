@@ -32,7 +32,7 @@ optionAccuracy = {
     xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: [{{ range.PlayerHistory.Data }} '{{.Time}}', {{ end }} ]
+        data: [<< range.PlayerHistory.Data >> '<<.Time>>', << end >> ]
     },
     yAxis: {
         type: 'value'
@@ -41,13 +41,13 @@ optionAccuracy = {
             name: 'KD',
             type: 'line',
             stack: 'stack1',
-            data: [{{ range.PlayerHistory.Data }} {{ .TotalKD }}, {{ end }}]
+            data: [<< range.PlayerHistory.Data >> << .TotalKD >>, << end >>]
 			},
         {
             name: 'HitRatio',
             type: 'line',
             stack: 'stack2',
-            data: [{{ range.PlayerHistory.Data }} {{ .HitRatio }}, {{ end }}]
+            data: [<< range.PlayerHistory.Data >> << .HitRatio >>, << end >>]
 		}
     ]
 };

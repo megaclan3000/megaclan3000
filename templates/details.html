@@ -1,4 +1,4 @@
-{{template "header.html"}}
+<<template "header.html">>
 <script>
 	$( "#header-link-stats" ).addClass( "active" );
 </script>
@@ -15,24 +15,24 @@
 		<div class="card-content white-text">
 			<div class="row">
 				<div class="col s12 detail__player">
-					<img src="{{.PlayerSummary.Avatarfull}}" alt="">
+					<img src="<<.PlayerSummary.Avatarfull>>" alt="">
 					<div>
-						<h3>{{.PlayerSummary.Personaname}}</h3>
+						<h3><<.PlayerSummary.Personaname>></h3>
 						<p>Status:&nbsp;&nbsp;&nbsp;
-						{{if eq .PlayerSummary.Personastate "0"}}
+						<<if eq .PlayerSummary.Personastate "0">>
 						<span class="new badge red inline-badge" data-badge-caption="">offline</span>
-						{{else}}
+						<<else>>
 						<span class="new badge green inline-badge" data-badge-caption="">online</span>
-						{{end}}
+						<<end>>
 						</p>
-						<p>Steam ID: &nbsp;<a href="{{.PlayerSummary.Profileurl}}" target="_blank">{{.PlayerSummary.SteamID}}</a></p>
+						<p>Steam ID: &nbsp;<a href="<<.PlayerSummary.Profileurl>>" target="_blank"><<.PlayerSummary.SteamID>></a></p>
 					</div>
 				</div>
 			</div>
 			<div class="row" style="margin-bottom: 0;">
 				<div class="col s12">
 					<div class="blue-grey darken-3" style="padding: 1rem;">
-						{{template "chart-online-time.html" .}}
+						<<template "chart-online-time.html" .>>
 					</div>
 				</div>
 			</div>
@@ -67,19 +67,19 @@
 	</div>
 
 	<div id="detailsOverview" class="col s12 white">
-		{{template "chart-overview.html" .}}
-		{{template "table-other.html" .}}
+		<<template "chart-overview.html" .>>
+		<<template "table-other.html" .>>
 	</div>
 	<div id="detailsLastMatch" class="col s12 white">
-		{{template "table-lastmatch.html" .}}
+		<<template "table-lastmatch.html" .>>
 	</div>
 	<div id="detailsMaps" class="col s12 white">
-		{{template "chart-maps.html" .}}
-		{{template "table-maps.html" .}}
+		<<template "chart-maps.html" .>>
+		<<template "table-maps.html" .>>
 	</div>
 	<div id="detailsWeapons" class="col s12 white">
-		{{template "chart-weapons.html" .}}
-		{{template "table-weapons.html" .}}
+		<<template "chart-weapons.html" .>>
+		<<template "table-weapons.html" .>>
 	</div>
 </div>
 
