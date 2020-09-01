@@ -36,7 +36,7 @@ func handlerAPIMatchinfo(w http.ResponseWriter, r *http.Request) {
 
 	// TODO
 	case "weapons":
-		if byt, err = json.Marshal(demoInfo.WeaponsJSON()); err != nil {
+		if byt, err = json.Marshal(demoInfo.Weapons()); err != nil {
 			panic(err)
 		}
 	// TODO

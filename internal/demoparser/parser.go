@@ -4,7 +4,7 @@ package demoparser
 
 import (
 	// "github.com/mitchellh/hashstructure"
-	"math/rand"
+
 	"os"
 
 	"time"
@@ -77,7 +77,6 @@ func (p *MyParser) Parse(path string, m *InfoStruct) error {
 	// Parse the demo returning errors
 	err = p.parser.ParseToEnd()
 	p.calculate()
-	p.mockWeaponStats()
 	log.Warning("set weapons:")
 	log.Warning(p.Match.Players.Players[0].WeaponStats)
 
@@ -147,7 +146,12 @@ func (p *MyParser) calculate() {
 			}
 		}
 
-		// TODO calculate weaponstats here!!!!!
+		for _, round := range p.Match.Rounds {
+			for _, kill := range append(round.EnemyKills, round.ClanKills...) {
+				p.Match.Players.addWeaponStat(kill)
+			}
+		}
+
 	}
 }
 
@@ -171,38 +175,6 @@ func (p *MyParser) setGeneral() error {
 	return nil
 }
 
-func (p *MyParser) mockWeaponStats() {
-
-	var weaponTypes = []common.EquipmentType{
-		common.EqAK47,
-		common.EqAUG,
-		common.EqAWP,
-		common.EqBizon,
-		common.EqBomb,
-		common.EqCZ,
-		common.EqDeagle,
-		common.EqDecoy,
-		common.EqDefuseKit,
-		common.EqDualBerettas,
-		common.EqFamas,
-		common.EqFiveSeven,
-		common.EqFlash,
-		common.EqG3SG1,
-	}
-
-	for k := range p.Match.Players.Players {
-		for _, w := range weaponTypes {
-			p.Match.Players.Players[k].WeaponStats[w] = WeaponStat{
-				//TODO use real numbers
-				Kills:     rand.Intn(20),
-				Headshots: rand.Intn(20),
-				Damage:    rand.Intn(20),
-				Accuracy:  rand.Intn(20),
-			}
-		}
-	}
-}
-
 func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 
 	name := "BOT"
@@ -210,6 +182,7 @@ func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 	if !player.IsBot {
 		name = player.Name
 	}
+	weaponstats := make(map[common.EquipmentType]WeaponStat)
 
 	return ScoreboardPlayer{
 		IsBot:            player.IsBot,
@@ -237,9 +210,12 @@ func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 		Rounds5K:         0,
 		Rounds4K:         0,
 		Rounds3K:         0,
-		WeaponStats:      make(map[common.EquipmentType]WeaponStat),
+		WeaponStats:      &weaponstats,
 		Damages:          make(map[uint64]int),
 	}
+}
+
+func (*ScoreboardPlayer) setWeaponStats() {
 }
 
 func (p *MyParser) handlerKill(e events.Kill) {
@@ -336,7 +312,6 @@ func (p *MyParser) handlerKill(e events.Kill) {
 			p.Match.Players.Players[killerNum].Roundswonv3 += 1
 		}
 	}
-
 }
 
 func (p MyParser) matesAlive(player *common.Player) int {

@@ -54,7 +54,7 @@ type RoundKill struct {
 	KillerWeapon       common.EquipmentType
 }
 
-func (is *InfoStruct) WeaponsJSON() interface{} {
+func (is *InfoStruct) Weapons() interface{} {
 
 	type playerstat struct {
 		PlayerName string `json:"name"`
@@ -82,7 +82,7 @@ func (is *InfoStruct) WeaponsJSON() interface{} {
 	// Loop players and add all weapons (empty)
 	var weaponnames = make(map[string]weapon)
 	for _, player := range is.Players.Players {
-		for k := range player.WeaponStats {
+		for k := range *player.WeaponStats {
 			weaponnames[k.String()] = weapon{
 				WeaponName: k.String(),
 			}
@@ -94,7 +94,7 @@ func (is *InfoStruct) WeaponsJSON() interface{} {
 	}
 
 	for _, player := range is.Players.Players {
-		for wep, pstat := range player.WeaponStats {
+		for wep, pstat := range *player.WeaponStats {
 			log.Warning("Player: ", player.Name, " has ", pstat.Kills, "with weapon", wep)
 			for k, v := range ret.Weapons {
 
@@ -218,6 +218,18 @@ func (sp *ScoreboardPlayers) AddAssist(steamID uint64) {
 	}
 }
 
+func (sp *ScoreboardPlayers) addWeaponStat(kill RoundKill) {
+	for k, v := range sp.Players {
+		if v.Steamid64 == kill.Killer.Steamid64 {
+			stats := *v.WeaponStats
+			wepstat := stats[kill.KillerWeapon]
+			wepstat.Kills++
+			stats[kill.KillerWeapon] = wepstat
+			sp.Players[k].WeaponStats = &stats
+		}
+	}
+}
+
 func (sp ScoreboardPlayers) Clan() []ScoreboardPlayer {
 
 	out := []ScoreboardPlayer{}
@@ -259,7 +271,7 @@ func (p *MyParser) PlayerByID(player *common.Player) *ScoreboardPlayer {
 }
 
 type ScoreboardPlayer struct {
-	WeaponStats map[common.EquipmentType]WeaponStat
+	WeaponStats *map[common.EquipmentType]WeaponStat
 
 	IsBot            bool           `json:"isbot"`
 	IsClanMember     bool           `json:"isclanmember"`
