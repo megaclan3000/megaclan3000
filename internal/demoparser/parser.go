@@ -78,6 +78,8 @@ func (p *MyParser) Parse(path string, m *InfoStruct) error {
 	err = p.parser.ParseToEnd()
 	p.calculate()
 	p.mockWeaponStats()
+	log.Warning("set weapons:")
+	log.Warning(p.Match.Players.Players[0].WeaponStats)
 
 	return err
 
@@ -144,6 +146,8 @@ func (p *MyParser) calculate() {
 				p.Match.Players.Players[k].Rounds3K++
 			}
 		}
+
+		// TODO calculate weaponstats here!!!!!
 	}
 }
 
@@ -184,48 +188,11 @@ func (p *MyParser) mockWeaponStats() {
 		common.EqFiveSeven,
 		common.EqFlash,
 		common.EqG3SG1,
-		common.EqGalil,
-		common.EqGlock,
-		common.EqHE,
-		common.EqHelmet,
-		common.EqIncendiary,
-		common.EqKevlar,
-		common.EqKnife,
-		common.EqM249,
-		common.EqM4A1,
-		common.EqM4A4,
-		common.EqMP5,
-		common.EqMP7,
-		common.EqMP9,
-		common.EqMac10,
-		common.EqMag7,
-		common.EqMolotov,
-		common.EqNegev,
-		common.EqNova,
-		common.EqP2000,
-		common.EqP250,
-		common.EqP90,
-		common.EqRevolver,
-		common.EqSG553,
-		common.EqSG556,
-		common.EqSSG08,
-		common.EqSawedOff,
-		common.EqScar20,
-		common.EqScout,
-		common.EqSmoke,
-		common.EqSwag7,
-		common.EqTec9,
-		common.EqUMP,
-		common.EqUSP,
-		common.EqUnknown,
-		common.EqWorld,
-		common.EqXM1014,
-		common.EqZeus,
 	}
 
-	for _, p := range p.Match.Players.Players {
+	for k := range p.Match.Players.Players {
 		for _, w := range weaponTypes {
-			p.WeaponStats[w] = WeaponStat{
+			p.Match.Players.Players[k].WeaponStats[w] = WeaponStat{
 				//TODO use real numbers
 				Kills:     rand.Intn(20),
 				Headshots: rand.Intn(20),
@@ -234,7 +201,6 @@ func (p *MyParser) mockWeaponStats() {
 			}
 		}
 	}
-
 }
 
 func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {

@@ -150,12 +150,12 @@
 
 </script>
 <script id="matchWeaponTemplateCard" type="text/x-jsrender">
-		
+
 </script>
 
 <script id="matchWeaponTemplate" type="text/x-jsrender">
 
-{{for weapons}}
+	{{for weapons}}
 
 
 <div class="card blue-grey lighten-5">
@@ -300,14 +300,14 @@
 <div id="weaponscontainer"> </div>
 
 <script charset="utf-8">
-$(document).ready(function(){
+	$(document).ready(function(){
 
 	// TODO use correct id
 	var url = "/api/matchinfo/1/weapons"
 	$.getJSON(url,  function( data) {
 
 				$("#weaponscontainer").append( $.templates( "#matchWeaponTemplate" ).render(data) );
-			    $("#weaponscontainer").find('.tabs').tabs();
+				$("#weaponscontainer").find('.tabs').tabs();
 			});
 
 
@@ -333,6 +333,6 @@ $(document).ready(function(){
 </script>
 
 <script charset="utf-8">
-	
+
 </script>
 

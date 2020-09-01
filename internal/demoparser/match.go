@@ -19,7 +19,6 @@ type InfoStruct struct {
 	General           ScoreboardGeneral
 	Players           ScoreboardPlayers
 	Rounds            []ScoreboardRound
-	Weapons           map[common.EquipmentType]map[*ScoreboardPlayer]WeaponStat
 	Duels             [][]int
 	HeatmapsImageURLs []string
 	Megacoins         []MegacoinPlayer
@@ -34,16 +33,6 @@ type ScoreboardGeneral struct {
 	UploadTime    time.Time
 	MatchDuration time.Duration
 	DemoLinkURL   string
-}
-
-func (sg ScoreboardGeneral) TopWeaponsByKills() []common.EquipmentType {
-	//TODO use real data
-	return []common.EquipmentType{
-		common.EqAK47,
-		common.EqAWP,
-		common.EqM4A1,
-		common.EqBizon,
-	}
 }
 
 type WeaponStat struct {
@@ -63,6 +52,77 @@ type RoundKill struct {
 	Killer             *ScoreboardPlayer
 	Assister           *ScoreboardPlayer
 	KillerWeapon       common.EquipmentType
+}
+
+func (is *InfoStruct) WeaponsJSON() interface{} {
+
+	type playerstat struct {
+		PlayerName string `json:"name"`
+		Amount     int    `json:"amount"`
+	}
+
+	type wlist struct {
+		Clan  []playerstat `json:"clan"`
+		Enemy []playerstat `json:"enemy"`
+	}
+
+	type weapon struct {
+		WeaponName string `json:"name"`
+		Kills      wlist  `json:"kills"`
+		Headshots  wlist  `json:"headshots"`
+		Accuracy   wlist  `json:"accuracy"`
+		Damage     wlist  `json:"damage"`
+	}
+
+	// Weapons           map[common.EquipmentType]map[*ScoreboardPlayer]WeaponStat
+	ret := struct {
+		Weapons []weapon `json:"weapons"`
+	}{}
+
+	// Loop players and add all weapons (empty)
+	var weaponnames = make(map[string]weapon)
+	for _, player := range is.Players.Players {
+		for k := range player.WeaponStats {
+			weaponnames[k.String()] = weapon{
+				WeaponName: k.String(),
+			}
+		}
+	}
+
+	for _, v := range weaponnames {
+		ret.Weapons = append(ret.Weapons, v)
+	}
+
+	for _, player := range is.Players.Players {
+		for wep, pstat := range player.WeaponStats {
+			log.Warning("Player: ", player.Name, " has ", pstat.Kills, "with weapon", wep)
+			for k, v := range ret.Weapons {
+
+				if v.WeaponName == wep.String() {
+
+					kills := playerstat{PlayerName: player.Name, Amount: pstat.Kills}
+					headshots := playerstat{PlayerName: player.Name, Amount: pstat.Headshots}
+					accuracy := playerstat{PlayerName: player.Name, Amount: pstat.Accuracy}
+					damage := playerstat{PlayerName: player.Name, Amount: pstat.Damage}
+
+					if player.IsClanMember {
+						ret.Weapons[k].Kills.Clan = append(ret.Weapons[k].Kills.Clan, kills)
+						ret.Weapons[k].Headshots.Clan = append(ret.Weapons[k].Headshots.Clan, headshots)
+						ret.Weapons[k].Accuracy.Clan = append(ret.Weapons[k].Accuracy.Clan, accuracy)
+						ret.Weapons[k].Damage.Clan = append(ret.Weapons[k].Damage.Clan, damage)
+					} else {
+						ret.Weapons[k].Kills.Enemy = append(ret.Weapons[k].Kills.Enemy, kills)
+						ret.Weapons[k].Headshots.Enemy = append(ret.Weapons[k].Headshots.Enemy, headshots)
+						ret.Weapons[k].Accuracy.Enemy = append(ret.Weapons[k].Accuracy.Enemy, accuracy)
+						ret.Weapons[k].Damage.Enemy = append(ret.Weapons[k].Damage.Enemy, damage)
+					}
+					break
+				}
+			}
+		}
+	}
+
+	return ret
 }
 
 func (rk *RoundKill) MarshalJSON() ([]byte, error) {
