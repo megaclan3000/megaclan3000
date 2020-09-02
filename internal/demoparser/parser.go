@@ -69,6 +69,7 @@ func (p *MyParser) Parse(path string, m *InfoStruct) error {
 	p.parser.RegisterEventHandler(p.handlerBombDefused)
 	p.parser.RegisterEventHandler(p.handlerBombExplode)
 	p.parser.RegisterEventHandler(p.handlerScoreUpdated)
+	p.parser.RegisterEventHandler(p.handlerWeaponFire)
 	// p.RegisterEventHandler(handlerChatMessage)
 
 	// Parse header and set general values
@@ -105,7 +106,7 @@ func (p *MyParser) calculate() {
 
 		var playeradr int = 0
 
-		for _, v := range p.Match.Players.Players[k].Damages {
+		for _, v := range p.Match.Players.Players[k].WeaponStats.Damage {
 			playeradr += v
 		}
 
@@ -124,8 +125,10 @@ func (p *MyParser) calculate() {
 				if kill.Killer.Steamid64 == player.Steamid64 {
 					if kill.IsHeadshot {
 						p.Match.Players.Players[k].Headshots++
+						p.Match.Players.Players[k].WeaponStats.Headshots[kill.KillerWeapon]++
 					}
 					roundKills++
+					p.Match.Players.Players[k].WeaponStats.Kills[kill.KillerWeapon]++
 				}
 			}
 
@@ -144,14 +147,12 @@ func (p *MyParser) calculate() {
 			if roundKills == 3 {
 				p.Match.Players.Players[k].Rounds3K++
 			}
+
 		}
 
-		for _, round := range p.Match.Rounds {
-			for _, kill := range append(round.EnemyKills, round.ClanKills...) {
-				p.Match.Players.addWeaponStat(kill)
-			}
+		for wep, shots := range p.Match.Players.Players[k].WeaponStats.Shots {
+			p.Match.Players.Players[k].WeaponStats.Accuracy[wep] = (p.Match.Players.Players[k].WeaponStats.Hits[wep] * 100) / shots
 		}
-
 	}
 }
 
@@ -182,7 +183,15 @@ func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 	if !player.IsBot {
 		name = player.Name
 	}
-	weaponstats := make(map[common.EquipmentType]WeaponStat)
+
+	ws := WeaponStats{
+		Kills:     make(map[common.EquipmentType]int),
+		Headshots: make(map[common.EquipmentType]int),
+		Accuracy:  make(map[common.EquipmentType]int),
+		Damage:    make(map[common.EquipmentType]int),
+		Shots:     make(map[common.EquipmentType]int),
+		Hits:      make(map[common.EquipmentType]int),
+	}
 
 	return ScoreboardPlayer{
 		IsBot:            player.IsBot,
@@ -210,12 +219,23 @@ func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 		Rounds5K:         0,
 		Rounds4K:         0,
 		Rounds3K:         0,
-		WeaponStats:      &weaponstats,
-		Damages:          make(map[uint64]int),
+		WeaponStats:      ws,
 	}
 }
 
 func (*ScoreboardPlayer) setWeaponStats() {
+}
+
+func (p *MyParser) handlerWeaponFire(e events.WeaponFire) {
+
+	p.PlayerByID(e.Shooter)
+
+	shooter, err := p.Match.Players.PlayerNumByID(e.Shooter.SteamID64)
+	if err != nil {
+		panic(err)
+	}
+	p.Match.Players.Players[shooter].WeaponStats.Shots[e.Weapon.Type] += 1
+
 }
 
 func (p *MyParser) handlerKill(e events.Kill) {
@@ -344,7 +364,8 @@ func (p *MyParser) handlerPlayerHurt(e events.PlayerHurt) {
 
 	for k, v := range p.Match.Players.Players {
 		if v.Steamid64 == e.Attacker.SteamID64 {
-			p.Match.Players.Players[k].Damages[e.Player.SteamID64] += e.HealthDamage
+			p.Match.Players.Players[k].WeaponStats.Damage[e.Weapon.Type] += e.HealthDamage
+			p.Match.Players.Players[k].WeaponStats.Hits[e.Weapon.Type] += 1
 			return
 		}
 	}
