@@ -47,6 +47,75 @@ type RoundKill struct {
 	KillerWeapon       common.EquipmentType
 }
 
+func allWeapons() []common.EquipmentType {
+
+	return []common.EquipmentType{
+		common.EqUnknown,
+		common.EqP2000,
+		common.EqGlock,
+		common.EqP250,
+		common.EqDeagle,
+		common.EqFiveSeven,
+		common.EqDualBerettas,
+		common.EqTec9,
+		common.EqCZ,
+		common.EqUSP,
+		common.EqRevolver,
+		common.EqMP7,
+		common.EqMP9,
+		common.EqBizon,
+		common.EqMac10,
+		common.EqUMP,
+		common.EqP90,
+		common.EqMP5,
+		common.EqSawedOff,
+		common.EqNova,
+		common.EqMag7,
+		common.EqSwag7,
+		common.EqXM1014,
+		common.EqM249,
+		common.EqNegev,
+		common.EqGalil,
+		common.EqFamas,
+		common.EqAK47,
+		common.EqM4A4,
+		common.EqM4A1,
+		common.EqScout,
+		common.EqSSG08,
+		common.EqSG556,
+		common.EqSG553,
+		common.EqAUG,
+		common.EqAWP,
+		common.EqScar20,
+		common.EqG3SG1,
+		common.EqZeus,
+		common.EqKevlar,
+		common.EqHelmet,
+		common.EqBomb,
+		common.EqKnife,
+		common.EqDefuseKit,
+		common.EqWorld,
+		common.EqDecoy,
+		common.EqMolotov,
+		common.EqIncendiary,
+		common.EqFlash,
+		common.EqSmoke,
+		common.EqHE,
+	}
+}
+
+func NewWeaponstats() WeaponStats {
+
+	return WeaponStats{
+		kills:     make(map[common.EquipmentType]int),
+		headshots: make(map[common.EquipmentType]int),
+		accuracy:  make(map[common.EquipmentType]int),
+		damage:    make(map[common.EquipmentType]int),
+		shots:     make(map[common.EquipmentType]int),
+		hits:      make(map[common.EquipmentType]int),
+	}
+}
+
 func (is *InfoStruct) Weapons() interface{} {
 
 	type wlist struct {
@@ -56,12 +125,20 @@ func (is *InfoStruct) Weapons() interface{} {
 	}
 
 	type weapon struct {
-		Kills     wlist `json:"kills"`
-		Shots     wlist `json:"shots"`
-		Headshots wlist `json:"headshots"`
-		Accuracy  wlist `json:"accuracy"`
-		Damage    wlist `json:"damage"`
-		Hits      wlist `json:"hits"`
+		Name string `json:"name"`
+
+		TotalKills     int   `json:"total_kills"`
+		TotalShots     int   `json:"total_shots"`
+		TotalHeadshots int   `json:"total_headshots"`
+		TotalAccuracy  int   `json:"total_accuracy"`
+		TotalDamage    int   `json:"total_damage"`
+		TotalHits      int   `json:"total_hits"`
+		Kills          wlist `json:"kills"`
+		Shots          wlist `json:"shots"`
+		Headshots      wlist `json:"headshots"`
+		Accuracy       wlist `json:"accuracy"`
+		Damage         wlist `json:"damage"`
+		Hits           wlist `json:"hits"`
 	}
 
 	// Weapons           map[common.EquipmentType]map[*ScoreboardPlayer]WeaponStat
@@ -70,30 +147,15 @@ func (is *InfoStruct) Weapons() interface{} {
 		Weapons map[string]*weapon `json:"weapons"`
 	}{Weapons: make(map[string]*weapon)}
 
-	var weapons []string
-	for _, player := range is.Players.Players {
-		for v := range player.WeaponStats.Kills {
-			weapons = append(weapons, v.String())
-		}
-		for v := range player.WeaponStats.Headshots {
-			weapons = append(weapons, v.String())
-		}
-		for v := range player.WeaponStats.Damage {
-			weapons = append(weapons, v.String())
-		}
-		for v := range player.WeaponStats.Accuracy {
-			weapons = append(weapons, v.String())
-		}
-		for v := range player.WeaponStats.Shots {
-			weapons = append(weapons, v.String())
-		}
-		for v := range player.WeaponStats.Hits {
-			weapons = append(weapons, v.String())
-		}
-	}
+	for _, v := range is.Players.AllWeaponsUsed() {
 
-	for _, v := range weapons {
-		ret.Weapons[v] = &weapon{
+		// Skip non-weapon classes
+		if v.Class() == common.EqClassUnknown || v.Class() == common.EqClassEquipment {
+			continue
+		}
+
+		ret.Weapons[v.String()] = &weapon{
+			Name:      v.String(),
 			Kills:     wlist{Clan: make(map[string]int), Enemy: make(map[string]int)},
 			Headshots: wlist{Clan: make(map[string]int), Enemy: make(map[string]int)},
 			Accuracy:  wlist{Clan: make(map[string]int), Enemy: make(map[string]int)},
@@ -101,56 +163,32 @@ func (is *InfoStruct) Weapons() interface{} {
 			Shots:     wlist{Clan: make(map[string]int), Enemy: make(map[string]int)},
 			Hits:      wlist{Clan: make(map[string]int), Enemy: make(map[string]int)},
 		}
-	}
 
-	for _, player := range is.Players.Players {
+		for _, player := range is.Players.Players {
 
-		for wep, kills := range player.WeaponStats.Kills {
+			ret.Weapons[v.String()].TotalKills += player.WeaponStats.Kills(v)
+			ret.Weapons[v.String()].TotalHeadshots += player.WeaponStats.Headshots(v)
+			ret.Weapons[v.String()].TotalDamage += player.WeaponStats.Damage(v)
+			ret.Weapons[v.String()].TotalShots += player.WeaponStats.Shots(v)
+			ret.Weapons[v.String()].TotalHits += player.WeaponStats.Hits(v)
+			// ret.Weapons[v.String()].TotalDamage+= player.WeaponStats.Damage(v)
+
 			if player.IsClanMember {
-				ret.Weapons[wep.String()].Kills.Clan[player.Name] = kills
+				ret.Weapons[v.String()].Kills.Clan[player.Name] = player.WeaponStats.Kills(v)
+				ret.Weapons[v.String()].Headshots.Clan[player.Name] = player.WeaponStats.Headshots(v)
+				ret.Weapons[v.String()].Accuracy.Clan[player.Name] = player.WeaponStats.Accuracy(v)
+				ret.Weapons[v.String()].Damage.Clan[player.Name] = player.WeaponStats.Damage(v)
+				ret.Weapons[v.String()].Shots.Clan[player.Name] = player.WeaponStats.Shots(v)
+				ret.Weapons[v.String()].Hits.Clan[player.Name] = player.WeaponStats.Hits(v)
 			} else {
-				ret.Weapons[wep.String()].Kills.Enemy[player.Name] = kills
+				ret.Weapons[v.String()].Kills.Enemy[player.Name] = player.WeaponStats.Kills(v)
+				ret.Weapons[v.String()].Headshots.Enemy[player.Name] = player.WeaponStats.Headshots(v)
+				ret.Weapons[v.String()].Accuracy.Enemy[player.Name] = player.WeaponStats.Accuracy(v)
+				ret.Weapons[v.String()].Damage.Enemy[player.Name] = player.WeaponStats.Damage(v)
+				ret.Weapons[v.String()].Shots.Enemy[player.Name] = player.WeaponStats.Shots(v)
+				ret.Weapons[v.String()].Hits.Enemy[player.Name] = player.WeaponStats.Hits(v)
 			}
-		}
 
-		for weapon, hs := range player.WeaponStats.Headshots {
-			if player.IsClanMember {
-				ret.Weapons[weapon.String()].Headshots.Clan[player.Name] = hs
-			} else {
-				ret.Weapons[weapon.String()].Headshots.Enemy[player.Name] = hs
-			}
-		}
-
-		for weapon, accuracy := range player.WeaponStats.Accuracy {
-			if player.IsClanMember {
-				ret.Weapons[weapon.String()].Accuracy.Clan[player.Name] = accuracy
-			} else {
-				ret.Weapons[weapon.String()].Accuracy.Enemy[player.Name] = accuracy
-			}
-		}
-
-		for weapon, damage := range player.WeaponStats.Damage {
-			if player.IsClanMember {
-				ret.Weapons[weapon.String()].Damage.Clan[player.Name] = damage
-			} else {
-				ret.Weapons[weapon.String()].Damage.Enemy[player.Name] = damage
-			}
-		}
-
-		for weapon, shots := range player.WeaponStats.Shots {
-			if player.IsClanMember {
-				ret.Weapons[weapon.String()].Shots.Clan[player.Name] = shots
-			} else {
-				ret.Weapons[weapon.String()].Shots.Enemy[player.Name] = shots
-			}
-		}
-
-		for weapon, hits := range player.WeaponStats.Hits {
-			if player.IsClanMember {
-				ret.Weapons[weapon.String()].Hits.Clan[player.Name] = hits
-			} else {
-				ret.Weapons[weapon.String()].Hits.Enemy[player.Name] = hits
-			}
 		}
 	}
 
@@ -226,6 +264,20 @@ type ScoreboardPlayers struct {
 	Players []ScoreboardPlayer
 }
 
+// AllWeaponsUsed returns all weapons shot at least once during the match
+func (sp *ScoreboardPlayers) AllWeaponsUsed() []common.EquipmentType {
+	list := []common.EquipmentType{}
+
+	for _, w := range allWeapons() {
+		for _, p := range sp.Players {
+			if p.WeaponStats.Shots(w) > 0 {
+				list = append(list, w)
+			}
+		}
+	}
+	return list
+}
+
 func (sp *ScoreboardPlayers) AddKill(steamID uint64) {
 	for k := range sp.Players {
 		if sp.Players[k].Steamid64 == steamID {
@@ -293,22 +345,69 @@ func (p *MyParser) PlayerByID(player *common.Player) *ScoreboardPlayer {
 type WeaponStats struct {
 
 	// Number of kills
-	Kills map[common.EquipmentType]int
+	kills map[common.EquipmentType]int
 
 	// Number of headshots
-	Headshots map[common.EquipmentType]int
+	headshots map[common.EquipmentType]int
 
 	// Percent shots hit of shots fired
-	Accuracy map[common.EquipmentType]int
+	accuracy map[common.EquipmentType]int
 
 	// Damage caused
-	Damage map[common.EquipmentType]int
+	damage map[common.EquipmentType]int
 
 	// Shots fired
-	Shots map[common.EquipmentType]int
+	shots map[common.EquipmentType]int
 
 	// Shots hit
-	Hits map[common.EquipmentType]int
+	hits map[common.EquipmentType]int
+}
+
+func (ws *WeaponStats) AddKill(e events.Kill) {
+	ws.kills[e.Weapon.Type]++
+}
+
+func (ws *WeaponStats) AddHeadshot(e events.Kill) {
+	if e.IsHeadshot {
+		ws.headshots[e.Weapon.Type]++
+	}
+}
+
+func (ws *WeaponStats) AddDamage(e events.PlayerHurt) {
+	ws.damage[e.Weapon.Type] += e.HealthDamage
+}
+
+func (ws *WeaponStats) AddShot(e events.WeaponFire) {
+	ws.shots[e.Weapon.Type]++
+	ws.accuracy[e.Weapon.Type] = (ws.Hits(e.Weapon.Type) * 100) / ws.Shots(e.Weapon.Type)
+}
+
+func (ws *WeaponStats) AddHit(e events.PlayerHurt) {
+	ws.hits[e.Weapon.Type]++
+}
+
+func (ws WeaponStats) Kills(w common.EquipmentType) int {
+	return ws.kills[w]
+}
+
+func (ws WeaponStats) Accuracy(w common.EquipmentType) int {
+	return ws.accuracy[w]
+}
+
+func (ws WeaponStats) Headshots(w common.EquipmentType) int {
+	return ws.headshots[w]
+}
+
+func (ws WeaponStats) Damage(w common.EquipmentType) int {
+	return ws.damage[w]
+}
+
+func (ws WeaponStats) Shots(w common.EquipmentType) int {
+	return ws.shots[w]
+}
+
+func (ws WeaponStats) Hits(w common.EquipmentType) int {
+	return ws.hits[w]
 }
 
 type ScoreboardPlayer struct {

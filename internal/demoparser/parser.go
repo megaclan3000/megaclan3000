@@ -106,8 +106,8 @@ func (p *MyParser) calculate() {
 
 		var playeradr int = 0
 
-		for _, v := range p.Match.Players.Players[k].WeaponStats.Damage {
-			playeradr += v
+		for _, v := range allWeapons() {
+			playeradr += p.Match.Players.Players[k].WeaponStats.Damage(v)
 		}
 
 		p.Match.Players.Players[k].Adr = playeradr / len(p.Match.Rounds)
@@ -125,10 +125,10 @@ func (p *MyParser) calculate() {
 				if kill.Killer.Steamid64 == player.Steamid64 {
 					if kill.IsHeadshot {
 						p.Match.Players.Players[k].Headshots++
-						p.Match.Players.Players[k].WeaponStats.Headshots[kill.KillerWeapon]++
 					}
 					roundKills++
-					p.Match.Players.Players[k].WeaponStats.Kills[kill.KillerWeapon]++
+					// p.Match.Players.Players[k].WeaponStats.AddKill(kill.KillerWeapon, kill)
+					// p.Match.Players.Players[k].WeaponStats.Kills[kill.KillerWeapon]++
 				}
 			}
 
@@ -147,11 +147,6 @@ func (p *MyParser) calculate() {
 			if roundKills == 3 {
 				p.Match.Players.Players[k].Rounds3K++
 			}
-
-		}
-
-		for wep, shots := range p.Match.Players.Players[k].WeaponStats.Shots {
-			p.Match.Players.Players[k].WeaponStats.Accuracy[wep] = (p.Match.Players.Players[k].WeaponStats.Hits[wep] * 100) / shots
 		}
 	}
 }
@@ -184,15 +179,6 @@ func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 		name = player.Name
 	}
 
-	ws := WeaponStats{
-		Kills:     make(map[common.EquipmentType]int),
-		Headshots: make(map[common.EquipmentType]int),
-		Accuracy:  make(map[common.EquipmentType]int),
-		Damage:    make(map[common.EquipmentType]int),
-		Shots:     make(map[common.EquipmentType]int),
-		Hits:      make(map[common.EquipmentType]int),
-	}
-
 	return ScoreboardPlayer{
 		IsBot:            player.IsBot,
 		IsClanMember:     player.Team == p.state.currentTeam,
@@ -219,22 +205,23 @@ func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 		Rounds5K:         0,
 		Rounds4K:         0,
 		Rounds3K:         0,
-		WeaponStats:      ws,
+		WeaponStats:      NewWeaponstats(),
 	}
-}
-
-func (*ScoreboardPlayer) setWeaponStats() {
 }
 
 func (p *MyParser) handlerWeaponFire(e events.WeaponFire) {
 
-	p.PlayerByID(e.Shooter)
+	if p.parser.GameState().IsWarmupPeriod() {
+		return
+	}
 
+	p.PlayerByID(e.Shooter)
 	shooter, err := p.Match.Players.PlayerNumByID(e.Shooter.SteamID64)
+
 	if err != nil {
 		panic(err)
 	}
-	p.Match.Players.Players[shooter].WeaponStats.Shots[e.Weapon.Type] += 1
+	p.Match.Players.Players[shooter].WeaponStats.AddShot(e)
 
 }
 
@@ -251,6 +238,12 @@ func (p *MyParser) handlerKill(e events.Kill) {
 	killerNum, err := p.Match.Players.PlayerNumByID(e.Killer.SteamID64)
 	if err != nil {
 		panic(err)
+	}
+
+	p.Match.Players.Players[killerNum].WeaponStats.AddKill(e)
+
+	if e.IsHeadshot {
+		p.Match.Players.Players[killerNum].WeaponStats.AddHeadshot(e)
 	}
 
 	// Find victim
@@ -364,8 +357,8 @@ func (p *MyParser) handlerPlayerHurt(e events.PlayerHurt) {
 
 	for k, v := range p.Match.Players.Players {
 		if v.Steamid64 == e.Attacker.SteamID64 {
-			p.Match.Players.Players[k].WeaponStats.Damage[e.Weapon.Type] += e.HealthDamage
-			p.Match.Players.Players[k].WeaponStats.Hits[e.Weapon.Type] += 1
+			p.Match.Players.Players[k].WeaponStats.AddDamage(e)
+			p.Match.Players.Players[k].WeaponStats.AddHit(e)
 			return
 		}
 	}

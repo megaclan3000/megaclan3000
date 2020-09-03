@@ -30,124 +30,6 @@
 
 <script charset="utf-8">
 
-
-	Highcharts.chart('chartcontainer-match-weapons', {
-	chart: {
-		type: 'packedbubble',
-		height: 300,
-	},
-	title: null,
-	tooltip: {
-		useHTML: true,
-		pointFormat: '<b>{point.name}:</b> {point.value}'
-	},
-	plotOptions: {
-		packedbubble: {
-			minSize: '20%',
-			maxSize: '100%',
-			layoutAlgorithm: {
-				gravitationalConstant: 0.05,
-				splitSeries: true,
-				seriesInteraction: false,
-				dragBetweenSeries: true,
-				parentNodeLimit: true
-			},
-			dataLabels: {
-				enabled: true,
-				format: '{point.name}',
-				filter: {
-					property: 'y',
-					operator: '>',
-					value: 250
-				},
-				style: {
-					color: 'black',
-					textOutline: 'none',
-					fontWeight: 'normal'
-				}
-			}
-		}
-	},
-	series: [
-	{
-	//TODO use real data
-		name: 'Weapon 1',
-		data: [
-		{ name: 'Player 1',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 2',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 3',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 4',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 5',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 6',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 7',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 8',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 9',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 10',  value: Math.floor(Math.random() * 11) },
-		]
-	},
-	{
-		name: 'Weapon 2',
-		data: [
-		{ name: 'Player 1',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 2',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 3',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 4',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 5',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 6',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 7',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 8',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 9',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 10',  value: Math.floor(Math.random() * 11) },
-		]
-	},
-	{
-		name: 'Weapon 3',
-		data: [
-		{ name: 'Player 1',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 2',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 3',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 4',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 5',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 6',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 7',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 8',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 9',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 10',  value: Math.floor(Math.random() * 11) },
-		]
-	},
-	{
-		name: 'Weapon 4',
-		data: [
-		{ name: 'Player 1',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 2',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 3',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 4',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 5',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 6',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 7',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 8',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 9',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 10',  value: Math.floor(Math.random() * 11) },
-		]
-	},
-	{
-		name: 'Weapon 5',
-		data: [
-		{ name: 'Player 1',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 2',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 3',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 4',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 5',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 6',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 7',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 8',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 9',  value: Math.floor(Math.random() * 11) },
-		{ name: 'Player 10',  value: Math.floor(Math.random() * 11) },
-		]
-	},
-	]
-});
-
 </script>
 <script id="matchWeaponTemplateCard" type="text/x-jsrender">
 
@@ -155,7 +37,6 @@
 
 <script id="matchWeaponTemplate" type="text/x-jsrender">
 
-	{{for weapons}}
 
 
 <div class="card blue-grey lighten-5">
@@ -177,26 +58,26 @@
 		<div id="tab-weapon-{{:#index}}-kills">
 			{{include address tmpl="#matchWeaponTemplateCard"/}}
 			<div class="row">
-				<div class="container red">
+				<div class="container">
 					<div class="row">
 						<div class="col s6">
 							<table style="table-layout: fixed ; width: 100% ;" >
-								{{for kills.clan}}
+								{{props kills.clan}}
 								<tr>
-									<td style="width: 50%;" class="right-align">{{:name}}</td>
-									<td class="orange-text left-align">{{:amount}}</td>
+									<td style="width: 50%;" class="right-align">{{:key}}</td>
+									<td class="orange-text left-align">{{:prop}}</td>
 								</tr>
-								{{/for}}
+								{{/props}}
 							</table>
 						</div>
 						<div class="col s6">
 							<table style="table-layout: fixed ; width: 100% ;" >
-								{{for kills.enemy}}
+								{{props kills.enemy}}
 								<tr>
-									<td style="width: 50%;" class="right-align">{{:name}}</td>
-									<td class="orange-text left-align">{{:amount}}</td>
+									<td style="width: 50%;" class="right-align">{{:key}}</td>
+									<td class="orange-text left-align">{{:prop}}</td>
 								</tr>
-								{{/for}}
+								{{/props }}
 							</table>
 						</div>
 					</div>
@@ -206,26 +87,26 @@
 		<div id="tab-weapon-{{:#index}}-accuracy">
 			{{include address tmpl="#matchWeaponTemplateCard"/}}
 			<div class="row">
-				<div class="container green">
+				<div class="container">
 					<div class="row">
 						<div class="col s6">
 							<table style="table-layout: fixed ; width: 100% ;" >
-								{{for accuracy.clan}}
+								{{props accuracy.clan}}
 								<tr>
-									<td style="width: 50%;" class="right-align">{{:name}}</td>
-									<td class="orange-text left-align">{{:amount}}</td>
+									<td style="width: 50%;" class="right-align">{{:key}}</td>
+									<td class="orange-text left-align">{{:prop}}%</td>
 								</tr>
-								{{/for}}
+								{{/props }}
 							</table>
 						</div>
 						<div class="col s6">
 							<table style="table-layout: fixed ; width: 100% ;" >
-								{{for accuracy.enemy}}
+								{{props accuracy.enemy}}
 								<tr>
-									<td style="width: 50%;" class="right-align">{{:name}}</td>
-									<td class="orange-text left-align">{{:amount}}</td>
+									<td style="width: 50%;" class="right-align">{{:key}}</td>
+									<td class="orange-text left-align">{{:prop}}%</td>
 								</tr>
-								{{/for}}
+								{{/props }}
 							</table>
 						</div>
 					</div>
@@ -235,26 +116,26 @@
 		<div id="tab-weapon-{{:#index}}-headshots">
 			{{include address tmpl="#matchWeaponTemplateCard"/}}
 			<div class="row">
-				<div class="container yellow">
+				<div class="container">
 					<div class="row">
 						<div class="col s6">
 							<table style="table-layout: fixed ; width: 100% ;" >
-								{{for headshots.clan}}
+								{{props headshots.clan}}
 								<tr>
-									<td style="width: 50%;" class="right-align">{{:name}}</td>
-									<td class="orange-text left-align">{{:amount}}</td>
+									<td style="width: 50%;" class="right-align">{{:key}}</td>
+									<td class="orange-text left-align">{{:prop}}</td>
 								</tr>
-								{{/for}}
+								{{/props }}
 							</table>
 						</div>
 						<div class="col s6">
 							<table style="table-layout: fixed ; width: 100% ;" >
-								{{for headshots.enemy}}
+								{{props headshots.enemy}}
 								<tr>
-									<td style="width: 50%;" class="right-align">{{:name}}</td>
-									<td class="orange-text left-align">{{:amount}}</td>
+									<td style="width: 50%;" class="right-align">{{:key}}</td>
+									<td class="orange-text left-align">{{:prop}}</td>
 								</tr>
-								{{/for}}
+								{{/props }}
 							</table>
 						</div>
 					</div>
@@ -264,26 +145,26 @@
 		<div id="tab-weapon-{{:#index}}-damage">
 			{{include address tmpl="#matchWeaponTemplateCard"/}}
 			<div class="row">
-				<div class="container pink">
+				<div class="container">
 					<div class="row">
 						<div class="col s6">
 							<table style="table-layout: fixed ; width: 100% ;" >
-								{{for damage.clan}}
+								{{props damage.clan}}
 								<tr>
-									<td style="width: 50%;" class="right-align">{{:name}}</td>
-									<td class="orange-text left-align">{{:amount}}</td>
+									<td style="width: 50%;" class="right-align">{{:key}}</td>
+									<td class="orange-text left-align">{{:prop}}</td>
 								</tr>
-								{{/for}}
+								{{/props }}
 							</table>
 						</div>
 						<div class="col s6">
 							<table style="table-layout: fixed ; width: 100% ;" >
-								{{for damage.enemy}}
+								{{props damage.enemy}}
 								<tr>
-									<td style="width: 50%;" class="right-align">{{:name}}</td>
-									<td class="orange-text left-align">{{:amount}}</td>
+									<td style="width: 50%;" class="right-align">{{:key}}</td>
+									<td class="orange-text left-align">{{:prop}}</td>
 								</tr>
-								{{/for}}
+								{{/props}}
 							</table>
 						</div>
 					</div>
@@ -292,7 +173,6 @@
 		</div>
 	</div>
 </div>
-{{/for}}
 </script>
 
 
@@ -302,30 +182,118 @@
 <script charset="utf-8">
 	$(document).ready(function(){
 
+
 	// TODO use correct id
 	var url = "/api/matchinfo/1/weapons"
 	$.getJSON(url,  function( data) {
 
-				$("#weaponscontainer").append( $.templates( "#matchWeaponTemplate" ).render(data) );
+var ser = [];
+
+
+
+var sortable = [];
+
+for (const key in data.weapons) {
+    if (data.weapons.hasOwnProperty(key)) {
+
+		var weapon = data.weapons[key];
+		sortable.push(weapon);
+
+    }
+}
+
+
+sortable.sort(function(a, b) {
+	// Reverse sort by total_kills
+	return b.total_kills - a.total_kills;
+});
+
+for (var i = 0; i< sortable.length; i++) {
+
+		var wep = {
+			name: sortable[i].name,
+			data: []
+		}
+
+
+		for (const player in sortable[i].kills.clan) {
+			wep.data.push({
+				name: player,
+				value: sortable[i].kills.clan[player]
+			})
+		}
+
+		for (const player in sortable[i].kills.enemy) {
+			wep.data.push({
+				name: player,
+				value: sortable[i].kills.enemy[player]
+			})
+		}
+
+		ser.push(wep);
+
+}
+
+
+
+
+
+//console.log(sortable);
+
+				$("#weaponscontainer").append( $.templates( "#matchWeaponTemplate" ).render(sortable) );
 				$("#weaponscontainer").find('.tabs').tabs();
+
+
+
+
+
+	opts = {
+		chart: {
+			type: 'packedbubble',
+			height: 300,
+		},
+		title: null,
+		tooltip: {
+			useHTML: true,
+			pointFormat: '<b>{point.name}:</b> {point.value}'
+		},
+		plotOptions: {
+			packedbubble: {
+				minSize: '20%',
+				maxSize: '100%',
+				layoutAlgorithm: {
+
+					gravitationalConstant: 0.09,
+					splitSeries: true,
+					seriesInteraction: false,
+					dragBetweenSeries: false,
+					parentNodeLimit: true
+				},
+				dataLabels: {
+					enabled: true,
+					format: '{point.name}',
+					filter: {
+						property: 'y',
+						operator: '>',
+						value: 250
+					},
+					style: {
+						color: 'black',
+						textOutline: 'none',
+						fontWeight: 'normal'
+					}
+				}
+			}
+		},
+		series: ser.slice(0,10)
+}
+
+
+
+var arstarstarst = Highcharts.chart('chartcontainer-match-weapons', opts);
+
+
 			});
-
-
-				//$( "#matchWeaponTemplate" ).tmpl(data.weapons).appendTo( "#todo" );
-
-//		scoreboardChart.categories = arrPlayers;
-//
-//        scoreboardChart.xAxis[0].setCategories(arrPlayers); //setting category
-//		scoreboardChart.series[0].setData(arrKills);
-//		scoreboardChart.series[1].setData(arrDeaths);
-//		scoreboardChart.series[2].setData(arrAssists);
-
-		//https://api.highcharts.com/class-reference/Highcharts.Chart.html#addSeries
-		// https://api.highcharts.com/class-reference/Highcharts.Series#setData
-
-
-  // Or with jQuery
-
 
 });
 
