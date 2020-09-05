@@ -206,6 +206,7 @@ func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 		Rounds4K:         0,
 		Rounds3K:         0,
 		WeaponStats:      NewWeaponstats(),
+		PlayerDamages:    NewPlayerDamages(),
 	}
 }
 
@@ -357,8 +358,22 @@ func (p *MyParser) handlerPlayerHurt(e events.PlayerHurt) {
 
 	for k, v := range p.Match.Players.Players {
 		if v.Steamid64 == e.Attacker.SteamID64 {
+
+			// Add damage stats for weapon
 			p.Match.Players.Players[k].WeaponStats.AddDamage(e)
+
+			// Add hit stats for weapon
 			p.Match.Players.Players[k].WeaponStats.AddHit(e)
+
+			// Add damage stats for PvP
+			_ = p.PlayerByID(e.Player)
+			victimNum, err := p.Match.Players.PlayerNumByID(e.Player.SteamID64)
+
+			if err != nil {
+				panic(err)
+			}
+
+			p.Match.Players.Players[k].AddDamage(e.HealthDamage, &p.Match.Players.Players[victimNum])
 			return
 		}
 	}

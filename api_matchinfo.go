@@ -41,51 +41,55 @@ func handlerAPIMatchinfo(w http.ResponseWriter, r *http.Request) {
 		}
 	// TODO
 	case "duels":
-		byt = []byte(`
-[
-	"PlayerClan1": [
-		{
-			"PlayerEnemy1": "40",
-			"PlayerEnemy2": "41",
-			"PlayerEnemy3": "42",
-			"PlayerEnemy4": "43",
-			"PlayerEnemy5": "44"
-		},
-	"PlayerClan2": [
-		{
-			"PlayerEnemy1": "40",
-			"PlayerEnemy2": "41",
-			"PlayerEnemy3": "42",
-			"PlayerEnemy4": "43",
-			"PlayerEnemy5": "44"
-		},
-	"PlayerClan3": [
-		{
-			"PlayerEnemy1": "40",
-			"PlayerEnemy2": "41",
-			"PlayerEnemy3": "42",
-			"PlayerEnemy4": "43",
-			"PlayerEnemy5": "44"
-		},
-	"PlayerClan4": [
-		{
-			"PlayerEnemy1": "40",
-			"PlayerEnemy2": "41",
-			"PlayerEnemy3": "42",
-			"PlayerEnemy4": "43",
-			"PlayerEnemy5": "44"
-		},
-	"PlayerClan5": [
-		{
-			"PlayerEnemy1": "40",
-			"PlayerEnemy2": "41",
-			"PlayerEnemy3": "42",
-			"PlayerEnemy4": "43",
-			"PlayerEnemy5": "44"
+
+		if byt, err = json.Marshal(demoInfo.Damages()); err != nil {
+			panic(err)
 		}
-	]
-`)
-		//TODO
+		// byt = []byte(`
+		// [
+	// "PlayerClan1": [
+	// {
+	// 	"PlayerEnemy1": "40",
+	// 	"PlayerEnemy2": "41",
+	// 	"PlayerEnemy3": "42",
+	// 	"PlayerEnemy4": "43",
+	// 	"PlayerEnemy5": "44"
+	// },
+	// "PlayerClan2": [
+	// {
+	// 	"PlayerEnemy1": "40",
+	// 	"PlayerEnemy2": "41",
+	// 	"PlayerEnemy3": "42",
+	// 	"PlayerEnemy4": "43",
+	// 	"PlayerEnemy5": "44"
+	// },
+	// "PlayerClan3": [
+	// {
+	// 	"PlayerEnemy1": "40",
+	// 	"PlayerEnemy2": "41",
+	// 	"PlayerEnemy3": "42",
+	// 	"PlayerEnemy4": "43",
+	// 	"PlayerEnemy5": "44"
+	// },
+	// "PlayerClan4": [
+	// {
+	// 	"PlayerEnemy1": "40",
+	// 	"PlayerEnemy2": "41",
+	// 	"PlayerEnemy3": "42",
+	// 	"PlayerEnemy4": "43",
+	// 	"PlayerEnemy5": "44"
+	// },
+	// "PlayerClan5": [
+	// {
+	// 	"PlayerEnemy1": "40",
+	// 	"PlayerEnemy2": "41",
+	// 	"PlayerEnemy3": "42",
+	// 	"PlayerEnemy4": "43",
+	// 	"PlayerEnemy5": "44"
+	// }
+	// ]
+	// `)
+	//TODO
 	case "heatmaps":
 		//TODO
 	case "megacoins":

@@ -116,6 +116,42 @@ func NewWeaponstats() WeaponStats {
 	}
 }
 
+func NewPlayerDamages() PlayerDamages {
+
+	return PlayerDamages{
+		Damages: make(map[*ScoreboardPlayer]int),
+	}
+}
+
+func (is *InfoStruct) Damages() interface{} {
+
+	ret := struct {
+		Clan  map[string]map[string]int `json:"clan"`
+		Enemy map[string]map[string]int `json:"enemy"`
+	}{
+		Clan:  make(map[string]map[string]int),
+		Enemy: make(map[string]map[string]int),
+	}
+
+	for _, player := range is.Players.Players {
+
+		dams := make(map[string]int)
+
+		for k2, v := range player.PlayerDamages.Damages {
+			log.Warning("Adding damage player", player.Name, "-> ", k2.Name, ": ", v)
+			dams[k2.Name] = v
+		}
+
+		if player.IsClanMember {
+			ret.Clan[player.Name] = dams
+		} else {
+			ret.Enemy[player.Name] = dams
+		}
+	}
+
+	return ret
+}
+
 func (is *InfoStruct) Weapons() interface{} {
 
 	type wlist struct {
@@ -410,9 +446,17 @@ func (ws WeaponStats) Hits(w common.EquipmentType) int {
 	return ws.hits[w]
 }
 
-type ScoreboardPlayer struct {
-	WeaponStats WeaponStats
+func (sp *ScoreboardPlayer) AddDamage(damage int, victim *ScoreboardPlayer) {
+	sp.PlayerDamages.Damages[victim] += damage
+}
 
+type PlayerDamages struct {
+	Damages map[*ScoreboardPlayer]int
+}
+
+type ScoreboardPlayer struct {
+	WeaponStats      WeaponStats
+	PlayerDamages    PlayerDamages
 	IsBot            bool    `json:"isbot"`
 	IsClanMember     bool    `json:"isclanmember"`
 	Steamid64        uint64  `json:"steamid64"`
