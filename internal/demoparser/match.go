@@ -119,33 +119,79 @@ func NewWeaponstats() WeaponStats {
 func NewPlayerDamages() PlayerDamages {
 
 	return PlayerDamages{
-		Damages: make(map[*ScoreboardPlayer]int),
+		Damages: make(map[uint64]int),
 	}
 }
 
 func (is *InfoStruct) Damages() interface{} {
 
+	type pdamage struct {
+		Victim string `json:"victim"`
+		Amount int    `json:"amount"`
+	}
+
+	type pdamages struct {
+		PlayerName string    `json:"player"`
+		AvatarURL  string    `json:"avatar"`
+		Damages    []pdamage `json:"damages"`
+	}
+
 	ret := struct {
-		Clan  map[string]map[string]int `json:"clan"`
-		Enemy map[string]map[string]int `json:"enemy"`
+		Clan  map[string]pdamages `json:"clan"`
+		Enemy map[string]pdamages `json:"enemy"`
 	}{
-		Clan:  make(map[string]map[string]int),
-		Enemy: make(map[string]map[string]int),
+		Clan:  make(map[string]pdamages),
+		Enemy: make(map[string]pdamages),
 	}
 
 	for _, player := range is.Players.Players {
 
-		dams := make(map[string]int)
-
-		for k2, v := range player.PlayerDamages.Damages {
-			log.Warning("Adding damage player", player.Name, "-> ", k2.Name, ": ", v)
-			dams[k2.Name] = v
+		if player.IsBot {
+			continue
 		}
 
+		// Prefill with zero damage for all players except BOTs
+		dams := make(map[string]int)
+
+		for _, p2 := range is.Players.Players {
+			if p2.IsBot {
+				continue
+			}
+			dams[p2.Name] = 0
+			log.Warning("adding dam for: ", p2.Name)
+		}
+
+		for k2, v := range player.PlayerDamages.Damages {
+			vicNum, err := is.Players.PlayerNumByID(k2)
+			if err != nil {
+				panic(err)
+			}
+
+			if is.Players.Players[vicNum].IsBot {
+				continue
+			}
+
+			name := is.Players.Players[vicNum].Name
+
+			log.Warning("Adding damage player", player.Name, "-> ", name, ": ", v)
+			dams[name] = v
+		}
+
+		tmp := pdamages{
+			PlayerName: player.Name,
+			AvatarURL:  player.AvatarURL,
+		}
+
+		for k, v := range dams {
+			tmp.Damages = append(tmp.Damages, pdamage{
+				Victim: k,
+				Amount: v,
+			})
+		}
 		if player.IsClanMember {
-			ret.Clan[player.Name] = dams
+			ret.Clan[player.Name] = tmp
 		} else {
-			ret.Enemy[player.Name] = dams
+			ret.Enemy[player.Name] = tmp
 		}
 	}
 
@@ -447,11 +493,11 @@ func (ws WeaponStats) Hits(w common.EquipmentType) int {
 }
 
 func (sp *ScoreboardPlayer) AddDamage(damage int, victim *ScoreboardPlayer) {
-	sp.PlayerDamages.Damages[victim] += damage
+	sp.PlayerDamages.Damages[victim.Steamid64] += damage
 }
 
 type PlayerDamages struct {
-	Damages map[*ScoreboardPlayer]int
+	Damages map[uint64]int
 }
 
 type ScoreboardPlayer struct {

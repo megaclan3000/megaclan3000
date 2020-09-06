@@ -1,66 +1,86 @@
 
 
+
+
 <!-- <div id="container"></div> -->
 <div style="height:300px;" id="chartcontainer-match-duels"></div>
 
 
+<table id="damagesTable" class="scoretable highlight blue-grey lighten-5">
+	<thead> 
+		<tr>
+			<td></td>
+		</tr> 
+		</thead> 
+		<tbody></tbody>
+</table>
+
+
+<script id="damagesHeadTemplate" type="text/x-jsrender">
+	<td> <img class="tableimage" src="{{:avatar}}" alt=""></img> </td>
+</script>
+
+
+
+<script id="damagesRowTemplate" type="text/x-jsrender">
+	<tr>
+
+	<td> <img class="tableimage" src="{{:avatar}}" alt=""></img> </td>
+	{{for vics}}
+		<td>{{:amount}}</td>
+	{{/for}}
+	</tr>
+</script>
+
+
 <script charset="utf-8">
+$(document).ready(function() {
+	$.getJSON("/api/matchinfo/1/duels",  function(data) {
+		console.log(data);
 
-	$(document).ready(function() {
+		var playernamesClan = [];
+		for (const [key, value] of Object.entries(data.clan)) {
+			 playernamesClan.push(key);
+		}
 
-//	var options_example = {
-//		chart: {
-//			renderTo: 'container',
-//			type: 'spline'
-//		},
-//		series: [{}]
-//	};
-//
-	var options_damage_transfer = {
-		chart: {
-			renderTo: 'chartcontainer-match-duels',
-			type: 'sankey',
-		},
-		title: null,
-        height: 300,
-		series: [{}],
-		accessibility: {
-			point: {
-				valueDescriptionFormat: '{index}. {point.from} to {point.to}, {point.weight}.'
-			}
-		},
-	};
 
-	$.getJSON("/api/matchinfo/12345/duels",  function(data_damage_transfer) {
-		options_damage_transfer.series[0].data = data_damage_transfer;
-		options_damage_transfer.series[0].keys =  ['from', 'to', 'weight'];
-		options_damage_transfer.series[0].name = 'Sankey demo series';
+		var playernamesEnemy = [];
+		for (const [key, value] of Object.entries(data.enemy)) {
+			 playernamesClan.push(key);
+		}
 
-//		console.log("Data damaget_tranfser");
-//		console.log(data_damage_transfer);
-		var chart_damage_transfer = new Highcharts.Chart(options_damage_transfer);
+		var allnames = playernamesClan.concat(playernamesEnemy);
+		var allplayers = {...data.enemy, ...data.clan};
+
+
+		for (var i = 0; i<allnames.length; i++) {
+
+			$("#damagesTable thead tr" ).append( $.templates( "#damagesHeadTemplate" ).render(allplayers[allnames[i]]));
+
+			var victims = [];
+
+
+			victims = allplayers[allnames[i]].damages.sort(
+				function (a, b) {
+					return allnames.indexOf(a.victim) - allnames.indexOf(b.victim);
+				});
+
+
+			var inputdata = {
+				player: allnames[i],
+				avatar: allplayers[allnames[i]].avatar,
+				vics: victims
+				}
+
+			$("#damagesTable tbody" ).append( $.templates( "#damagesRowTemplate" ).render(inputdata));
+		}
+	//	$("#damagestablecontainer").append( $.templates( "#damageTableTemplate" ).render(data) );
 	});
-
-//	$.getJSON("/api/example",  function(data_example) {
-//		options_example.series[0].data = data_example;
-//		console.log("Data example");
-//		console.log(data_example);
-//		var chart_example = new Highcharts.Chart(options_example);
-//	});
 });
 </script>
 
-<table id="testtable"> </table>
 
-<script charset="utf-8">
-	CreateTableFromJSON("testtable", "/api/example");
-</script>
 
-<div style="background-color:hsl(10,100%,50%);">
-	testteirnstiernst
-	irstnristen
-	
-</div>
 
 
 
