@@ -1,15 +1,10 @@
-
-
-
-
-<!-- <div id="container"></div> -->
-<div style="height:300px;" id="chartcontainer-match-duels"></div>
+<div style="height:300px;width:100%;" id="chartcontainer-match-duels"></div>
 
 
 <table id="damagesTable" class="scoretable highlight blue-grey lighten-5">
 	<thead> 
 		<tr>
-			<td></td>
+			<td> <b> From \ To</b> </td>
 		</tr> 
 		</thead> 
 		<tbody></tbody>
@@ -24,11 +19,10 @@
 
 <script id="damagesRowTemplate" type="text/x-jsrender">
 	<tr>
-
-	<td> <img class="tableimage" src="{{:avatar}}" alt=""></img> </td>
-	{{for vics}}
+		<td> <img class="tableimage" src="{{:avatar}}" alt=""></img> </td>
+		{{for damages}}
 		<td>{{:amount}}</td>
-	{{/for}}
+		{{/for}}
 	</tr>
 </script>
 
@@ -36,7 +30,6 @@
 <script charset="utf-8">
 $(document).ready(function() {
 	$.getJSON("/api/matchinfo/1/duels",  function(data) {
-		console.log(data);
 
 		var playernamesClan = [];
 		for (const [key, value] of Object.entries(data.clan)) {
@@ -46,7 +39,7 @@ $(document).ready(function() {
 
 		var playernamesEnemy = [];
 		for (const [key, value] of Object.entries(data.enemy)) {
-			 playernamesClan.push(key);
+			 playernamesEnemy.push(key);
 		}
 
 		var allnames = playernamesClan.concat(playernamesEnemy);
@@ -65,68 +58,51 @@ $(document).ready(function() {
 					return allnames.indexOf(a.victim) - allnames.indexOf(b.victim);
 				});
 
-
-			var inputdata = {
-				player: allnames[i],
-				avatar: allplayers[allnames[i]].avatar,
-				vics: victims
-				}
-
-			$("#damagesTable tbody" ).append( $.templates( "#damagesRowTemplate" ).render(inputdata));
+			$("#damagesTable tbody" ).append( $.templates( "#damagesRowTemplate" ).render(allplayers[allnames[i]]));
 		}
-	//	$("#damagestablecontainer").append( $.templates( "#damageTableTemplate" ).render(data) );
+
+
+		var chartdata = [];
+
+
+		for (const [key, value] of Object.entries(data.clan)) {
+
+			for (var enemyI = 0; enemyI < playernamesEnemy.length; enemyI++){
+
+			for(var i = 0; i<value.damages.length; i++) {
+
+				if (value.damages[i].victim == playernamesEnemy[enemyI]) {
+					var clanplayer = [ value.player, playernamesEnemy[enemyI], value.damages[i].amount  ]
+					chartdata.push(clanplayer);
+				}
+			}
+		}
+	}
+
+
+
+
+		Highcharts.chart('chartcontainer-match-duels', {
+
+			title: {
+				text: null
+			},
+			accessibility: {
+				point: {
+					valueDescriptionFormat: '{index}. {point.from} to {point.to}, {point.weight}.'
+				}
+			},
+			series: [{
+				keys: ['from', 'to', 'weight'],
+				data: chartdata,
+				type: 'sankey',
+				name: 'Sankey demo series'
+			}]
+
+		});
+
 	});
+
 });
+
 </script>
-
-
-
-
-
-
-<!-- Highcharts.chart('container', { -->
-
-<!--     title: { -->
-<!--         text: 'Highcharts Sankey Diagram' -->
-<!--     }, -->
-<!--     accessibility: { -->
-<!--         point: { -->
-<!--             valueDescriptionFormat: '{index}. {point.from} to {point.to}, {point.weight}.' -->
-<!--         } -->
-<!--     }, -->
-<!--     series: [{ -->
-<!--         keys: ['from', 'to', 'weight'], -->
-<!--         data: [ -->
-<!--             ['Player Clan 1', 'Player Enemy 1', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 2', 'Player Enemy 1', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 3', 'Player Enemy 1', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 4', 'Player Enemy 1', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 5', 'Player Enemy 1', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 1', 'Player Enemy 2', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 2', 'Player Enemy 2', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 3', 'Player Enemy 2', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 4', 'Player Enemy 2', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 5', 'Player Enemy 2', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 1', 'Player Enemy 3', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 2', 'Player Enemy 3', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 3', 'Player Enemy 3', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 4', 'Player Enemy 3', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 5', 'Player Enemy 3', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 1', 'Player Enemy 4', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 2', 'Player Enemy 4', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 3', 'Player Enemy 4', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 4', 'Player Enemy 4', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 5', 'Player Enemy 4', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 1', 'Player Enemy 5', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 2', 'Player Enemy 5', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 3', 'Player Enemy 5', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 4', 'Player Enemy 5', Math.floor(Math.random() * Math.floor(100))], -->
-<!--             ['Player Clan 5', 'Player Enemy 5', Math.floor(Math.random() * Math.floor(100))], -->
-
-
-<!--         ], -->
-<!--         type: 'sankey', -->
-<!--         name: 'Sankey demo series' -->
-<!--     }] -->
-
-<!-- }); -->
