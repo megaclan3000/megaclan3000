@@ -2,7 +2,7 @@ package main
 
 import (
 	// "encoding/json"
-	"encoding/json"
+
 	"flag"
 	"html/template"
 	"sort"
@@ -22,7 +22,8 @@ var t *template.Template
 var datastorage *DataStorage
 var steamClient *steamclient.SteamClient
 var flagConfig string
-var demoInfo demoparser.InfoStruct
+
+// var demoInfo demoparser.InfoStruct
 
 func main() {
 
@@ -78,26 +79,6 @@ func main() {
 	// Set custom 404 page
 	r.NotFoundHandler = http.HandlerFunc(parseTemplates(handler404))
 
-	//TODO this is only for testing////////////////////////////////
-
-	var err error
-	//TODO get correct id
-	demoInfoFromDem, err := demoparser.GetMatchInfo("1", steamClient)
-	if err != nil {
-		panic(err)
-	}
-
-	out, err := json.Marshal(demoInfoFromDem)
-
-	if err != nil {
-		panic(err)
-	}
-
-	log.Info(string(out))
-
-	if err := json.Unmarshal(out, &demoInfo); err != nil {
-		panic(err)
-	}
 	//////////////////////////////////////////////////////////////
 
 	// Set up the HTTP-server
@@ -182,7 +163,14 @@ func handlerScoreboard(w http.ResponseWriter, r *http.Request) {
 
 func handlerMatch(w http.ResponseWriter, r *http.Request) {
 
-	if err := t.ExecuteTemplate(w, "match.html", demoInfo); err != nil {
+	vars := mux.Vars(r)
+	matchInfo, err := datastorage.GetMatchByID(vars["id"])
+
+	if err != nil {
+		panic(err)
+	}
+
+	if err := t.ExecuteTemplate(w, "match.html", matchInfo); err != nil {
 		log.Warn(err)
 	}
 }

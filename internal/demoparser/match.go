@@ -11,8 +11,6 @@ import (
 	"github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
 	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 	log "github.com/sirupsen/logrus"
-	// "go.mongodb.org/mongo-driver/bson"
-	// "go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type InfoStruct struct {

@@ -22,27 +22,33 @@ func handlerAPIMatchinfo(w http.ResponseWriter, r *http.Request) {
 	var err error
 
 	vars := mux.Vars(r)
+
+	matchInfo, err := datastorage.GetMatchByID(vars["matchid"])
+
+	if err != nil {
+		panic(err)
+	}
 	switch vars["endpoint"] {
 
 	case "scoreboard":
-		if byt, err = json.Marshal(demoInfo.GetScoreboard()); err != nil {
+		if byt, err = json.Marshal(matchInfo.GetScoreboard()); err != nil {
 			panic(err)
 		}
 
 	case "rounds":
-		if byt, err = json.Marshal(demoInfo.Rounds); err != nil {
+		if byt, err = json.Marshal(matchInfo.Rounds); err != nil {
 			panic(err)
 		}
 
 	// TODO
 	case "weapons":
-		if byt, err = json.Marshal(demoInfo.Weapons()); err != nil {
+		if byt, err = json.Marshal(matchInfo.Weapons()); err != nil {
 			panic(err)
 		}
 	// TODO
 	case "duels":
 
-		if byt, err = json.Marshal(demoInfo.Damages()); err != nil {
+		if byt, err = json.Marshal(matchInfo.Damages()); err != nil {
 			panic(err)
 		}
 		// byt = []byte(`
