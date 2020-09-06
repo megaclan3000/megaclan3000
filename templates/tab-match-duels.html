@@ -12,14 +12,15 @@
 
 
 <script id="damagesHeadTemplate" type="text/x-jsrender">
-	<td> <img class="tableimage" src="{{:avatar}}" alt=""></img> </td>
+	<td> <img class="tableimage tooltipped" data-position="top" data-tooltip="{{:player}}" src="{{:avatar}}" alt=""></img> </td>
+  <!-- <a class="btn tooltipped" data-position="top" data-tooltip="{{:player}}">Hover me!</a> -->
 </script>
 
 
 
 <script id="damagesRowTemplate" type="text/x-jsrender">
 	<tr>
-		<td> <img class="tableimage" src="{{:avatar}}" alt=""></img> </td>
+		<td> <img class="tableimage tooltipped" data-position="left" data-tooltip="{{:player}}" src="{{:avatar}}" alt=""></img> </td>
 		{{for damages}}
 		<td>{{:amount}}</td>
 		{{/for}}
@@ -79,6 +80,7 @@ $(document).ready(function() {
 		}
 	}
 
+    $('.tooltipped').tooltip();
 
 
 
