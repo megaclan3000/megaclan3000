@@ -44,7 +44,7 @@ type RoundKill struct {
 	Victim             *ScoreboardPlayer    `json:"victim"`
 	Killer             *ScoreboardPlayer    `json:"killer"`
 	Assister           *ScoreboardPlayer    `json:"assister"`
-	KillerWeapon       common.EquipmentType `json:"killer_weapon"`
+	KillerWeapon       common.EquipmentType `json:"weapon"`
 }
 
 func allWeapons() []common.EquipmentType {
