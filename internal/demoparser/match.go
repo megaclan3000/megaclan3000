@@ -16,35 +16,35 @@ import (
 )
 
 type InfoStruct struct {
-	General           ScoreboardGeneral
-	Players           ScoreboardPlayers
-	Rounds            []ScoreboardRound
-	Duels             [][]int
-	HeatmapsImageURLs []string
-	Megacoins         []MegacoinPlayer
+	General ScoreboardGeneral `json:"general"`
+	Players ScoreboardPlayers `json:"players"`
+	Rounds  []ScoreboardRound `json:"rounds"`
+	// Duels             [][]int
+	// HeatmapsImageURLs []string
+	// Megacoins         []MegacoinPlayer
 }
 
 type ScoreboardGeneral struct {
-	ClanWonMatch  bool
-	ScoreClan     int
-	ScoreEnemy    int
-	MapName       string
-	MapIconURL    string
-	UploadTime    time.Time
-	MatchDuration time.Duration
-	DemoLinkURL   string
+	ClanWonMatch  bool          `json:"clan_won_round"`
+	ScoreClan     int           `json:"score_clan"`
+	ScoreEnemy    int           `json:"score_enemy"`
+	MapName       string        `json:"map_name"`
+	MapIconURL    string        `json:"map_icon_url"`
+	UploadTime    time.Time     `json:"upload_time"`
+	MatchDuration time.Duration `json:"match_duration"`
+	DemoLinkURL   string        `json:"demo_link_url"`
 }
 
 type RoundKill struct {
-	Time               time.Duration
-	KillerTeamString   string
-	VictimTeamString   string
-	AssisterTeamString string
-	IsHeadshot         bool
-	Victim             *ScoreboardPlayer
-	Killer             *ScoreboardPlayer
-	Assister           *ScoreboardPlayer
-	KillerWeapon       common.EquipmentType
+	Time               time.Duration        `json:"time"`
+	KillerTeamString   string               `json:"killer_team_string"`
+	VictimTeamString   string               `json:"victim_team_string"`
+	AssisterTeamString string               `json:"assister_team_string"`
+	IsHeadshot         bool                 `json:"is_headshot"`
+	Victim             *ScoreboardPlayer    `json:"victim"`
+	Killer             *ScoreboardPlayer    `json:"killer"`
+	Assister           *ScoreboardPlayer    `json:"assister"`
+	KillerWeapon       common.EquipmentType `json:"killer_weapon"`
 }
 
 func allWeapons() []common.EquipmentType {
@@ -107,12 +107,12 @@ func allWeapons() []common.EquipmentType {
 func NewWeaponstats() WeaponStats {
 
 	return WeaponStats{
-		kills:     make(map[common.EquipmentType]int),
-		headshots: make(map[common.EquipmentType]int),
-		accuracy:  make(map[common.EquipmentType]int),
-		damage:    make(map[common.EquipmentType]int),
-		shots:     make(map[common.EquipmentType]int),
-		hits:      make(map[common.EquipmentType]int),
+		Kills:     make(map[common.EquipmentType]int),
+		Headshots: make(map[common.EquipmentType]int),
+		Accuracy:  make(map[common.EquipmentType]int),
+		Damage:    make(map[common.EquipmentType]int),
+		Shots:     make(map[common.EquipmentType]int),
+		Hits:      make(map[common.EquipmentType]int),
 	}
 }
 
@@ -158,7 +158,6 @@ func (is *InfoStruct) Damages() interface{} {
 				continue
 			}
 			dams[p2.Name] = 0
-			log.Warning("adding dam for: ", p2.Name)
 		}
 
 		for k2, v := range player.PlayerDamages.Damages {
@@ -173,7 +172,6 @@ func (is *InfoStruct) Damages() interface{} {
 
 			name := is.Players.Players[vicNum].Name
 
-			log.Warning("Adding damage player", player.Name, "-> ", name, ": ", v)
 			dams[name] = v
 		}
 
@@ -207,20 +205,19 @@ func (is *InfoStruct) Weapons() interface{} {
 	}
 
 	type weapon struct {
-		Name string `json:"name"`
-
-		TotalKills     int   `json:"total_kills"`
-		TotalShots     int   `json:"total_shots"`
-		TotalHeadshots int   `json:"total_headshots"`
-		TotalAccuracy  int   `json:"total_accuracy"`
-		TotalDamage    int   `json:"total_damage"`
-		TotalHits      int   `json:"total_hits"`
-		Kills          wlist `json:"kills"`
-		Shots          wlist `json:"shots"`
-		Headshots      wlist `json:"headshots"`
-		Accuracy       wlist `json:"accuracy"`
-		Damage         wlist `json:"damage"`
-		Hits           wlist `json:"hits"`
+		Name           string `json:"name"`
+		TotalKills     int    `json:"total_kills"`
+		TotalShots     int    `json:"total_shots"`
+		TotalHeadshots int    `json:"total_headshots"`
+		TotalAccuracy  int    `json:"total_accuracy"`
+		TotalDamage    int    `json:"total_damage"`
+		TotalHits      int    `json:"total_hits"`
+		Kills          wlist  `json:"kills"`
+		Shots          wlist  `json:"shots"`
+		Headshots      wlist  `json:"headshots"`
+		Accuracy       wlist  `json:"accuracy"`
+		Damage         wlist  `json:"damage"`
+		Hits           wlist  `json:"hits"`
 	}
 
 	// Weapons           map[common.EquipmentType]map[*ScoreboardPlayer]WeaponStat
@@ -248,27 +245,27 @@ func (is *InfoStruct) Weapons() interface{} {
 
 		for _, player := range is.Players.Players {
 
-			ret.Weapons[v.String()].TotalKills += player.WeaponStats.Kills(v)
-			ret.Weapons[v.String()].TotalHeadshots += player.WeaponStats.Headshots(v)
-			ret.Weapons[v.String()].TotalDamage += player.WeaponStats.Damage(v)
-			ret.Weapons[v.String()].TotalShots += player.WeaponStats.Shots(v)
-			ret.Weapons[v.String()].TotalHits += player.WeaponStats.Hits(v)
+			ret.Weapons[v.String()].TotalKills += player.WeaponStats.GetKills(v)
+			ret.Weapons[v.String()].TotalHeadshots += player.WeaponStats.GetHeadshots(v)
+			ret.Weapons[v.String()].TotalDamage += player.WeaponStats.GetDamage(v)
+			ret.Weapons[v.String()].TotalShots += player.WeaponStats.GetShots(v)
+			ret.Weapons[v.String()].TotalHits += player.WeaponStats.GetHits(v)
 			// ret.Weapons[v.String()].TotalDamage+= player.WeaponStats.Damage(v)
 
 			if player.IsClanMember {
-				ret.Weapons[v.String()].Kills.Clan[player.Name] = player.WeaponStats.Kills(v)
-				ret.Weapons[v.String()].Headshots.Clan[player.Name] = player.WeaponStats.Headshots(v)
-				ret.Weapons[v.String()].Accuracy.Clan[player.Name] = player.WeaponStats.Accuracy(v)
-				ret.Weapons[v.String()].Damage.Clan[player.Name] = player.WeaponStats.Damage(v)
-				ret.Weapons[v.String()].Shots.Clan[player.Name] = player.WeaponStats.Shots(v)
-				ret.Weapons[v.String()].Hits.Clan[player.Name] = player.WeaponStats.Hits(v)
+				ret.Weapons[v.String()].Kills.Clan[player.Name] = player.WeaponStats.GetKills(v)
+				ret.Weapons[v.String()].Headshots.Clan[player.Name] = player.WeaponStats.GetHeadshots(v)
+				ret.Weapons[v.String()].Accuracy.Clan[player.Name] = player.WeaponStats.GetAccuracy(v)
+				ret.Weapons[v.String()].Damage.Clan[player.Name] = player.WeaponStats.GetDamage(v)
+				ret.Weapons[v.String()].Shots.Clan[player.Name] = player.WeaponStats.GetShots(v)
+				ret.Weapons[v.String()].Hits.Clan[player.Name] = player.WeaponStats.GetHits(v)
 			} else {
-				ret.Weapons[v.String()].Kills.Enemy[player.Name] = player.WeaponStats.Kills(v)
-				ret.Weapons[v.String()].Headshots.Enemy[player.Name] = player.WeaponStats.Headshots(v)
-				ret.Weapons[v.String()].Accuracy.Enemy[player.Name] = player.WeaponStats.Accuracy(v)
-				ret.Weapons[v.String()].Damage.Enemy[player.Name] = player.WeaponStats.Damage(v)
-				ret.Weapons[v.String()].Shots.Enemy[player.Name] = player.WeaponStats.Shots(v)
-				ret.Weapons[v.String()].Hits.Enemy[player.Name] = player.WeaponStats.Hits(v)
+				ret.Weapons[v.String()].Kills.Enemy[player.Name] = player.WeaponStats.GetKills(v)
+				ret.Weapons[v.String()].Headshots.Enemy[player.Name] = player.WeaponStats.GetHeadshots(v)
+				ret.Weapons[v.String()].Accuracy.Enemy[player.Name] = player.WeaponStats.GetAccuracy(v)
+				ret.Weapons[v.String()].Damage.Enemy[player.Name] = player.WeaponStats.GetDamage(v)
+				ret.Weapons[v.String()].Shots.Enemy[player.Name] = player.WeaponStats.GetShots(v)
+				ret.Weapons[v.String()].Hits.Enemy[player.Name] = player.WeaponStats.GetHits(v)
 			}
 
 		}
@@ -304,19 +301,19 @@ func (rk *RoundKill) MarshalJSON() ([]byte, error) {
 	})
 }
 
-type WeaponUser struct {
-	Kills     int
-	HSPercent int
-	Accuracy  int
-	Damage    int
-}
+// type WeaponUser struct {
+// 	Kills     int
+// 	HSPercent int
+// 	Accuracy  int
+// 	Damage    int
+// }
 
-type MegacoinPlayer struct {
-	//TODO
-	ForCriteriaA int
-	ForCriteriaB int
-	ForCriteriaC int
-}
+//type MegacoinPlayer struct {
+//	//TODO
+//	ForCriteriaA int
+//	ForCriteriaB int
+//	ForCriteriaC int
+//}
 
 func GetMatchInfo(id string, steamClient *steamclient.SteamClient) (InfoStruct, error) {
 	//TODO
@@ -343,7 +340,7 @@ func (sp ScoreboardPlayers) PlayerNumByID(steamID uint64) (int, error) {
 }
 
 type ScoreboardPlayers struct {
-	Players []ScoreboardPlayer
+	Players []ScoreboardPlayer `json:"players"`
 }
 
 // AllWeaponsUsed returns all weapons shot at least once during the match
@@ -352,11 +349,13 @@ func (sp *ScoreboardPlayers) AllWeaponsUsed() []common.EquipmentType {
 
 	for _, w := range allWeapons() {
 		for _, p := range sp.Players {
-			if p.WeaponStats.Shots(w) > 0 {
+			if p.WeaponStats.GetShots(w) > 0 {
 				list = append(list, w)
 			}
 		}
 	}
+
+	log.Warning("allweapons used", list)
 	return list
 }
 
@@ -426,70 +425,70 @@ func (p *MyParser) PlayerByID(player *common.Player) *ScoreboardPlayer {
 
 type WeaponStats struct {
 
-	// Number of kills
-	kills map[common.EquipmentType]int
+	// Number of Kills
+	Kills map[common.EquipmentType]int `json:"kills"`
 
-	// Number of headshots
-	headshots map[common.EquipmentType]int
+	// Number of Headshots
+	Headshots map[common.EquipmentType]int `json:"headshots"`
 
 	// Percent shots hit of shots fired
-	accuracy map[common.EquipmentType]int
+	Accuracy map[common.EquipmentType]int `json:"accuracy"`
 
 	// Damage caused
-	damage map[common.EquipmentType]int
+	Damage map[common.EquipmentType]int `json:"damage"`
 
 	// Shots fired
-	shots map[common.EquipmentType]int
+	Shots map[common.EquipmentType]int `json:"shots"`
 
 	// Shots hit
-	hits map[common.EquipmentType]int
+	Hits map[common.EquipmentType]int `json:"hits"`
 }
 
 func (ws *WeaponStats) AddKill(e events.Kill) {
-	ws.kills[e.Weapon.Type]++
+	ws.Kills[e.Weapon.Type]++
 }
 
 func (ws *WeaponStats) AddHeadshot(e events.Kill) {
 	if e.IsHeadshot {
-		ws.headshots[e.Weapon.Type]++
+		ws.Headshots[e.Weapon.Type]++
 	}
 }
 
 func (ws *WeaponStats) AddDamage(e events.PlayerHurt) {
-	ws.damage[e.Weapon.Type] += e.HealthDamage
+	ws.Damage[e.Weapon.Type] += e.HealthDamage
 }
 
 func (ws *WeaponStats) AddShot(e events.WeaponFire) {
-	ws.shots[e.Weapon.Type]++
-	ws.accuracy[e.Weapon.Type] = (ws.Hits(e.Weapon.Type) * 100) / ws.Shots(e.Weapon.Type)
+	ws.Shots[e.Weapon.Type]++
+	ws.Accuracy[e.Weapon.Type] = (ws.GetHits(e.Weapon.Type) * 100) / ws.GetShots(e.Weapon.Type)
 }
 
 func (ws *WeaponStats) AddHit(e events.PlayerHurt) {
-	ws.hits[e.Weapon.Type]++
+	ws.Hits[e.Weapon.Type]++
 }
 
-func (ws WeaponStats) Kills(w common.EquipmentType) int {
-	return ws.kills[w]
+func (ws WeaponStats) GetKills(w common.EquipmentType) int {
+	return ws.Kills[w]
 }
 
-func (ws WeaponStats) Accuracy(w common.EquipmentType) int {
-	return ws.accuracy[w]
+func (ws WeaponStats) GetAccuracy(w common.EquipmentType) int {
+	return ws.Accuracy[w]
 }
 
-func (ws WeaponStats) Headshots(w common.EquipmentType) int {
-	return ws.headshots[w]
+func (ws WeaponStats) GetHeadshots(w common.EquipmentType) int {
+	return ws.Headshots[w]
 }
 
-func (ws WeaponStats) Damage(w common.EquipmentType) int {
-	return ws.damage[w]
+func (ws WeaponStats) GetDamage(w common.EquipmentType) int {
+	return ws.Damage[w]
 }
 
-func (ws WeaponStats) Shots(w common.EquipmentType) int {
-	return ws.shots[w]
+func (ws WeaponStats) GetShots(w common.EquipmentType) int {
+	return ws.Shots[w]
 }
 
-func (ws WeaponStats) Hits(w common.EquipmentType) int {
-	return ws.hits[w]
+func (ws WeaponStats) GetHits(w common.EquipmentType) int {
+	return ws.Hits[w]
 }
 
 func (sp *ScoreboardPlayer) AddDamage(damage int, victim *ScoreboardPlayer) {
@@ -497,43 +496,43 @@ func (sp *ScoreboardPlayer) AddDamage(damage int, victim *ScoreboardPlayer) {
 }
 
 type PlayerDamages struct {
-	Damages map[uint64]int
+	Damages map[uint64]int `json:"damages"`
 }
 
 type ScoreboardPlayer struct {
-	WeaponStats      WeaponStats
-	PlayerDamages    PlayerDamages
-	IsBot            bool    `json:"isbot"`
-	IsClanMember     bool    `json:"isclanmember"`
-	Steamid64        uint64  `json:"steamid64"`
-	Name             string  `json:"name"`
-	Clantag          string  `json:"clantag"`
-	AvatarURL        string  `json:"avatar_url"`
-	Rank             int     `json:"rank"`
-	Kills            int     `json:"kills"`
-	MVPs             int     `json:"mvps"`
-	Deaths           int     `json:"deaths"`
-	Assists          int     `json:"assists"`
-	Kd               float64 `json:"kd"`
-	Adr              int     `json:"adr"`
-	Headshots        int     `json:"headshots"`
-	Hsprecent        float64 `json:"hsprecent"`
-	Firstkills       int     `json:"firstkills"`
-	Firstdeaths      int     `json:"firstdeaths"`
-	Tradekills       int     `json:"tradekills"`
-	Tradedeaths      int     `json:"tradedeaths"`
-	Tradefirstkills  int     `json:"tradefirstkills"`
-	Tradefirstdeaths int     `json:"tradefirstdeaths"`
-	Roundswonv5      int     `json:"roundswonv5"`
-	Roundswonv4      int     `json:"roundswonv4"`
-	Roundswonv3      int     `json:"roundswonv3"`
-	Rounds5K         int     `json:"rounds5k"`
-	Rounds4K         int     `json:"rounds4k"`
-	Rounds3K         int     `json:"rounds3k"`
+	WeaponStats      WeaponStats   `json:"weapon_stats"`
+	PlayerDamages    PlayerDamages `json:"player_damages"`
+	IsBot            bool          `json:"isbot"`
+	IsClanMember     bool          `json:"isclanmember"`
+	Steamid64        uint64        `json:"steamid64"`
+	Name             string        `json:"name"`
+	Clantag          string        `json:"clantag"`
+	AvatarURL        string        `json:"avatar_url"`
+	Rank             int           `json:"rank"`
+	Kills            int           `json:"kills"`
+	MVPs             int           `json:"mvps"`
+	Deaths           int           `json:"deaths"`
+	Assists          int           `json:"assists"`
+	Kd               float64       `json:"kd"`
+	Adr              int           `json:"adr"`
+	Headshots        int           `json:"headshots"`
+	Hsprecent        float64       `json:"hsprecent"`
+	Firstkills       int           `json:"firstkills"`
+	Firstdeaths      int           `json:"firstdeaths"`
+	Tradekills       int           `json:"tradekills"`
+	Tradedeaths      int           `json:"tradedeaths"`
+	Tradefirstkills  int           `json:"tradefirstkills"`
+	Tradefirstdeaths int           `json:"tradefirstdeaths"`
+	Roundswonv5      int           `json:"roundswonv5"`
+	Roundswonv4      int           `json:"roundswonv4"`
+	Roundswonv3      int           `json:"roundswonv3"`
+	Rounds5K         int           `json:"rounds5k"`
+	Rounds4K         int           `json:"rounds4k"`
+	Rounds3K         int           `json:"rounds3k"`
 }
 
 type ScoreboardRound struct {
-	ClanWonRound     bool
+	ClanWonRound     bool                  `json:"clan_won_round"`
 	Duration         time.Duration         `json:"duration"`
 	ClanKills        []RoundKill           `json:"kills_clan"`
 	EnemyKills       []RoundKill           `json:"kills_enemy"`

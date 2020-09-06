@@ -78,8 +78,6 @@ func (p *MyParser) Parse(path string, m *InfoStruct) error {
 	// Parse the demo returning errors
 	err = p.parser.ParseToEnd()
 	p.calculate()
-	log.Warning("set weapons:")
-	log.Warning(p.Match.Players.Players[0].WeaponStats)
 
 	return err
 
@@ -107,7 +105,7 @@ func (p *MyParser) calculate() {
 		var playeradr int = 0
 
 		for _, v := range allWeapons() {
-			playeradr += p.Match.Players.Players[k].WeaponStats.Damage(v)
+			playeradr += p.Match.Players.Players[k].WeaponStats.GetDamage(v)
 		}
 
 		p.Match.Players.Players[k].Adr = playeradr / len(p.Match.Rounds)

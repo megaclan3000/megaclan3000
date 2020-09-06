@@ -203,28 +203,28 @@ $(document).ready(function(){
 	var url = "/api/matchinfo/1/scoreboard"
 	$.getJSON(url,  function( data) {
 
-		data.Players.sort((a, b) => b.kills- a.kills)
+		data.players.sort((a, b) => b.kills- a.kills)
 
 		var arrPlayers = [];
 		var arrKills = [];
 		var arrDeaths = [];
 		var arrAssists = [];
 
-		for (var row = 0; row < data.Players.length; row++) {
+		for (var row = 0; row < data.players.length; row++) {
 
-			if (data.Players[row].isbot) {
+			if (data.players[row].isbot) {
 				continue
 			}
 
-			arrKills.push(data.Players[row].kills);
-			arrDeaths.push(data.Players[row].deaths);
-			arrAssists.push(data.Players[row].assists);
-			arrPlayers.push(data.Players[row].name);
+			arrKills.push(data.players[row].kills);
+			arrDeaths.push(data.players[row].deaths);
+			arrAssists.push(data.players[row].assists);
+			arrPlayers.push(data.players[row].name);
 
-			if (data.Players[row].isclanmember) {
-				$("#scoretableClan tbody" ).append( $.templates( "#matchScoreboardTemplate" ).render(data.Players[row]) );
+			if (data.players[row].isclanmember) {
+				$("#scoretableClan tbody" ).append( $.templates( "#matchScoreboardTemplate" ).render(data.players[row]) );
 			} else {
-				$("#scoretableEnemy tbody" ).append( $.templates( "#matchScoreboardTemplate" ).render(data.Players[row]) );
+				$("#scoretableEnemy tbody" ).append( $.templates( "#matchScoreboardTemplate" ).render(data.players[row]) );
 			}
 		}
 

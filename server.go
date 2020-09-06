@@ -2,6 +2,7 @@ package main
 
 import (
 	// "encoding/json"
+	"encoding/json"
 	"flag"
 	"html/template"
 	"sort"
@@ -81,13 +82,22 @@ func main() {
 
 	var err error
 	//TODO get correct id
-	demoInfo, err = demoparser.GetMatchInfo("1", steamClient)
+	demoInfoFromDem, err := demoparser.GetMatchInfo("1", steamClient)
 	if err != nil {
 		panic(err)
 	}
-	//TODO download avatar images in a better place
-	// for k, v := range demoInfo.Players.Players {
-	// }
+
+	out, err := json.Marshal(demoInfoFromDem)
+
+	if err != nil {
+		panic(err)
+	}
+
+	log.Info(string(out))
+
+	if err := json.Unmarshal(out, &demoInfo); err != nil {
+		panic(err)
+	}
 	//////////////////////////////////////////////////////////////
 
 	// Set up the HTTP-server

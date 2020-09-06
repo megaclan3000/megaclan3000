@@ -1166,6 +1166,7 @@ github.com/pinpox/matrix-bot v0.0.0-20190422182545-e58f16f86ca7 h1:XHreELSalICD7
 github.com/pinpox/matrix-bot v0.0.0-20190422182545-e58f16f86ca7/go.mod h1:7Rr0lMai8JyXMw8rlLclHmIX0+Lf7GJcfEL4R9/Wtk4=
 github.com/pinpox/megaclan3000 v0.0.0-20200721094138-8bdf72a50ba1 h1:dFFSk3PQZhBK2NMZvjUAu8BU/LOV3j6hj9rf8CYqS0M=
 github.com/pinpox/megaclan3000 v0.0.0-20200811075706-2c08416d29de h1:YisS3q52Nq5b97ubTytmBfZsEHiWWQckfzf/Ru531TA=
+github.com/pinpox/megaclan3000 v0.0.0-20200906123731-d81e4afe56ae h1:Z0xmb6i6a3m3CFZOj4GmxX5IMXCnW41ttnc4WaIOztk=
 github.com/pinpox/quobar v0.0.0-20160613212119-139f6533afd7 h1:vEf68RjlQDxCaI9OhcKZWxLYd+DKLo3qf6g7/XClpzI=
 github.com/pinpox/quobar v0.0.0-20160613212119-139f6533afd7/go.mod h1:eMCvXQwlLHu7WXvrASQgLZlSE3Y+sU87jiSGxwK2brA=
 github.com/pinpox/slingshot-clone v0.0.0-20180423172909-f67acea12f06 h1:654DVm3gvj/NqT5nu+w/rdo1rJbv81vNeJyosXJGwEw=
