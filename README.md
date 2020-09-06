@@ -12,6 +12,7 @@ Our custom CS:GO stats page: https://megaclan3000.de
 [![codecov](https://codecov.io/gh/megaclan3000/megaclan3000/branch/master/graph/badge.svg)](https://codecov.io/gh/megaclan3000/megaclan3000)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/994620bcbe906b069ef0/test_coverage)](https://codeclimate.com/github/megaclan3000/megaclan3000/test_coverage)
 ![golangci-lint](https://github.com/megaclan3000/megaclan3000/workflows/golangci-lint/badge.svg)
+[![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6Im1lZ2FjbGFuMzAwMCIsInJlcG8xIjoibWVnYWNsYW4zMDAwIiwiaW5jbHVkZUxpbnQiOmZhbHNlLCJhdXRob3JJZCI6MjIzNTgsImlhdCI6MTU5OTM5NTgxMX0.6wWX6YW36qmfpKAuboEcQfb4ljMgKsmqKD-y7089zeg)](https://www.deepcode.ai/app/gh/megaclan3000/megaclan3000/_/dashboard?utm_content=gh%2Fmegaclan3000%2Fmegaclan3000)
 ![Labeler](https://github.com/megaclan3000/megaclan3000/workflows/Labeler/badge.svg)
 
 ![Docker Pulls](https://img.shields.io/docker/pulls/pinpox/megaclan3000)
