@@ -9,41 +9,81 @@
 		<link rel="shortcut icon" href="/public/img/favicon.ico" type="image/x-icon">
 		<link rel="icon" href="/public/img/favicon.ico" type="image/x-icon">
 		<link  rel="stylesheet" href="/public/css/custom.css">
+		<link  rel="stylesheet" href="/public/css/honeycombs.css">
+
 
 		<script charset="utf-8" src="/public/js/helpers.js" > </script>
 		<!-- JS Libs -->
-
-  <!-- Load jQuery -->
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-
-  <!-- Load JsRender latest version, from www.jsviews.com: -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.7/jsrender.js"></script>
-
-
+		<!-- Load jQuery -->
+		<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+		<!-- Load JsRender latest version, from www.jsviews.com: -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.7/jsrender.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 
-
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/sankey.js"></script>
-<script src="https://code.highcharts.com/highcharts-more.js"></script>
-<script src="https://code.highcharts.com/highcharts-3d.js"></script>
-<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+		<!--Highcharts -->
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+		<script src="https://code.highcharts.com/modules/export-data.js"></script>
+		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		<script src="https://code.highcharts.com/modules/sankey.js"></script>
+		<script src="https://code.highcharts.com/highcharts-more.js"></script>
+		<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+		<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+		<script src="/public/js/honeycombs.js"></script>
 
 	</head>
+
+	<style type="text/css" media="screen">
+	header, main, footer, .main-content {
+		padding-left: 300px;
+		width: 90%;
+		max-width: 90%;
+	}
+
+	@media only screen and (max-width : 992px) {
+		header, main, footer, .main-content {
+			padding-left: 0;
+		}
+    }
+	
+	.navbar-logo{
+		width: 300px;
+		height: 300px;
+	}
+
+	</style>
 	<body class="blue-grey darken-4">
-		<nav>
-			<div class="nav-wrapper blue-grey darken-2">
-				<a href="/" class="brand-logo"><img src="/public/img/navbar-logo.png" class="navbar-logo" height="auto" /></a>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li id="header-link-stats"><a href="/stats" class="navbar-link">Player Stats</a></li>
-					<li id="header-link-contact"><a href="/contact" class="navbar-link">Contact</a></li>
-					<li id="header-link-faq"><a href="/faq" class="navbar-link">FAQ</a></li>
-				</ul>
-			</div>
-		</nav>
-		<div class="container main-content">
+
+		<script>
+			$(document).ready(function(){
+
+				$('.sidenav').sidenav();
+			});
+// Initialize collapsible (uncomment the lines below if you use the dropdown variation)
+
+		</script>
+
+    <ul id="slide-out" class="sidenav sidenav-fixed blue-grey darken-2 white-text">
+	<li >
+		<div >
+		<a href="/" >
+			<img class="navbar-logo" src="/public/logo/Logo_isolated.png">
+
+		</a>
+		</div>
+	</li>
+
+    <li><a class="white-text" href="/scoreboard"><i class="material-icons  white-text">assignment</i>Scoreboard</a></li>
+    <li><a class="white-text" href="/stats"><i class="material-icons white-text">fingerprint</i>Players</a></li>
+    <li><a class="white-text" href="/matches"><i class="material-icons white-text">flag</i>Matches</a></li>
+    <li><a class="white-text" href="/faq"><i class="material-icons white-text">chat</i>FAQ</a></li>
+    <li><a class="white-text" href="/contact"><i class="material-icons white-text"> headset_mic </i>Discord</a></li>
+
+	</ul>
+
+	<div class="container main-content ">
+
+
+
+

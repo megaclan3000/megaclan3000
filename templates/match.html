@@ -1,20 +1,10 @@
 <<template "header.html">>
 
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width">
-		<title>Match</title>
-	</head>
-	<body>
 
 
-		<!-- TODO put styles in public folder -->
-		<style type="text/css" media="screen">
-
-
-
+<!-- TODO put styles in public folder -->
+<style type="text/css" media="screen">
 .scorediv {
 	text-align: center;
 	vertical-align: middle;
@@ -38,7 +28,10 @@
 	width: 100%;
 }
 
-		</style>
+</style>
+
+
+
 		<div class="row">
 			<div class="col s12">
 				<div class="card">
@@ -141,15 +134,10 @@
 			<div id="tab-megacoins" class="col s12 white"><<template "tab-match-megacoins.html" .>></div>
 		</div>
 
+
 		<script>
 			$(document).ready(function(){
-				$('.tabs').tabs( {
-					onShow: function(tab) {
-						//alert(tab);
-					}
-				});
-
-			});
+				$('.tabs').tabs();
 		</script>
 
 

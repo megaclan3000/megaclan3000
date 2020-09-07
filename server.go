@@ -52,7 +52,9 @@ func main() {
 	steamClient = steamclient.NewSteamClient(flagConfig)
 
 	log.Info("Creating datastorage and getting initial values")
-	datastorage = &DataStorage{Players: steamClient.GetPlayers()}
+
+	// Create and starting a new datastorage
+	datastorage = NewDataStorage()
 
 	r := mux.NewRouter()
 
@@ -79,8 +81,6 @@ func main() {
 	// Set custom 404 page
 	r.NotFoundHandler = http.HandlerFunc(parseTemplates(handler404))
 
-	//////////////////////////////////////////////////////////////
-
 	// Set up the HTTP-server
 	srv := &http.Server{
 		Handler:      r,
@@ -92,7 +92,6 @@ func main() {
 	log.Info("Server started on: ", srv.Addr)
 
 	//start updating data every 5 minutes asynchroniusly
-	go updateData()
 	log.Fatal(srv.ListenAndServe())
 }
 
@@ -111,20 +110,6 @@ func parseTemplates(h http.HandlerFunc) http.HandlerFunc {
 		}
 
 		h(w, r)
-	}
-}
-
-func updateData() {
-
-	// Get PlayerInfo for all players periodically and store/cache in
-	// memory so we don't have to wait when retrieving it in the fronend
-
-	for {
-		log.Debug("Updating player information")
-		datastorage.Players = steamClient.GetPlayers()
-
-		// Sleep for a predefined duration (in minutes)
-		time.Sleep(time.Duration(steamClient.Config.UpdateInterval) * time.Minute)
 	}
 }
 
