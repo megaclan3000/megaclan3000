@@ -31,7 +31,12 @@ func (ds *DataStorage) UpdateData() {
 	}
 }
 
+//TODO remove and implement database
+var demoInfoFromDem demoparser.InfoStruct
+
 func NewDataStorage() *DataStorage {
+
+	demoInfoFromDem, _ = demoparser.GetMatchInfo("1", steamClient)
 	ds := &DataStorage{Players: steamClient.GetPlayers()}
 	go ds.UpdateData()
 	return ds
@@ -42,11 +47,6 @@ func (ds *DataStorage) Upload(match demoparser.InfoStruct) error {
 }
 
 func (ds *DataStorage) GetMatchByID(id string) (demoparser.InfoStruct, error) {
-
-	demoInfoFromDem, err := demoparser.GetMatchInfo("1", steamClient)
-	if err != nil {
-		panic(err)
-	}
 
 	return demoInfoFromDem, nil
 }
@@ -176,9 +176,225 @@ func (ds DataStorage) GetPlayers() interface{} {
 func (ds DataStorage) GetAwards() interface{} {
 
 	type Award struct {
+		PlayerName  string    `json:"player_name"`
+		Avatar      string    `json:"avatar"`
+		SteamID64   string    `json:"steamid"`
+		Title       string    `json:"title"`
+		Description string    `json:"description"`
+		Time        time.Time `json:"time"`
 	}
-	//TODO implement
-	return nil
+
+	ret := []Award{
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Robin Hood",
+			Description: "Most donated weapons",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Mayfly",
+			Description: "Fastest Death in Round",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Ground-Aimer",
+			Description: "Most Shots to Legs",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Quick-Reloader",
+			Description: "Most times reloaded",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "BOT-Instructor",
+			Description: "Most BOTs taken  over",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Talkshow host",
+			Description: "Most words written in chat",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Rowdy",
+			Description: "Most decoy-grenades thrown",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Pacifist",
+			Description: "Most rounds without frags",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Partystarter",
+			Description: "Most Entry-Frags",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Dont be looser, buy Defuser",
+			Description: "Most defuse kits bought",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Jeff Bezos",
+			Description: "Most money saved on last Round",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Economist",
+			Description: "Least money spend",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "",
+			Description: "",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Freelancer",
+			Description: "Most Aces",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Kangoroo",
+			Description: "Most jumps in a single Match",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Forrest Gump",
+			Description: "Most steps in a single Match",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Bomb-Protector",
+			Description: "Most deaths to bomb Explosion",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Fake-Defuser",
+			Description: "Most faked bomb-defuses",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Photographer",
+			Description: "Most teammates blinded",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Chicken-Chef",
+			Description: "Most chickens killed",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Hip-Shooter",
+			Description: "Most no-scope kills with AWP",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Teamkiller",
+			Description: "Most Damage to Teammates",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Electrician",
+			Description: "Most enemies tasered",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Master Slicer",
+			Description: "Most Knive Kills",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Warmup King",
+			Description: "Most Kills during Warmup",
+			Time:        time.Now(),
+		},
+		{
+			PlayerName:  "randolf",
+			Avatar:      "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg",
+			SteamID64:   "111",
+			Title:       "Nade Inspector",
+			Description: "Most Deaths while not holding a Weapon",
+			Time:        time.Now(),
+		},
+	}
+	return ret
 }
 
 func (ds DataStorage) GetUpdates() interface{} {
