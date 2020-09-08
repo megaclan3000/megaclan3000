@@ -69,6 +69,7 @@ func main() {
 	r.HandleFunc("/player/{id}", parseTemplates(handlerDetails))
 	r.HandleFunc("/match/{id}", parseTemplates(handlerMatch))
 	r.HandleFunc("/matches", parseTemplates(handlerMatches))
+	r.HandleFunc("/awards", parseTemplates(handlerAwards))
 	r.HandleFunc("/scoreboard", parseTemplates(handlerScoreboard))
 	r.HandleFunc("/imprint", parseTemplates(handlerImprint))
 
@@ -160,8 +161,13 @@ func handlerMatch(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func handlerMatches(w http.ResponseWriter, r *http.Request) {
+func handlerAwards(w http.ResponseWriter, r *http.Request) {
+	if err := t.ExecuteTemplate(w, "awards.html", nil); err != nil {
+		log.Warn(err)
+	}
+}
 
+func handlerMatches(w http.ResponseWriter, r *http.Request) {
 	if err := t.ExecuteTemplate(w, "matches.html", nil); err != nil {
 		log.Warn(err)
 	}

@@ -63,14 +63,20 @@ func (ds DataStorage) GetPlayerInfoBySteamID(steamID uint64) (steamclient.Player
 }
 
 func (ds DataStorage) GetMatches() interface{} {
+
+	type Matchplayer struct {
+		PlayerName string `json:"player_name"`
+		Avatar     string `json:"avatar"`
+	}
 	//TODO implement real data
 	ret := []struct {
-		MapName    string    `json:"map"`         // Name of the map
-		ScoreClan  int       `json:"score_clan"`  // Points clan
-		ScoreEnemy int       `json:"score_enemy"` // Points enemy
-		Time       time.Time `json:"time"`        // Time it was played/uploaded
-		Result     int       `json:"result"`      // Resunt: 1=won, 0=draw, -1=lost
-		MatchID    string    `json:"matchid"`     // ID of the match, for links
+		MapName     string        `json:"map"`         // Name of the map
+		ScoreClan   int           `json:"score_clan"`  // Points clan
+		ScoreEnemy  int           `json:"score_enemy"` // Points enemy
+		Time        time.Time     `json:"time"`        // Time it was played/uploaded
+		Result      int           `json:"result"`      // Resunt: 1=won, 0=draw, -1=lost
+		MatchID     string        `json:"matchid"`     // ID of the match, for links
+		ClanPlayers []Matchplayer `json:"clan_players"`
 	}{
 		{
 			MapName:    "de_dust2",
@@ -79,6 +85,11 @@ func (ds DataStorage) GetMatches() interface{} {
 			Time:       time.Now(),
 			Result:     1,
 			MatchID:    "1",
+			ClanPlayers: []Matchplayer{
+				{PlayerName: "randolf", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg"},
+				{PlayerName: "salatkopf", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/e8/e8b5da2823159d9674a5cac41b08110b052b1803_full.jpg"},
+				{PlayerName: "Kapt'n Turbot", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/36/36f2b03d73e47172c92e0b0a6b30b32f06c6d613_full.jpg"},
+			},
 		},
 		{
 			MapName:    "de_mirage",
@@ -87,6 +98,10 @@ func (ds DataStorage) GetMatches() interface{} {
 			Time:       time.Now(),
 			Result:     1,
 			MatchID:    "1",
+			ClanPlayers: []Matchplayer{
+				{PlayerName: "salatkopf", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/e8/e8b5da2823159d9674a5cac41b08110b052b1803_full.jpg"},
+				{PlayerName: "Kapt'n Turbot", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/36/36f2b03d73e47172c92e0b0a6b30b32f06c6d613_full.jpg"},
+			},
 		},
 		{
 			MapName:    "de_inferno",
@@ -95,6 +110,10 @@ func (ds DataStorage) GetMatches() interface{} {
 			Time:       time.Now(),
 			Result:     -1,
 			MatchID:    "1",
+			ClanPlayers: []Matchplayer{
+				{PlayerName: "randolf", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg"},
+				{PlayerName: "salatkopf", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/e8/e8b5da2823159d9674a5cac41b08110b052b1803_full.jpg"},
+			},
 		},
 		{
 			MapName:    "de_cache",
@@ -103,6 +122,10 @@ func (ds DataStorage) GetMatches() interface{} {
 			Time:       time.Now(),
 			Result:     0,
 			MatchID:    "1",
+			ClanPlayers: []Matchplayer{
+				{PlayerName: "randolf", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg"},
+				{PlayerName: "Kapt'n Turbot", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/36/36f2b03d73e47172c92e0b0a6b30b32f06c6d613_full.jpg"},
+			},
 		},
 	}
 
@@ -150,6 +173,13 @@ func (ds DataStorage) GetPlayers() interface{} {
 	}
 	return ret
 }
+func (ds DataStorage) GetAwards() interface{} {
+
+	type Award struct {
+	}
+	//TODO implement
+	return nil
+}
 
 func (ds DataStorage) GetUpdates() interface{} {
 
@@ -171,6 +201,7 @@ func (ds DataStorage) GetUpdates() interface{} {
 	}
 
 	ret := []Update{
+		//TODO add real data
 		{
 			Type:  0,
 			Time:  time.Now(),
@@ -180,8 +211,8 @@ func (ds DataStorage) GetUpdates() interface{} {
 		{
 			Type:  1,
 			Time:  time.Now(),
-			Text1: "salatkopf ranked up",
-			Text2: "4 to 5",
+			Text1: "salatkopf new rank",
+			Text2: "4",
 		},
 		{
 			Type:  2,

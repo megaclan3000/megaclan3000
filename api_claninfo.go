@@ -27,6 +27,10 @@ func handlerAPIClaninfo(w http.ResponseWriter, r *http.Request) {
 		if byt, err = json.Marshal(datastorage.GetUpdates()); err != nil {
 			panic(err)
 		}
+	case "awards":
+		if byt, err = json.Marshal(datastorage.GetAwards()); err != nil {
+			panic(err)
+		}
 	default:
 		if byt, err = json.Marshal(
 			struct {
