@@ -27,6 +27,13 @@
 	width: 100%;
 }
 
+@font-face { font-family: Scoreboard; src: url('/public/css/font.ttf'); } 
+
+.scoreticker { 
+	font-family: Scoreboard, sans-serif; 
+	font-size: 75px;
+}
+
 	</style>
 
 
@@ -57,10 +64,10 @@
 						<<end>>
 					</div>
 
-					<<$color_class := "red-text">> <<if .General.ClanWonMatch>> <<$color_class = "green-text">> <<end>>
-					<<$text := "LOST">> <<if .General.ClanWonMatch>> <<$text ="WON">> <<end>>
+					<<$color_class := "red-text">> <<if not .General.ClanWonMatch>> <<$color_class = "green-text">> <<end>>
+					<<$text := "LOST">> <<if not .General.ClanWonMatch>> <<$text ="WON">> <<end>>
 					<div class="col s2 scorediv <<$color_class>>">
-						<<$text>> </br> <span id="match-score-clan"></span><span>:</span><span id="match-score-enemy"></span>
+					<div class="scoreticker"> <<$text>> </div><span id="match-score-clan"></span><span>:</span><span id="match-score-enemy"></span>
 					</div>
 
 					<div id="match-enemy-players">
