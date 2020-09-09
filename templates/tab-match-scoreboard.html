@@ -1,6 +1,3 @@
-
-
-
 <style type="text/css" media="screen">
 .wrapper {
 	display: flex;
@@ -40,33 +37,63 @@ th span {
   left: 50%;
 }
 
+.scoreboard-container{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
 #chartcontainer-match-players {
 	height: 300px;
 }
-
-
 </style>
 
-<div  id="chartcontainer-match-players"></div>
+<div class="indigo darken-2" style="margin-top: 20px; "  id="chartcontainer-match-players"></div>
 
 <script charset="utf-8">
 	scoreboardChart = Highcharts.chart('chartcontainer-match-players', {
     chart: {
+		plotBackgroundColor: null,
+		backgroundColor: 'rgba(0,0,0,0)',
+		plotBorderWidth: null,
+		plotShadow: false,
         type: 'column'
     },
+	credits: {
+		enabled: false
+	},
+	exporting: {
+		enabled: false
+	},
+	legend: {
+		itemStyle: {
+			color: '#ffffff',
+		}
+	},
     title:  null,
     xAxis: {
         categories: [ "p1", "p2"],
-        crosshair: true
+        crosshair: true,
+		gridLineWidth: 0,
+		labels: {
+            style: {
+                color: 'white'
+            }
+        }
     },
     yAxis: {
         min: 0,
         title: null,
+		gridLineWidth: 0,
+		labels: {
+			style: {
+				color: 'orange'
+			}
+        }
     },
     tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f} HP</b></td></tr>',
+            '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
         footerFormat: '</table>',
         shared: true,
         useHTML: true
@@ -104,10 +131,10 @@ th span {
   });
 </script>
 
-<table id="scoretableClan" class="scoretable highlight indigo lighten-5">
+<div class="indigo darken-2 white-text scoreboard-container">
+<table id="scoretableClan" class="scoretable highlight white-text">
 	<thead>
-		<tr>
-
+		<tr class="orange-text indigo darken-3">
 			<th style="width:40px;"></th>
 			<th style="width:140px;"></th>
 			<th style="width:80px;"></th>
@@ -136,9 +163,9 @@ th span {
 	</tbody>
 </table>
 
-<table id="scoretableEnemy" class="scoretable highlight indigo lighten-5">
+<table id="scoretableEnemy" class="scoretable highlight white-text">
 	<thead>
-		<tr>
+		<tr class="orange-text indigo darken-3">
 			<th style="width:40px;"></th>
 			<th style="width:140px;"></th>
 			<th style="width:80px;"></th>
@@ -166,6 +193,7 @@ th span {
 	<tbody>
 	</tbody>
 </table>
+</div>
 
 <script id="matchScoreboardTemplate" type="text/x-jsrender">
 		<tr>

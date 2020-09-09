@@ -16,12 +16,17 @@
 
 </style>
 
-<div  id="chartcontainer-match-rounds"></div>
+
+<div class="indigo darken-2" style="margin-top: 20px; " id="chartcontainer-match-rounds"></div>
 
 <script charset="utf-8">
 	//TODO use real data
 	Highcharts.chart('chartcontainer-match-rounds', {
 	chart: {
+		plotBackgroundColor: null,
+		backgroundColor: 'rgba(0,0,0,0)',
+		plotBorderWidth: null,
+		plotShadow: false,
 		type: 'column'
 	},
 	title:  null,
@@ -46,11 +51,25 @@
 		'Round 17',
 		'Round 18'
 		],
-		crosshair: true
+		crosshair: true,
+
+		gridLineWidth: 0,
+		labels: {
+            style: {
+                color: 'white'
+            }
+        }
 	},
 	yAxis: {
 		min: 0,
 		title: null,
+
+		gridLineWidth: 0,
+		labels: {
+			style: {
+				color: 'orange'
+			}
+        }
 	},
 	tooltip: {
 		headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
@@ -64,6 +83,12 @@
 		column: {
 			pointPadding: 0.1,
 			borderWidth: 0
+		}
+	},
+
+	legend: {
+		itemStyle: {
+			color: '#ffffff',
 		}
 	},
 	series: [{
