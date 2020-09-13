@@ -14,6 +14,7 @@
 .scoretitleimg{
 	height:200px;
 	object-fit: cover;
+	opacity: 0.8;
 }
 
 .tableimage{
@@ -45,7 +46,7 @@
 				<img class="scoretitleimg" src="/public/img/maps/de_dust2.jpg" >
 				<span class="card-title"><<.General.MapName>></span>
 			</div>
-			<div class="card-content">
+			<div class="card-content" style="padding-bottom:0px">
 
 				<div class="row">
 
@@ -56,9 +57,9 @@
 
 						<<if not $p.IsBot >>
 						<div class="col s1">
-							<span> <img class="avatar circle" src="<<$p.AvatarURL>>" alt=""> </span>
+							<img class="avatar circle" src="<<$p.AvatarURL>>" alt="">
 							<span class="title truncate center-align"> <<$p.Name>> </span>
-							<span> <img src="/public/img/ranks/<<$p.Rank>>.png" style="height:30px;"alt=""> </span>
+							<img src="/public/img/ranks/<<$p.Rank>>.png" style="margin-left: auto; margin-right: auto; width: 100%;" class="rankicon z-depth-2"  alt="">
 						</div>
 						<<end>>
 						<<end>>
@@ -74,9 +75,9 @@
 						<<range  $p := .Players.Enemy>>
 						<<if not $p.IsBot >>
 						<div class="col s1">
-							<span> <img class="avatar circle" src="<<$p.AvatarURL>>" alt=""> </span>
+							<img class="avatar circle" src="<<$p.AvatarURL>>" alt=""> 
 							<span class="title truncate center-align"> <<$p.Name>> </span>
-							<span> <img src="/public/img/ranks/<<$p.Rank>>.png" style="height:30px;"alt=""> </span>
+							<img src="/public/img/ranks/<<$p.Rank>>.png" style="margin-left: auto; margin-right: auto; width: 100%;" class="rankicon z-depth-2" alt="">
 						</div>
 						<<end>>
 						<<end>>

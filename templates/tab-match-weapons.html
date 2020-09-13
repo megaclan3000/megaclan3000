@@ -4,16 +4,13 @@
 .weaponcardimg{
 	height:150px;
 	object-fit: contain;
+  filter: invert(1) opacity(0.7) drop-shadow(7px 7px 7px #1a237e)
 }
 
-</style>
-
-<style type="text/css" media="screen">
 .wrapper {
 	display: flex;
 	width:100%;
 }
-
 
 .wrapped {
 	flex-basis: 100%;
@@ -21,7 +18,7 @@
 
 #chartcontainer-match-weapons {
 	height: 300px;
-	margin-top: 20px; 
+	margin-top: 20px;
 }
 
 #weaponscontainer {
@@ -38,11 +35,11 @@
 
 <script id="matchWeaponTemplate" type="text/x-jsrender">
 
+	<div class="col s6" style="margin-bottom:20px">
 
-
-<div class="card indigo darken-3 col s6">
+<div class="card indigo darken-3 z-depth-4"  style="margin:0px;">
 	<div class="card-image">
-		<img class="weaponcardimg" src="/public/img/weapons/{{:name}}.jpg" >
+		<img class="weaponcardimg" src="/public/img/weapons/outlines/svg_normal/{{:name}}.svg" >
 		<span class="card-title white-text">{{:name}}</span>
 	</div>
 	<div class="card-tabs">
@@ -170,6 +167,7 @@
 		</div>
 	</div>
 </div>
+	</div>
 </script>
 
 
@@ -190,12 +188,12 @@ var ser = [];
 var sortable = [];
 
 for (const key in data.weapons) {
-    if (data.weapons.hasOwnProperty(key)) {
+	if (data.weapons.hasOwnProperty(key)) {
 
 		var weapon = data.weapons[key];
 		sortable.push(weapon);
 
-    }
+	}
 }
 
 
