@@ -21,28 +21,32 @@
 
 #chartcontainer-match-weapons {
 	height: 300px;
+	margin-top: 20px; 
+}
+
+#weaponscontainer {
+	margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 
 </style>
 
-<div id="chartcontainer-match-weapons"> </div>
+<div id="chartcontainer-match-weapons" class="indigo darken-2"> </div>
 
-<script charset="utf-8">
-
-</script>
+<div id="weaponscontainer"> </div>
 
 <script id="matchWeaponTemplate" type="text/x-jsrender">
 
 
 
-<div class="card indigo darken-4 col s6">
+<div class="card indigo darken-3 col s6">
 	<div class="card-image">
 		<img class="weaponcardimg" src="/public/img/weapons/{{:name}}.jpg" >
-		<span class="card-title black-text">{{:name}}</span>
+		<span class="card-title white-text">{{:name}}</span>
 	</div>
 	<div class="card-tabs">
-		<ul class="tabs tabs-fixed-width orange-text indigo lighten-5">
+		<ul class="tabs tabs-fixed-width orange-text indigo">
 			<li class="tab"><a href="#tab-weapon-{{:#index}}-kills"> <span class="orange-text">Kills</span></a></li>
 			<li class="tab"><a href="#tab-weapon-{{:#index}}-accuracy"> <span class="orange-text">Accuracy</span></a></li>
 			<li class="tab"><a href="#tab-weapon-{{:#index}}-headshots"> <span class="orange-text">Headshots</span></a></li>
@@ -51,13 +55,13 @@
 	</div>
 
 
-	<div class="card-content  indigo lighten-4">
+	<div class="card-content indigo darken-2">
 		<div id="tab-weapon-{{:#index}}-kills">
 			<div class="row">
 				<div class="container">
 					<div class="row">
 						<div class="col s6">
-							<table style="table-layout: fixed ; width: 100% ;" >
+							<table style="table-layout: fixed ; width: 100% ;" class="white-text darken-2 weapon-card-table" >
 								{{props kills.clan}}
 								<tr>
 									<td style="width: 50%;" class="right-align">{{:key}}</td>
@@ -67,7 +71,7 @@
 							</table>
 						</div>
 						<div class="col s6">
-							<table style="table-layout: fixed ; width: 100% ;" >
+							<table style="table-layout: fixed ; width: 100% ;" class="white-text weapon-card-table" >
 								{{props kills.enemy}}
 								<tr>
 									<td style="width: 50%;" class="right-align">{{:key}}</td>
@@ -85,7 +89,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col s6">
-							<table style="table-layout: fixed ; width: 100% ;" >
+							<table style="table-layout: fixed ; width: 100% ;"  class="white-text weapon-card-table" >
 								{{props accuracy.clan}}
 								<tr>
 									<td style="width: 50%;" class="right-align">{{:key}}</td>
@@ -95,7 +99,7 @@
 							</table>
 						</div>
 						<div class="col s6">
-							<table style="table-layout: fixed ; width: 100% ;" >
+							<table style="table-layout: fixed ; width: 100% ;"  class="white-text weapon-card-table" >
 								{{props accuracy.enemy}}
 								<tr>
 									<td style="width: 50%;" class="right-align">{{:key}}</td>
@@ -113,7 +117,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col s6">
-							<table style="table-layout: fixed ; width: 100% ;" >
+							<table style="table-layout: fixed ; width: 100% ;"  class="white-text weapon-card-table" >
 								{{props headshots.clan}}
 								<tr>
 									<td style="width: 50%;" class="right-align">{{:key}}</td>
@@ -123,7 +127,7 @@
 							</table>
 						</div>
 						<div class="col s6">
-							<table style="table-layout: fixed ; width: 100% ;" >
+							<table style="table-layout: fixed ; width: 100% ;"  class="white-text weapon-card-table" >
 								{{props headshots.enemy}}
 								<tr>
 									<td style="width: 50%;" class="right-align">{{:key}}</td>
@@ -141,7 +145,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col s6">
-							<table style="table-layout: fixed ; width: 100% ;" >
+							<table style="table-layout: fixed ; width: 100% ;"  class="white-text weapon-card-table" >
 								{{props damage.clan}}
 								<tr>
 									<td style="width: 50%;" class="right-align">{{:key}}</td>
@@ -151,7 +155,7 @@
 							</table>
 						</div>
 						<div class="col s6">
-							<table style="table-layout: fixed ; width: 100% ;" >
+							<table style="table-layout: fixed ; width: 100% ;"  class="white-text weapon-card-table" >
 								{{props damage.enemy}}
 								<tr>
 									<td style="width: 50%;" class="right-align">{{:key}}</td>
@@ -170,7 +174,6 @@
 
 
 
-<div id="weaponscontainer"> </div>
 
 <script charset="utf-8">
 	$(document).ready(function(){
@@ -244,12 +247,29 @@ for (var i = 0; i< sortable.length; i++) {
 		chart: {
 			type: 'packedbubble',
 			height: 300,
+		plotBackgroundColor: null,
+		backgroundColor: 'rgba(0,0,0,0)',
+		plotBorderWidth: null,
+		plotShadow: false,
 		},
 		title: null,
 		tooltip: {
 			useHTML: true,
 			pointFormat: '<b>{point.name}:</b> {point.value}'
 		},
+
+	credits: {
+		enabled: false
+	},
+	exporting: {
+		enabled: false
+	},
+
+	legend: {
+		itemStyle: {
+			color: '#ffffff',
+		}
+	},
 		plotOptions: {
 			packedbubble: {
 				minSize: '20%',

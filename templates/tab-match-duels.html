@@ -1,15 +1,33 @@
-<div style="height:300px;width:100%;" id="chartcontainer-match-duels"></div>
 
 
-<table id="damagesTable" class="scoretable highlight indigo lighten-5">
+<style type="text/css" media="screen">
+#chartcontainer-match-duels {
+	height: 300px;
+	margin-top: 20px;
+    width:100%;
+}
+
+.duels-container{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+</style>
+
+<div id="chartcontainer-match-duels" class="indigo darken-2"></div>
+
+<div class="duels-container">
+	
+
+<table id="damagesTable" class="scoretable highlight white-text indigo darken-2">
 	<thead> 
-		<tr>
+		<tr class="indigo darken-3">
 			<td> <b> From \ To</b> </td>
 		</tr> 
 		</thead> 
 		<tbody></tbody>
 </table>
 
+</div>
 
 <script id="damagesHeadTemplate" type="text/x-jsrender">
 	<td> <img class="tableimage tooltipped" data-position="top" data-tooltip="{{:player}}" src="{{:avatar}}" alt=""></img> </td>
@@ -22,7 +40,11 @@
 	<tr>
 		<td> <img class="tableimage tooltipped" data-position="left" data-tooltip="{{:player}}" src="{{:avatar}}" alt=""></img> </td>
 		{{for damages}}
-		<td>{{:amount}}</td>
+			{{if not :amount}}
+				<td> {{:amount}} </td>
+			{{else}}
+				<td class="grey-text"> {{:amount}} </td>
+			{{/if}}
 		{{/for}}
 	</tr>
 </script>
@@ -89,11 +111,29 @@ $(document).ready(function() {
 			title: {
 				text: null
 			},
+	credits: {
+		enabled: false
+	},
+	exporting: {
+		enabled: false
+	},
+	legend: {
+		itemStyle: {
+			color: '#ffffff',
+		}
+	},
 			accessibility: {
 				point: {
 					valueDescriptionFormat: '{index}. {point.from} to {point.to}, {point.weight}.'
 				}
 			},
+
+    chart: {
+		plotBackgroundColor: null,
+		backgroundColor: 'rgba(0,0,0,0)',
+		plotBorderWidth: null,
+		plotShadow: false,
+    },
 			series: [{
 				keys: ['from', 'to', 'weight'],
 				data: chartdata,
