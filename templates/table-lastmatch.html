@@ -1,117 +1,137 @@
 
-<div class="row">
-	<div class="col s12 m12 l6">
+<style type="text/css" media="screen">
 
-		<style>
-.img-container {
-	text-align: center;
-	display: block;
-	object-fit: cover;
-	height: 200;
+
+.best-weapon-img{
+	<!-- height:150px; -->
+object-fit: contain;
+filter: invert(1) opacity(0.7) drop-shadow(7px 7px 7px #1a237e)
 }
-		</style>
 
-		<div class="card">
-			<div class="card-image waves-effect waves-block waves-light">
+.last-match-container {
+}
+
+.last-match-map-img {
+	height:100px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@font-face { font-family: Scoreboard; src: url('/public/css/font.ttf'); }
+
+.last-match-score{
+	font-family: Scoreboard, sans-serif;
+	font-size: 75px;
+}
+</style>
+
+<div class="container">
+	<div class="row">
+
+		<div class="col s12">
+			<div class="card indigo darken-2">
+				<div class="card-content white-text">
+					<span class="card-title">Last Match</span>
+					<p>
 				<<if (eq .LastMatch.Outcome "WON")>>
-				<div class="card-image waves-effect waves-block waves-light">
-					<img class="activator img-container" src="/public/img/win_banner.jpg">
-				</div>
-				<<else if (eq .LastMatch.Outcome "DRAW")>>
-				<div class="card-image waves-effect waves-block waves-light">
-					<img class="activator img-container" src="/public/img/draw_banner.png">
-				</div>
-				<<else>>
-				<div class="card-image waves-effect waves-block waves-light">
-					<img class="activator img-container" src="/public/img/lose_banner.jpg">
-				</div>
-				<<end>>
-			</div>
-			<div class="card-content ">
-				<span class="card-title activator grey-text text-darken-4"><<.LastMatch.Outcome>><i class="material-icons right">more_vert</i></span>
-				<p class="weapon-name orange-text activator">
-				<<.UserStatsForGame.Stats.LastMatchWins>>/<<.UserStatsForGame.Stats.LastMatchRounds>> Rounds won
-				</p>
-			</div>
-			<div class="card-reveal">
-				<span class="weapon-name card-title grey-text text-darken-4">Rounds won<i class="material-icons right">close</i></span>
-				<p>
-				<table>
-					<tbody>
-						<tr>
-							<td>Rounds won as T</td>
-							<td class="orange-text"><<.UserStatsForGame.Stats.LastMatchTWins>></td>
-						</tr>
+				<div class="last-match-score green-text">
+					<<else if (eq .LastMatch.Outcome "DRAW")>>
+					<div class="last-match-score green-text">
+						<<else>>
+						<div class="last-match-score green-text">
+							<<end>>
+							<<.LastMatch.Outcome>>
+						</div>
 
-						<tr>
-							<td>Rounds won as CT</td>
-							<td class="orange-text"><<.UserStatsForGame.Stats.LastMatchCtWins>></td>
-						</tr>
-					</tbody>
-				</table>
-				</p>
-			</div>
-		</div>
-	</div>
-
-	<div class="col s12 m12 l6">
-		<div class="card">
-			<div class="card-image waves-effect waves-block waves-light">
-				<img class="activator img-container" src="<<.LastMatch.FavWeaponIconPath>>">
-			</div>
-			<div class="card-content">
-				<span class="card-title activator grey-text text-darken-4">Best Weapon<i class="material-icons right">more_vert</i></span>
-				<p class="weapon-name orange-text activator"><<.LastMatch.FavWeaponName>></p>
-			</div>
-			<div class="card-reveal">
-				<span class="weapon-name card-title grey-text text-darken-4"><<.LastMatch.FavWeaponName>><i class="material-icons right">close</i></span>
-				<p>
-				<table>
-					<tbody>
-						<tr>
-							<td>Kills</td>
-							<td class="orange-text"><<.UserStatsForGame.Stats.LastMatchFavweaponKills>></td>
-						</tr>
-
-						<tr>
-							<td>Accuracy</td>
-							<td class="orange-text"><<.LastMatch.FavWeaponAccuracy>></td>
-						</tr>
-					</tbody>
-				</table>
-				</p>
+					</p>
+				</div>
+				<div class="card-action">
+					<a href="#">analyze last Match</a>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
-<div class="row centered">
-	<table >
-		<tbody>
-			<tr>
-				<td class>KD Ratio</td>
-				<td class="orange-text"> <<.UserStatsForGame.Extra.LastMatchKD>></td>
-			</tr>
+<div class="indigo darken-2 white-text last-match-container">
+	<div class="container" style="margin:0px">
+		<div class="row">
+			<div class="col s4">
+				<<if (eq .LastMatch.Outcome "WON")>>
+				<div class="last-match-score green-text">
+					<<else if (eq .LastMatch.Outcome "DRAW")>>
+					<div class="last-match-score green-text">
+						<<else>>
+						<div class="last-match-score green-text">
+							<<end>>
+							<<.LastMatch.Outcome>>
+						</div>
+						<img class="best-weapon-img" src="/public/img/weapons/outlines/svg_normal/AK-47.svg" >
+					</div>
+						<div class="col s8 center-align">
+							<img class="last-match-map-img" src="/public/img/maps/icons/de_cache.png" alt="">
 
-			<tr>
-				<td>Damage dealt</td>
-				<td class="orange-text"><<.UserStatsForGame.Stats.LastMatchDamage>> HP</td>
-			</tr>
+							<table >
+								<tbody>
+									<tr>
+										<td class>KD Ratio</td>
+										<td class="orange-text"> <<.UserStatsForGame.Extra.LastMatchKD>></td>
+									</tr>
+									<tr>
+										<td>Damage dealt</td>
+										<td class="orange-text"><<.UserStatsForGame.Stats.LastMatchDamage>> HP</td>
+									</tr>
+									<tr>
+										<td>Money spend</td>
+										<td class="orange-text">$<<.UserStatsForGame.Stats.LastMatchMoneySpent>></td>
+									</tr>
+									<tr>
+										<td>MVPs</td>
+										<td class="orange-text"><<.UserStatsForGame.Stats.LastMatchMvps>></td>
+									</tr>
+									<tr>
+										<td>Score</td>
+										<td class="orange-text"><<.UserStatsForGame.Stats.LastMatchContributionScore>></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+				</div>
+			</div>
+		</div>
 
-			<tr>
-				<td>Money spend</td>
-				<td class="orange-text">$<<.UserStatsForGame.Stats.LastMatchMoneySpent>></td>
-			</tr>
 
-			<tr>
-				<td>MVPs</td>
-				<td class="orange-text"><<.UserStatsForGame.Stats.LastMatchMvps>></td>
-			</tr>
 
-			<tr>
-				<td>Score</td>
-				<td class="orange-text"><<.UserStatsForGame.Stats.LastMatchContributionScore>></td>
-			</tr>
-		</tbody>
-	</table>
-</div>
+		<div class="row">
+			<div class="col s12">
+				<div class="card horizontal indigo darken-2">
+					<div class="card-image">
+						<<if (eq .LastMatch.Outcome "WON")>>
+						<img class="activator" src="/public/img/win_banner.jpg">
+						<<else if (eq .LastMatch.Outcome "DRAW")>>
+						<img class="activator" src="/public/img/draw_banner.png">
+						<<else>>
+						<img class="activator" src="/public/img/lose_banner.jpg">
+						<<end>>
+
+						<span class="card-title">Last Match</span>
+					</div>
+					<div class="card-content">
+
+
+						<<.UserStatsForGame.Stats.LastMatchWins>>/<<.UserStatsForGame.Stats.LastMatchRounds>> Rounds won
+						Rounds won as T: <<.UserStatsForGame.Stats.LastMatchTWins>>
+						Rounds won as CT: <<.UserStatsForGame.Stats.LastMatchCtWins>>
+
+						<img class="activator img-container" src="<<.LastMatch.FavWeaponIconPath>>">
+						Best Weapon <<.LastMatch.FavWeaponName>>
+						Kills: <<.UserStatsForGame.Stats.LastMatchFavweaponKills>>
+						Accuracy: <<.LastMatch.FavWeaponAccuracy>>
+
+					</div>
+					<div class="card-action">
+						<a href="#">analyze</a>
+					</div>
+				</div>
+			</div>
+		</div>

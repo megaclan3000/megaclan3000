@@ -9,7 +9,7 @@
 
 </style>
 
-<div class="row">
+<div class="row indigo">
 	<div class="col s4">
 		<div class="card indigo">
 			<div class="card-content indigo darken-3 white-text">
@@ -79,9 +79,10 @@
 
 	Highcharts.chart('details-kd-chart', {
 	chart: {
+		backgroundColor: 'rgba(0,0,0,0)',
 		plotBackgroundColor: null,
-		plotBorderWidth: 0,
-		plotShadow: false
+		plotBorderWidth: null,
+		plotShadow: false,
 	},
 	title: {
 		text: '<<.UserStatsForGame.Extra.TotalKD>>',
@@ -96,6 +97,14 @@
 			valueSuffix: '%'
 		}
 	},
+		exporting: {
+			enabled: false
+		},
+		legend: {
+			itemStyle: {
+				color: '#ffffff',
+			}
+		},
 	plotOptions: {
 		pie: {
 			dataLabels: {
@@ -118,12 +127,12 @@
 			{
 				name: "Kills",
 				y: <<.UserStatsForGame.Stats.TotalKills>>,
-				color: 'darkblue',
+				color: '#4caf50',
 			},
 			{
 				name: 'Deaths',
 				y: <<.UserStatsForGame.Stats.TotalDeaths>>,
-				color: 'darkred',
+				color: '#f44336',
 
 			}
 		]

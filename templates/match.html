@@ -57,8 +57,8 @@
 
 						<<if not $p.IsBot >>
 						<div class="col s1">
-							<img class="avatar circle" src="<<$p.AvatarURL>>" alt="">
-							<span class="title truncate center-align"> <<$p.Name>> </span>
+							<img class="avatar circle z-depth-2" src="<<$p.AvatarURL>>" alt="">
+							<span class="title truncate center-align orange-text"> <<$p.Name>> </span>
 							<img src="/public/img/ranks/<<$p.Rank>>.png" style="margin-left: auto; margin-right: auto; width: 100%;" class="rankicon z-depth-2"  alt="">
 						</div>
 						<<end>>
@@ -75,8 +75,8 @@
 						<<range  $p := .Players.Enemy>>
 						<<if not $p.IsBot >>
 						<div class="col s1">
-							<img class="avatar circle" src="<<$p.AvatarURL>>" alt=""> 
-							<span class="title truncate center-align"> <<$p.Name>> </span>
+							<img class="avatar circle z-depth-2" src="<<$p.AvatarURL>>" alt=""> 
+							<span class="title truncate center-align orange-text"> <<$p.Name>> </span>
 							<img src="/public/img/ranks/<<$p.Rank>>.png" style="margin-left: auto; margin-right: auto; width: 100%;" class="rankicon z-depth-2" alt="">
 						</div>
 						<<end>>
