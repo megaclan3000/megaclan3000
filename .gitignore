@@ -5,3 +5,4 @@ config.json
 data.db
 test/database/test.db
 mongodb_data
+demo-import/* 
