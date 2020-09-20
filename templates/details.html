@@ -48,39 +48,36 @@
 				<a href="#detailsOverview" class="active">
 					<i class="material-icons">timeline</i>Overview
 				</a>
-			</li>	
+			</li>
 			<li class="tab col">
-				<a href="#detailsLastMatch">
-					<i class="material-icons">multiline_chart</i>Last Match
+				<a href="#detailsMatches">
+					<i class="material-icons">multiline_chart</i>Matches
 				</a>
-			</li>	
+			</li>
 			<li class="tab col">
 				<a href="#detailsMaps">
 					<i class="material-icons">terrain</i>Maps
 				</a>
-			</li>	
+			</li>
 			<li class="tab col">
 				<a href="#detailsWeapons">
 					<i class="material-icons">whatshot</i>Weapons
 				</a>
-			</li>												
+			</li>
 		</ul>
 	</div>
 
 	<div id="detailsOverview" class="col s12 indigo">
-		<<template "chart-overview.html" .>>
-		<<template "table-other.html" .>>
+		<<template "player-overview.html" .>>
 	</div>
-	<div id="detailsLastMatch" class="col s12 indigo">
-		<<template "table-lastmatch.html" .>>
+	<div id="detailsMatches" class="col s12 indigo">
+		<<template "player-matches.html" .>>
 	</div>
 	<div id="detailsMaps" class="col s12 indigo">
-		<<template "chart-maps.html" .>>
-		<<template "table-maps.html" .>>
+		<<template "player-maps.html" .>>
 	</div>
 	<div id="detailsWeapons" class="col s12 indigo">
-		<<template "chart-weapons.html" .>>
-		<<template "table-weapons.html" .>>
+		<<template "player-weapons.html" .>>
 	</div>
 </div>
 
