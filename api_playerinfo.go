@@ -2,9 +2,11 @@ package main
 
 import (
 	"encoding/json"
+	"net/http"
+	"strconv"
+
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
-	"net/http"
 )
 
 // func handlerAPI(w http.ResponseWriter, r *http.Request) {
@@ -18,10 +20,13 @@ func handlerAPIPlayerinfo(w http.ResponseWriter, r *http.Request) {
 
 	var byt []byte
 
-	//TODO use correct id
-
-	var steamID uint64 = 76561198092006615
 	vars := mux.Vars(r)
+	steamID, err := strconv.ParseUint(vars["steamid"], 10, 64)
+
+	if err != nil {
+		//TODO handle error
+		panic(err)
+	}
 
 	switch vars["endpoint"] {
 	case "maps":
@@ -44,9 +49,6 @@ func handlerAPIPlayerinfo(w http.ResponseWriter, r *http.Request) {
 		}
 
 		byt, err = json.Marshal(info.UserStatsForGame.Stats.WeaponStats())
-
-	default:
-		byt = []byte(`Here is info about player: ` + vars["steamid"])
 	}
 
 	w.Header().Set("Content-Type", "application/json")

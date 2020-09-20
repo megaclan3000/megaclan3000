@@ -4,8 +4,8 @@ import "testing"
 
 func Test_divideStringFloats(t *testing.T) {
 	type args struct {
-		a string
-		b string
+		a int
+		b int
 	}
 	tests := []struct {
 		name string
@@ -16,8 +16,8 @@ func Test_divideStringFloats(t *testing.T) {
 		{
 			name: "Divide two numbers",
 			args: args{
-				a: "15",
-				b: "3",
+				a: 15,
+				b: 3,
 			},
 			want: "5.000",
 		},
@@ -25,8 +25,8 @@ func Test_divideStringFloats(t *testing.T) {
 		{
 			name: "Try to divide by zero",
 			args: args{
-				a: "15",
-				b: "0",
+				a: 15,
+				b: 0,
 			},
 			want: "+Inf",
 		},

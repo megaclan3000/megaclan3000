@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/gorilla/mux"
 )
 
@@ -17,19 +19,19 @@ func handlerAPIClaninfo(w http.ResponseWriter, r *http.Request) {
 	switch vars["endpoint"] {
 	case "matches":
 		if byt, err = json.Marshal(datastorage.GetMatches()); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	case "players":
 		if byt, err = json.Marshal(datastorage.GetPlayers()); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	case "updates":
 		if byt, err = json.Marshal(datastorage.GetUpdates()); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	case "awards":
 		if byt, err = json.Marshal(datastorage.GetAwards()); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	default:
 		if byt, err = json.Marshal(
@@ -42,11 +44,9 @@ func handlerAPIClaninfo(w http.ResponseWriter, r *http.Request) {
 				Players: datastorage.GetPlayers(),
 				Updates: datastorage.GetUpdates(),
 			}); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	}
-	// byt, err = json.Marshal(datastorage.GetMatches())
-
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(byt)
 }

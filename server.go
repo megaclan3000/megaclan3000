@@ -74,7 +74,6 @@ func main() {
 	r.HandleFunc("/imprint", parseTemplates(handlerImprint))
 
 	// API for json data retrieval
-	r.HandleFunc("/api/example", parseTemplates(handlerAPIExample))
 	r.HandleFunc("/api/playerinfo/{steamid}/{endpoint}", parseTemplates(handlerAPIPlayerinfo))
 	r.HandleFunc("/api/claninfo/{endpoint}", parseTemplates(handlerAPIClaninfo))
 	r.HandleFunc("/api/matchinfo/{matchid}/{endpoint}", parseTemplates(handlerAPIMatchinfo))
