@@ -4,13 +4,11 @@ import (
 	"database/sql"
 	"errors"
 	"path/filepath"
-
-	_ "github.com/lib/pq"
-
 	"strconv"
 	"time"
 
-	// "github.com/megaclan3000/megaclan3000/internal/demoparser"
+	_ "github.com/lib/pq"
+
 	"github.com/megaclan3000/megaclan3000/internal/demoparser"
 	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 	log "github.com/sirupsen/logrus"
@@ -44,8 +42,8 @@ func NewDataStorage() *DataStorage {
 		log.Fatal(err)
 	}
 
+	log.Debug("Dropping match table")
 	init := "DROP TABLE IF EXISTS matches;"
-
 	_, err = db.Exec(init)
 	if err != nil {
 		log.Fatal(err)
@@ -58,9 +56,15 @@ func NewDataStorage() *DataStorage {
 	);
 	`
 
+	log.Debug("Creating matches table")
 	_, err = db.Exec(schema)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	ds := &DataStorage{
+		Players: steamClient.GetPlayers(),
+		DB:      db,
 	}
 
 	//Find all matches form import folder
@@ -76,15 +80,12 @@ func NewDataStorage() *DataStorage {
 			panic(err)
 		}
 
-		err = datastorage.Upload(demoInfoFromDem)
+		log.Info("Parsed Match with ID: ", demoInfoFromDem.MatchID)
+
+		err = ds.Upload(demoInfoFromDem)
 		if err != nil {
 			log.Warning("Not uploading ", f, err)
 		}
-	}
-
-	ds := &DataStorage{
-		Players: steamClient.GetPlayers(),
-		DB:      db,
 	}
 
 	go ds.UpdateData()
@@ -98,8 +99,10 @@ func (ds *DataStorage) Upload(match demoparser.InfoStruct) error {
 		return errors.New("Match not valid")
 	}
 
+	log.Debug("Checking if match ID is already present: ", match.MatchID)
+
 	// Check if this match is already present
-	rows, err := ds.DB.Query("select match -> 'match_id' from matches where match ->> 'match_id' = '$1';", match.MatchID)
+	rows, err := ds.DB.Query("SELECT match -> 'match_id' FROM matches where match ->> 'match_id' = $1;", match.MatchID)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -115,29 +118,37 @@ func (ds *DataStorage) Upload(match demoparser.InfoStruct) error {
 		log.Fatal(err)
 	}
 
-	log.Debug("Inserted match with ID: ", match.MatchID)
+	log.Info("Inserted match with ID: ", match.MatchID)
 
 	return nil
 }
 
 func (ds *DataStorage) GetMatchByID(id string) (demoparser.InfoStruct, error) {
-	//TODO implement
 
-	var matches []demoparser.InfoStruct
+	row := ds.DB.QueryRow("SELECT match FROM matches WHERE match ->> 'match_id' = $1;", id)
+	var r demoparser.InfoStruct
+	err := row.Scan(&r)
+	return r, err
 
-	rows, err := ds.DB.Query("select match from matches WHERE match ->> 'match_id' = '$1';", id)
-	for rows.Next() {
+	// var matches []demoparser.InfoStruct
 
-		var r demoparser.InfoStruct
-		err = rows.Scan(&r)
+	// rows, err := ds.DB.Query("SELECT match FROM matches WHERE match ->> 'match_id' = $1;", id)
+	// if err != nil {
+	// 	return demoparser.InfoStruct{}, errors.New("Match not found")
+	// }
 
-		if err != nil {
-			log.Fatal("Scan: %v", err)
-		}
-		matches = append(matches, r)
-	}
+	// for rows.Next() {
 
-	return matches[0], err
+	// 	var r demoparser.InfoStruct
+	// 	err = rows.Scan(&r)
+
+	// 	if err != nil {
+	// 		log.Fatal("Scan: %v", err)
+	// 	}
+	// 	matches = append(matches, r)
+	// }
+
+	// return matches[0], err
 }
 
 // GetPlayerInfoBySteamID returns the PlayerInfo object for a given steamID
