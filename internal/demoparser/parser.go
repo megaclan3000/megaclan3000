@@ -6,6 +6,8 @@ import (
 	// "github.com/mitchellh/hashstructure"
 
 	"os"
+	"path/filepath"
+	"strings"
 
 	"time"
 
@@ -29,7 +31,8 @@ func NewMyParser(client *steamclient.SteamClient) MyParser {
 	return MyParser{
 		steamClient: client,
 		state: parsingState{
-			Round: 0,
+			Round:        0,
+			RoundOngoing: false,
 		},
 	}
 }
@@ -38,6 +41,7 @@ func NewMyParser(client *steamclient.SteamClient) MyParser {
 type parsingState struct {
 	// Current round
 	Round        int
+	RoundOngoing bool
 	WarmupKills  []events.Kill
 	currentTeam  common.Team
 	lastKill     events.Kill
@@ -45,6 +49,9 @@ type parsingState struct {
 }
 
 func (p *MyParser) Parse(path string, m *InfoStruct) error {
+
+	matchID := strings.Split(filepath.Base(path), "_")[0]
+	m.MatchID = matchID
 	// Register handlers for events we care about
 	p.Match = m
 	var f *os.File
@@ -226,6 +233,10 @@ func (p *MyParser) handlerWeaponFire(e events.WeaponFire) {
 
 func (p *MyParser) handlerKill(e events.Kill) {
 
+	if e.Killer == nil || e.Victim == nil {
+		return
+	}
+
 	// Skip all calculations for kills during warmup
 	if p.parser.GameState().IsWarmupPeriod() {
 		p.state.WarmupKills = append(p.state.WarmupKills, e)
@@ -400,6 +411,7 @@ func (p *MyParser) handlerMatchStart(e events.MatchStart) {
 	for _, player := range p.parser.GameState().Participants().Playing() {
 		if player.ClanTag() == "megaclan3000" {
 			p.state.currentTeam = player.Team
+			p.Match.MatchValid = true
 		}
 	}
 
@@ -417,6 +429,8 @@ func (p *MyParser) handlerMatchStart(e events.MatchStart) {
 }
 
 func (p *MyParser) handlerRoundStart(e events.RoundStart) {
+
+	p.state.RoundOngoing = true
 
 	// An new round has started, increase counter and add it to slice of the
 	// output. The counter should be increased here and *not* in the RoundEnd
@@ -477,6 +491,12 @@ func (p *MyParser) handlerScoreUpdated(e events.ScoreUpdated) {
 }
 
 func (p *MyParser) handlerRoundEnd(e events.RoundEnd) {
+
+	if !p.state.RoundOngoing {
+		return
+	}
+
+	p.state.RoundOngoing = false
 
 	// Set the winning team
 	p.Match.Rounds[p.state.Round-1].TeamWon = e.Winner

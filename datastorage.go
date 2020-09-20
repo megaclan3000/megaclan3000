@@ -1,7 +1,12 @@
 package main
 
 import (
+	"database/sql"
 	"errors"
+	"path/filepath"
+
+	_ "github.com/lib/pq"
+
 	"strconv"
 	"time"
 
@@ -16,6 +21,7 @@ import (
 // when a request is made for better response time
 type DataStorage struct {
 	Players []steamclient.PlayerInfo
+	DB      *sql.DB
 }
 
 func (ds *DataStorage) UpdateData() {
@@ -31,24 +37,107 @@ func (ds *DataStorage) UpdateData() {
 	}
 }
 
-//TODO remove and implement database
-var demoInfoFromDem demoparser.InfoStruct
-
 func NewDataStorage() *DataStorage {
 
-	demoInfoFromDem, _ = demoparser.GetMatchInfo("1", steamClient)
-	ds := &DataStorage{Players: steamClient.GetPlayers()}
+	db, err := sql.Open("postgres", "user=postgres password=megaclan dbname=megadb sslmode=disable")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	init := "DROP TABLE IF EXISTS matches;"
+
+	_, err = db.Exec(init)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	schema := `
+	CREATE TABLE matches(
+		id SERIAL PRIMARY KEY,
+		match JSONB
+	);
+	`
+
+	_, err = db.Exec(schema)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//Find all matches form import folder
+	files, err := filepath.Glob("demo-import/*.dem")
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, f := range files {
+		log.Info("Found match demo: ", f)
+
+		demoInfoFromDem, err := demoparser.GetMatchInfo(f, steamClient)
+		if err != nil {
+			panic(err)
+		}
+
+		err = datastorage.Upload(demoInfoFromDem)
+		if err != nil {
+			log.Warning("Not uploading ", f, err)
+		}
+	}
+
+	ds := &DataStorage{
+		Players: steamClient.GetPlayers(),
+		DB:      db,
+	}
+
 	go ds.UpdateData()
 	return ds
 }
 
 func (ds *DataStorage) Upload(match demoparser.InfoStruct) error {
+
+	// Check if the match is a valid megaclan3000 match
+	if !match.MatchValid {
+		return errors.New("Match not valid")
+	}
+
+	// Check if this match is already present
+	rows, err := ds.DB.Query("select match -> 'match_id' from matches where match ->> 'match_id' = '$1';", match.MatchID)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for rows.Next() {
+		return errors.New("Match ID already present")
+	}
+
+	// The database driver will call the Value() method and and marshall the
+	// attrs struct to JSON before the INSERT.
+	_, err = ds.DB.Exec("INSERT INTO matches (match) VALUES($1)", match)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Debug("Inserted match with ID: ", match.MatchID)
+
 	return nil
 }
 
 func (ds *DataStorage) GetMatchByID(id string) (demoparser.InfoStruct, error) {
+	//TODO implement
 
-	return demoInfoFromDem, nil
+	var matches []demoparser.InfoStruct
+
+	rows, err := ds.DB.Query("select match from matches WHERE match ->> 'match_id' = '$1';", id)
+	for rows.Next() {
+
+		var r demoparser.InfoStruct
+		err = rows.Scan(&r)
+
+		if err != nil {
+			log.Fatal("Scan: %v", err)
+		}
+		matches = append(matches, r)
+	}
+
+	return matches[0], err
 }
 
 // GetPlayerInfoBySteamID returns the PlayerInfo object for a given steamID

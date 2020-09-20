@@ -34,6 +34,14 @@ You will need to create a configuration with your Steam API-key and the IDs you
 want to include.  To get started use the provided [configuration
 example](./config.json.example) and copy it over or rename it to `config.json`
 
+
+
+### Start Postgres Database container
+
+```bash
+sudo docker run --name mega-postgres -p5432:5432  -e POSTGRES_PASSWORD=megaclan  postgres
+```
+
 ### Start with Docker
 
 The application is available as docker container, which is automatically build
@@ -83,4 +91,3 @@ ExecStart=/var/www/megaclan3000/megaclan3000
 [Install]
 WantedBy=multi-user.target
 ```
-
