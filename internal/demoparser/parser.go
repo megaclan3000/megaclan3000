@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/megaclan3000/megaclan3000/internal/steamclient"
-	log "github.com/sirupsen/logrus"
 
 	demoinfocs "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs"
 	common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
@@ -487,7 +486,7 @@ func (p *MyParser) handlerScoreUpdated(e events.ScoreUpdated) {
 		return
 	}
 
-	log.Warning("Scoreparsing did something strange", p.state.currentTeam)
+	// log.Warning("Scoreparsing did something strange", p.state.currentTeam)
 }
 
 func (p *MyParser) handlerRoundEnd(e events.RoundEnd) {

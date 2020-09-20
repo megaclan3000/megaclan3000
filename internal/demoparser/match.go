@@ -372,7 +372,6 @@ func (sp *ScoreboardPlayers) AllWeaponsUsed() []common.EquipmentType {
 		}
 	}
 
-	log.Warning("allweapons used", list)
 	return list
 }
 
