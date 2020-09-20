@@ -153,7 +153,11 @@ func handlerMatch(w http.ResponseWriter, r *http.Request) {
 	matchInfo, err := datastorage.GetMatchByID(vars["id"])
 
 	if err != nil {
-		panic(err)
+		log.Warning("Requested match ID not found: ", vars["id"])
+		if err := t.ExecuteTemplate(w, "404.html", nil); err != nil {
+			log.Warn(err)
+		}
+		return
 	}
 
 	if err := t.ExecuteTemplate(w, "match.html", matchInfo); err != nil {
