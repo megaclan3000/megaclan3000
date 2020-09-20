@@ -56,6 +56,7 @@ require (
 	github.com/sirupsen/logrus v1.6.0
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/steveyen/gtreap v0.1.0 // indirect
+	github.com/thoas/go-funk v0.7.0
 	github.com/urfave/cli v1.22.4 // indirect
 	github.com/vaughan0/go-ini v0.0.0-20130923145212-a98ad7ee00ec // indirect
 	github.com/wawandco/fako v0.0.0-20180828010250-c36a0bc97398
