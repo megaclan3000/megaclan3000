@@ -229,7 +229,9 @@ th span {
 $(document).ready(function(){
 
 	// TODO use correct id
-	var url = "/api/matchinfo/1/scoreboard"
+
+	var mID =  window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+	var url = "/api/matchinfo/"+mID+"/scoreboard"
 	$.getJSON(url,  function( data) {
 
 		data.players.sort((a, b) => b.kills- a.kills)

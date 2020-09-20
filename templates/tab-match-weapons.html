@@ -178,7 +178,9 @@
 
 
 	// TODO use correct id
-	var url = "/api/matchinfo/1/weapons"
+
+	var mID =  window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+	var url = "/api/matchinfo/"+mID+"/weapons"
 	$.getJSON(url,  function( data) {
 
 var ser = [];

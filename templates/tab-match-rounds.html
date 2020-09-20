@@ -199,7 +199,9 @@
 		$('.collapsible').collapsible();
 
 		// TODO use correct id
-		var url = "/api/matchinfo/1/rounds"
+
+		var mID =  window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+		var url = "/api/matchinfo/"+mID+"/rounds"
 		$.getJSON(url,  function( data) {
 			for (var round = 0; round < data.length; round++) {
 				$("#roundscontainer").append( $.templates("#matchRoundsTemplate").render(data[round]));

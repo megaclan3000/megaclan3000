@@ -52,7 +52,9 @@
 
 <script charset="utf-8">
 $(document).ready(function() {
-	$.getJSON("/api/matchinfo/1/duels",  function(data) {
+
+	var mID =  window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+	$.getJSON("/api/matchinfo/"+mID+"/duels",  function(data) {
 
 		var playernamesClan = [];
 		for (const [key, value] of Object.entries(data.clan)) {
