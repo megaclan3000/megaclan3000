@@ -15,11 +15,12 @@ import (
 )
 
 type InfoStruct struct {
-	MatchID    string            `json:"match_id" db:"match_id"`
-	MatchValid bool              `json:"match_valid" db:"match_valid"`
-	General    ScoreboardGeneral `json:"general" db:"general"`
-	Players    ScoreboardPlayers `json:"players" db:"players"`
-	Rounds     []ScoreboardRound `json:"rounds" db:"rounds"`
+	MatchID    string            `json:"match_id"     db:"match_id"`
+	MatchValid bool              `json:"match_valid"  db:"match_valid"`
+	General    ScoreboardGeneral `json:"general"      db:"general"`
+	Players    ScoreboardPlayers `json:"players"      db:"players"`
+	Rounds     []ScoreboardRound `json:"rounds"       db:"rounds"`
+
 	// Duels             [][]int
 	// HeatmapsImageURLs []string
 	// Megacoins         []MegacoinPlayer

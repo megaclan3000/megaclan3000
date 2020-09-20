@@ -107,6 +107,8 @@ func (ds *DataStorage) Upload(match demoparser.InfoStruct) error {
 		log.Fatal(err)
 	}
 
+	defer rows.Close()
+
 	for rows.Next() {
 		return errors.New("Match ID already present")
 	}
@@ -129,26 +131,6 @@ func (ds *DataStorage) GetMatchByID(id string) (demoparser.InfoStruct, error) {
 	var r demoparser.InfoStruct
 	err := row.Scan(&r)
 	return r, err
-
-	// var matches []demoparser.InfoStruct
-
-	// rows, err := ds.DB.Query("SELECT match FROM matches WHERE match ->> 'match_id' = $1;", id)
-	// if err != nil {
-	// 	return demoparser.InfoStruct{}, errors.New("Match not found")
-	// }
-
-	// for rows.Next() {
-
-	// 	var r demoparser.InfoStruct
-	// 	err = rows.Scan(&r)
-
-	// 	if err != nil {
-	// 		log.Fatal("Scan: %v", err)
-	// 	}
-	// 	matches = append(matches, r)
-	// }
-
-	// return matches[0], err
 }
 
 // GetPlayerInfoBySteamID returns the PlayerInfo object for a given steamID
@@ -169,7 +151,7 @@ func (ds DataStorage) GetMatches() interface{} {
 		Avatar     string `json:"avatar"`
 	}
 	//TODO implement real data
-	ret := []struct {
+	type data struct {
 		MapName     string        `json:"map"`         // Name of the map
 		ScoreClan   int           `json:"score_clan"`  // Points clan
 		ScoreEnemy  int           `json:"score_enemy"` // Points enemy
@@ -177,59 +159,57 @@ func (ds DataStorage) GetMatches() interface{} {
 		Result      int           `json:"result"`      // Resunt: 1=won, 0=draw, -1=lost
 		MatchID     string        `json:"matchid"`     // ID of the match, for links
 		ClanPlayers []Matchplayer `json:"clan_players"`
-	}{
-		{
-			MapName:    "de_dust2",
-			ScoreClan:  16,
-			ScoreEnemy: 4,
-			Time:       time.Now(),
-			Result:     1,
-			MatchID:    "1",
-			ClanPlayers: []Matchplayer{
-				{PlayerName: "randolf", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg"},
-				{PlayerName: "salatkopf", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/e8/e8b5da2823159d9674a5cac41b08110b052b1803_full.jpg"},
-				{PlayerName: "Kapt'n Turbot", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/36/36f2b03d73e47172c92e0b0a6b30b32f06c6d613_full.jpg"},
-			},
-		},
-		{
-			MapName:    "de_mirage",
-			ScoreClan:  16,
-			ScoreEnemy: 5,
-			Time:       time.Now(),
-			Result:     1,
-			MatchID:    "1",
-			ClanPlayers: []Matchplayer{
-				{PlayerName: "salatkopf", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/e8/e8b5da2823159d9674a5cac41b08110b052b1803_full.jpg"},
-				{PlayerName: "Kapt'n Turbot", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/36/36f2b03d73e47172c92e0b0a6b30b32f06c6d613_full.jpg"},
-			},
-		},
-		{
-			MapName:    "de_inferno",
-			ScoreClan:  5,
-			ScoreEnemy: 16,
-			Time:       time.Now(),
-			Result:     -1,
-			MatchID:    "1",
-			ClanPlayers: []Matchplayer{
-				{PlayerName: "randolf", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg"},
-				{PlayerName: "salatkopf", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/e8/e8b5da2823159d9674a5cac41b08110b052b1803_full.jpg"},
-			},
-		},
-		{
-			MapName:    "de_cache",
-			ScoreClan:  15,
-			ScoreEnemy: 15,
-			Time:       time.Now(),
-			Result:     0,
-			MatchID:    "1",
-			ClanPlayers: []Matchplayer{
-				{PlayerName: "randolf", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/06/06e1eec83d05fd0823728381fcbe27c0d8318510_full.jpg"},
-				{PlayerName: "Kapt'n Turbot", Avatar: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/36/36f2b03d73e47172c92e0b0a6b30b32f06c6d613_full.jpg"},
-			},
-		},
+	}
+	var matches []data
+
+	rows, err := ds.DB.Query("SELECT match FROM matches;")
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	return ret
+	for rows.Next() {
+		var m demoparser.InfoStruct
+		err := rows.Scan(&m)
+		if err != nil {
+			log.Fatal(err)
+		}
+		var result int
+
+		if m.General.ScoreClan > m.General.ScoreEnemy {
+			result = 1
+		} else if m.General.ScoreClan < m.General.ScoreEnemy {
+			result = -1
+		} else {
+			result = 0
+		}
+
+		var players []Matchplayer
+
+		for _, v := range m.Players.Clan() {
+			//TODO isclanmember reports all players form the  clan's team as
+			//members. There should be a differentiation between actual members
+			//and players that just where in our team
+			if v.IsClanMember && v.Clantag == "megaclan3000" {
+				players = append(players, Matchplayer{
+					PlayerName: v.Name,
+					Avatar:     v.AvatarURL,
+				})
+			}
+		}
+
+		matches = append(matches,
+			data{
+				MapName:     m.General.MapName,
+				ScoreClan:   m.General.ScoreClan,
+				ScoreEnemy:  m.General.ScoreEnemy,
+				Time:        m.General.UploadTime,
+				Result:      result,
+				MatchID:     m.MatchID,
+				ClanPlayers: players,
+			})
+	}
+
+	return matches
 }
 
 func (ds DataStorage) GetPlayers() interface{} {

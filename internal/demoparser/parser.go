@@ -21,7 +21,6 @@ import (
 type MyParser struct {
 	steamClient *steamclient.SteamClient
 	parser      demoinfocs.Parser
-	Result      string
 	Match       *InfoStruct
 	state       parsingState
 }
