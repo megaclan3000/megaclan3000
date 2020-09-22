@@ -1,0 +1,33 @@
+<<template "header.html">>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>Scoreboard</title>
+	</head>
+	<body>
+		<h1>Scoreboard</h1>
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Score</th>
+				<th>Kills</th>
+				<th>Assists</th>
+				<th>Deaths</th>
+			</tr>
+
+	<<range $val := .>>
+	<tr>
+		<td><<$val.Name>></td>
+		<td><<$val.Score>></td>
+		<td><<$val.Kills>></td>
+		<td><<$val.Assists>></td>
+		<td><<$val.Deaths>></td>
+	</tr>
+					<<end>>
+		</table>
+	</body>
+</html>
+
+<<template "footer.html">>

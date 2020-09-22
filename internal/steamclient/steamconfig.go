@@ -14,6 +14,11 @@ type SteamConfig struct {
 	SteamIDs        []string `json:"SteamIDs"`
 	HistoryInterval int      `json:"HistoryInterval"`
 	UpdateInterval  int      `json:"UpdateInterval"`
+	MongoUser       string   `json:"mongo_user"`
+	MongoPass       string   `json:"mongo_pass"`
+	MongoHost       string   `json:"mongo_host"`
+	MongoTestDbName string   `json:"test_db_name"`
+	MongoDbName     string   `json:"db_name"`
 }
 
 // NewSteamConfig creates a new configuration struct from a path pointing to

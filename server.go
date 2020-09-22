@@ -1,10 +1,12 @@
 package main
 
 import (
+	// "encoding/json"
+
 	"flag"
+	"html/template"
 	"sort"
 	"strconv"
-	"text/template"
 
 	"net/http"
 	"time"
@@ -12,6 +14,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
+	"github.com/megaclan3000/megaclan3000/internal/demoparser"
 	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 )
 
@@ -19,6 +22,8 @@ var t *template.Template
 var datastorage *DataStorage
 var steamClient *steamclient.SteamClient
 var flagConfig string
+
+// var demoInfo demoparser.InfoStruct
 
 func main() {
 
@@ -33,8 +38,6 @@ func main() {
 		log.SetLevel(log.DebugLevel)
 	}
 
-	log.Println("Starting with config file:", flagConfig)
-
 	// Output to stdout instead of the default stderr
 	// log.SetOutput(os.Stdout)
 
@@ -43,11 +46,15 @@ func main() {
 	Formatter.FullTimestamp = true
 	log.SetFormatter(Formatter)
 
+	log.Println("Starting with config file:", flagConfig)
+
 	// Read config and pull initial data
 	steamClient = steamclient.NewSteamClient(flagConfig)
 
 	log.Info("Creating datastorage and getting initial values")
-	datastorage = &DataStorage{Players: steamClient.GetPlayers()}
+
+	// Create and starting a new datastorage
+	datastorage = NewDataStorage()
 
 	r := mux.NewRouter()
 
@@ -60,7 +67,16 @@ func main() {
 	r.HandleFunc("/contact", parseTemplates(handlerContact))
 	r.HandleFunc("/faq", parseTemplates(handlerFAQ))
 	r.HandleFunc("/player/{id}", parseTemplates(handlerDetails))
+	r.HandleFunc("/match/{id}", parseTemplates(handlerMatch))
+	r.HandleFunc("/matches", parseTemplates(handlerMatches))
+	r.HandleFunc("/awards", parseTemplates(handlerAwards))
+	r.HandleFunc("/scoreboard", parseTemplates(handlerScoreboard))
 	r.HandleFunc("/imprint", parseTemplates(handlerImprint))
+
+	// API for json data retrieval
+	r.HandleFunc("/api/playerinfo/{steamid}/{endpoint}", parseTemplates(handlerAPIPlayerinfo))
+	r.HandleFunc("/api/claninfo/{endpoint}", parseTemplates(handlerAPIClaninfo))
+	r.HandleFunc("/api/matchinfo/{matchid}/{endpoint}", parseTemplates(handlerAPIMatchinfo))
 
 	// Set custom 404 page
 	r.NotFoundHandler = http.HandlerFunc(parseTemplates(handler404))
@@ -73,8 +89,9 @@ func main() {
 		ReadTimeout:  15 * time.Second,
 	}
 
+	log.Info("Server started on: ", srv.Addr)
+
 	//start updating data every 5 minutes asynchroniusly
-	go updateData()
 	log.Fatal(srv.ListenAndServe())
 }
 
@@ -83,26 +100,16 @@ func parseTemplates(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var err error
 		// Parse all templates
-		t, err = template.ParseGlob("./templates/*")
+		t, err = template.New("hello.gohtml").Funcs(template.FuncMap{
+			"inc": func(i int) int {
+				return i + 1
+			},
+		}).Delims("<<", ">>").ParseGlob("./templates/*")
 		if err != nil {
 			log.Panic("Cannot parse templates", err)
 		}
 
 		h(w, r)
-	}
-}
-
-func updateData() {
-
-	// Get PlayerInfo for all players periodically and store/cache in
-	// memory so we don't have to wait when retrieving it in the fronend
-
-	for {
-		log.Debug("Updating player information")
-		datastorage.Players = steamClient.GetPlayers()
-
-		// Sleep for a predefined duration (in minutes)
-		time.Sleep(time.Duration(steamClient.Config.UpdateInterval) * time.Minute)
 	}
 }
 
@@ -126,6 +133,45 @@ func handlerStats(w http.ResponseWriter, r *http.Request) {
 
 func handlerContact(w http.ResponseWriter, r *http.Request) {
 	if err := t.ExecuteTemplate(w, "contact.html", nil); err != nil {
+		log.Warn(err)
+	}
+}
+
+func handlerScoreboard(w http.ResponseWriter, r *http.Request) {
+
+	var players demoparser.InfoStruct
+
+	if err := t.ExecuteTemplate(w, "scoreboard.html", players); err != nil {
+		log.Warn(err)
+	}
+}
+
+func handlerMatch(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	matchInfo, err := datastorage.GetMatchByID(vars["id"])
+
+	if err != nil {
+		log.Warning("Requested match ID not found: ", vars["id"])
+		if err := t.ExecuteTemplate(w, "404.html", nil); err != nil {
+			log.Warn(err)
+		}
+		return
+	}
+
+	if err := t.ExecuteTemplate(w, "match.html", matchInfo); err != nil {
+		log.Warn(err)
+	}
+}
+
+func handlerAwards(w http.ResponseWriter, r *http.Request) {
+	if err := t.ExecuteTemplate(w, "awards.html", nil); err != nil {
+		log.Warn(err)
+	}
+}
+
+func handlerMatches(w http.ResponseWriter, r *http.Request) {
+	if err := t.ExecuteTemplate(w, "matches.html", nil); err != nil {
 		log.Warn(err)
 	}
 }

@@ -1,0 +1,213 @@
+
+
+<style type="text/css" media="screen">
+.wrapper {
+	display: flex;
+	width:100%;
+}
+
+.wrapped {
+	flex-basis: 100%;
+}
+
+#chartcontainer-match-rounds {
+	height: 300px;
+}
+
+.rounds-list-container{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+</style>
+
+
+<div class="indigo darken-2" style="margin-top: 20px; " id="chartcontainer-match-rounds"></div>
+
+<script charset="utf-8">
+	//TODO use real data
+	Highcharts.chart('chartcontainer-match-rounds', {
+	chart: {
+		plotBackgroundColor: null,
+		backgroundColor: 'rgba(0,0,0,0)',
+		plotBorderWidth: null,
+		plotShadow: false,
+		type: 'column'
+	},
+	title:  null,
+	xAxis: {
+		categories: [
+		'Round 1',
+		'Round 2',
+		'Round 3',
+		'Round 4',
+		'Round 5',
+		'Round 6',
+		'Round 7',
+		'Round 8',
+		'Round 9',
+		'Round 10',
+		'Round 11',
+		'Round 12',
+		'Round 13',
+		'Round 14',
+		'Round 15',
+		'Round 16',
+		'Round 17',
+		'Round 18'
+		],
+		crosshair: true,
+
+		gridLineWidth: 0,
+		labels: {
+            style: {
+                color: 'white'
+            }
+        }
+	},
+	yAxis: {
+		min: 0,
+		title: null,
+
+		gridLineWidth: 0,
+		labels: {
+			style: {
+				color: 'orange'
+			}
+        }
+	},
+	tooltip: {
+		headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+			'<td style="padding:0"><b>{point.y:.1f} HP</b></td></tr>',
+		footerFormat: '</table>',
+		shared: true,
+		useHTML: true
+	},
+	plotOptions: {
+		column: {
+			pointPadding: 0.1,
+			borderWidth: 0
+		}
+	},
+
+	legend: {
+		itemStyle: {
+			color: '#ffffff',
+		}
+	},
+	series: [{
+		name: 'Given',
+		data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+	}, {
+		name: 'Taken',
+		data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
+
+	}]
+});
+</script>
+
+
+<ul class=" rounds-list-container collapsible" id="roundscontainer"> </ul>
+<script id="matchRoundsTemplate" type="text/x-jsrender">
+	<li>
+	<div id="test"> </div>
+		<div class="collapsible-header hoverable white-text indigo darken-3" style="padding:0px;">
+			<div style="width:100%;padding:0px" class="container">
+				<div class="row valign-wrapper" style="margin:10px">
+				  <div class="col s1">
+					<img style="width:30px;" src="/public/img/teams/{{:team_won}}.jpg" class="circle" alt="">
+					</div>
+				  <div class="col s3">
+				  {{if kills_clan}}
+					{{for kills_clan}}
+						<div style="padding:2px;" class="right"> <img style="width:35px;height:35px;" src="{{:victim.avatar_url}}" alt="{{:killer.name}}"> </div>
+					{{/for }}
+				  {{/if}}
+				  </div>
+				  <div class="col s1 center-align">
+					 {{if ClanWonRound }}
+					 <img src="/public/img/win_reason/{{:win_reason}}.png" style="width:20px" class="" alt="">
+					 {{/if}}
+				  </div>
+				  <div class="col s2 center-align">
+					  <h6> <span class="orange-text">{{:score_clan}}</span>:<span class="blue-text">{{:score_enemy}}</span > </h6>
+				  </div>
+				  <div class="col s1 center-align">
+					{{if !ClanWonRound }}
+					<img src="/public/img/win_reason/{{:win_reason}}.png" style="width:20px" class="" alt="">
+					{{/if}}
+				  </div>
+				  <div class="col s3 kill-avatars-enemy">
+
+				  {{if kills_enemy}}
+					{{for kills_enemy}}
+						<div style="padding:2px;" class="left"> <img style="width:35px;height:35px;" src="{{:victim.avatar_url}}" alt="{{:killer.name}}"> </div>
+					{{/for}}
+				  </div>
+				  {{/if}}
+				  <div class="col s1 grey-text">{{:duration}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="collapsible-body white-text indigo darken-2">
+			<div style="width:100%;" class="white-text container">
+				<div class="row">
+				  <div class="col s6">
+					<table class="centered white-text">
+						<tbody>
+							{{if kills_clan}}
+							{{for kills_clan}}
+							<tr>
+								<td>{{:killer.name}}</td >
+								<td class="orange-text">{{:weapon_name}}</td>
+								<td>{{:victim.name}}</td >
+							</tr>
+							{{/for }}
+							{{/if}}
+						</tbody>
+					</table>
+				  </div>
+
+				  <div class="col s6">
+					<table class="centered white-text">
+						<tbody>
+							{{if kills_enemy}}
+							{{for kills_enemy}}
+							<tr>
+								<td>{{:killer.name}}</td >
+								<td class="orange-text">{{:weapon_name}}</td>
+								<td>{{:victim.name}}</td >
+							</tr>
+							{{/for }}
+							{{/if}}
+						</tbody>
+					</table>
+				  </div>
+				</div>
+			</div>
+		</div>
+	</li>
+</script>
+
+<ul class="collapsible" id="roundscontainer"></ul>
+
+<script charset="utf-8">
+
+	$(document).ready(function(){
+
+		$('.collapsible').collapsible();
+
+		// TODO use correct id
+
+		var mID =  window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+		var url = "/api/matchinfo/"+mID+"/rounds"
+		$.getJSON(url,  function( data) {
+			for (var round = 0; round < data.length; round++) {
+				$("#roundscontainer").append( $.templates("#matchRoundsTemplate").render(data[round]));
+			}
+		});
+		$('.collapsible').collapsible();
+	});
+
+</script>

@@ -1,0 +1,272 @@
+
+<style type="text/css" media="screen">
+.col {
+	<!-- border: 1px solid red; -->
+}
+.chart-overview-row {
+	height: 80px;
+}
+
+</style>
+
+<div class="row indigo">
+	<div class="col s4">
+		<div class="card indigo">
+			<div class="card-content indigo darken-3 white-text">
+				<div class="container">
+					<div class="row chart-overview-row valign-wrapper">
+						<div class="col s7">
+							<p class="orange-text">KILLS</p>
+							<p> <<.UserStatsForGame.Stats.TotalKills>> </p>
+						</div>
+						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/kills.svg"> </div>
+					</div>
+					<div class="row chart-overview-row valign-wrapper">
+						<div class="col s7">
+							<p class="orange-text">TIME</p>
+							<p> <<.UserStatsForGame.Extra.PlayedHours>>h </p>
+						</div>
+						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/timer.svg"> </div>
+					</div>
+					<div class="row chart-overview-row valign-wrapper">
+						<div class="col s7">
+							<p class="orange-text">WIN</p>
+							<p>	<<.Calc.PercentWin>>% </p>
+						</div>
+						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/win-cup.svg"> </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col s4" id="details-kd-chart"> </div>
+
+	<div class="col s4">
+		<div class="card indigo">
+			<div class="card-content indigo darken-3 white-text">
+				<div class="container">
+					<div class="row chart-overview-row valign-wrapper right-align">
+						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/target.svg"> </div>
+						<div class="col s7">
+							<p class="orange-text">ACCURACY</p>
+							<p> <<.Calc.PercentAccuracy>>% </p>
+						</div>
+					</div>
+					<div class="row chart-overview-row valign-wrapper right-align">
+						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/headshot.svg"> </div>
+						<div class="col s7">
+							<p class="orange-text">HEADSHOT</p>
+							<p> <<.Calc.PercentHeadshot>>% </p>
+						</div>
+					</div>
+					<div class="row chart-overview-row valign-wrapper right-align">
+						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/star.svg"> </div>
+						<div class="col s7">
+							<p class="orange-text">MVPs</p>
+							<p> <<.UserStatsForGame.Stats.TotalMvps>></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<script charset="utf-8">
+
+	Highcharts.chart('details-kd-chart', {
+	chart: {
+		backgroundColor: 'rgba(0,0,0,0)',
+		plotBackgroundColor: null,
+		plotBorderWidth: null,
+		plotShadow: false,
+	},
+	title: {
+		text: '<<.UserStatsForGame.Extra.TotalKD>>',
+		align: 'center',
+		verticalAlign: 'middle',
+	},
+	tooltip: {
+		pointFormat: '<b>{point.y:.0f}</b>'
+	},
+	accessibility: {
+		point: {
+			valueSuffix: '%'
+		}
+	},
+		exporting: {
+			enabled: false
+		},
+		legend: {
+			itemStyle: {
+				color: '#ffffff',
+			}
+		},
+	plotOptions: {
+		pie: {
+			dataLabels: {
+				enabled: true,
+				distance: -50,
+				style: {
+					fontWeight: 'bold',
+					color: 'white'
+				}
+			},
+			startAngle: 0,
+			endAngle: 0,
+		}
+	},
+	series: [{
+		type: 'pie',
+		name: 'Percentage',
+		innerSize: '50%',
+		data: [
+			{
+				name: "Kills",
+				y: <<.UserStatsForGame.Stats.TotalKills>>,
+				color: '#4caf50',
+			},
+			{
+				name: 'Deaths',
+				y: <<.UserStatsForGame.Stats.TotalDeaths>>,
+				color: '#f44336',
+
+			}
+		]
+	}]
+});
+</script>
+<div class="row indigo">
+	<div class="col s12">
+		<div class="col s4">
+			<table>
+				<tbody class="white-text">
+					<tr>
+						<td>Kills</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalKills>></td>
+					</tr>
+					<tr>
+						<td>Deaths</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalDeaths>></td>
+					</tr>
+					<tr>
+						<td>Headshots</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalKillsHeadshot>></td>
+					</tr>
+					<tr>
+						<td>Money earned</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalMoneyEarned>></td>
+					</tr>
+					<tr>
+						<td>Total Damage</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalDamageDone>></td>
+					</tr>
+					<tr>
+						<td>Total score</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalContributionScore>></td>
+					</tr>
+					<tr>
+						<td>Bombs planted</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalPlantedBombs>></td>
+					</tr>
+					<tr>
+						<td>Bombs defused</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalDefusedBombs>></td>
+					</tr>
+					<tr>
+						<td>Hostages rescued</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalRescuedHostages>></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col s4">
+			<table>
+				<tbody class="white-text">
+					<tr>
+						<td>Matches played</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalMatchesPlayed>></td>
+					</tr>
+					<tr>
+						<td>Matches won</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalMatchesWon>></td>
+					</tr>
+					<tr>
+						<td>Rounds played</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalRoundsPlayed>></td>
+					</tr>
+					<tr>
+						<td>Rounds won</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalTrbombMatchesWon>></td>
+					</tr>
+					<tr>
+						<td>MVP stars</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalMvps>></td>
+					</tr>
+					<tr>
+						<td>Weapons donated</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalWeaponsDonated>></td>
+					</tr>
+					<tr>
+						<td>Kills with enemy weapon</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalKillsEnemyWeapon>></td>
+					</tr>
+					<tr>
+						<td>Blinded enemies killed</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalKillsEnemyBlinded>></td>
+					</tr>
+					<tr>
+						<td>Won knife-fights</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalKillsKnifeFight>></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col s4">
+			<table>
+				<tbody class="white-text">
+					<tr>
+						<td>Aiming snipers killed</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalKillsAgainstZoomedSniper>></td>
+					</tr>
+					<tr>
+						<td>Shots fired</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalShotsFired>></td>
+					</tr>
+					<tr>
+						<td>Shots hit</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalShotsHit>></td>
+					</tr>
+					<tr>
+						<td>Dominations</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalDominations>></td>
+					</tr>
+					<tr>
+						<td>Domination overkills</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalDominationOverkills>></td>
+					</tr>
+					<tr>
+						<td>Domination revenges</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalRevenges>></td>
+					</tr>
+					<tr>
+						<td>Pistol rounds won</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalWinsPistolround>></td>
+					</tr>
+					<tr>
+						<td>Enemies tasered</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalKillsTaser>></td>
+					</tr>
+					<tr>
+						<td>Windows broken</td>
+						<td class="orange-text"><<.UserStatsForGame.Stats.TotalBrokenWindows>></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+

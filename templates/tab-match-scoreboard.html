@@ -1,0 +1,272 @@
+<style type="text/css" media="screen">
+.wrapper {
+	display: flex;
+	width:100%;
+}
+
+.scoretable tr {
+	line-height: 10px;
+	padding: 5px;
+}
+
+.scoretable td {
+	line-height: 10px;
+	padding: 5px;
+}
+
+
+.wrapped {
+	flex-basis: 100%;
+}
+
+.scoretable {
+  table-layout: fixed ;
+  width: 100% ;
+}
+
+.scoretablenum{
+	width: 30px;
+	text-align: center;
+}
+
+th span {
+  transform-origin: 0 50%;
+  transform: rotate(-90deg); 
+  white-space: nowrap; 
+  display: block;
+  left: 50%;
+}
+
+.scoreboard-container{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+#chartcontainer-match-players {
+	height: 300px;
+	margin-top: 20px; 
+}
+</style>
+
+<div class="indigo darken-2"  id="chartcontainer-match-players"></div>
+
+<script charset="utf-8">
+	scoreboardChart = Highcharts.chart('chartcontainer-match-players', {
+    chart: {
+		plotBackgroundColor: null,
+		backgroundColor: 'rgba(0,0,0,0)',
+		plotBorderWidth: null,
+		plotShadow: false,
+        type: 'column'
+    },
+	credits: {
+		enabled: false
+	},
+	exporting: {
+		enabled: false
+	},
+	legend: {
+		itemStyle: {
+			color: '#ffffff',
+		}
+	},
+    title:  null,
+    xAxis: {
+        categories: [ "p1", "p2"],
+        crosshair: true,
+		gridLineWidth: 0,
+		labels: {
+            style: {
+                color: 'white'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: null,
+		gridLineWidth: 0,
+		labels: {
+			style: {
+				color: 'orange'
+			}
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.1,
+            borderWidth: 0
+        }
+    },
+    series: [
+
+	{
+        name: 'Kills',
+        data: [],
+    },
+	{
+        name: 'Deaths',
+        data: [],
+    },
+	{
+        name: 'Assists',
+		data: [],
+    },
+	]
+});
+</script>
+
+
+
+
+<script charset="utf-8">
+	$(document).ready(function(){
+	$('.collapsible').collapsible();
+  });
+</script>
+
+<div class="indigo darken-2 white-text scoreboard-container">
+<table id="scoretableClan" class="scoretable highlight white-text">
+	<thead>
+		<tr class="orange-text indigo darken-3">
+			<th style="width:40px;"></th>
+			<th style="width:140px;"></th>
+			<th style="width:80px;"></th>
+			<th class="scoretablenum">K</th>
+			<th class="scoretablenum">D</th>
+			<th class="scoretablenum">A</th>
+			<th class="scoretablenum">+/-</th>
+			<th class="scoretablenum">K/D</th>
+			<th class="scoretablenum">ADR</th>
+			<th class="scoretablenum">HS</th>
+			<th class="scoretablenum">FK</th>
+			<th class="scoretablenum">FD</th>
+			<th class="scoretablenum">TK</th>
+			<th class="scoretablenum">TD</th>
+			<th class="scoretablenum">TFK</th>
+			<th class="scoretablenum">TFD</th>
+			<th class="scoretablenum">1v5</th>
+			<th class="scoretablenum">1v4</th>
+			<th class="scoretablenum">1v3</th>
+			<th class="scoretablenum">5k</th>
+			<th class="scoretablenum">4k</th>
+			<th class="scoretablenum">3k</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+
+<table id="scoretableEnemy" class="scoretable highlight white-text">
+	<thead>
+		<tr class="orange-text indigo darken-3">
+			<th style="width:40px;"></th>
+			<th style="width:140px;"></th>
+			<th style="width:80px;"></th>
+			<th class="scoretablenum">K</th>
+			<th class="scoretablenum">D</th>
+			<th class="scoretablenum">A</th>
+			<th class="scoretablenum">+/-</th>
+			<th class="scoretablenum">K/D</th>
+			<th class="scoretablenum">ADR</th>
+			<th class="scoretablenum">HS</th>
+			<th class="scoretablenum">FK</th>
+			<th class="scoretablenum">FD</th>
+			<th class="scoretablenum">TK</th>
+			<th class="scoretablenum">TD</th>
+			<th class="scoretablenum">TFK</th>
+			<th class="scoretablenum">TFD</th>
+			<th class="scoretablenum">1v5</th>
+			<th class="scoretablenum">1v4</th>
+			<th class="scoretablenum">1v3</th>
+			<th class="scoretablenum">5k</th>
+			<th class="scoretablenum">4k</th>
+			<th class="scoretablenum">3k</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+</div>
+
+<script id="matchScoreboardTemplate" type="text/x-jsrender">
+		<tr>
+			<td> <img class="tableimage" src="{{:avatar_url}}" alt=""></img> </td>
+			<td>{{:name}}<div class="orange-text">{{:clantag}}</div></td>
+			<td> <img class="tableimage" src="/public/img/ranks/{{:rank}}.png" alt="{{:rank}}"></img></td>
+			<td class="scoretablenum">{{:kills}}</td>
+			<td class="scoretablenum">{{:deaths}}</td>
+			<td class="scoretablenum">{{:assists}}</td>
+			<td class="scoretablenum">{{:kills - deaths}}</td>
+			<td class="scoretablenum">{{:kd.toFixed(2)}}</td>
+			<td class="scoretablenum">{{:adr}}</td>
+			<td class="scoretablenum">{{:hsprecent.toFixed(0)}}%</td>
+			<td class="scoretablenum">{{:firstkills}}</td>
+			<td class="scoretablenum">{{:firstdeaths}}</td>
+			<td class="scoretablenum">{{:tradekills}}</td>
+			<td class="scoretablenum">{{:tradedeaths}}</td>
+			<td class="scoretablenum">{{:tradefirstkills}}</td>
+			<td class="scoretablenum">{{:tradefirstdeaths}}</td>
+			<td class="scoretablenum">{{:roundswonv5}}</td>
+			<td class="scoretablenum">{{:roundswonv4}}</td>
+			<td class="scoretablenum">{{:roundswonv3}}</td>
+			<td class="scoretablenum">{{:rounds5k}}</td>
+			<td class="scoretablenum">{{:rounds4k}}</td>
+			<td class="scoretablenum">{{:rounds3k}}</td>
+		</tr>
+</script>
+
+
+<script charset="utf-8">
+
+$(document).ready(function(){
+
+	var mID =  window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+	var url = "/api/matchinfo/"+mID+"/scoreboard"
+	$.getJSON(url,  function( data) {
+
+		data.players.sort((a, b) => b.kills- a.kills)
+
+		var arrPlayers = [];
+		var arrKills = [];
+		var arrDeaths = [];
+		var arrAssists = [];
+
+		for (var row = 0; row < data.players.length; row++) {
+
+			if (data.players[row].isbot) {
+				continue
+			}
+
+			arrKills.push(data.players[row].kills);
+			arrDeaths.push(data.players[row].deaths);
+			arrAssists.push(data.players[row].assists);
+			arrPlayers.push(data.players[row].name);
+
+			if (data.players[row].isclanmember) {
+				$("#scoretableClan tbody" ).append( $.templates( "#matchScoreboardTemplate" ).render(data.players[row]) );
+			} else {
+				$("#scoretableEnemy tbody" ).append( $.templates( "#matchScoreboardTemplate" ).render(data.players[row]) );
+			}
+		}
+
+		scoreboardChart.categories = arrPlayers;
+
+        scoreboardChart.xAxis[0].setCategories(arrPlayers); //setting category
+		scoreboardChart.series[0].setData(arrKills);
+		scoreboardChart.series[1].setData(arrDeaths);
+		scoreboardChart.series[2].setData(arrAssists);
+
+		//https://api.highcharts.com/class-reference/Highcharts.Chart.html#addSeries
+		// https://api.highcharts.com/class-reference/Highcharts.Series#setData
+	});
+});
+
+</script>

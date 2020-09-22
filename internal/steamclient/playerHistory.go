@@ -22,53 +22,53 @@ type PlayerHistory struct {
 type PlayerHistoryEntry struct {
 
 	// SteamID of the player
-	SteamID string `db:"steamid"`
+	SteamID string
 
 	// The time when the entry was saved
-	Time time.Time `db:"time"`
+	Time time.Time
 
 	// Total kill/death ratio
-	TotalKD string `db:"total_kd"`
+	TotalKD string
 
 	// Total avarage damage per round
-	TotalADR string `db:"total_adr"`
+	TotalADR string
 
 	// Last match avarage damage per round
-	LastMatchADR string `db:"last_match_adr"`
+	LastMatchADR string
 
 	// Total kills
-	TotalKills string `db:"total_kills"`
+	TotalKills string
 
 	// Total kills with headshot
-	TotalKillsHeadshot string `db:"total_kills_headshot"`
+	TotalKillsHeadshot string
 
 	// Total shots hit
-	TotalShotsHit string `db:"total_shots_hit"`
+	TotalShotsHit string
 
 	// Total shots fired
-	TotalShotsFired string `db:"total_shots_fired"`
+	TotalShotsFired string
 
 	// Contribution score in last match
-	LastMatchContributionScore string `db:"last_match_contribution_score"`
+	LastMatchContributionScore string
 
 	// Damage dealt in last match
-	LastMatchDamage string `db:"last_match_damage"`
+	LastMatchDamage string
 
 	// Death count in last match
-	LastMatchDeaths string `db:"last_match_deaths"`
+	LastMatchDeaths string
 
 	// Kills in last match
-	LastMatchKills string `db:"last_match_kills"`
+	LastMatchKills string
 
 	// Number of round of last match
-	LastMatchRounds string `db:"last_match_rounds"`
+	LastMatchRounds string
 
 	// Las match kill/death ratio
-	LastMatchKD string `db:"last_match_kd"`
+	LastMatchKD string
 
 	// Total hit ratio
-	HitRatio string `db:"hit_ratio"`
+	HitRatio string
 
 	// Platime in the last 2 weeks
-	Playtime2Weeks string `db:"playtime_2_weeks"`
+	Playtime2Weeks string
 }

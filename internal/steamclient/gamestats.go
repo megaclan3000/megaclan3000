@@ -1,226 +1,440 @@
 package steamclient
 
+import (
+	"encoding/json"
+
+	common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
+)
+
 // GameStats holds the players stats data from the steam API
 // endpoint UserStatsForGame
 type GameStats struct {
-	SteamID                                   string `db:"steamid"`
-	GILessonCsgoInstrExplainInspect           string `db:"gi_lesson_csgo_instr_explain_inspect"`
-	GILessonBombSitesA                        string `db:"gi_lesson_bomb_sites_a"`
-	GILessonBombSitesB                        string `db:"gi_lesson_bomb_sites_b"`
-	GILessonCsgoCycleWeaponsKb                string `db:"gi_lesson_csgo_cycle_weapons_kb"`
-	GILessonCsgoHostageLeadToHrz              string `db:"gi_lesson_csgo_hostage_lead_to_hrz"`
-	GILessonCsgoInstrExplainBombCarrier       string `db:"gi_lesson_csgo_instr_explain_bomb_carrier"`
-	GILessonCsgoInstrExplainBuyarmor          string `db:"gi_lesson_csgo_instr_explain_buyarmor"`
-	GILessonCsgoInstrExplainBuymenu           string `db:"gi_lesson_csgo_instr_explain_buymenu"`
-	GILessonCsgoInstrExplainFollowBomber      string `db:"gi_lesson_csgo_instr_explain_follow_bomber"`
-	GILessonCsgoInstrExplainPickupBomb        string `db:"gi_lesson_csgo_instr_explain_pickup_bomb"`
-	GILessonCsgoInstrExplainPlantBomb         string `db:"gi_lesson_csgo_instr_explain_plant_bomb"`
-	GILessonCsgoInstrExplainPreventBombPickup string `db:"gi_lesson_csgo_instr_explain_prevent_bomb_pickup"`
-	GILessonCsgoInstrExplainReload            string `db:"gi_lesson_csgo_instr_explain_reload"`
-	GILessonCsgoInstrExplainZoom              string `db:"gi_lesson_csgo_instr_explain_zoom"`
-	GILessonCsgoInstrRescueZone               string `db:"gi_lesson_csgo_instr_rescue_zone"`
-	GILessonDefusePlantedBomb                 string `db:"gi_lesson_defuse_planted_bomb"`
-	GILessonFindPlantedBomb                   string `db:"gi_lesson_find_planted_bomb"`
-	GILessonTrExplainPlantBomb                string `db:"gi_lesson_tr_explain_plant_bomb"`
-	GILessonVersionNumber                     string `db:"gi_lesson_version_number"`
-	LastMatchContributionScore                string `db:"last_match_contribution_score"`
-	LastMatchCtWins                           string `db:"last_match_ct_wins"`
-	LastMatchDamage                           string `db:"last_match_damage"`
-	LastMatchDeaths                           string `db:"last_match_deaths"`
-	LastMatchDominations                      string `db:"last_match_dominations"`
-	LastMatchFavweaponHits                    string `db:"last_match_favweapon_hits"`
-	LastMatchFavweaponID                      string `db:"last_match_favweapon_id"`
-	LastMatchFavweaponKills                   string `db:"last_match_favweapon_kills"`
-	LastMatchFavweaponShots                   string `db:"last_match_favweapon_shots"`
-	LastMatchGgContributionScore              string `db:"last_match_gg_contribution_score"`
-	LastMatchKills                            string `db:"last_match_kills"`
-	LastMatchMaxPlayers                       string `db:"last_match_max_players"`
-	LastMatchMoneySpent                       string `db:"last_match_money_spent"`
-	LastMatchMvps                             string `db:"last_match_mvps"`
-	LastMatchRevenges                         string `db:"last_match_revenges"`
-	LastMatchRounds                           string `db:"last_match_rounds"`
-	LastMatchTWins                            string `db:"last_match_t_wins"`
-	LastMatchWins                             string `db:"last_match_wins"`
-	SteamStatMatchwinscomp                    string `db:"steam_stat_matchwinscomp"`
-	SteamStatSurvivedz                        string `db:"steam_stat_survivedz"`
-	SteamStatXpearnedgames                    string `db:"steam_stat_xpearnedgames"`
-	TotalBrokenWindows                        string `db:"total_broken_windows"`
-	TotalContributionScore                    string `db:"total_contribution_score"`
-	TotalDamageDone                           string `db:"total_damage_done"`
-	TotalDeaths                               string `db:"total_deaths"`
-	TotalDefusedBombs                         string `db:"total_defused_bombs"`
-	TotalDominationOverkills                  string `db:"total_domination_overkills"`
-	TotalDominations                          string `db:"total_dominations"`
-	TotalGgMatchesPlayed                      string `db:"total_gg_matches_played"`
-	TotalGgMatchesWon                         string `db:"total_gg_matches_won"`
-	TotalGunGameContributionScore             string `db:"total_gun_game_contribution_score"`
-	TotalGunGameRoundsPlayed                  string `db:"total_gun_game_rounds_played"`
-	TotalGunGameRoundsWon                     string `db:"total_gun_game_rounds_won"`
-	TotalHitsAk47                             string `db:"total_hits_ak47"`
-	TotalHitsAug                              string `db:"total_hits_aug"`
-	TotalHitsAwp                              string `db:"total_hits_awp"`
-	TotalHitsBizon                            string `db:"total_hits_bizon"`
-	TotalHitsDeagle                           string `db:"total_hits_deagle"`
-	TotalHitsElite                            string `db:"total_hits_elite"`
-	TotalHitsFamas                            string `db:"total_hits_famas"`
-	TotalHitsFiveseven                        string `db:"total_hits_fiveseven"`
-	TotalHitsG3sg1                            string `db:"total_hits_g3sg1"`
-	TotalHitsGalilar                          string `db:"total_hits_galilar"`
-	TotalHitsGlock                            string `db:"total_hits_glock"`
-	TotalHitsHkp2000                          string `db:"total_hits_hkp2000"`
-	TotalHitsM249                             string `db:"total_hits_m249"`
-	TotalHitsM4a1                             string `db:"total_hits_m4a1"`
-	TotalHitsMac10                            string `db:"total_hits_mac10"`
-	TotalHitsMag7                             string `db:"total_hits_mag7"`
-	TotalHitsMp7                              string `db:"total_hits_mp7"`
-	TotalHitsMp9                              string `db:"total_hits_mp9"`
-	TotalHitsNegev                            string `db:"total_hits_negev"`
-	TotalHitsNova                             string `db:"total_hits_nova"`
-	TotalHitsP250                             string `db:"total_hits_p250"`
-	TotalHitsP90                              string `db:"total_hits_p90"`
-	TotalHitsSawedoff                         string `db:"total_hits_sawedoff"`
-	TotalHitsScar20                           string `db:"total_hits_scar20"`
-	TotalHitsSg556                            string `db:"total_hits_sg556"`
-	TotalHitsSsg08                            string `db:"total_hits_ssg08"`
-	TotalHitsTec9                             string `db:"total_hits_tec9"`
-	TotalHitsUmp45                            string `db:"total_hits_ump45"`
-	TotalHitsXm1014                           string `db:"total_hits_xm1014"`
-	TotalKills                                string `db:"total_kills"`
-	TotalKillsAgainstZoomedSniper             string `db:"total_kills_against_zoomed_sniper"`
-	TotalKillsAk47                            string `db:"total_kills_ak47"`
-	TotalKillsAug                             string `db:"total_kills_aug"`
-	TotalKillsAwp                             string `db:"total_kills_awp"`
-	TotalKillsBizon                           string `db:"total_kills_bizon"`
-	TotalKillsDeagle                          string `db:"total_kills_deagle"`
-	TotalKillsElite                           string `db:"total_kills_elite"`
-	TotalKillsEnemyBlinded                    string `db:"total_kills_enemy_blinded"`
-	TotalKillsEnemyWeapon                     string `db:"total_kills_enemy_weapon"`
-	TotalKillsFamas                           string `db:"total_kills_famas"`
-	TotalKillsFiveseven                       string `db:"total_kills_fiveseven"`
-	TotalKillsG3sg1                           string `db:"total_kills_g3sg1"`
-	TotalKillsGalilar                         string `db:"total_kills_galilar"`
-	TotalKillsGlock                           string `db:"total_kills_glock"`
-	TotalKillsHeadshot                        string `db:"total_kills_headshot"`
-	TotalKillsHegrenade                       string `db:"total_kills_hegrenade"`
-	TotalKillsHkp2000                         string `db:"total_kills_hkp2000"`
-	TotalKillsKnife                           string `db:"total_kills_knife"`
-	TotalKillsKnifeFight                      string `db:"total_kills_knife_fight"`
-	TotalKillsM249                            string `db:"total_kills_m249"`
-	TotalKillsM4a1                            string `db:"total_kills_m4a1"`
-	TotalKillsMac10                           string `db:"total_kills_mac10"`
-	TotalKillsMag7                            string `db:"total_kills_mag7"`
-	TotalKillsMolotov                         string `db:"total_kills_molotov"`
-	TotalKillsMp7                             string `db:"total_kills_mp7"`
-	TotalKillsMp9                             string `db:"total_kills_mp9"`
-	TotalKillsNegev                           string `db:"total_kills_negev"`
-	TotalKillsNova                            string `db:"total_kills_nova"`
-	TotalKillsP250                            string `db:"total_kills_p250"`
-	TotalKillsP90                             string `db:"total_kills_p90"`
-	TotalKillsSawedoff                        string `db:"total_kills_sawedoff"`
-	TotalKillsScar20                          string `db:"total_kills_scar20"`
-	TotalKillsSg556                           string `db:"total_kills_sg556"`
-	TotalKillsSsg08                           string `db:"total_kills_ssg08"`
-	TotalKillsTaser                           string `db:"total_kills_taser"`
-	TotalKillsTec9                            string `db:"total_kills_tec9"`
-	TotalKillsUmp45                           string `db:"total_kills_ump45"`
-	TotalKillsXm1014                          string `db:"total_kills_xm1014"`
-	TotalMatchesPlayed                        string `db:"total_matches_played"`
-	TotalMatchesWon                           string `db:"total_matches_won"`
-	TotalMatchesWonBaggage                    string `db:"total_matches_won_baggage"`
-	TotalMatchesWonBank                       string `db:"total_matches_won_bank"`
-	TotalMatchesWonLake                       string `db:"total_matches_won_lake"`
-	TotalMatchesWonSafehouse                  string `db:"total_matches_won_safehouse"`
-	TotalMatchesWonShoots                     string `db:"total_matches_won_shoots"`
-	TotalMatchesWonStmarc                     string `db:"total_matches_won_stmarc"`
-	TotalMatchesWonSugarcane                  string `db:"total_matches_won_sugarcane"`
-	TotalMatchesWonTrain                      string `db:"total_matches_won_train"`
-	TotalMoneyEarned                          string `db:"total_money_earned"`
-	TotalMvps                                 string `db:"total_mvps"`
-	TotalPlantedBombs                         string `db:"total_planted_bombs"`
-	TotalProgressiveMatchesWon                string `db:"total_progressive_matches_won"`
-	TotalRescuedHostages                      string `db:"total_rescued_hostages"`
-	TotalRevenges                             string `db:"total_revenges"`
-	TotalRoundsMapArBaggage                   string `db:"total_rounds_map_ar_baggage"`
-	TotalRoundsMapArMonastery                 string `db:"total_rounds_map_ar_monastery"`
-	TotalRoundsMapArShoots                    string `db:"total_rounds_map_ar_shoots"`
-	TotalRoundsMapCsAssault                   string `db:"total_rounds_map_cs_assault"`
-	TotalRoundsMapCsItaly                     string `db:"total_rounds_map_cs_italy"`
-	TotalRoundsMapCsMilitia                   string `db:"total_rounds_map_cs_militia"`
-	TotalRoundsMapCsOffice                    string `db:"total_rounds_map_cs_office"`
-	TotalRoundsMapDeAztec                     string `db:"total_rounds_map_de_aztec"`
-	TotalRoundsMapDeBank                      string `db:"total_rounds_map_de_bank"`
-	TotalRoundsMapDeCbble                     string `db:"total_rounds_map_de_cbble"`
-	TotalRoundsMapDeDust                      string `db:"total_rounds_map_de_dust"`
-	TotalRoundsMapDeDust2                     string `db:"total_rounds_map_de_dust_2"`
-	TotalRoundsMapDeInferno                   string `db:"total_rounds_map_de_inferno"`
-	TotalRoundsMapDeLake                      string `db:"total_rounds_map_de_lake"`
-	TotalRoundsMapDeNuke                      string `db:"total_rounds_map_de_nuke"`
-	TotalRoundsMapDeSafehouse                 string `db:"total_rounds_map_de_safehouse"`
-	TotalRoundsMapDeShorttrain                string `db:"total_rounds_map_de_shorttrain"`
-	TotalRoundsMapDeStmarc                    string `db:"total_rounds_map_de_stmarc"`
-	TotalRoundsMapDeSugarcane                 string `db:"total_rounds_map_de_sugarcane"`
-	TotalRoundsMapDeTrain                     string `db:"total_rounds_map_de_train"`
-	TotalRoundsMapDeVertigo                   string `db:"total_rounds_map_de_vertigo"`
-	TotalRoundsPlayed                         string `db:"total_rounds_played"`
-	TotalShotsAk47                            string `db:"total_shots_ak47"`
-	TotalShotsAug                             string `db:"total_shots_aug"`
-	TotalShotsAwp                             string `db:"total_shots_awp"`
-	TotalShotsBizon                           string `db:"total_shots_bizon"`
-	TotalShotsDeagle                          string `db:"total_shots_deagle"`
-	TotalShotsElite                           string `db:"total_shots_elite"`
-	TotalShotsFamas                           string `db:"total_shots_famas"`
-	TotalShotsFired                           string `db:"total_shots_fired"`
-	TotalShotsFiveseven                       string `db:"total_shots_fiveseven"`
-	TotalShotsG3sg1                           string `db:"total_shots_g3sg1"`
-	TotalShotsGalilar                         string `db:"total_shots_galilar"`
-	TotalShotsGlock                           string `db:"total_shots_glock"`
-	TotalShotsHit                             string `db:"total_shots_hit"`
-	TotalShotsHkp2000                         string `db:"total_shots_hkp2000"`
-	TotalShotsM249                            string `db:"total_shots_m249"`
-	TotalShotsM4a1                            string `db:"total_shots_m4a1"`
-	TotalShotsMac10                           string `db:"total_shots_mac10"`
-	TotalShotsMag7                            string `db:"total_shots_mag7"`
-	TotalShotsMp7                             string `db:"total_shots_mp7"`
-	TotalShotsMp9                             string `db:"total_shots_mp9"`
-	TotalShotsNegev                           string `db:"total_shots_negev"`
-	TotalShotsNova                            string `db:"total_shots_nova"`
-	TotalShotsP250                            string `db:"total_shots_p250"`
-	TotalShotsP90                             string `db:"total_shots_p90"`
-	TotalShotsSawedoff                        string `db:"total_shots_sawedoff"`
-	TotalShotsScar20                          string `db:"total_shots_scar20"`
-	TotalShotsSg556                           string `db:"total_shots_sg556"`
-	TotalShotsSsg08                           string `db:"total_shots_ssg08"`
-	TotalShotsTaser                           string `db:"total_shots_taser"`
-	TotalShotsTec9                            string `db:"total_shots_tec9"`
-	TotalShotsUmp45                           string `db:"total_shots_ump45"`
-	TotalShotsXm1014                          string `db:"total_shots_xm1014"`
-	TotalTRDefusedBombs                       string `db:"total_tr_defused_bombs"`
-	TotalTRPlantedBombs                       string `db:"total_tr_planted_bombs"`
-	TotalTimePlayed                           string `db:"total_time_played"`
-	TotalTrbombMatchesWon                     string `db:"total_trbomb_matches_won"`
-	TotalWeaponsDonated                       string `db:"total_weapons_donated"`
-	TotalWins                                 string `db:"total_wins"`
-	TotalWinsMapArBaggage                     string `db:"total_wins_map_ar_baggage"`
-	TotalWinsMapArMonastery                   string `db:"total_wins_map_ar_monastery"`
-	TotalWinsMapArShoots                      string `db:"total_wins_map_ar_shoots"`
-	TotalWinsMapCsAssault                     string `db:"total_wins_map_cs_assault"`
-	TotalWinsMapCsItaly                       string `db:"total_wins_map_cs_italy"`
-	TotalWinsMapCsMilitia                     string `db:"total_wins_map_cs_militia"`
-	TotalWinsMapCsOffice                      string `db:"total_wins_map_cs_office"`
-	TotalWinsMapDeAztec                       string `db:"total_wins_map_de_aztec"`
-	TotalWinsMapDeBank                        string `db:"total_wins_map_de_bank"`
-	TotalWinsMapDeCbble                       string `db:"total_wins_map_de_cbble"`
-	TotalWinsMapDeDust                        string `db:"total_wins_map_de_dust"`
-	TotalWinsMapDeDust2                       string `db:"total_wins_map_de_dust_2"`
-	TotalWinsMapDeHouse                       string `db:"total_wins_map_de_house"`
-	TotalWinsMapDeInferno                     string `db:"total_wins_map_de_inferno"`
-	TotalWinsMapDeLake                        string `db:"total_wins_map_de_lake"`
-	TotalWinsMapDeNuke                        string `db:"total_wins_map_de_nuke"`
-	TotalWinsMapDeSafehouse                   string `db:"total_wins_map_de_safehouse"`
-	TotalWinsMapDeShorttrain                  string `db:"total_wins_map_de_shorttrain"`
-	TotalWinsMapDeStmarc                      string `db:"total_wins_map_de_stmarc"`
-	TotalWinsMapDeSugarcane                   string `db:"total_wins_map_de_sugarcane"`
-	TotalWinsMapDeTrain                       string `db:"total_wins_map_de_train"`
-	TotalWinsMapDeVertigo                     string `db:"total_wins_map_de_vertigo"`
-	TotalWinsPistolround                      string `db:"total_wins_pistolround"`
+	SteamID                                   uint64
+	GILessonCsgoInstrExplainInspect           int
+	GILessonBombSitesA                        int
+	GILessonBombSitesB                        int
+	GILessonCsgoCycleWeaponsKb                int
+	GILessonCsgoHostageLeadToHrz              int
+	GILessonCsgoInstrExplainBombCarrier       int
+	GILessonCsgoInstrExplainBuyarmor          int
+	GILessonCsgoInstrExplainBuymenu           int
+	GILessonCsgoInstrExplainFollowBomber      int
+	GILessonCsgoInstrExplainPickupBomb        int
+	GILessonCsgoInstrExplainPlantBomb         int
+	GILessonCsgoInstrExplainPreventBombPickup int
+	GILessonCsgoInstrExplainReload            int
+	GILessonCsgoInstrExplainZoom              int
+	GILessonCsgoInstrRescueZone               int
+	GILessonDefusePlantedBomb                 int
+	GILessonFindPlantedBomb                   int
+	GILessonTrExplainPlantBomb                int
+	GILessonVersionNumber                     int
+	LastMatchContributionScore                int
+	LastMatchCtWins                           int
+	LastMatchDamage                           int
+	LastMatchDeaths                           int
+	LastMatchDominations                      int
+	LastMatchFavweaponHits                    int
+	LastMatchFavweaponID                      int
+	LastMatchFavweaponKills                   int
+	LastMatchFavweaponShots                   int
+	LastMatchGgContributionScore              int
+	LastMatchKills                            int
+	LastMatchMaxPlayers                       int
+	LastMatchMoneySpent                       int
+	LastMatchMvps                             int
+	LastMatchRevenges                         int
+	LastMatchRounds                           int
+	LastMatchTWins                            int
+	LastMatchWins                             int
+	SteamStatMatchwinscomp                    int
+	SteamStatSurvivedz                        int
+	SteamStatXpearnedgames                    int
+	TotalBrokenWindows                        int
+	TotalContributionScore                    int
+	TotalDamageDone                           int
+	TotalDeaths                               int
+	TotalDefusedBombs                         int
+	TotalDominationOverkills                  int
+	TotalDominations                          int
+	TotalGgMatchesPlayed                      int
+	TotalGgMatchesWon                         int
+	TotalGunGameContributionScore             int
+	TotalGunGameRoundsPlayed                  int
+	TotalGunGameRoundsWon                     int
+	TotalHitsAk47                             int
+	TotalHitsAug                              int
+	TotalHitsAwp                              int
+	TotalHitsBizon                            int
+	TotalHitsDeagle                           int
+	TotalHitsElite                            int
+	TotalHitsFamas                            int
+	TotalHitsFiveseven                        int
+	TotalHitsG3sg1                            int
+	TotalHitsGalilar                          int
+	TotalHitsGlock                            int
+	TotalHitsHkp2000                          int
+	TotalHitsM249                             int
+	TotalHitsM4a1                             int
+	TotalHitsMac10                            int
+	TotalHitsMag7                             int
+	TotalHitsMp7                              int
+	TotalHitsMp9                              int
+	TotalHitsNegev                            int
+	TotalHitsNova                             int
+	TotalHitsP250                             int
+	TotalHitsP90                              int
+	TotalHitsSawedoff                         int
+	TotalHitsScar20                           int
+	TotalHitsSg556                            int
+	TotalHitsSsg08                            int
+	TotalHitsTec9                             int
+	TotalHitsUmp45                            int
+	TotalHitsXm1014                           int
+	TotalKills                                int
+	TotalKillsAgainstZoomedSniper             int
+	TotalKillsAk47                            int
+	TotalKillsAug                             int
+	TotalKillsAwp                             int
+	TotalKillsBizon                           int
+	TotalKillsDeagle                          int
+	TotalKillsElite                           int
+	TotalKillsEnemyBlinded                    int
+	TotalKillsEnemyWeapon                     int
+	TotalKillsFamas                           int
+	TotalKillsFiveseven                       int
+	TotalKillsG3sg1                           int
+	TotalKillsGalilar                         int
+	TotalKillsGlock                           int
+	TotalKillsHeadshot                        int
+	TotalKillsHegrenade                       int
+	TotalKillsHkp2000                         int
+	TotalKillsKnife                           int
+	TotalKillsKnifeFight                      int
+	TotalKillsM249                            int
+	TotalKillsM4a1                            int
+	TotalKillsMac10                           int
+	TotalKillsMag7                            int
+	TotalKillsMolotov                         int
+	TotalKillsMp7                             int
+	TotalKillsMp9                             int
+	TotalKillsNegev                           int
+	TotalKillsNova                            int
+	TotalKillsP250                            int
+	TotalKillsP90                             int
+	TotalKillsSawedoff                        int
+	TotalKillsScar20                          int
+	TotalKillsSg556                           int
+	TotalKillsSsg08                           int
+	TotalKillsTaser                           int
+	TotalKillsTec9                            int
+	TotalKillsUmp45                           int
+	TotalKillsXm1014                          int
+	TotalMatchesPlayed                        int
+	TotalMatchesWon                           int
+	TotalMatchesWonBaggage                    int
+	TotalMatchesWonBank                       int
+	TotalMatchesWonLake                       int
+	TotalMatchesWonSafehouse                  int
+	TotalMatchesWonShoots                     int
+	TotalMatchesWonStmarc                     int
+	TotalMatchesWonSugarcane                  int
+	TotalMatchesWonTrain                      int
+	TotalMoneyEarned                          int
+	TotalMvps                                 int
+	TotalPlantedBombs                         int
+	TotalProgressiveMatchesWon                int
+	TotalRescuedHostages                      int
+	TotalRevenges                             int
+	TotalRoundsMapArBaggage                   int
+	TotalRoundsMapArMonastery                 int
+	TotalRoundsMapArShoots                    int
+	TotalRoundsMapCsAssault                   int
+	TotalRoundsMapCsItaly                     int
+	TotalRoundsMapCsMilitia                   int
+	TotalRoundsMapCsOffice                    int
+	TotalRoundsMapDeAztec                     int
+	TotalRoundsMapDeBank                      int
+	TotalRoundsMapDeCbble                     int
+	TotalRoundsMapDeDust                      int
+	TotalRoundsMapDeDust2                     int
+	TotalRoundsMapDeInferno                   int
+	TotalRoundsMapDeLake                      int
+	TotalRoundsMapDeNuke                      int
+	TotalRoundsMapDeSafehouse                 int
+	TotalRoundsMapDeHouse                     int
+	TotalRoundsMapDeShorttrain                int
+	TotalRoundsMapDeStmarc                    int
+	TotalRoundsMapDeSugarcane                 int
+	TotalRoundsMapDeTrain                     int
+	TotalRoundsMapDeVertigo                   int
+	TotalRoundsPlayed                         int
+	TotalShotsAk47                            int
+	TotalShotsAug                             int
+	TotalShotsAwp                             int
+	TotalShotsBizon                           int
+	TotalShotsDeagle                          int
+	TotalShotsElite                           int
+	TotalShotsFamas                           int
+	TotalShotsFired                           int
+	TotalShotsFiveseven                       int
+	TotalShotsG3sg1                           int
+	TotalShotsGalilar                         int
+	TotalShotsGlock                           int
+	TotalShotsHit                             int
+	TotalShotsHkp2000                         int
+	TotalShotsM249                            int
+	TotalShotsM4a1                            int
+	TotalShotsMac10                           int
+	TotalShotsMag7                            int
+	TotalShotsMp7                             int
+	TotalShotsMp9                             int
+	TotalShotsNegev                           int
+	TotalShotsNova                            int
+	TotalShotsP250                            int
+	TotalShotsP90                             int
+	TotalShotsSawedoff                        int
+	TotalShotsScar20                          int
+	TotalShotsSg556                           int
+	TotalShotsSsg08                           int
+	TotalShotsTaser                           int
+	TotalShotsTec9                            int
+	TotalShotsUmp45                           int
+	TotalShotsXm1014                          int
+	TotalTRDefusedBombs                       int
+	TotalTRPlantedBombs                       int
+	TotalTimePlayed                           int
+	TotalTrbombMatchesWon                     int
+	TotalWeaponsDonated                       int
+	TotalWins                                 int
+	TotalWinsMapArBaggage                     int
+	TotalWinsMapArMonastery                   int
+	TotalWinsMapArShoots                      int
+	TotalWinsMapCsAssault                     int
+	TotalWinsMapCsItaly                       int
+	TotalWinsMapCsMilitia                     int
+	TotalWinsMapCsOffice                      int
+	TotalWinsMapDeAztec                       int
+	TotalWinsMapDeBank                        int
+	TotalWinsMapDeCbble                       int
+	TotalWinsMapDeDust                        int
+	TotalWinsMapDeDust2                       int
+	TotalWinsMapDeHouse                       int
+	TotalWinsMapDeInferno                     int
+	TotalWinsMapDeLake                        int
+	TotalWinsMapDeNuke                        int
+	TotalWinsMapDeSafehouse                   int
+	TotalWinsMapDeShorttrain                  int
+	TotalWinsMapDeStmarc                      int
+	TotalWinsMapDeSugarcane                   int
+	TotalWinsMapDeTrain                       int
+	TotalWinsMapDeVertigo                     int
+	TotalWinsPistolround                      int
+}
+
+// Weaponstat holds all stat values for a weapon to be marshalled into JSON
+type Weaponstat struct {
+	Weapon common.EquipmentType
+	Hits   int
+	Shots  int
+	Kills  int
+}
+
+// Mapstat holds all values for a map to be marshalled into JSON
+type Mapstat struct {
+	Map    string
+	Name   string
+	Rounds int
+	Wins   int
+}
+
+// MarshalJSON converts a Weaponstat struct to json, e.g. for the API
+func (ws Weaponstat) MarshalJSON() ([]byte, error) {
+
+	var accuracy float64 = 0
+
+	if ws.Shots != 0 {
+		accuracy = float64(ws.Hits) / float64(ws.Shots)
+	}
+
+	return json.Marshal(&struct {
+		Weapon   string  `json:"weapon"`
+		Hits     int     `json:"hits"`
+		Shots    int     `json:"shots"`
+		Kills    int     `json:"kills"`
+		Accuracy float64 `json:"accuracy"`
+		IconPath string  `json:"iconpath"`
+	}{
+		Weapon:   ws.Weapon.String(),
+		Hits:     ws.Hits,
+		Shots:    ws.Shots,
+		Kills:    ws.Kills,
+		Accuracy: accuracy,
+		IconPath: "/public/img/weapons/" + ws.Weapon.String() + ".jpg",
+	})
+
+}
+
+// MarshalJSON converts a Mapstat struct to json, e.g. for the API
+func (ms Mapstat) MarshalJSON() ([]byte, error) {
+
+	var winRate float64 = 0
+
+	if ms.Rounds != 0 {
+		winRate = float64(ms.Wins) / float64(ms.Rounds)
+	}
+
+	return json.Marshal(&struct {
+		Map      string  `json:"map"`
+		Name     string  `json:"name"`
+		Rounds   int     `json:"rounds_total"`
+		Win      int     `json:"rounds_won"`
+		WinRate  float64 `json:"win_rate"`
+		IconPath string  `json:"iconpath"`
+	}{
+		Map:      ms.Map,
+		Name:     ms.Name,
+		Rounds:   ms.Rounds,
+		Win:      ms.Wins,
+		WinRate:  winRate,
+		IconPath: "/public/img/maps/icons/" + ms.Map + ".png",
+	})
+
+}
+
+// MapStats returns stats for all maps played by a player
+func (gs GameStats) MapStats() []Mapstat {
+
+	ret := []Mapstat{
+		{Map: "ar_baggage", Name: "Baggage", Wins: gs.TotalWinsMapArBaggage, Rounds: gs.TotalRoundsMapArBaggage},
+		// {Map: "ar_monastery", Name: "Monastery", Wins: gs.TotalWinsMapArMonastery, Rounds: gs.TotalRoundsMapArMonastery},
+		// {Map: "ar_shoots", Name: "Shoots", Wins: gs.TotalWinsMapArShoots, Rounds: gs.TotalRoundsMapArShoots},
+		{Map: "cs_assault", Name: "Assault", Wins: gs.TotalWinsMapCsAssault, Rounds: gs.TotalRoundsMapCsAssault},
+		{Map: "cs_italy", Name: "Italy", Wins: gs.TotalWinsMapCsItaly, Rounds: gs.TotalRoundsMapCsItaly},
+		{Map: "cs_militia", Name: "Militia", Wins: gs.TotalWinsMapCsMilitia, Rounds: gs.TotalRoundsMapCsMilitia},
+		{Map: "cs_office", Name: "Office", Wins: gs.TotalWinsMapCsOffice, Rounds: gs.TotalRoundsMapCsOffice},
+		{Map: "de_aztec", Name: "Aztec", Wins: gs.TotalWinsMapDeAztec, Rounds: gs.TotalRoundsMapDeAztec},
+		{Map: "de_bank", Name: "Bank", Wins: gs.TotalWinsMapDeBank, Rounds: gs.TotalRoundsMapDeBank},
+		{Map: "de_cbble", Name: "Cobblestole", Wins: gs.TotalWinsMapDeCbble, Rounds: gs.TotalRoundsMapDeCbble},
+		{Map: "de_dust", Name: "Dust", Wins: gs.TotalWinsMapDeDust, Rounds: gs.TotalRoundsMapDeDust},
+		{Map: "de_dust2", Name: "Dust2", Wins: gs.TotalWinsMapDeDust2, Rounds: gs.TotalRoundsMapDeDust2},
+		// {Map: "de_house", Name: "House", Wins: gs.TotalWinsMapDeHouse, Rounds: gs.TotalRoundsMapDeHouse},
+		{Map: "de_inferno", Name: "Inferno", Wins: gs.TotalWinsMapDeInferno, Rounds: gs.TotalRoundsMapDeInferno},
+		{Map: "de_lake", Name: "Lake", Wins: gs.TotalWinsMapDeLake, Rounds: gs.TotalRoundsMapDeLake},
+		{Map: "de_nuke", Name: "Nuke", Wins: gs.TotalWinsMapDeNuke, Rounds: gs.TotalRoundsMapDeNuke},
+		{Map: "de_safehouse", Name: "Safehouse", Wins: gs.TotalWinsMapDeSafehouse, Rounds: gs.TotalRoundsMapDeSafehouse},
+		// {Map: "de_shorttrain", Name: "Shorttrain", Wins: gs.TotalWinsMapDeShorttrain, Rounds: gs.TotalRoundsMapDeShorttrain},
+		// {Map: "de_stmarc", Name: "St. Marc", Wins: gs.TotalWinsMapDeStmarc, Rounds: gs.TotalRoundsMapDeStmarc},
+		{Map: "de_sugarcane", Name: "Sugarcane", Wins: gs.TotalWinsMapDeSugarcane, Rounds: gs.TotalRoundsMapDeSugarcane},
+		{Map: "de_train", Name: "Train", Wins: gs.TotalWinsMapDeTrain, Rounds: gs.TotalRoundsMapDeTrain},
+		{Map: "de_vertigo", Name: "Vertigo", Wins: gs.TotalWinsMapDeVertigo, Rounds: gs.TotalRoundsMapDeVertigo},
+	}
+
+	return ret
+
+}
+
+// WeaponStats returns stats for all weapons used by a player
+func (gs GameStats) WeaponStats() []Weaponstat {
+
+	ret := []Weaponstat{
+
+		{Weapon: common.EqAK47, Hits: gs.TotalHitsAk47, Shots: gs.TotalShotsAk47, Kills: gs.TotalKillsAk47},
+		{Weapon: common.EqAUG, Hits: gs.TotalHitsAug, Shots: gs.TotalShotsAug, Kills: gs.TotalKillsAug},
+		{Weapon: common.EqAWP, Hits: gs.TotalHitsAwp, Shots: gs.TotalShotsAwp, Kills: gs.TotalKillsAwp},
+		{Weapon: common.EqBizon, Hits: gs.TotalHitsBizon, Shots: gs.TotalShotsBizon, Kills: gs.TotalKillsBizon},
+		{Weapon: common.EqDeagle, Hits: gs.TotalHitsDeagle, Shots: gs.TotalShotsDeagle, Kills: gs.TotalKillsDeagle},
+		{Weapon: common.EqDualBerettas, Hits: gs.TotalHitsElite, Shots: gs.TotalShotsElite, Kills: gs.TotalKillsElite},
+		{Weapon: common.EqFamas, Hits: gs.TotalHitsFamas, Shots: gs.TotalShotsFamas, Kills: gs.TotalKillsFamas},
+		{Weapon: common.EqFiveSeven, Hits: gs.TotalHitsFiveseven, Shots: gs.TotalShotsFiveseven, Kills: gs.TotalKillsFiveseven},
+		{Weapon: common.EqG3SG1, Hits: gs.TotalHitsG3sg1, Shots: gs.TotalShotsG3sg1, Kills: gs.TotalKillsG3sg1},
+		{Weapon: common.EqGalil, Hits: gs.TotalHitsGalilar, Shots: gs.TotalShotsGalilar, Kills: gs.TotalKillsGalilar},
+		{Weapon: common.EqGlock, Hits: gs.TotalHitsGlock, Shots: gs.TotalShotsGlock, Kills: gs.TotalKillsGlock},
+		{Weapon: common.EqHE, Kills: gs.TotalKillsHegrenade},
+		{Weapon: common.EqKnife, Kills: gs.TotalKillsKnife},
+		{Weapon: common.EqM249, Hits: gs.TotalHitsM249, Shots: gs.TotalShotsM249, Kills: gs.TotalKillsM249},
+		{Weapon: common.EqM4A1, Hits: gs.TotalHitsM4a1, Shots: gs.TotalShotsM4a1, Kills: gs.TotalKillsM4a1},
+		{Weapon: common.EqMP7, Hits: gs.TotalHitsMp7, Shots: gs.TotalShotsMp7, Kills: gs.TotalKillsMp7},
+		{Weapon: common.EqMP9, Hits: gs.TotalHitsMp9, Shots: gs.TotalShotsMp9, Kills: gs.TotalKillsMp9},
+		{Weapon: common.EqMac10, Hits: gs.TotalHitsMac10, Shots: gs.TotalShotsMac10, Kills: gs.TotalKillsMac10},
+		{Weapon: common.EqMag7, Hits: gs.TotalHitsMag7, Shots: gs.TotalShotsMag7, Kills: gs.TotalKillsMag7},
+		{Weapon: common.EqMolotov, Kills: gs.TotalKillsMolotov},
+		{Weapon: common.EqNegev, Hits: gs.TotalHitsNegev, Shots: gs.TotalShotsNegev, Kills: gs.TotalKillsNegev},
+		{Weapon: common.EqNova, Hits: gs.TotalHitsNova, Shots: gs.TotalShotsNova, Kills: gs.TotalKillsNova},
+		{Weapon: common.EqP2000, Hits: gs.TotalHitsHkp2000, Shots: gs.TotalShotsHkp2000, Kills: gs.TotalKillsHkp2000},
+		{Weapon: common.EqP250, Hits: gs.TotalHitsP250, Shots: gs.TotalShotsP250, Kills: gs.TotalKillsP250},
+		{Weapon: common.EqP90, Hits: gs.TotalHitsP90, Shots: gs.TotalShotsP90, Kills: gs.TotalKillsP90},
+		{Weapon: common.EqSG556, Hits: gs.TotalHitsSg556, Shots: gs.TotalShotsSg556, Kills: gs.TotalKillsSg556},
+		{Weapon: common.EqSSG08, Hits: gs.TotalHitsSsg08, Shots: gs.TotalShotsSsg08, Kills: gs.TotalKillsSsg08},
+		{Weapon: common.EqSawedOff, Hits: gs.TotalHitsSawedoff, Shots: gs.TotalShotsSawedoff, Kills: gs.TotalKillsSawedoff},
+		{Weapon: common.EqScar20, Hits: gs.TotalHitsScar20, Shots: gs.TotalShotsScar20, Kills: gs.TotalKillsScar20},
+		{Weapon: common.EqTec9, Hits: gs.TotalHitsTec9, Shots: gs.TotalShotsTec9, Kills: gs.TotalKillsTec9},
+		{Weapon: common.EqUMP, Hits: gs.TotalHitsUmp45, Shots: gs.TotalShotsUmp45, Kills: gs.TotalKillsUmp45},
+		{Weapon: common.EqXM1014, Hits: gs.TotalHitsXm1014, Shots: gs.TotalShotsXm1014, Kills: gs.TotalKillsXm1014},
+		{Weapon: common.EqZeus, Kills: gs.TotalKillsTaser},
+
+		// {Weapon: common.EqDecoy,
+		// 	Hits:  gs.TotalHitsDecoy,
+		// 	Shots: gs.TotalShotsDecoy,
+		// 	Kills: gs.TotalKillsDecoy,
+		// },
+		// {Weapon: common.EqFlash,
+		// 	Hits:  gs.TotalHitsFlash,
+		// 	Shots: gs.TotalShotsFlash,
+		// 	Kills: gs.TotalKillsFlash,
+		// },
+		// {
+		// 	Weapon: common.EqIncendiary,
+		// 	Hits:   gs.TotalHitsIncendiary,
+		// 	Shots:  gs.TotalShotsIncendiary,
+		// 	Kills:  gs.TotalKillsIncendiary,
+		// },
+		// {Weapon: common.EqM4A4,
+		// 	Hits:  gs.TotalHitsM4a4,
+		// 	Shots: gs.TotalShotsM4A4,
+		// 	Kills: gs.TotalKillsM4a4,
+		// },
+		// {
+		// 	Weapon: common.EqMP5,
+		// 	Hits:   gs.TotalHitsMp5
+		// 	Shots:  gs.TotalShotsMp5,
+		// 	Kills:  gs.TotalKillsMP5,
+		// },
+		// {Weapon: common.EqRevolver,
+		// 	Hits:  gs.TotalHitsRevolver,
+		// 	Shots: gs.TotalShotsRevolver,
+		// 	Kills: gs.TotalKillsRevolver,
+		// },
+		// {
+		// 	Weapon: common.EqScout,
+		// 	Hits:   gs.TotalHitsScout,
+		// 	Shots:  gs.TotalShotsScout,
+		// 	Kills:  gs.TotalKillsScout,
+		// },
+		// {Weapon: common.EqSmoke,
+		// 	Hits:  gs.TotalHitsSmoke,
+		// 	Shots: gs.TotalShotsSmoke,
+		// 	Kills: gs.TotalKillsSmoke,
+		// },
+		// {Weapon: common.EqSwag7,
+		// 	Hits:  gs.TotalHits
+		// 	Shots: gs.TotalShotsSwag7,
+		// 	Kills: gs.TotalKillsSwag7,
+		// },
+		// {Weapon: common.EqUSP,
+		// 	Hits:  gs.TotalHitsUsp,
+		// 	Shots: gs.TotalShotsUsp,
+		// 	Kills: gs.TotalKillsUsp,
+		// },
+		// {
+		// 	Weapon: common.EqSG553,
+		// 	Hits:   gs.TotalHitsSg556,
+		// 	Shots:  gs.TotalShotsSg556,
+		// 	Kills:  gs.TotalKillsSg556,
+		// },
+
+	}
+
+	return ret
+
 }

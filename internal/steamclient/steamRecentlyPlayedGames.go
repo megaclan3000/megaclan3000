@@ -3,7 +3,6 @@ package steamclient
 import (
 	"errors"
 
-	log "github.com/sirupsen/logrus"
 	"strconv"
 )
 
@@ -53,39 +52,37 @@ type recentlyPlayedGamesData struct {
 type RecentlyPlayedGames struct {
 
 	// SteamID of the player
-	SteamID string `db:"steamid"`
+	SteamID string
 
 	// AppID for the game, 730 for CS:GO
-	Appid string `db:"appid"`
+	Appid string
 
 	// Name of the game played
-	Name string `db:"name"`
+	Name string
 
 	// Playtime in the last two weeks
-	Playtime2Weeks string `db:"playtime_2_weeks"`
+	Playtime2Weeks string
 
 	// Total playtime
-	PlaytimeForever string `db:"playtime_forever"`
+	PlaytimeForever string
 
 	// URL to the icon of the game
-	ImgIconURL string `db:"img_icon_url"`
+	ImgIconURL string
 
 	// URL to the logo of the game
-	ImgLogoURL string `db:"img_logo_url"`
+	ImgLogoURL string
 
 	// Total playtime on windows
-	PlaytimeWindowsForever string `db:"playtime_windows_forever"`
+	PlaytimeWindowsForever string
 
 	// Total playtime on mac
-	PlaytimeMacForever string `db:"playtime_mac_forever"`
+	PlaytimeMacForever string
 
 	// Total playtime on linux
-	PlaytimeLinuxForever string `db:"playtime_linux_forever"`
+	PlaytimeLinuxForever string
 }
 
 func (sc *SteamClient) parseRecentlyPlayedGames(data recentlyPlayedGamesData, steamID string) (RecentlyPlayedGames, error) {
-
-	log.Debugf("Parsing recentlyPlayedGamesData for steamID: %v", steamID)
 
 	for _, v := range data.Response.Games {
 		if v.Appid == 730 {

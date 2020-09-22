@@ -1,0 +1,152 @@
+
+
+<style type="text/css" media="screen">
+#chartcontainer-match-duels {
+	height: 300px;
+	margin-top: 20px;
+    width:100%;
+}
+
+.duels-container{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+</style>
+
+<div id="chartcontainer-match-duels" class="indigo darken-2"></div>
+
+<div class="duels-container">
+	
+
+<table id="damagesTable" class="scoretable highlight white-text indigo darken-2">
+	<thead> 
+		<tr class="indigo darken-3">
+			<td> <b> From \ To</b> </td>
+		</tr> 
+		</thead> 
+		<tbody></tbody>
+</table>
+
+</div>
+
+<script id="damagesHeadTemplate" type="text/x-jsrender">
+	<td> <img class="tableimage tooltipped" data-position="top" data-tooltip="{{:player}}" src="{{:avatar}}" alt=""></img> </td>
+  <!-- <a class="btn tooltipped" data-position="top" data-tooltip="{{:player}}">Hover me!</a> -->
+</script>
+
+
+
+<script id="damagesRowTemplate" type="text/x-jsrender">
+	<tr>
+		<td> <img class="tableimage tooltipped" data-position="left" data-tooltip="{{:player}}" src="{{:avatar}}" alt=""></img> </td>
+		{{for damages}}
+			{{if not :amount}}
+				<td> {{:amount}} </td>
+			{{else}}
+				<td class="grey-text"> {{:amount}} </td>
+			{{/if}}
+		{{/for}}
+	</tr>
+</script>
+
+
+<script charset="utf-8">
+$(document).ready(function() {
+
+	var mID =  window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+	$.getJSON("/api/matchinfo/"+mID+"/duels",  function(data) {
+
+		var playernamesClan = [];
+		for (const [key, value] of Object.entries(data.clan)) {
+			 playernamesClan.push(key);
+		}
+
+
+		var playernamesEnemy = [];
+		for (const [key, value] of Object.entries(data.enemy)) {
+			 playernamesEnemy.push(key);
+		}
+
+		var allnames = playernamesClan.concat(playernamesEnemy);
+		var allplayers = {...data.enemy, ...data.clan};
+
+
+		for (var i = 0; i<allnames.length; i++) {
+
+			$("#damagesTable thead tr" ).append( $.templates( "#damagesHeadTemplate" ).render(allplayers[allnames[i]]));
+
+			var victims = [];
+
+
+			victims = allplayers[allnames[i]].damages.sort(
+				function (a, b) {
+					return allnames.indexOf(a.victim) - allnames.indexOf(b.victim);
+				});
+
+			$("#damagesTable tbody" ).append( $.templates( "#damagesRowTemplate" ).render(allplayers[allnames[i]]));
+		}
+
+
+		var chartdata = [];
+
+
+		for (const [key, value] of Object.entries(data.clan)) {
+
+			for (var enemyI = 0; enemyI < playernamesEnemy.length; enemyI++){
+
+			for(var i = 0; i<value.damages.length; i++) {
+
+				if (value.damages[i].victim == playernamesEnemy[enemyI]) {
+					var clanplayer = [ value.player, playernamesEnemy[enemyI], value.damages[i].amount  ]
+					chartdata.push(clanplayer);
+				}
+			}
+		}
+	}
+
+    $('.tooltipped').tooltip();
+
+
+
+		Highcharts.chart('chartcontainer-match-duels', {
+
+			title: {
+				text: null
+			},
+	credits: {
+		enabled: false
+	},
+	exporting: {
+		enabled: false
+	},
+	legend: {
+		itemStyle: {
+			color: '#ffffff',
+		}
+	},
+			accessibility: {
+				point: {
+					valueDescriptionFormat: '{index}. {point.from} to {point.to}, {point.weight}.'
+				}
+			},
+
+    chart: {
+		plotBackgroundColor: null,
+		backgroundColor: 'rgba(0,0,0,0)',
+		plotBorderWidth: null,
+		plotShadow: false,
+    },
+			series: [{
+				keys: ['from', 'to', 'weight'],
+				data: chartdata,
+				type: 'sankey',
+				name: 'Sankey demo series'
+			}]
+
+		});
+
+	});
+
+});
+
+</script>

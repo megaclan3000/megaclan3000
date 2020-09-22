@@ -1,0 +1,84 @@
+
+
+<script charset="utf-8">
+	
+
+	Highcharts.chart('chart-bubble', {
+	chart: {
+		type: 'packedbubble',
+		height: '40%'
+	},
+	title: {
+		text: null
+	},
+	tooltip: {
+		useHTML: true,
+		pointFormat: '<b>{point.name}:</b> {point.value}m CO<sub>2</sub>'
+	},
+	plotOptions: {
+		packedbubble: {
+			minSize: '30%',
+			maxSize: '120%',
+			zMin: 0,
+			zMax: 1000,
+			layoutAlgorithm: {
+				splitSeries: false,
+				gravitationalConstant: 0.02
+			},
+			dataLabels: {
+				enabled: true,
+				format: '{point.name}',
+				filter: {
+					property: 'y',
+					operator: '>',
+					value: 250
+				},
+				style: {
+					color: 'black',
+					textOutline: 'none',
+					fontWeight: 'normal'
+				}
+			}
+		}
+	},
+
+	series: [{
+		name: 'megaclan3000',
+		data: [{
+			name: 'Germany',
+			value: 767.1
+		}, {
+			name: 'Croatia',
+			value: 20.7
+		},
+		{
+			name: "Cyprus",
+			value: 7.2
+		}]
+	}, {
+		name: 'Enemy',
+		data: [{
+			name: "Senegal",
+			value: 8.2
+		},
+		{
+			name: "South Africa",
+			value: 392.7
+		}, {
+			name: "Egypt",
+			value: 225.1
+		}, {
+			name: "Algeria",
+			value: 141.5
+		}]
+	}]
+});
+</script>
+
+
+
+
+
+
+
+

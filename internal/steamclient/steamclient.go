@@ -1,6 +1,8 @@
 package steamclient
 
 import (
+	"strconv"
+
 	log "github.com/sirupsen/logrus"
 )
 
@@ -37,4 +39,27 @@ func (sc SteamClient) GetPlayers() []PlayerInfo {
 		}
 	}
 	return players
+}
+
+// GetAvatarURL returns the URL to a players avatar image
+func (sc SteamClient) GetAvatarURL(id uint64) string {
+
+	//PlayerSummary
+	summaryData := playerSummariesData{}
+	url := "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=" + sc.Config.SteamAPIKey + "&steamids=" + strconv.FormatUint(id, 10)
+
+	if err := getJSON(url, &summaryData); err != nil {
+		log.Warn(err)
+
+		return "/public/img/avatars/other.jpg"
+	}
+	var summary PlayerSummary
+	var err error
+
+	if summary, err = sc.parsePlayerSummary(summaryData); err != nil {
+		log.Warn(err)
+		return "/public/img/avatars/other.jpg"
+	}
+	return summary.Avatarfull
+
 }
