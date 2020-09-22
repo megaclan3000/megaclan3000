@@ -24,4 +24,4 @@ RUN go build -o main .
 EXPOSE 8080
 
 # Command to run when starting the container
-ENTRYPOINT ["/app/main", "-config", "/var/megaclan3000/config.json", "-demo-folder", "/var/megaclan3000/demos"]
+ENTRYPOINT ["/app/main", "-config", "/config.json", "-demo-folder", "/demos"]
