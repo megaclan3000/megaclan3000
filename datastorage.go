@@ -46,7 +46,7 @@ func NewDataStorage() *DataStorage {
 	puser := steamClient.Config.PostgresUser
 	ppass := steamClient.Config.PostgresPass
 
-	db, err := sql.Open("postgres", "user="+puser+" password="+ppass+" dbname="+pdb+"sslmode=disable")
+	db, err := sql.Open("postgres", "user="+puser+" password="+ppass+" dbname="+pdb+" sslmode=disable")
 	if err != nil {
 		log.Fatal(err)
 	}
