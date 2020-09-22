@@ -2,9 +2,10 @@ package steamclient
 
 import (
 	"encoding/json"
-	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // SteamConfig struct holds the values as read from the configuration file
@@ -14,11 +15,9 @@ type SteamConfig struct {
 	SteamIDs        []string `json:"SteamIDs"`
 	HistoryInterval int      `json:"HistoryInterval"`
 	UpdateInterval  int      `json:"UpdateInterval"`
-	MongoUser       string   `json:"mongo_user"`
-	MongoPass       string   `json:"mongo_pass"`
-	MongoHost       string   `json:"mongo_host"`
-	MongoTestDbName string   `json:"test_db_name"`
-	MongoDbName     string   `json:"db_name"`
+	PostgresUser    string   `json:"postgres_user"`
+	PostgresPass    string   `json:"postgres_pass"`
+	PostgresDbName  string   `json:"db_name"`
 }
 
 // NewSteamConfig creates a new configuration struct from a path pointing to

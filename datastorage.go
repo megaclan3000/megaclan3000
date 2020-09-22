@@ -42,7 +42,11 @@ func (ds *DataStorage) UpdateData() {
 // application
 func NewDataStorage() *DataStorage {
 
-	db, err := sql.Open("postgres", "user=postgres password=megaclan dbname=megadb sslmode=disable")
+	pdb := steamClient.Config.PostgresDbName
+	puser := steamClient.Config.PostgresUser
+	ppass := steamClient.Config.PostgresPass
+
+	db, err := sql.Open("postgres", "user="+puser+" password="+ppass+" dbname="+pdb+"sslmode=disable")
 	if err != nil {
 		log.Fatal(err)
 	}
