@@ -191,10 +191,10 @@ var sortable = [];
 
 for (const key in data.weapons) {
 	if (data.weapons.hasOwnProperty(key)) {
-
 		var weapon = data.weapons[key];
-		sortable.push(weapon);
-
+		if (weapon.total_kills > 0 ) {
+			sortable.push(weapon);
+		}
 	}
 }
 
