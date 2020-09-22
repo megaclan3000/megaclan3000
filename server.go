@@ -22,6 +22,7 @@ var t *template.Template
 var datastorage *DataStorage
 var steamClient *steamclient.SteamClient
 var flagConfig string
+var flagDemoFolder string
 
 // var demoInfo demoparser.InfoStruct
 
@@ -31,6 +32,7 @@ func main() {
 	flagVerbose := flag.Bool("verbose", false, "Enable verbose output")
 
 	flag.StringVar(&flagConfig, "config", "./config.json", "path to config file")
+	flag.StringVar(&flagConfig, "demo-folder", "./demo-import", "path to demo import folder")
 
 	flag.Parse()
 
@@ -47,6 +49,7 @@ func main() {
 	log.SetFormatter(Formatter)
 
 	log.Println("Starting with config file:", flagConfig)
+	log.Println("Importing demos from:", flagDemoFolder)
 
 	// Read config and pull initial data
 	steamClient = steamclient.NewSteamClient(flagConfig)
