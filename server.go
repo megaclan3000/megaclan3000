@@ -32,7 +32,7 @@ func main() {
 	flagVerbose := flag.Bool("verbose", false, "Enable verbose output")
 
 	flag.StringVar(&flagConfig, "config", "./config.json", "path to config file")
-	flag.StringVar(&flagConfig, "demo-folder", "./demo-import", "path to demo import folder")
+	flag.StringVar(&flagDemoFolder, "demo-folder", "./demo-import", "path to demo import folder")
 
 	flag.Parse()
 
