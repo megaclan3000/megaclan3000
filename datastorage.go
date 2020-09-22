@@ -157,7 +157,6 @@ func (ds DataStorage) GetMatches() interface{} {
 		PlayerName string `json:"player_name"`
 		Avatar     string `json:"avatar"`
 	}
-	//TODO implement real data
 	type data struct {
 		MapName     string        `json:"map"`         // Name of the map
 		ScoreClan   int           `json:"score_clan"`  // Points clan
