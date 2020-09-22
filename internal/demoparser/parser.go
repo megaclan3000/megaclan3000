@@ -195,7 +195,7 @@ func (p *DemoParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer
 		Rank:             0,
 		Clantag:          player.ClanTag(),
 		Steamid64:        player.SteamID64,
-		AvatarURL:        p.steamClient.GetAvatarUrl(player.SteamID64),
+		AvatarURL:        p.steamClient.GetAvatarURL(player.SteamID64),
 		Kills:            0,
 		Deaths:           0,
 		Assists:          0,

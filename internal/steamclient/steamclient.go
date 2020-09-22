@@ -41,7 +41,8 @@ func (sc SteamClient) GetPlayers() []PlayerInfo {
 	return players
 }
 
-func (sc SteamClient) GetAvatarUrl(id uint64) string {
+// GetAvatarURL returns the URL to a players avatar image
+func (sc SteamClient) GetAvatarURL(id uint64) string {
 
 	//PlayerSummary
 	summaryData := playerSummariesData{}
@@ -52,12 +53,13 @@ func (sc SteamClient) GetAvatarUrl(id uint64) string {
 
 		return "/public/img/avatars/other.jpg"
 	}
+	var summary PlayerSummary
+	var err error
 
-	if summary, err := sc.parsePlayerSummary(summaryData); err != nil {
+	if summary, err = sc.parsePlayerSummary(summaryData); err != nil {
 		log.Warn(err)
 		return "/public/img/avatars/other.jpg"
-	} else {
-		return summary.Avatarfull
 	}
+	return summary.Avatarfull
 
 }

@@ -232,21 +232,24 @@ type GameStats struct {
 	TotalWinsPistolround                      int
 }
 
-type weaponstat struct {
+// Weaponstat holds all stat values for a weapon to be marshalled into JSON
+type Weaponstat struct {
 	Weapon common.EquipmentType
 	Hits   int
 	Shots  int
 	Kills  int
 }
 
-type mapstat struct {
+// Mapstat holds all values for a map to be marshalled into JSON
+type Mapstat struct {
 	Map    string
 	Name   string
 	Rounds int
 	Wins   int
 }
 
-func (ws weaponstat) MarshalJSON() ([]byte, error) {
+// MarshalJSON converts a Weaponstat struct to json, e.g. for the API
+func (ws Weaponstat) MarshalJSON() ([]byte, error) {
 
 	var accuracy float64 = 0
 
@@ -272,7 +275,8 @@ func (ws weaponstat) MarshalJSON() ([]byte, error) {
 
 }
 
-func (ms mapstat) MarshalJSON() ([]byte, error) {
+// MarshalJSON converts a Mapstat struct to json, e.g. for the API
+func (ms Mapstat) MarshalJSON() ([]byte, error) {
 
 	var winRate float64 = 0
 
@@ -298,9 +302,10 @@ func (ms mapstat) MarshalJSON() ([]byte, error) {
 
 }
 
-func (gs GameStats) MapStats() []mapstat {
+// MapStats returns stats for all maps played by a player
+func (gs GameStats) MapStats() []Mapstat {
 
-	ret := []mapstat{
+	ret := []Mapstat{
 		{Map: "ar_baggage", Name: "Baggage", Wins: gs.TotalWinsMapArBaggage, Rounds: gs.TotalRoundsMapArBaggage},
 		// {Map: "ar_monastery", Name: "Monastery", Wins: gs.TotalWinsMapArMonastery, Rounds: gs.TotalRoundsMapArMonastery},
 		// {Map: "ar_shoots", Name: "Shoots", Wins: gs.TotalWinsMapArShoots, Rounds: gs.TotalRoundsMapArShoots},
@@ -329,9 +334,10 @@ func (gs GameStats) MapStats() []mapstat {
 
 }
 
-func (gs GameStats) WeaponStats() []weaponstat {
+// WeaponStats returns stats for all weapons used by a player
+func (gs GameStats) WeaponStats() []Weaponstat {
 
-	ret := []weaponstat{
+	ret := []Weaponstat{
 
 		{Weapon: common.EqAK47, Hits: gs.TotalHitsAk47, Shots: gs.TotalShotsAk47, Kills: gs.TotalKillsAk47},
 		{Weapon: common.EqAUG, Hits: gs.TotalHitsAug, Shots: gs.TotalShotsAug, Kills: gs.TotalKillsAug},
