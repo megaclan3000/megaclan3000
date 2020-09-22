@@ -54,15 +54,17 @@ func NewDataStorage() *DataStorage {
 
 		db, err = sql.Open("postgres", "user="+puser+" password="+ppass+" dbname="+pdb+" sslmode=disable")
 
-		if err != nil {
-			if retry < 1 {
-				log.Fatal(err)
-			}
-			time.Sleep(5 * time.Second)
-			retry--
-		} else {
+		if err == nil {
 			break
 		}
+
+		if retry < 1 {
+			log.Fatal(err)
+		}
+
+		time.Sleep(5 * time.Second)
+		retry--
+		err = nil
 	}
 
 	log.Debug("Dropping match table")
