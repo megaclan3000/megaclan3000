@@ -62,6 +62,7 @@ func NewDataStorage() *DataStorage {
 			log.Fatal(err)
 		}
 
+		log.Warning("Connection to database failed, retrying in 5 seconds")
 		time.Sleep(5 * time.Second)
 		retry--
 		err = nil
