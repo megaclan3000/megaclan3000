@@ -52,7 +52,7 @@ func NewDataStorage() *DataStorage {
 
 	for {
 
-		db, err = sql.Open("postgres", "user="+puser+" password="+ppass+" dbname="+pdb+" sslmode=disable")
+		db, err = sql.Open("postgres", "host=database user="+puser+" password="+ppass+" dbname="+pdb+" sslmode=disable")
 
 		if err == nil {
 			break
