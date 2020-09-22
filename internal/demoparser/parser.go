@@ -39,13 +39,10 @@ func NewDemoParser(client *steamclient.SteamClient) DemoParser {
 
 // Used while parsing to hold values while going through the ticks
 type parsingState struct {
-	// Current round
-	Round        int
+	Round        int // Current round
 	RoundOngoing bool
 	WarmupKills  []events.Kill
 	currentTeam  common.Team
-	lastKill     events.Kill
-	lastKillTime time.Time
 }
 
 // Parse starts the parsing process and fills the infostruct with values
@@ -82,7 +79,11 @@ func (p *DemoParser) Parse(path string, m *InfoStruct) error {
 	// p.RegisterEventHandler(handlerChatMessage)
 
 	// Parse header and set general values
-	p.setGeneral()
+	err = p.setGeneral()
+
+	if err != nil {
+		return err
+	}
 
 	// Parse the demo returning errors
 	err = p.parser.ParseToEnd()
@@ -349,18 +350,6 @@ func (p DemoParser) matesAlive(player *common.Player) int {
 		}
 	}
 	return alive
-}
-
-func teamString(team common.Team) string {
-
-	switch team {
-	case common.TeamCounterTerrorists:
-		return "CT"
-	case common.TeamTerrorists:
-		return "T"
-	default:
-		return ""
-	}
 }
 
 func (p *DemoParser) handlerPlayerHurt(e events.PlayerHurt) {

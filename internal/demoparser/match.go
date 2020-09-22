@@ -373,22 +373,6 @@ func (sp *ScoreboardPlayers) AllWeaponsUsed() []common.EquipmentType {
 	return list
 }
 
-func (sp *ScoreboardPlayers) addKill(steamID uint64) {
-	for k := range sp.Players {
-		if sp.Players[k].Steamid64 == steamID {
-			sp.Players[k].Kills++
-		}
-	}
-}
-
-func (sp *ScoreboardPlayers) addDeath(steamID uint64) {
-	for k := range sp.Players {
-		if sp.Players[k].Steamid64 == steamID {
-			sp.Players[k].Deaths++
-		}
-	}
-}
-
 func (sp *ScoreboardPlayers) addAssist(steamID uint64) {
 	for k := range sp.Players {
 		if sp.Players[k].Steamid64 == steamID {

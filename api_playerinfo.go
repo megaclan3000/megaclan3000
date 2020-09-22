@@ -25,7 +25,7 @@ func handlerAPIPlayerinfo(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		//TODO handle error
-		panic(err)
+		log.Fatal(err)
 	}
 
 	switch vars["endpoint"] {
@@ -35,22 +35,32 @@ func handlerAPIPlayerinfo(w http.ResponseWriter, r *http.Request) {
 
 		//TODO handle error
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 
 		byt, err = json.Marshal(info.UserStatsForGame.Stats.MapStats())
+		if err != nil {
+			log.Fatal(err)
+		}
+
 	case "weapons":
 
 		info, err := datastorage.GetPlayerInfoBySteamID(steamID)
 
 		//TODO handle error
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 
 		byt, err = json.Marshal(info.UserStatsForGame.Stats.WeaponStats())
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.Write(byt)
+	_, err = w.Write(byt)
+	if err != nil {
+		log.Error(err)
+	}
 }

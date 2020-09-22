@@ -493,11 +493,11 @@ func (ds DataStorage) GetUpdates() interface{} {
 	type UpdateType int
 
 	const (
-		Award     UpdateType = 0
-		Rank                 = 1
-		MatchWon             = 2
-		MatchLost            = 3
-		MatchDraw            = 4
+	// Award UpdateType = 0
+	// Rank                 = 1
+	// MatchWon  = 2
+	// MatchLost = 3
+	// MatchDraw = 4
 	)
 
 	type Update struct {

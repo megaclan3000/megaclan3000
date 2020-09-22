@@ -52,5 +52,8 @@ func handlerAPIMatchinfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.Write(byt)
+	_, err = w.Write(byt)
+	if err != nil {
+		log.Error(err)
+	}
 }
