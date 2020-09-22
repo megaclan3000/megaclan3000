@@ -17,7 +17,7 @@ func NewSteamClient(configPath string) *SteamClient {
 
 	config, err := NewSteamConfig(configPath)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	return &SteamClient{config}
