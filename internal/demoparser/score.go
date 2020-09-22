@@ -5,7 +5,7 @@ package demoparser
 type Score struct {
 
 	//ID of the player
-	SteamId string
+	SteamID string
 
 	//Points earned from won matches
 	ScoreMatch int

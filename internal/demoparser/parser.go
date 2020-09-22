@@ -18,15 +18,17 @@ import (
 	events "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
 )
 
-type MyParser struct {
+// DemoParser holds all methods to parse a demo file into a infostruct
+type DemoParser struct {
 	steamClient *steamclient.SteamClient
 	parser      demoinfocs.Parser
 	Match       *InfoStruct
 	state       parsingState
 }
 
-func NewMyParser(client *steamclient.SteamClient) MyParser {
-	return MyParser{
+// NewDemoParser constructor for a new demoparser
+func NewDemoParser(client *steamclient.SteamClient) DemoParser {
+	return DemoParser{
 		steamClient: client,
 		state: parsingState{
 			Round:        0,
@@ -46,7 +48,9 @@ type parsingState struct {
 	lastKillTime time.Time
 }
 
-func (p *MyParser) Parse(path string, m *InfoStruct) error {
+// Parse starts the parsing process and fills the infostruct with values
+// gathered form the demo file
+func (p *DemoParser) Parse(path string, m *InfoStruct) error {
 
 	matchID := strings.Split(filepath.Base(path), "_")[0]
 	m.MatchID = matchID
@@ -88,7 +92,7 @@ func (p *MyParser) Parse(path string, m *InfoStruct) error {
 
 }
 
-func (p *MyParser) playersBySteamID(steamID uint64) *common.Player {
+func (p *DemoParser) playersBySteamID(steamID uint64) *common.Player {
 	for _, v := range p.parser.GameState().Participants().All() {
 		if v.SteamID64 == steamID {
 			return v
@@ -97,7 +101,7 @@ func (p *MyParser) playersBySteamID(steamID uint64) *common.Player {
 	panic("player not found")
 }
 
-func (p *MyParser) calculate() {
+func (p *DemoParser) calculate() {
 
 	for k, player := range p.Match.Players.Players {
 
@@ -110,7 +114,7 @@ func (p *MyParser) calculate() {
 		var playeradr int = 0
 
 		for _, v := range allWeapons() {
-			playeradr += p.Match.Players.Players[k].WeaponStats.GetDamage(v)
+			playeradr += p.Match.Players.Players[k].WeaponStats.getDamage(v)
 		}
 
 		p.Match.Players.Players[k].Adr = playeradr / len(p.Match.Rounds)
@@ -154,7 +158,7 @@ func (p *MyParser) calculate() {
 	}
 }
 
-func (p *MyParser) setGeneral() error {
+func (p *DemoParser) setGeneral() error {
 
 	var header common.DemoHeader
 	var err error
@@ -174,7 +178,9 @@ func (p *MyParser) setGeneral() error {
 	return nil
 }
 
-func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
+// NewScoreBoardPlayer constructor for a ScoreboardPlayer. Initializes some
+// values with defaults
+func (p *DemoParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 
 	name := "BOT"
 
@@ -213,23 +219,23 @@ func (p *MyParser) NewScoreBoardPlayer(player *common.Player) ScoreboardPlayer {
 	}
 }
 
-func (p *MyParser) handlerWeaponFire(e events.WeaponFire) {
+func (p *DemoParser) handlerWeaponFire(e events.WeaponFire) {
 
 	if p.parser.GameState().IsWarmupPeriod() {
 		return
 	}
 
-	p.PlayerByID(e.Shooter)
+	p.playerByID(e.Shooter)
 	shooter, err := p.Match.Players.PlayerNumByID(e.Shooter.SteamID64)
 
 	if err != nil {
 		panic(err)
 	}
-	p.Match.Players.Players[shooter].WeaponStats.AddShot(e)
+	p.Match.Players.Players[shooter].WeaponStats.addShot(e)
 
 }
 
-func (p *MyParser) handlerKill(e events.Kill) {
+func (p *DemoParser) handlerKill(e events.Kill) {
 
 	if e.Killer == nil || e.Victim == nil {
 		return
@@ -242,20 +248,20 @@ func (p *MyParser) handlerKill(e events.Kill) {
 	}
 
 	// Find killer
-	killer := p.PlayerByID(e.Killer)
+	killer := p.playerByID(e.Killer)
 	killerNum, err := p.Match.Players.PlayerNumByID(e.Killer.SteamID64)
 	if err != nil {
 		panic(err)
 	}
 
-	p.Match.Players.Players[killerNum].WeaponStats.AddKill(e)
+	p.Match.Players.Players[killerNum].WeaponStats.addKill(e)
 
 	if e.IsHeadshot {
-		p.Match.Players.Players[killerNum].WeaponStats.AddHeadshot(e)
+		p.Match.Players.Players[killerNum].WeaponStats.addHeadshot(e)
 	}
 
 	// Find victim
-	victim := p.PlayerByID(e.Victim)
+	victim := p.playerByID(e.Victim)
 	victimNum, err := p.Match.Players.PlayerNumByID(e.Victim.SteamID64)
 	if err != nil {
 		panic(err)
@@ -270,8 +276,8 @@ func (p *MyParser) handlerKill(e events.Kill) {
 	}
 
 	if e.Assister != nil {
-		assister := p.PlayerByID(e.Assister)
-		p.Match.Players.AddAssist(e.Assister.SteamID64)
+		assister := p.playerByID(e.Assister)
+		p.Match.Players.addAssist(e.Assister.SteamID64)
 		kill.Assister = assister
 	}
 
@@ -280,18 +286,18 @@ func (p *MyParser) handlerKill(e events.Kill) {
 
 		// Check if it's the first kill of the round
 		if len(p.Match.Rounds[p.state.Round-1].ClanKills) == 0 {
-			p.Match.Players.Players[killerNum].Firstkills += 1
-			p.Match.Players.Players[victimNum].Firstdeaths += 1
+			p.Match.Players.Players[killerNum].Firstkills++
+			p.Match.Players.Players[victimNum].Firstdeaths++
 		}
 
 		for _, v := range p.Match.Rounds[p.state.Round-1].ClanKills {
 			if v.Killer.Steamid64 == e.Victim.SteamID64 && ((p.parser.CurrentTime() - v.Time) < (5 * time.Second)) {
-				p.Match.Players.Players[killerNum].Tradekills += 1
-				p.Match.Players.Players[victimNum].Tradedeaths += 1
+				p.Match.Players.Players[killerNum].Tradekills++
+				p.Match.Players.Players[victimNum].Tradedeaths++
 
 				if len(p.Match.Rounds[p.state.Round-1].ClanKills) == 0 {
-					p.Match.Players.Players[killerNum].Tradefirstkills += 1
-					p.Match.Players.Players[victimNum].Tradefirstdeaths += 1
+					p.Match.Players.Players[killerNum].Tradefirstkills++
+					p.Match.Players.Players[victimNum].Tradefirstdeaths++
 				}
 			}
 		}
@@ -302,19 +308,19 @@ func (p *MyParser) handlerKill(e events.Kill) {
 
 		// Check if it's the first kill of the round
 		if len(p.Match.Rounds[p.state.Round-1].EnemyKills) == 0 {
-			p.Match.Players.Players[killerNum].Firstkills += 1
-			p.Match.Players.Players[victimNum].Firstdeaths += 1
+			p.Match.Players.Players[killerNum].Firstkills++
+			p.Match.Players.Players[victimNum].Firstdeaths++
 		}
 
 		for _, v := range p.Match.Rounds[p.state.Round-1].EnemyKills {
 			if v.Killer.Steamid64 == e.Victim.SteamID64 && ((p.parser.CurrentTime() - v.Time) < (5 * time.Second)) {
-				p.Match.Players.Players[killerNum].Tradekills += 1
-				p.Match.Players.Players[victimNum].Tradedeaths += 1
+				p.Match.Players.Players[killerNum].Tradekills++
+				p.Match.Players.Players[victimNum].Tradedeaths++
 			}
 
 			if len(p.Match.Rounds[p.state.Round-1].EnemyKills) == 0 {
-				p.Match.Players.Players[killerNum].Tradefirstkills += 1
-				p.Match.Players.Players[victimNum].Tradefirstdeaths += 1
+				p.Match.Players.Players[killerNum].Tradefirstkills++
+				p.Match.Players.Players[victimNum].Tradefirstdeaths++
 			}
 		}
 
@@ -326,16 +332,16 @@ func (p *MyParser) handlerKill(e events.Kill) {
 	if p.matesAlive(e.Killer) == 1 {
 		switch p.matesAlive(e.Victim) {
 		case 5:
-			p.Match.Players.Players[killerNum].Roundswonv5 += 1
+			p.Match.Players.Players[killerNum].Roundswonv5++
 		case 4:
-			p.Match.Players.Players[killerNum].Roundswonv4 += 1
+			p.Match.Players.Players[killerNum].Roundswonv4++
 		case 3:
-			p.Match.Players.Players[killerNum].Roundswonv3 += 1
+			p.Match.Players.Players[killerNum].Roundswonv3++
 		}
 	}
 }
 
-func (p MyParser) matesAlive(player *common.Player) int {
+func (p DemoParser) matesAlive(player *common.Player) int {
 	alive := 0
 	for _, v := range p.parser.GameState().Participants().Playing() {
 		if v.IsAlive() && v.Team == player.Team {
@@ -357,7 +363,7 @@ func teamString(team common.Team) string {
 	}
 }
 
-func (p *MyParser) handlerPlayerHurt(e events.PlayerHurt) {
+func (p *DemoParser) handlerPlayerHurt(e events.PlayerHurt) {
 
 	if e.Attacker == nil || e.Player == nil {
 		return
@@ -367,20 +373,20 @@ func (p *MyParser) handlerPlayerHurt(e events.PlayerHurt) {
 		if v.Steamid64 == e.Attacker.SteamID64 {
 
 			// Add damage stats for weapon
-			p.Match.Players.Players[k].WeaponStats.AddDamage(e)
+			p.Match.Players.Players[k].WeaponStats.addDamage(e)
 
 			// Add hit stats for weapon
-			p.Match.Players.Players[k].WeaponStats.AddHit(e)
+			p.Match.Players.Players[k].WeaponStats.addHit(e)
 
 			// Add damage stats for PvP
-			_ = p.PlayerByID(e.Player)
+			_ = p.playerByID(e.Player)
 			victimNum, err := p.Match.Players.PlayerNumByID(e.Player.SteamID64)
 
 			if err != nil {
 				panic(err)
 			}
 
-			p.Match.Players.Players[k].AddDamage(e.HealthDamage, &p.Match.Players.Players[victimNum])
+			p.Match.Players.Players[k].addDamage(e.HealthDamage, &p.Match.Players.Players[victimNum])
 			return
 		}
 	}
@@ -391,7 +397,7 @@ func (p *MyParser) handlerPlayerHurt(e events.PlayerHurt) {
 // }
 
 // Handlers
-func (p *MyParser) handlerRankUpdate(e events.RankUpdate) {
+func (p *DemoParser) handlerRankUpdate(e events.RankUpdate) {
 
 	for k, v := range p.Match.Players.Players {
 		if v.Steamid64 == e.SteamID64() {
@@ -403,7 +409,7 @@ func (p *MyParser) handlerRankUpdate(e events.RankUpdate) {
 	panic("player not found setting rank")
 }
 
-func (p *MyParser) handlerMatchStart(e events.MatchStart) {
+func (p *DemoParser) handlerMatchStart(e events.MatchStart) {
 
 	// Determine start team of clan
 	for _, player := range p.parser.GameState().Participants().Playing() {
@@ -426,7 +432,7 @@ func (p *MyParser) handlerMatchStart(e events.MatchStart) {
 	}
 }
 
-func (p *MyParser) handlerRoundStart(e events.RoundStart) {
+func (p *DemoParser) handlerRoundStart(e events.RoundStart) {
 
 	p.state.RoundOngoing = true
 
@@ -434,7 +440,7 @@ func (p *MyParser) handlerRoundStart(e events.RoundStart) {
 	// output. The counter should be increased here and *not* in the RoundEnd
 	// handler, sice there might happen things "between" the rounds, i.e in the
 	// time when a round has ended but the new one has not yet started
-	p.state.Round += 1
+	p.state.Round++
 
 	for _, ct := range p.parser.GameState().TeamCounterTerrorists().Members() {
 		if ct.ClanTag() == "megaclan3000" {
@@ -455,16 +461,16 @@ func (p *MyParser) handlerRoundStart(e events.RoundStart) {
 
 }
 
-func (p *MyParser) handlerBombPlanted(e events.BombPlanted) {
+func (p *DemoParser) handlerBombPlanted(e events.BombPlanted) {
 }
 
-func (p *MyParser) handlerBombDefused(e events.BombDefused) {
+func (p *DemoParser) handlerBombDefused(e events.BombDefused) {
 }
 
-func (p *MyParser) handlerBombExplode(e events.BombExplode) {
+func (p *DemoParser) handlerBombExplode(e events.BombExplode) {
 }
 
-func (p *MyParser) handlerScoreUpdated(e events.ScoreUpdated) {
+func (p *DemoParser) handlerScoreUpdated(e events.ScoreUpdated) {
 
 	scoreCT := p.parser.GameState().TeamCounterTerrorists().Score()
 	scoreT := p.parser.GameState().TeamTerrorists().Score()
@@ -488,7 +494,7 @@ func (p *MyParser) handlerScoreUpdated(e events.ScoreUpdated) {
 	// log.Warning("Scoreparsing did something strange", p.state.currentTeam)
 }
 
-func (p *MyParser) handlerRoundEnd(e events.RoundEnd) {
+func (p *DemoParser) handlerRoundEnd(e events.RoundEnd) {
 
 	if !p.state.RoundOngoing {
 		return
