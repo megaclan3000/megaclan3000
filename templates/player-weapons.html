@@ -1,56 +1,56 @@
-<div class="row">
-	<div class="col s12">
-		<div id="container-weapons" style="width: 100%; height: 300px;"></div>
-	</div>
-</div>
-<script id="weaponTemplate" type="text/x-jsrender">
-	<tr>
-		<td id="weaponsIcon"><img height="20" src="${iconPath}"></td>
-		<td id="weaponsName">${name}</td>
-		<td id="weaponsKills">${kills}</td>
-		<td id="weaponsShots">${shots}</td>
-		<td id="weaponsHits">${hits}</td>
-		<td id="weaponsAccuracy">${accuracy}</td>
-	</tr>
-</script>
+<!-- <div class="row"> -->
+<!-- 	<div class="col s12"> -->
+<!-- 		<div id="container-weapons" style="width: 100%; height: 300px;"></div> -->
+<!-- 	</div> -->
+<!-- </div> -->
+<!-- <script id="weaponTemplate" type="text/x-jsrender"> -->
+<!-- 	<tr> -->
+<!-- 		<td id="weaponsIcon"><img height="20" src="${iconPath}"></td> -->
+<!-- 		<td id="weaponsName">${name}</td> -->
+<!-- 		<td id="weaponsKills">${kills}</td> -->
+<!-- 		<td id="weaponsShots">${shots}</td> -->
+<!-- 		<td id="weaponsHits">${hits}</td> -->
+<!-- 		<td id="weaponsAccuracy">${accuracy}</td> -->
+<!-- 	</tr> -->
+<!-- </script> -->
 
-<table id="generated-weapons-table">
-	<thead>
-		<tr>
-			<th></th>
-			<th>Weapon</th>
-			<th>Kills</th>
-			<th>Shots</th>
-			<th>Hits</th>
-			<th>Accuracy</th>
-		</tr>
-	</thead>
-	<tbody>
-	</tbody>
-</table>
+<!-- <table id="generated-weapons-table"> -->
+<!-- 	<thead> -->
+<!-- 		<tr> -->
+<!-- 			<th></th> -->
+<!-- 			<th>Weapon</th> -->
+<!-- 			<th>Kills</th> -->
+<!-- 			<th>Shots</th> -->
+<!-- 			<th>Hits</th> -->
+<!-- 			<th>Accuracy</th> -->
+<!-- 		</tr> -->
+<!-- 	</thead> -->
+<!-- 	<tbody> -->
+<!-- 	</tbody> -->
+<!-- </table> -->
 
-<script charset="utf-8">
+<!-- <script charset="utf-8"> -->
 
-$(document).ready(function(){
+<!-- $(document).ready(function(){ -->
 
-	// TODO use correct id
-	var url = "/api/playerinfo/76561197962156894/weapons"
-	$.getJSON(url,  function( data) {
+<!-- 	// TODO use correct id -->
+<!-- 	var url = "/api/playerinfo/76561197962156894/weapons" -->
+<!-- 	$.getJSON(url,  function( data) { -->
 
-		data.sort((a, b) => b.shots - a.shots)
+<!-- 		data.sort((a, b) => b.shots - a.shots) -->
 
-		for (var row = 0; row < data.length; row++) {
-			var weaponstat = {
-					iconPath: data[row].iconpath,
-					name: data[row].weapon,
-					kills: data[row].kills,
-					shots: data[row].shots,
-					hits: data[row].hits,
-					accuracy: data[row].accuracy.toFixed(2),
-				}
-			$( "#weaponTemplate" ).tmpl(weaponstat).appendTo( "#generated-weapons-table tbody" );
-		}
-	});
-});
+<!-- 		for (var row = 0; row < data.length; row++) { -->
+<!-- 			var weaponstat = { -->
+<!-- 					iconPath: data[row].iconpath, -->
+<!-- 					name: data[row].weapon, -->
+<!-- 					kills: data[row].kills, -->
+<!-- 					shots: data[row].shots, -->
+<!-- 					hits: data[row].hits, -->
+<!-- 					accuracy: data[row].accuracy.toFixed(2), -->
+<!-- 				} -->
+<!-- 			$( "#weaponTemplate" ).tmpl(weaponstat).appendTo( "#generated-weapons-table tbody" ); -->
+<!-- 		} -->
+<!-- 	}); -->
+<!-- }); -->
 
-</script>
+<!-- </script> -->

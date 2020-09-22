@@ -2,6 +2,7 @@ package steamclient
 
 import (
 	"encoding/json"
+
 	common "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
 )
 
@@ -292,7 +293,7 @@ func (ms mapstat) MarshalJSON() ([]byte, error) {
 		Rounds:   ms.Rounds,
 		Win:      ms.Wins,
 		WinRate:  winRate,
-		IconPath: "/public/img/maps/" + ms.Map + ".jpg",
+		IconPath: "/public/img/maps/icons/" + ms.Map + ".png",
 	})
 
 }
@@ -300,18 +301,9 @@ func (ms mapstat) MarshalJSON() ([]byte, error) {
 func (gs GameStats) MapStats() []mapstat {
 
 	ret := []mapstat{
-		// TotalMatchesWonBaggage
-		// TotalMatchesWonBank
-		// TotalMatchesWonLake
-		// TotalMatchesWonSafehouse
-		// TotalMatchesWonShoots
-		// TotalMatchesWonStmarc
-		// TotalMatchesWonSugarcane
-		// TotalMatchesWonTrain
-
 		{Map: "ar_baggage", Name: "Baggage", Wins: gs.TotalWinsMapArBaggage, Rounds: gs.TotalRoundsMapArBaggage},
-		{Map: "ar_monastery", Name: "Monastery", Wins: gs.TotalWinsMapArMonastery, Rounds: gs.TotalRoundsMapArMonastery},
-		{Map: "ar_shoots", Name: "Shoots", Wins: gs.TotalWinsMapArShoots, Rounds: gs.TotalRoundsMapArShoots},
+		// {Map: "ar_monastery", Name: "Monastery", Wins: gs.TotalWinsMapArMonastery, Rounds: gs.TotalRoundsMapArMonastery},
+		// {Map: "ar_shoots", Name: "Shoots", Wins: gs.TotalWinsMapArShoots, Rounds: gs.TotalRoundsMapArShoots},
 		{Map: "cs_assault", Name: "Assault", Wins: gs.TotalWinsMapCsAssault, Rounds: gs.TotalRoundsMapCsAssault},
 		{Map: "cs_italy", Name: "Italy", Wins: gs.TotalWinsMapCsItaly, Rounds: gs.TotalRoundsMapCsItaly},
 		{Map: "cs_militia", Name: "Militia", Wins: gs.TotalWinsMapCsMilitia, Rounds: gs.TotalRoundsMapCsMilitia},
@@ -321,13 +313,13 @@ func (gs GameStats) MapStats() []mapstat {
 		{Map: "de_cbble", Name: "Cobblestole", Wins: gs.TotalWinsMapDeCbble, Rounds: gs.TotalRoundsMapDeCbble},
 		{Map: "de_dust", Name: "Dust", Wins: gs.TotalWinsMapDeDust, Rounds: gs.TotalRoundsMapDeDust},
 		{Map: "de_dust2", Name: "Dust2", Wins: gs.TotalWinsMapDeDust2, Rounds: gs.TotalRoundsMapDeDust2},
-		{Map: "de_house", Name: "House", Wins: gs.TotalWinsMapDeHouse, Rounds: gs.TotalRoundsMapDeHouse},
+		// {Map: "de_house", Name: "House", Wins: gs.TotalWinsMapDeHouse, Rounds: gs.TotalRoundsMapDeHouse},
 		{Map: "de_inferno", Name: "Inferno", Wins: gs.TotalWinsMapDeInferno, Rounds: gs.TotalRoundsMapDeInferno},
 		{Map: "de_lake", Name: "Lake", Wins: gs.TotalWinsMapDeLake, Rounds: gs.TotalRoundsMapDeLake},
 		{Map: "de_nuke", Name: "Nuke", Wins: gs.TotalWinsMapDeNuke, Rounds: gs.TotalRoundsMapDeNuke},
 		{Map: "de_safehouse", Name: "Safehouse", Wins: gs.TotalWinsMapDeSafehouse, Rounds: gs.TotalRoundsMapDeSafehouse},
-		{Map: "de_shorttrain", Name: "Shorttrain", Wins: gs.TotalWinsMapDeShorttrain, Rounds: gs.TotalRoundsMapDeShorttrain},
-		{Map: "de_stmarc", Name: "St. Marc", Wins: gs.TotalWinsMapDeStmarc, Rounds: gs.TotalRoundsMapDeStmarc},
+		// {Map: "de_shorttrain", Name: "Shorttrain", Wins: gs.TotalWinsMapDeShorttrain, Rounds: gs.TotalRoundsMapDeShorttrain},
+		// {Map: "de_stmarc", Name: "St. Marc", Wins: gs.TotalWinsMapDeStmarc, Rounds: gs.TotalRoundsMapDeStmarc},
 		{Map: "de_sugarcane", Name: "Sugarcane", Wins: gs.TotalWinsMapDeSugarcane, Rounds: gs.TotalRoundsMapDeSugarcane},
 		{Map: "de_train", Name: "Train", Wins: gs.TotalWinsMapDeTrain, Rounds: gs.TotalRoundsMapDeTrain},
 		{Map: "de_vertigo", Name: "Vertigo", Wins: gs.TotalWinsMapDeVertigo, Rounds: gs.TotalRoundsMapDeVertigo},
