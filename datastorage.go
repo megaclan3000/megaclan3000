@@ -77,6 +77,7 @@ func NewDataStorage() *DataStorage {
 	}
 
 	//Find all matches form import folder
+	log.Info("Looking for demos in: ", flagDemoFolder)
 	files, err := filepath.Glob(flagDemoFolder + "/*.dem")
 	if err != nil {
 		log.Fatal(err)
