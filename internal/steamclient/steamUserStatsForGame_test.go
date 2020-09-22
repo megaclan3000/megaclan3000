@@ -32,12 +32,13 @@ func TestSteamClient_parseUserStatsForGame(t *testing.T) {
 				SteamID:  76561197962156894,
 				GameName: "ValveTestApp260",
 				Extra: GameExtras{
-					SteamID:     76561197962156894,
-					TotalKD:     "1.054",
-					LastMatchKD: "1.316",
-					HitRatio:    "0.202",
-					PlayedHours: "66",
-					TotalADR:    "188.409",
+					SteamID:      76561197962156894,
+					TotalKD:      "1.054",
+					LastMatchKD:  "1.316",
+					HitRatio:     "0.202",
+					PlayedHours:  "66",
+					TotalADR:     "158.399",
+					LastMatchADR: "188.409",
 				},
 				Stats: GameStats{
 

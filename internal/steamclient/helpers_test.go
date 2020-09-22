@@ -19,7 +19,7 @@ func Test_divideStringFloats(t *testing.T) {
 				a: 15,
 				b: 3,
 			},
-			want: "5.000",
+			want: "5.00",
 		},
 
 		{
@@ -28,7 +28,7 @@ func Test_divideStringFloats(t *testing.T) {
 				a: 15,
 				b: 0,
 			},
-			want: "+Inf",
+			want: "n/a",
 		},
 	}
 	for _, tt := range tests {
