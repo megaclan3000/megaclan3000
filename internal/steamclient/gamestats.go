@@ -334,7 +334,7 @@ func (gs GameStats) WeaponStats() []weaponstat {
 	ret := []weaponstat{
 
 		{Weapon: common.EqAK47, Hits: gs.TotalHitsAk47, Shots: gs.TotalShotsAk47, Kills: gs.TotalKillsAk47},
-		{Weapon: common.EqAUG, Hits: gs.TotalHitsAug, Shots: gs.TotalShotsAug, Kills: gs.TotalShotsAug},
+		{Weapon: common.EqAUG, Hits: gs.TotalHitsAug, Shots: gs.TotalShotsAug, Kills: gs.TotalKillsAug},
 		{Weapon: common.EqAWP, Hits: gs.TotalHitsAwp, Shots: gs.TotalShotsAwp, Kills: gs.TotalKillsAwp},
 		{Weapon: common.EqBizon, Hits: gs.TotalHitsBizon, Shots: gs.TotalShotsBizon, Kills: gs.TotalKillsBizon},
 		{Weapon: common.EqDeagle, Hits: gs.TotalHitsDeagle, Shots: gs.TotalShotsDeagle, Kills: gs.TotalKillsDeagle},
