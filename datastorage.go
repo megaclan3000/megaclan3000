@@ -46,7 +46,6 @@ func NewDataStorage() *DataStorage {
 	puser := steamClient.Config.PostgresUser
 	ppass := steamClient.Config.PostgresPass
 
-	retry := 10
 	var db *sql.DB
 	var err error
 
@@ -59,13 +58,8 @@ func NewDataStorage() *DataStorage {
 			break
 		}
 
-		if retry < 1 {
-			log.Fatal(err)
-		}
-
 		log.Warning("Connection to database failed, retrying in 5 seconds")
 		time.Sleep(5 * time.Second)
-		retry--
 		err = nil
 	}
 
