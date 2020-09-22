@@ -22,6 +22,9 @@ type DataStorage struct {
 	DB      *sql.DB
 }
 
+// UpdateData fetches new data from the steam API for information about
+// players. Players that have not played in the last two weeks may report
+// incorrect values
 func (ds *DataStorage) UpdateData() {
 
 	// Get PlayerInfo for all players periodically and store/cache in
@@ -35,6 +38,8 @@ func (ds *DataStorage) UpdateData() {
 	}
 }
 
+// NewDataStorage constructs a new interface to the data used throughout the
+// application
 func NewDataStorage() *DataStorage {
 
 	db, err := sql.Open("postgres", "user=postgres password=megaclan dbname=megadb sslmode=disable")
@@ -82,7 +87,7 @@ func NewDataStorage() *DataStorage {
 
 		log.Info("Parsed Match with ID: ", demoInfoFromDem.MatchID)
 
-		err = ds.Upload(demoInfoFromDem)
+		err = ds.upload(demoInfoFromDem)
 		if err != nil {
 			log.Warning("Not uploading ", f, err)
 		}
@@ -92,7 +97,7 @@ func NewDataStorage() *DataStorage {
 	return ds
 }
 
-func (ds *DataStorage) Upload(match demoparser.InfoStruct) error {
+func (ds *DataStorage) upload(match demoparser.InfoStruct) error {
 
 	// Check if the match is a valid megaclan3000 match
 	if !match.MatchValid {
@@ -125,6 +130,7 @@ func (ds *DataStorage) Upload(match demoparser.InfoStruct) error {
 	return nil
 }
 
+// GetMatchByID fetches a match from the database and creates a Infostruct form it
 func (ds *DataStorage) GetMatchByID(id string) (demoparser.InfoStruct, error) {
 
 	row := ds.DB.QueryRow("SELECT match FROM matches WHERE match ->> 'match_id' = $1;", id)
@@ -144,6 +150,7 @@ func (ds DataStorage) GetPlayerInfoBySteamID(steamID uint64) (steamclient.Player
 	return steamclient.PlayerInfo{}, errors.New("Player not found")
 }
 
+// GetMatches returns a list of all matches in the database
 func (ds DataStorage) GetMatches() interface{} {
 
 	type Matchplayer struct {
@@ -212,6 +219,7 @@ func (ds DataStorage) GetMatches() interface{} {
 	return matches
 }
 
+// GetPlayers returns a list of all players in the db
 func (ds DataStorage) GetPlayers() interface{} {
 
 	type Player struct {
@@ -253,6 +261,8 @@ func (ds DataStorage) GetPlayers() interface{} {
 	}
 	return ret
 }
+
+// GetAwards returns a list of all award statuses in the db
 func (ds DataStorage) GetAwards() interface{} {
 
 	type Award struct {
@@ -477,6 +487,7 @@ func (ds DataStorage) GetAwards() interface{} {
 	return ret
 }
 
+// GetUpdates returns all updates form the db
 func (ds DataStorage) GetUpdates() interface{} {
 
 	type UpdateType int
