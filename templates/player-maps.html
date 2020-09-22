@@ -1,80 +1,95 @@
 <div class="row">
+	<div id="player-maps-chart" class="col s12"></div>
 	<div class="col s12">
-		<div id="container-maps" style="width: 100%; height: 300px;"></div>
-	</div>
-</div>
-
-<script id="mapTableTemplate" type="text/x-jsrender">
-	<tr>
-		<td id="mapName">${mapName}</td>
-		<td id="totalRounds" class="blue-text">${mapRoundsTotal}</td>
-		<td id="roundsWon">${mapRoundsWon}</td>
-		<td id="winRate" class="${mapWinRateClass}" >${mapWinRate}</td>
-	</tr>
-</script>
-
-<div class="row">
-	<div class="col s12">
-		<table id="generated-table-maps" class="highlight">
+		<table id="player-maps-table" class="highlight">
 			<thead>
 				<tr>
-					<th>Played Map</th>
-					<th>Rounds</th>
+					<th></th>
+					<th>name</th>
+					<th>Rounds total</th>
 					<th>Rounds Won</th>
 					<th>Win Rate</th>
 				</tr>
 			</thead>
-			<tbody>
-			</tbody>
+			<tbody></tbody>
 		</table>
 	</div>
 </div>
 
-
-<script charset="utf-8">
-
-$(document).ready(function(){
-	// TODO use correct id
-	var url = "/api/playerinfo/76561197962156894/maps"
-	$.getJSON(url,  function( data) {
-
-		data.sort((a, b) => b.rounds_total - a.rounds_total)
-
-
-		for (var row = 0; row < data.length; row++) {
-
-		var winrate = (data[row].win_rate *100).toFixed(0);
-
-		var colorclass = "orange-text";
-
-		if (winrate >= 50 ) {
-			colorclass = "green-text";
-		}
-
-
-
-			var mapstat = {
-				mapName: data[row].name,
-				mapRoundsTotal: data[row].rounds_total,
-				mapRoundsWon: data[row].rounds_won,
-				mapWinRate: winrate + "%",
-				mapWinRateClass: colorclass,
-			}
-			$( "#mapTableTemplate" ).tmpl(mapstat).appendTo( "#generated-table-maps tbody" );
-		}
-	});
-
-});
-
+<script id="player-maps-table-row" type="text/x-jsrender">
+	<tr>
+	<td> <img class="tableimage" src="{{:iconpath}}" alt=""></img> </td>
+	<td class="scoretablenum">{{:name}}</td>
+	<td class="scoretablenum">{{:rounds_total}}</td>
+	<td class="scoretablenum">{{:rounds_won}}</td>
+	<td class="scoretablenum">{{:win_rate.toFixed(2)}}</td>
+	</tr>
 </script>
 
-		<!-- }, -->		
-		<!-- { -->
-		<!-- 	mapName: 'de_vertigo', -->
-		<!-- 	totalRounds: <<.UserStatsForGame.Stats.TotalRoundsMapDeVertigo>>, -->
-		<!-- 	roundsWon: <<.UserStatsForGame.Stats.TotalWinsMapDeVertigo>>, -->
-		<!-- 	winRate: (Math.round(<<.UserStatsForGame.Stats.TotalWinsMapDeVertigo>>/<<.UserStatsForGame.Stats.TotalRoundsMapDeVertigo>> * 10000) / 100 || 0)  + '%' -->
-		<!-- }, -->								
-	<!-- ] -->
+<script charset="utf-8">
+	mapschart = Highcharts.chart("player-maps-chart", {
+		chart: {
+			type: "column",
+		},
+		xAxis: {
+			categories: [],
+		},
+		yAxis: {
+			min: 0,
+			title: null,
+		},
+		exporting: {
+			showTable: true,
+		},
+		plotOptions: {
+			column: {
+				stacking: "normal",
+				dataLabels: {
+					enabled: true,
+				},
+			},
+		},
+		series: [
+			{
+				name: "Matches won",
+				data: [],
+			},
+			{
+				name: "Matches Lost",
+				data: [],
+			},
+		],
+	});
+</script>
+
+<script charset="utf-8">
+	$(document).ready(function () {
+		var steamID = window.location.href.substring(
+			window.location.href.lastIndexOf("/") + 1
+		);
+		console.log(steamID);
+		var url = "/api/playerinfo/" + steamID + "/maps";
+		var cats=[];
+
+		$.getJSON(url, function (data) {
+			for (var row = 0; row < data.length; row++) {
+				if (data[row].rounds_total > 0) {
+					$("#player-maps-table tbody").append(
+						$.templates("#player-maps-table-row").render(data[row])
+					);
 
 
+
+					cats.push(data[row].name);
+					mapschart.series[0].addPoint(data[row].rounds_won);
+					mapschart.series[1].addPoint(data[row].rounds_total - data[row].rounds_won);
+				}
+
+				mapschart.xAxis[0].setCategories(cats); //setting category
+			}
+		});
+
+
+
+	});
+</script>
