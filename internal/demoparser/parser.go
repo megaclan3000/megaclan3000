@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	log "github.com/sirupsen/logrus"
+
 	"time"
 
 	"github.com/megaclan3000/megaclan3000/internal/steamclient"
@@ -394,8 +396,7 @@ func (p *DemoParser) handlerRankUpdate(e events.RankUpdate) {
 			return
 		}
 	}
-	//TODO handle error
-	panic("player not found setting rank")
+	log.Error("player not found setting rank")
 }
 
 func (p *DemoParser) handlerMatchStart(e events.MatchStart) {

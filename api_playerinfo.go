@@ -24,8 +24,7 @@ func handlerAPIPlayerinfo(w http.ResponseWriter, r *http.Request) {
 	steamID, err := strconv.ParseUint(vars["steamid"], 10, 64)
 
 	if err != nil {
-		//TODO handle error
-		log.Fatal(err)
+		log.Error(err)
 	}
 
 	switch vars["endpoint"] {
@@ -33,28 +32,26 @@ func handlerAPIPlayerinfo(w http.ResponseWriter, r *http.Request) {
 
 		info, err := datastorage.GetPlayerInfoBySteamID(steamID)
 
-		//TODO handle error
 		if err != nil {
-			log.Fatal(err)
+			log.Error(err)
 		}
 
 		byt, err = json.Marshal(info.UserStatsForGame.Stats.MapStats())
 		if err != nil {
-			log.Fatal(err)
+			log.Error(err)
 		}
 
 	case "weapons":
 
 		info, err := datastorage.GetPlayerInfoBySteamID(steamID)
 
-		//TODO handle error
 		if err != nil {
-			log.Fatal(err)
+			log.Error(err)
 		}
 
 		byt, err = json.Marshal(info.UserStatsForGame.Stats.WeaponStats())
 		if err != nil {
-			log.Fatal(err)
+			log.Error(err)
 		}
 	}
 
