@@ -46,9 +46,23 @@ func NewDataStorage() *DataStorage {
 	puser := steamClient.Config.PostgresUser
 	ppass := steamClient.Config.PostgresPass
 
-	db, err := sql.Open("postgres", "user="+puser+" password="+ppass+" dbname="+pdb+" sslmode=disable")
-	if err != nil {
-		log.Fatal(err)
+	retry := 10
+	var db *sql.DB
+	var err error
+
+	for {
+
+		db, err = sql.Open("postgres", "user="+puser+" password="+ppass+" dbname="+pdb+" sslmode=disable")
+
+		if err != nil {
+			if retry < 1 {
+				log.Fatal(err)
+			}
+			time.Sleep(5 * time.Second)
+			retry--
+		} else {
+			break
+		}
 	}
 
 	log.Debug("Dropping match table")
@@ -59,7 +73,7 @@ func NewDataStorage() *DataStorage {
 	}
 
 	schema := `
-	CREATE TABLE matches(
+CREATE TABLE matches(
 		id SERIAL PRIMARY KEY,
 		match JSONB
 	);
