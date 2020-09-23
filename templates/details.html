@@ -1,4 +1,4 @@
-<<template "header.html">>
+<go>template "header.html"</go>
 <script>
 	$( "#header-link-stats" ).addClass( "active" );
 </script>
@@ -15,17 +15,17 @@
 		<div class="card-content white-text">
 			<div class="row">
 				<div class="col s12 detail__player">
-					<img src="<<.PlayerSummary.Avatarfull>>" class="circle" alt="">
+					<img src="<go>.PlayerSummary.Avatarfull</go>" class="circle" alt="">
 					<div>
-						<h3><<.PlayerSummary.Personaname>></h3>
+						<h3><go>.PlayerSummary.Personaname</go></h3>
 						<p>Status:&nbsp;&nbsp;&nbsp;
-						<<if eq .PlayerSummary.Personastate "0">>
+						<go>if eq .PlayerSummary.Personastate "0"</go>
 						<span class="new badge red inline-badge" data-badge-caption="">offline</span>
-						<<else>>
+						<go>else</go>
 						<span class="new badge green inline-badge" data-badge-caption="">online</span>
-						<<end>>
+						<go>end</go>
 						</p>
-						<p>Steam ID: &nbsp;<a href="<<.PlayerSummary.Profileurl>>" target="_blank"><<.PlayerSummary.SteamID>></a></p>
+						<p>Steam ID: &nbsp;<a href="<go>.PlayerSummary.Profileurl</go>" target="_blank"><go>.PlayerSummary.SteamID</go></a></p>
 					</div>
 				</div>
 			</div>
@@ -33,7 +33,7 @@
 			<!-- <div class="row" style="margin-bottom: 0;"> -->
 				<!-- <div class="col s12"> -->
 					<!-- <div class="indigo darken-3" style="padding: 1rem;"> -->
-						<!-- <<template "chart-online-time.html" .>> -->
+						<!-- <go>template "chart-online-time.html" .</go> -->
 					<!-- </div> -->
 				<!-- </div> -->
 			<!-- </div> -->
@@ -68,16 +68,16 @@
 	</div>
 
 	<div id="detailsOverview" class="col s12 indigo">
-		<<template "player-overview.html" .>>
+		<go>template "player-overview.html" .</go>
 	</div>
 	<div id="detailsMatches" class="col s12 indigo">
-		<<template "player-matches.html" .>>
+		<go>template "player-matches.html" .</go>
 	</div>
 	<div id="detailsMaps" class="col s12 indigo">
-		<<template "player-maps.html" .>>
+		<go>template "player-maps.html" .</go>
 	</div>
 	<div id="detailsWeapons" class="col s12 indigo">
-		<<template "player-weapons.html" .>>
+		<go>template "player-weapons.html" .</go>
 	</div>
 </div>
 

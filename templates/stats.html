@@ -1,4 +1,4 @@
-<<template "header.html">>
+<go>template "header.html"</go>
 <script>
 	$( "#header-link-stats" ).addClass( "active" );
 </script>
@@ -9,19 +9,19 @@
 	</div>
 </div>
 <div class="row">
-	<<range $val := .>>
+	<go>range $val := .</go>
 	<div class="col s12 m12 l6">
-		<a href="player/<<$val.PlayerSummary.SteamID>>" class="clickable-card">
+		<a href="player/<go>$val.PlayerSummary.SteamID</go>" class="clickable-card">
 			<div class="card indigo darken-2">
 				<div class="card-content">
 					<p class="card-title white-text">
-					<img src="<<$val.PlayerSummary.Avatarfull>>" class="stats-profile-pic" alt="">&nbsp;&nbsp;<<$val.PlayerSummary.Personaname>>
+					<img src="<go>$val.PlayerSummary.Avatarfull</go>" class="stats-profile-pic" alt="">&nbsp;&nbsp;<go>$val.PlayerSummary.Personaname</go>
 
-					<<if eq $val.PlayerSummary.Personastate "0">>
+					<go>if eq $val.PlayerSummary.Personastate "0"</go>
 					<span class="new badge red" data-badge-caption="">offline</span>
-					<<else>>
+					<go>else</go>
 					<span class="new badge green" data-badge-caption="">online</span>
-					<<end>>
+					<go>end</go>
 
 					</p>
 					<br>
@@ -30,12 +30,12 @@
 							<td>
 								<i class="medium material-icons stats-icon" title="number of wins">beenhere</i>
 								&nbsp;&nbsp;
-								<<$val.UserStatsForGame.Stats.TotalWins>>
+								<go>$val.UserStatsForGame.Stats.TotalWins</go>
 							</td>
 							<td>
 								<i class="medium material-icons stats-icon" title="number of played hours">timer</i>
 								&nbsp;&nbsp;
-								<<$val.RecentlyPlayedGames.PlaytimeForever>> h
+								<go>$val.RecentlyPlayedGames.PlaytimeForever</go> h
 							</td>
 						</tr>
 					</table>
@@ -43,18 +43,18 @@
 					<table class="centered white-text">
 						<tr>
 							<th>K / D</th>
-							<td> <<$val.UserStatsForGame.Stats.TotalKills>> / <<$val.UserStatsForGame.Stats.TotalDeaths>></td>
-							<td><<$val.UserStatsForGame.Extra.TotalKD>></td>
+							<td> <go>$val.UserStatsForGame.Stats.TotalKills</go> / <go>$val.UserStatsForGame.Stats.TotalDeaths</go></td>
+							<td><go>$val.UserStatsForGame.Extra.TotalKD</go></td>
 						</tr>
 						<tr>
 							<th>K / D (Last Match)</th>
-							<td> <<$val.UserStatsForGame.Stats.LastMatchKills>> / <<$val.UserStatsForGame.Stats.LastMatchDeaths>></td>
-							<td><<$val.UserStatsForGame.Extra.LastMatchKD>></td>
+							<td> <go>$val.UserStatsForGame.Stats.LastMatchKills</go> / <go>$val.UserStatsForGame.Stats.LastMatchDeaths</go></td>
+							<td><go>$val.UserStatsForGame.Extra.LastMatchKD</go></td>
 						</tr>
 						<tr>
 							<th>shots hit / fired</th>
-							<td><<$val.UserStatsForGame.Stats.TotalShotsHit>> / <<$val.UserStatsForGame.Stats.TotalShotsFired>></td>
-							<td><<$val.UserStatsForGame.Extra.HitRatio>></td>
+							<td><go>$val.UserStatsForGame.Stats.TotalShotsHit</go> / <go>$val.UserStatsForGame.Stats.TotalShotsFired</go></td>
+							<td><go>$val.UserStatsForGame.Extra.HitRatio</go></td>
 						</tr>
 					</table>
 				</div>
@@ -62,7 +62,7 @@
 		</a>
 	</div>
 
-	<<end>>
+	<go>end</go>
 </div>
 
-<<template "footer.html">>
+<go>template "footer.html"</go>

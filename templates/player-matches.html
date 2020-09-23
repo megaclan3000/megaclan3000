@@ -33,14 +33,14 @@ filter: invert(1) opacity(0.7) drop-shadow(7px 7px 7px #1a237e)
 				<div class="card-content white-text">
 					<span class="card-title">Last Match</span>
 					<p>
-				<<if (eq .LastMatch.Outcome "WON")>>
+				<go>if (eq .LastMatch.Outcome "WON")</go>
 				<div class="last-match-score green-text">
-					<<else if (eq .LastMatch.Outcome "DRAW")>>
+					<go>else if (eq .LastMatch.Outcome "DRAW")</go>
 					<div class="last-match-score green-text">
-						<<else>>
+						<go>else</go>
 						<div class="last-match-score green-text">
-							<<end>>
-							<<.LastMatch.Outcome>>
+							<go>end</go>
+							<go>.LastMatch.Outcome</go>
 						</div>
 
 					</p>
@@ -57,14 +57,14 @@ filter: invert(1) opacity(0.7) drop-shadow(7px 7px 7px #1a237e)
 	<div class="container" style="margin:0px">
 		<div class="row">
 			<div class="col s4">
-				<<if (eq .LastMatch.Outcome "WON")>>
+				<go>if (eq .LastMatch.Outcome "WON")</go>
 				<div class="last-match-score green-text">
-					<<else if (eq .LastMatch.Outcome "DRAW")>>
+					<go>else if (eq .LastMatch.Outcome "DRAW")</go>
 					<div class="last-match-score green-text">
-						<<else>>
+						<go>else</go>
 						<div class="last-match-score green-text">
-							<<end>>
-							<<.LastMatch.Outcome>>
+							<go>end</go>
+							<go>.LastMatch.Outcome</go>
 						</div>
 						<img class="best-weapon-img" src="/public/img/weapons/outlines/svg_normal/AK-47.svg" >
 					</div>
@@ -75,23 +75,23 @@ filter: invert(1) opacity(0.7) drop-shadow(7px 7px 7px #1a237e)
 								<tbody>
 									<tr>
 										<td class>KD Ratio</td>
-										<td class="orange-text"> <<.UserStatsForGame.Extra.LastMatchKD>></td>
+										<td class="orange-text"> <go>.UserStatsForGame.Extra.LastMatchKD</go></td>
 									</tr>
 									<tr>
 										<td>Damage dealt</td>
-										<td class="orange-text"><<.UserStatsForGame.Stats.LastMatchDamage>> HP</td>
+										<td class="orange-text"><go>.UserStatsForGame.Stats.LastMatchDamage</go> HP</td>
 									</tr>
 									<tr>
 										<td>Money spend</td>
-										<td class="orange-text">$<<.UserStatsForGame.Stats.LastMatchMoneySpent>></td>
+										<td class="orange-text">$<go>.UserStatsForGame.Stats.LastMatchMoneySpent</go></td>
 									</tr>
 									<tr>
 										<td>MVPs</td>
-										<td class="orange-text"><<.UserStatsForGame.Stats.LastMatchMvps>></td>
+										<td class="orange-text"><go>.UserStatsForGame.Stats.LastMatchMvps</go></td>
 									</tr>
 									<tr>
 										<td>Score</td>
-										<td class="orange-text"><<.UserStatsForGame.Stats.LastMatchContributionScore>></td>
+										<td class="orange-text"><go>.UserStatsForGame.Stats.LastMatchContributionScore</go></td>
 									</tr>
 								</tbody>
 							</table>
@@ -106,27 +106,27 @@ filter: invert(1) opacity(0.7) drop-shadow(7px 7px 7px #1a237e)
 			<div class="col s12">
 				<div class="card horizontal indigo darken-2">
 					<div class="card-image">
-						<<if (eq .LastMatch.Outcome "WON")>>
+						<go>if (eq .LastMatch.Outcome "WON")</go>
 						<img class="activator" src="/public/img/win_banner.jpg">
-						<<else if (eq .LastMatch.Outcome "DRAW")>>
+						<go>else if (eq .LastMatch.Outcome "DRAW")</go>
 						<img class="activator" src="/public/img/draw_banner.png">
-						<<else>>
+						<go>else</go>
 						<img class="activator" src="/public/img/lose_banner.jpg">
-						<<end>>
+						<go>end</go>
 
 						<span class="card-title">Last Match</span>
 					</div>
 					<div class="card-content">
 
 
-						<<.UserStatsForGame.Stats.LastMatchWins>>/<<.UserStatsForGame.Stats.LastMatchRounds>> Rounds won
-						Rounds won as T: <<.UserStatsForGame.Stats.LastMatchTWins>>
-						Rounds won as CT: <<.UserStatsForGame.Stats.LastMatchCtWins>>
+						<go>.UserStatsForGame.Stats.LastMatchWins</go>/<go>.UserStatsForGame.Stats.LastMatchRounds</go> Rounds won
+						Rounds won as T: <go>.UserStatsForGame.Stats.LastMatchTWins</go>
+						Rounds won as CT: <go>.UserStatsForGame.Stats.LastMatchCtWins</go>
 
-						<img class="activator img-container" src="<<.LastMatch.FavWeaponIconPath>>">
-						Best Weapon <<.LastMatch.FavWeaponName>>
-						Kills: <<.UserStatsForGame.Stats.LastMatchFavweaponKills>>
-						Accuracy: <<.LastMatch.FavWeaponAccuracy>>
+						<img class="activator img-container" src="<go>.LastMatch.FavWeaponIconPath</go>">
+						Best Weapon <go>.LastMatch.FavWeaponName</go>
+						Kills: <go>.UserStatsForGame.Stats.LastMatchFavweaponKills</go>
+						Accuracy: <go>.LastMatch.FavWeaponAccuracy</go>
 
 					</div>
 					<div class="card-action">

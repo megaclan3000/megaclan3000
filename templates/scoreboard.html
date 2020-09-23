@@ -1,4 +1,4 @@
-<<template "header.html">>
+<go>template "header.html"</go>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -17,17 +17,17 @@
 				<th>Deaths</th>
 			</tr>
 
-	<<range $val := .>>
+	<go>range $val := .</go>
 	<tr>
-		<td><<$val.Name>></td>
-		<td><<$val.Score>></td>
-		<td><<$val.Kills>></td>
-		<td><<$val.Assists>></td>
-		<td><<$val.Deaths>></td>
+		<td><go>$val.Name</go></td>
+		<td><go>$val.Score</go></td>
+		<td><go>$val.Kills</go></td>
+		<td><go>$val.Assists</go></td>
+		<td><go>$val.Deaths</go></td>
 	</tr>
-					<<end>>
+					<go>end</go>
 		</table>
 	</body>
 </html>
 
-<<template "footer.html">>
+<go>template "footer.html"</go>

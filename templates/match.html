@@ -1,105 +1,118 @@
-<<template "header.html">>
+<go>template "header.html"</go>
+<!-- TODO put styles in public folder -->
+<style type="text/css" media="screen">
+	.scorediv {
+		text-align: center;
+		vertical-align: middle;
+		font-size: 40;
+	}
 
-	<script charset="utf-8">
-console.log(window.location.href.substring(window.location.href.lastIndexOf('/') + 1));
-	</script>
+	.scoretitleimg {
+		height: 200px;
+		object-fit: cover;
+		opacity: 0.8;
+	}
 
+	.tableimage {
+		height: 30px;
+	}
 
-	<!DOCTYPE html>
+	.avatar {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		width: 100%;
+	}
 
+	@font-face {
+		font-family: Scoreboard;
+		src: url("/public/css/font.ttf");
+	}
 
-	<!-- TODO put styles in public folder -->
-	<style type="text/css" media="screen">
-.scorediv {
-	text-align: center;
-	vertical-align: middle;
-	font-size: 40;
-}
-
-.scoretitleimg{
-	height:200px;
-	object-fit: cover;
-	opacity: 0.8;
-}
-
-.tableimage{
-	height:30px;
-}
-
-.avatar{
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	width: 100%;
-}
-
-@font-face { font-family: Scoreboard; src: url('/public/css/font.ttf'); } 
-
-.scoreticker { 
-	font-family: Scoreboard, sans-serif; 
-	font-size: 75px;
-}
-
-	</style>
-
-
+	.scoreticker {
+		font-family: Scoreboard, sans-serif;
+		font-size: 75px;
+	}
+</style>
 
 <div class="row">
-	<div class="col s12" style="padding: 0px; margin: 0px;">
+	<div class="col s12" style="padding: 0px; margin: 0px">
 		<div class="card indigo">
 			<div class="card-image">
-				<img class="scoretitleimg" src="/public/img/maps/titles/<<.General.MapName>>.png" >
-				<span class="card-title"><<.General.MapName>></span>
+				<img
+					class="scoretitleimg"
+					src="/public/img/maps/titles/<go>.General.MapName</go>.png"
+				/>
+				<span class="card-title"><go>.General.MapName</go></span>
 			</div>
-			<div class="card-content" style="padding-bottom:0px">
-
+			<div class="card-content" style="padding-bottom: 0px">
 				<div class="row">
-
-
 					<div id="match-clan-players">
-
-						<<range  $p := .Players.Clan>>
-
-						<<if not $p.IsBot >>
+						<go>range $p := .Players.Clan</go>
+						<go>if not $p.IsBot </go>
 						<div class="col s1">
-							<img class="avatar circle z-depth-2" src="<<$p.AvatarURL>>" alt="">
-							<span class="title truncate center-align orange-text"> <<$p.Name>> </span>
-							<img src="/public/img/ranks/<<$p.Rank>>.png" style="margin-left: auto; margin-right: auto; width: 100%;" class="rankicon z-depth-2"  alt="">
+							<img
+								class="avatar circle z-depth-2"
+								src="<go>$p.AvatarURL</go>"
+								alt=""
+							/>
+							<span class="title truncate center-align orange-text">
+								<go>$p.Name</go>
+							</span>
+							<img
+								src="/public/img/ranks/<go>$p.Rank</go>.png"
+								style="margin-left: auto; margin-right: auto; width: 100%"
+								class="rankicon z-depth-2"
+								alt=""
+							/>
 						</div>
-						<<end>>
-						<<end>>
+						<go>end</go>
+						<go>end</go>
 					</div>
 
-					<<$color_class := "red-text">> <<if not .General.ClanWonMatch>> <<$color_class = "green-text">> <<end>>
-					<<$text := "LOST">> <<if not .General.ClanWonMatch>> <<$text ="WON">> <<end>>
-					<div class="col s2 scorediv <<$color_class>>">
-					<div class="scoreticker"> <<$text>> </div><span id="match-score-clan"></span><span>:</span><span id="match-score-enemy"></span>
+					<go>$color_class := "red-text"</go>
+					<go>if not .General.ClanWonMatch</go>
+					<go>$color_class = "green-text"</go> <go>end</go>
+					<go>$text := "LOST"</go> <go>if not .General.ClanWonMatch</go>
+					<go>$text ="WON"</go> <go>end</go>
+					<div class="col s2 scorediv <go>$color_class</go>">
+						<div class="scoreticker"><go>$text</go></div>
+						<span id="match-score-clan"></span><span>:</span
+						><span id="match-score-enemy"></span>
 					</div>
 
 					<div id="match-enemy-players">
-						<<range  $p := .Players.Enemy>>
-						<<if not $p.IsBot >>
+						<go>range $p := .Players.Enemy</go>
+						<go>if not $p.IsBot </go>
 						<div class="col s1">
-							<img class="avatar circle z-depth-2" src="<<$p.AvatarURL>>" alt=""> 
-							<span class="title truncate center-align orange-text"> <<$p.Name>> </span>
-							<img src="/public/img/ranks/<<$p.Rank>>.png" style="margin-left: auto; margin-right: auto; width: 100%;" class="rankicon z-depth-2" alt="">
+							<img
+								class="avatar circle z-depth-2"
+								src="<go>$p.AvatarURL</go>"
+								alt=""
+							/>
+							<span class="title truncate center-align orange-text">
+								<go>$p.Name</go>
+							</span>
+							<img
+								src="/public/img/ranks/<go>$p.Rank</go>.png"
+								style="margin-left: auto; margin-right: auto; width: 100%"
+								class="rankicon z-depth-2"
+								alt=""
+							/>
 						</div>
-						<<end>>
-						<<end>>
+						<go>end</go>
+						<go>end</go>
 					</div>
 				</div>
 
-
-				<!-- <p>Map Icon: <<.General.MapIconURL>></p> -->
-				<!-- <p>Upload time: <<.General.UploadTime>></p> -->
-				<!-- <p>Match duration: <<.General.MatchDuration>></p> -->
-				<!-- <p>Demo Download link: <<.General.DemoLinkURL>></p> -->
+				<!-- <p>Map Icon: <go>.General.MapIconURL</go></p> -->
+				<!-- <p>Upload time: <go>.General.UploadTime</go></p> -->
+				<!-- <p>Match duration: <go>.General.MatchDuration</go></p> -->
+				<!-- <p>Demo Download link: <go>.General.DemoLinkURL</go></p> -->
 			</div>
 		</div>
 	</div>
 </div>
-
-
 
 <div class="row indigo">
 	<div class="col s12">
@@ -119,11 +132,8 @@ console.log(window.location.href.substring(window.location.href.lastIndexOf('/')
 					<i class="material-icons">terrain</i>Weapons
 				</a>
 			</li>
-			</li>
 			<li class="tab col">
-				<a href="#tab-duels">
-					<i class="material-icons">whatshot</i>Duels
-				</a>
+				<a href="#tab-duels"> <i class="material-icons">whatshot</i>Duels </a>
 			</li>
 			<li class="tab col">
 				<a href="#tab-heatmaps">
@@ -138,31 +148,45 @@ console.log(window.location.href.substring(window.location.href.lastIndexOf('/')
 		</ul>
 	</div>
 
-	<div id="tab-scoreboard" class="col s12"><<template "tab-match-scoreboard.html" .>></div>
-	<div id="tab-rounds" class="col s12"><<template "tab-match-rounds.html" .>></div>
-	<div id="tab-weapons" class="col s12"><<template "tab-match-weapons.html" .>></div>
-	<div id="tab-duels" class="col s12"><<template "tab-match-duels.html" .>></div>
-	<div id="tab-heatmaps" class="col s12"><<template "tab-match-heatmaps.html" .>></div>
-	<div id="tab-megacoins" class="col s12"><<template "tab-match-megacoins.html" .>></div>
+	<div id="tab-scoreboard" class="col s12">
+		<go>template "tab-match-scoreboard.html" .</go>
+	</div>
+	<div id="tab-rounds" class="col s12">
+		<go>template "tab-match-rounds.html" .</go>
+	</div>
+	<div id="tab-weapons" class="col s12">
+		<go>template "tab-match-weapons.html" .</go>
+	</div>
+	<div id="tab-duels" class="col s12">
+		<go>template "tab-match-duels.html" .</go>
+	</div>
+	<div id="tab-heatmaps" class="col s12">
+		<go>template "tab-match-heatmaps.html" .</go>
+	</div>
+	<div id="tab-megacoins" class="col s12">
+		<go>template "tab-match-megacoins.html" .</go>
+	</div>
 </div>
 
+<script>
+	$(document).ready(function () {
+		$(".tabs").tabs();
+	});
+</script>
 
-	<script>
-		$(document).ready(function(){
-			$('.tabs').tabs();
-		});
-	</script>
+<script src="/public/js/countUp.umd.js"></script>
 
+<script charset="utf-8">
+	var animScoreClan = new countUp.CountUp(
+		"match-score-clan",
+		<go>.General.ScoreClan</go>
+	);
+	var animScoreEnemy = new countUp.CountUp(
+		"match-score-enemy",
+		<go>.General.ScoreEnemy</go>
+	);
+	animScoreClan.start();
+	animScoreEnemy.start();
+</script>
 
-
-
-	<script src="/public/js/countUp.umd.js"></script>
-
-	<script charset="utf-8">
-		var animScoreClan = new countUp.CountUp('match-score-clan', <<.General.ScoreClan>> );
-			var animScoreEnemy = new countUp.CountUp('match-score-enemy', <<.General.ScoreEnemy>>);
-			animScoreClan.start();
-			animScoreEnemy.start();
-	</script>
-
-	<<template "footer.html">>
+<go>template "footer.html"</go>

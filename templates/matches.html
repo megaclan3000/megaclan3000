@@ -1,5 +1,4 @@
-
-<<template "header.html">>
+<go>template "header.html"</go>
 
 	<div class="container">
 		<div class="row">
@@ -13,19 +12,16 @@
 	</div>
 
 
-	<script id="matchesTemplate" type="text/x-jsrender">
-	</script>
+	<script id="matchesTemplate" type="text/x-jsrender"> </script>
 
-
-		<div class="card indigo darken-1">
-			<div class="card-content indigo darken-1 white-text">
-				<p class="indigo darken-2 white-text">
-				<table>
-					<tbody class="white-text" id="matches-table-body">
-					</tbody>
-				</table>
-				</p>
-			</div>
+	<div class="card indigo darken-1">
+		<div class="card-content indigo darken-1 white-text">
+			<p class="indigo darken-2 white-text">
+			<table>
+				<tbody class="white-text" id="matches-table-body">
+				</tbody>
+			</table>
+			</p>
 		</div>
 	</div>
 
@@ -73,16 +69,11 @@
 				$(".clickable-row").click(function() {
 					window.location = $(this).data("href");
 				});
-
 				// TODO render updates
 			});
-
-
 		});
-
-
 	</script>
-					<script charset="utf-8">
+	<script charset="utf-8">
 
 	var  opts= {
 		chart: {
@@ -125,7 +116,7 @@
 		series: []
 		}
 
-var ser1= [{
+	var ser1= [{
 			name: 'Matches',
 			colorByPoint: true,
 			data: [{
@@ -146,32 +137,32 @@ var ser1= [{
 
 
 var ser2= [{
-			name: 'Matches',
-			colorByPoint: true,
-			data: [{
-				name: 'win',
-				y: 200,
-				sliced: true,
-			},
-			{
-				name: 'loose',
-				sliced: true,
-				y: 100
-			} ]
-		}]
+		name: 'Matches',
+		colorByPoint: true,
+		data: [{
+			name: 'win',
+			y: 200,
+			sliced: true,
+		},
+		{
+			name: 'loose',
+			sliced: true,
+			y: 100
+		} ]
+	}]
 
 opts.series = ser1;
 
-						// Build the chart
-						Highcharts.chart('wins-chart-container', opts);
+					// Build the chart
+					Highcharts.chart('wins-chart-container', opts);
 
 opts.series = ser2;
-						Highcharts.chart('maps-chart-container', opts);
-					</script>
+					Highcharts.chart('maps-chart-container', opts);
+				</script>
 
 
 
-					<<template "footer.html">>
+				<go>template "footer.html"</go>
 
 
 
