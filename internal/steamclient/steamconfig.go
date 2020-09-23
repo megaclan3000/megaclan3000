@@ -15,9 +15,10 @@ type SteamConfig struct {
 	SteamIDs        []string `json:"SteamIDs"`
 	HistoryInterval int      `json:"HistoryInterval"`
 	UpdateInterval  int      `json:"UpdateInterval"`
-	PostgresUser    string   `json:"postgres_user"`
-	PostgresPass    string   `json:"postgres_pass"`
+	PostgresUser    string   `json:"db_user"`
+	PostgresPass    string   `json:"db_pass"`
 	PostgresDbName  string   `json:"db_name"`
+	PostgresDbHost  string   `json:"db_host"`
 }
 
 // NewSteamConfig creates a new configuration struct from a path pointing to
