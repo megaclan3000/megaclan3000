@@ -1,201 +1,183 @@
-<<template "header.html">>
+<go>template "header.html"</go>
 
-	<style type="text/css" media="screen">
-.matches-table-icon {
-	height: 30px;
-	padding: 0px;
-}
+<style type="text/css" media="screen">
+	.matches-table-icon {
+		height: 30px;
+		padding: 0px;
+	}
 
-.scoreboard-table-avatar {
-	height: 40px;
-	width: 40px;
-	padding: 1px;
-	padding-right: 10px;
-}
-.matchbadge{
-	text-align: right;
-	padding-right: 20px;
-}
+	.scoreboard-table-avatar {
+		height: 40px;
+		width: 40px;
+		padding: 1px;
+		padding-right: 10px;
+	}
+	.matchbadge{
+		text-align: right;
+		padding-right: 20px;
+	}
 
-.scoreboardbadge{
-	text-align: right;
-	padding-right: 20px;
-}
+	.scoreboardbadge{
+		text-align: right;
+		padding-right: 20px;
+	}
 
-.clickable-row {
-	cursor: pointer;
-}
+	.clickable-row {
+		cursor: pointer;
+	}
 
 
-.scoreboard-table-name {
-	font-size: large;
-	padding: 0px;
-}
+	.scoreboard-table-name {
+		font-size: large;
+		padding: 0px;
+	}
 
-.scoreboard-table-points {
-	font-size:large;
-}
-	</style>
+	.scoreboard-table-points {
+		font-size:large;
+	}
+</style>
 
-	<div class="row"> </div>
-	<div class="row">
-		<div class="col s12 m12 l12">
-			<div class="honeycombs" id="playerCombs"> </div>
-		</div>
-	</div>
+<div class="row"> </div>
 
-	<div class="row">
-		<div class="col s12">
-			<div class="card indigo darken-1">
-				<div class="card-content white-text">
-					<p class="indigo darken-2 white-text">
+<div class="row">
+	<div class="col s12 m12 l12">
+	<div class="honeycombs" id="playerCombs"></div>
+</div>
+
+<div class="row">
+	<div class="col s12">
+		<div class="card indigo darken-1">
+			<div class="card-content white-text">
+				<p class="indigo darken-2 white-text">
 					<table>
 						<tbody class="white-text" id="scoreboard-table-body"> </tbody>
 					</table>
-					</p>
-				</div>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col s6">
+		<div class="card indigo darken-1">
+			<div class="card-content white-text">
+				<span class="card-title">Last Updates</span>
+				<p> </p>
+			</div>
+			<div class="card-action">
+				<a href="/awards">See awards</a>
 			</div>
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="col s6">
-			<div class="card indigo darken-1">
-				<div class="card-content white-text">
-					<span class="card-title">Last Updates</span>
-					<p>
-					</p>
-				</div>
-				<div class="card-action">
-					<a href="/awards">See awards</a>
-				</div>
-			</div>
-		</div>
-
-		<div class="col s6">
-			<div class="card indigo darken-1">
-				<div class="card-content indigo darken-1 white-text">
-					<span class="card-title">Recent Matches</span>
-					<p class="indigo darken-2 white-text">
+	<div class="col s6">
+		<div class="card indigo darken-1">
+			<div class="card-content indigo darken-1 white-text">
+				<span class="card-title">Recent Matches</span>
+				<p class="indigo darken-2 white-text">
 					<table>
-						<tbody class="white-text" id="recent-matches-table-body">
-						</tbody>
+						<tbody class="white-text" id="recent-matches-table-body"> </tbody>
 					</table>
-					</p>
-				</div>
-				<div class="card-action">
-					<a href="/matches">See all matches</a>
-				</div>
+				</p>
 			</div>
-		</div>
+		<div class="card-action">
+		<a href="/matches">See all matches</a>
 	</div>
+</div>
 
-	<script id="player-comb-template" type="text/x-jsrender">
-		<div class="comb">
-			<img src="{{:avatar}}" /> <span> <br> {{:player_name}} </span>
-			<a href="/player/{{:steamid}}" class="" style="display:none;"></a>
-		</div>
-	</script>
+<script id="player-comb-template" type="text/x-jsrender">
+	<div class="comb">
+		<img src="{{:avatar}}" /><span><br>{{:player_name}}</span>
+		<a href="/player/{{:steamid}}" class="" style="display:none;"></a>
+	</div>
+</script>
 
-	<script id="player-scoreboard-template" type="text/x-jsrender">
-		<tr class="hoverable clickable-row" data-href="/player/{{:steamid}}">
-			<td class=scoreboard-table-avatar> <img height="50px" src="{{:avatar}}" alt=""> </td>
-			<td class="scoreboard-table-name">{{:player_name}}</td>
-			<td class="orange-text scoreboard-table-points">{{:points}}</td>
-			<td> <span class="grey-text valign-wrapper"> <i class="material-icons" title="Clan-matches participated">flag</i>{{:matches}}</span></td>
-			<td> <span class="grey-text valign-wrapper"> <i class="material-icons" title="Kills/Deaths">data_usage</i>{{:(kills / deaths).toFixed(2)}}</span></td>
-			<td> <span class="grey-text valign-wrapper"> <i class="material-icons" title="Accuracy {{:hits}}/{{:shots}}">gps_fixed</i>{{:(hits / shots).toFixed(2)}}</span></td>
-			<td> <span class="grey-text valign-wrapper"> <i class="material-icons" title="Hours played">timer</i>{{:hours}}h</span> </td>
-			<td> <span class="grey-text valign-wrapper"> <i class="material-icons" title="Number of wins">beenhere</i>{{:wins}}</span></td>
+<script id="player-scoreboard-template" type="text/x-jsrender">
+	<tr class="hoverable clickable-row" data-href="/player/{{:steamid}}">
+		<td class=scoreboard-table-avatar><img height="50px" src="{{:avatar}}" alt=""></td>
+		<td class="scoreboard-table-name">{{:player_name}}</td>
+		<td class="orange-text scoreboard-table-points">{{:points}}</td>
+		<td> <span class="grey-text valign-wrapper"> <i class="material-icons" title="Clan-matches participated">flag</i>{{:matches}}</span></td>
+		<td> <span class="grey-text valign-wrapper"> <i class="material-icons" title="Kills/Deaths">data_usage</i>{{:(kills / deaths).toFixed(2)}}</span></td>
+		<td> <span class="grey-text valign-wrapper"> <i class="material-icons" title="Accuracy {{:hits}}/{{:shots}}">gps_fixed</i>{{:(hits / shots).toFixed(2)}}</span></td>
+		<td> <span class="grey-text valign-wrapper"> <i class="material-icons" title="Hours played">timer</i>{{:hours}}h</span> </td>
+		<td> <span class="grey-text valign-wrapper"> <i class="material-icons" title="Number of wins">beenhere</i>{{:wins}}</span></td>
 
-			// 0 <span class="valign-wrapper">  - Offline
-			// 1 - Online
-			// 2 - Busy
-			// 3 - Away
-			// 4 - Snooze
-			// 5 - looking to trade
-			// 6 - looking to play.
+	// 0 <span class="valign-wrapper">  - Offline
+	// 1 - Online
+	// 2 - Busy
+	// 3 - Away
+	// 4 - Snooze
+	// 5 - looking to trade
+	// 6 - looking to play.
 
-			<td class="scoreboardbadge">
-				{{if status == 0}}
-				<span class="new badge red" data-badge-caption="OFFLINE"></span>
-				{{else status == 2}}
-				<span class="new badge blue" data-badge-caption="BUSY"></span>
-				{{else status == 3}}
-				<td> <span class="new badge blue" data-badge-caption="AWAY"></span>
-				{{else status == 4}}
-				<span class="new badge blue" data-badge-caption="SNOOZE"></span>
-				{{else}}
-				<span class="new badge green" data-badge-caption="ONLINE"></span>
-				{{/if}}
-			</td>
-		</tr>
-	</script>
+		<td class="scoreboardbadge">
+		{{if status == 0}}
+		<span class="new badge red" data-badge-caption="OFFLINE"></span>
+		{{else status == 2}}
+		<span class="new badge blue" data-badge-caption="BUSY"></span>
+		{{else status == 3}}
+		<td> <span class="new badge blue" data-badge-caption="AWAY"></span>
+		{{else status == 4}}
+		<span class="new badge blue" data-badge-caption="SNOOZE"></span>
+		{{else}}
+		<span class="new badge green" data-badge-caption="ONLINE"></span>
+		{{/if}}
+		</td>
+	</tr>
+</script>
 
-	<script id="recent-matches-template" type="text/x-jsrender">
-		<tr class="hoverable clickable-row" data-href="/match/{{:matchid}}">
-			<td>
-				<img class="matches-table-icon" src="/public/img/maps/icons/{{:map}}.png" alt="">
-			</td>
-			<td class="orange-text">
-				{{:score_clan}}:{{:score_enemy}}
-			</td>
-			<td>
-				{{:map}}
-			</td>
-			<td class="grey-text">
-				{{:time}}
-			</td>
+<script id="recent-matches-template" type="text/x-jsrender">
+	<tr class="hoverable clickable-row" data-href="/match/{{:matchid}}">
+		<td> <img class="matches-table-icon" src="/public/img/maps/icons/{{:map}}.png" alt=""> </td>
+		<td class="orange-text"> {{:score_clan}}:{{:score_enemy}} </td>
+		<td> {{:map}} </td>
+		<td class="grey-text"> {{:time}} </td>
+		{{if result == 0}}
+		<td class="matchbadge"> <span class="new badge blue" data-badge-caption="DRAW"></span> </td>
+		{{else result == 1}}
+		<td class="matchbadge"> <span class="new badge green" data-badge-caption="WON"></span> </td>
+		{{else result == -1}}
+		<td class="matchbadge"> <span class="new badge red" data-badge-caption="LOST"></span> </td>
+		{{/if}}
+	</tr>
+</script>
 
-			{{if result == 0}}
-			<td class="matchbadge"> <span class="new badge blue" data-badge-caption="DRAW"></span> </td>
-			{{else result == 1}}
-			<td class="matchbadge"> <span class="new badge green" data-badge-caption="WON"></span> </td>
-			{{else result == -1}}
-			<td class="matchbadge"> <span class="new badge red" data-badge-caption="LOST"></span> </td>
-			{{/if}}
-		</tr>
-	</script>
+<script type="text/javascript">
+	$(document).ready(function () {
 
-	<script type="text/javascript">
-		$(document).ready(function () {
+		$.getJSON("/api/claninfo/all",  function(data) {
 
-			$.getJSON("/api/claninfo/all",  function(data) {
+			// Calculate a random offset so that players are placed in
+			// random position
+			var offset = Math.floor(Math.random() * 10);
+			for (var i = 0; i<data.players.length; i++) {
 
-				// Calculate a random offset so that players are placed in
-				// random position
-				var offset = Math.floor(Math.random() * 10);
-				for (var i = 0; i<data.players.length; i++) {
+				// Append player comb
+				$("#playerCombs" ).append( $.templates( "#player-comb-template" ).render(
+					data.players[(i + offset) % (data.players.length)])
+				);
 
-					// Append player comb
-					$("#playerCombs" ).append( $.templates( "#player-comb-template" ).render(
-						data.players[(i + offset) % (data.players.length)])
-					);
+				// Append scoreboard line
+				$("#scoreboard-table-body" ).append( $.templates( "#player-scoreboard-template" ).render(data.players[i]));
+			}
 
-					// Append scoreboard line
-					$("#scoreboard-table-body" ).append( $.templates( "#player-scoreboard-template" ).render(data.players[i]));
-				}
+			$('.honeycombs').honeycombs();
 
-				$('.honeycombs').honeycombs();
+			// Append all matches to table
+			for (var i = 0; i<data.matches.length; i++) {
+				data.matches[i].time= new Date(data.matches[i].time).toUTCString()
+				$("#recent-matches-table-body" ).append( $.templates( "#recent-matches-template" ).render(data.matches[i]));
+			}
 
-				// Append all matches to table
-				for (var i = 0; i<data.matches.length; i++) {
-					data.matches[i].time= new Date(data.matches[i].time).toUTCString()
-					$("#recent-matches-table-body" ).append( $.templates( "#recent-matches-template" ).render(data.matches[i]));
-				}
-
-				// Make table rows clickable
-				$(".clickable-row").click(function() {
-					window.location = $(this).data("href");
-				});
-
-				// TODO render updates
+			// Make table rows clickable
+			$(".clickable-row").click(function() {
+				window.location = $(this).data("href");
 			});
-
-
+// TODO render updates
 		});
+	});
+</script>
 
-
-	</script>
-
-					<<template "footer.html">>
+<go>template "footer.html"</go>

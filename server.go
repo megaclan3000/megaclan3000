@@ -107,7 +107,7 @@ func parseTemplates(h http.HandlerFunc) http.HandlerFunc {
 			"inc": func(i int) int {
 				return i + 1
 			},
-		}).Delims("<<", ">>").ParseGlob("./templates/*")
+		}).Delims("<go>", "</go>").ParseGlob("./templates/*")
 		if err != nil {
 			log.Panic("Cannot parse templates", err)
 		}

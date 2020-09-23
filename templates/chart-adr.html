@@ -22,13 +22,13 @@ optionAdr = {
     xAxis: {
         type: 'category',
         boundaryGap: false,
-		data: [<<range.PlayerHistory.Data>> '<<.Time>>', <<end>>]
+		data: [<go>range.PlayerHistory.Data</go> '<go>.Time</go>', <go>end</go>]
     },
     yAxis: {
         type: 'value'
     },
     series: [{
-        data: [<< range.PlayerHistory.Data >> << .TotalADR>>, << end >>],
+        data: [<go> range.PlayerHistory.Data </go> <go> .TotalADR</go>, <go> end </go>],
         type: 'line',
         areaStyle: {}
     }]
