@@ -129,7 +129,7 @@ func handlerStats(w http.ResponseWriter, r *http.Request) {
 		return datastorage.Players[i].PlayerSummary.Personastate > datastorage.Players[j].PlayerSummary.Personastate
 	})
 
-	if err := t.ExecuteTemplate(w, "stats.html", datastorage.Players); err != nil {
+	if err := t.ExecuteTemplate(w, "players.html", datastorage.Players); err != nil {
 		log.Warn(err)
 	}
 }
