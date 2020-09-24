@@ -92,3 +92,9 @@ ExecStart=/var/www/megaclan3000/megaclan3000
 [Install]
 WantedBy=multi-user.target
 ```
+
+## New Deployment
+
+- install docker
+- install docker-compose
+- create nginx config

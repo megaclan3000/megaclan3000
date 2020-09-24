@@ -14,7 +14,6 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
-	"github.com/megaclan3000/megaclan3000/internal/demoparser"
 	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 )
 
@@ -66,14 +65,13 @@ func main() {
 
 	// Define routes
 	r.HandleFunc("/", parseTemplates(handlerIndex))
-	r.HandleFunc("/stats", parseTemplates(handlerStats))
+	r.HandleFunc("/players", parseTemplates(handlerPlayers))
 	r.HandleFunc("/contact", parseTemplates(handlerContact))
 	r.HandleFunc("/faq", parseTemplates(handlerFAQ))
 	r.HandleFunc("/player/{id}", parseTemplates(handlerDetails))
 	r.HandleFunc("/match/{id}", parseTemplates(handlerMatch))
 	r.HandleFunc("/matches", parseTemplates(handlerMatches))
 	r.HandleFunc("/awards", parseTemplates(handlerAwards))
-	r.HandleFunc("/scoreboard", parseTemplates(handlerScoreboard))
 	r.HandleFunc("/imprint", parseTemplates(handlerImprint))
 
 	// API for json data retrieval
@@ -122,29 +120,20 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func handlerStats(w http.ResponseWriter, r *http.Request) {
+func handlerPlayers(w http.ResponseWriter, r *http.Request) {
 
 	// Stort players by Personastate (online status)
 	sort.Slice(datastorage.Players, func(i, j int) bool {
 		return datastorage.Players[i].PlayerSummary.Personastate > datastorage.Players[j].PlayerSummary.Personastate
 	})
 
-	if err := t.ExecuteTemplate(w, "stats.html", datastorage.Players); err != nil {
+	if err := t.ExecuteTemplate(w, "players.html", datastorage.Players); err != nil {
 		log.Warn(err)
 	}
 }
 
 func handlerContact(w http.ResponseWriter, r *http.Request) {
 	if err := t.ExecuteTemplate(w, "contact.html", nil); err != nil {
-		log.Warn(err)
-	}
-}
-
-func handlerScoreboard(w http.ResponseWriter, r *http.Request) {
-
-	var players demoparser.InfoStruct
-
-	if err := t.ExecuteTemplate(w, "scoreboard.html", players); err != nil {
 		log.Warn(err)
 	}
 }

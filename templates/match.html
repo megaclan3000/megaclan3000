@@ -1,192 +1,233 @@
-<go>template "header.html"</go>
-<!-- TODO put styles in public folder -->
-<style type="text/css" media="screen">
-	.scorediv {
-		text-align: center;
-		vertical-align: middle;
-		font-size: 40;
-	}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Match Analysis</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!-- CSS Libs -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+		/>
+		<link
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
+			rel="stylesheet"
+		/>
+		<link
+			rel="shortcut icon"
+			href="/public/img/favicon.ico"
+			type="image/x-icon"
+		/>
+		<link rel="icon" href="/public/img/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="/public/css/custom.css" />
+		<link rel="stylesheet" href="/public/css/honeycombs.css" />
 
-	.scoretitleimg {
-		height: 200px;
-		object-fit: cover;
-		opacity: 0.8;
-	}
+		<script charset="utf-8" src="/public/js/helpers.js"></script>
+		<!-- JS Libs -->
+		<!-- Load jQuery -->
+		<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+		<!-- Load JsRender latest version, from www.jsviews.com: -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.7/jsrender.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 
-	.tableimage {
-		height: 30px;
-	}
+		<!--Highcharts -->
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+		<script src="https://code.highcharts.com/modules/export-data.js"></script>
+		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		<script src="https://code.highcharts.com/modules/sankey.js"></script>
+		<script src="https://code.highcharts.com/highcharts-more.js"></script>
+		<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+		<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+		<script src="/public/js/honeycombs.js"></script>
 
-	.avatar {
-		display: block;
-		margin-left: auto;
-		margin-right: auto;
-		width: 100%;
-	}
+		<script src="/public/js/three.r119.min.js"></script>
+		<script src="/public/js/vanta.net.min.js"></script>
+		<script src="/public/js/countUp.umd.js"></script>
 
-	@font-face {
-		font-family: Scoreboard;
-		src: url("/public/css/font.ttf");
-	}
+		<script>
+			$(document).ready(function () {
+				$(".sidenav").sidenav();
 
-	.scoreticker {
-		font-family: Scoreboard, sans-serif;
-		font-size: 75px;
-	}
-</style>
+				VANTA.NET({
+					el: "body",
+					mouseControls: true,
+					touchControls: true,
+					backgroundColor: 0x10154c,
+					color: 0x283593,
+					gyroControls: false,
+					minHeight: 200.0,
+					minWidth: 200.0,
+					scale: 1.0,
+					scaleMobile: 1.0,
+				});
 
-<div class="row">
-	<div class="col s12" style="padding: 0px; margin: 0px">
-		<div class="card indigo">
-			<div class="card-image">
-				<img
-					class="scoretitleimg"
-					src="/public/img/maps/titles/<go>.General.MapName</go>.png"
-				/>
-				<span class="card-title"><go>.General.MapName</go></span>
-			</div>
-			<div class="card-content" style="padding-bottom: 0px">
+						$(".tabs").tabs();
+
+					var animScoreClan = new countUp.CountUp(
+						"match-score-clan",
+						<go>.General.ScoreClan</go>
+					);
+					var animScoreEnemy = new countUp.CountUp(
+						"match-score-enemy",
+						<go>.General.ScoreEnemy</go>
+					);
+					animScoreClan.start();
+					animScoreEnemy.start();
+			});
+		</script>
+	</head>
+	<body>
+		<go>template "sidenav.html"</go>
+		<main>
+			<div class="container main-content">
 				<div class="row">
-					<div id="match-clan-players">
-						<go>range $p := .Players.Clan</go>
-						<go>if not $p.IsBot </go>
-						<div class="col s1">
-							<img
-								class="avatar circle z-depth-2"
-								src="<go>$p.AvatarURL</go>"
-								alt=""
-							/>
-							<span class="title truncate center-align orange-text">
-								<go>$p.Name</go>
-							</span>
-							<img
-								src="/public/img/ranks/<go>$p.Rank</go>.png"
-								style="margin-left: auto; margin-right: auto; width: 100%"
-								class="rankicon z-depth-2"
-								alt=""
-							/>
-						</div>
-						<go>end</go>
-						<go>end</go>
-					</div>
+					<div class="col s12" style="padding: 0px; margin: 0px">
+						<div class="card indigo">
+							<div class="card-image">
+								<img
+									class="scoretitleimg"
+									src="/public/img/maps/titles/<go>.General.MapName</go>.png"
+									alt=""
+								/>
+								<span class="card-title"><go>.General.MapName</go></span>
+							</div>
+							<div class="card-content" style="padding-bottom: 0px">
+								<div class="row">
+									<div id="match-clan-players">
+										<go>range $p := .Players.Clan</go>
+										<go>if not $p.IsBot </go>
+										<div class="col s1">
+											<img
+												class="avatar circle z-depth-2"
+												src="<go>$p.AvatarURL</go>"
+												alt=""
+											/>
+											<span class="title truncate center-align orange-text">
+												<go>$p.Name</go>
+											</span>
+											<img
+												src="/public/img/ranks/<go>$p.Rank</go>.png"
+												style="
+													margin-left: auto;
+													margin-right: auto;
+													width: 100%;
+												"
+												class="rankicon z-depth-2"
+												alt=""
+											/>
+										</div>
+										<go>end</go>
+										<go>end</go>
+									</div>
 
-					<go>$color_class := "red-text"</go>
-					<go>if not .General.ClanWonMatch</go>
-					<go>$color_class = "green-text"</go> <go>end</go>
-					<go>$text := "LOST"</go> <go>if not .General.ClanWonMatch</go>
-					<go>$text ="WON"</go> <go>end</go>
-					<div class="col s2 scorediv <go>$color_class</go>">
-						<div class="scoreticker"><go>$text</go></div>
-						<span id="match-score-clan"></span><span>:</span
-						><span id="match-score-enemy"></span>
-					</div>
+									<go>$color_class := "red-text"</go>
+									<go>if not .General.ClanWonMatch</go>
+									<go>$color_class = "green-text"</go> <go>end</go>
+									<go>$text := "LOST"</go>
+									<go>if not .General.ClanWonMatch</go> <go>$text ="WON"</go>
+									<go>end</go>
+									<div class="col s2 scorediv <go>$color_class</go>">
+										<div class="scoreticker"><go>$text</go></div>
+										<span id="match-score-clan"></span><span>:</span
+										><span id="match-score-enemy"></span>
+									</div>
 
-					<div id="match-enemy-players">
-						<go>range $p := .Players.Enemy</go>
-						<go>if not $p.IsBot </go>
-						<div class="col s1">
-							<img
-								class="avatar circle z-depth-2"
-								src="<go>$p.AvatarURL</go>"
-								alt=""
-							/>
-							<span class="title truncate center-align orange-text">
-								<go>$p.Name</go>
-							</span>
-							<img
-								src="/public/img/ranks/<go>$p.Rank</go>.png"
-								style="margin-left: auto; margin-right: auto; width: 100%"
-								class="rankicon z-depth-2"
-								alt=""
-							/>
+									<div id="match-enemy-players">
+										<go>range $p := .Players.Enemy</go>
+										<go>if not $p.IsBot </go>
+										<div class="col s1">
+											<img
+												class="avatar circle z-depth-2"
+												src="<go>$p.AvatarURL</go>"
+												alt=""
+											/>
+											<span class="title truncate center-align orange-text">
+												<go>$p.Name</go>
+											</span>
+											<img
+												src="/public/img/ranks/<go>$p.Rank</go>.png"
+												style="
+													margin-left: auto;
+													margin-right: auto;
+													width: 100%;
+												"
+												class="rankicon z-depth-2"
+												alt=""
+											/>
+										</div>
+										<go>end</go>
+										<go>end</go>
+									</div>
+								</div>
+
+								<!-- <p>Map Icon: <go>.General.MapIconURL</go></p> -->
+								<!-- <p>Upload time: <go>.General.UploadTime</go></p> -->
+								<!-- <p>Match duration: <go>.General.MatchDuration</go></p> -->
+								<!-- <p>Demo Download link: <go>.General.DemoLinkURL</go></p> -->
+							</div>
 						</div>
-						<go>end</go>
-						<go>end</go>
 					</div>
 				</div>
 
-				<!-- <p>Map Icon: <go>.General.MapIconURL</go></p> -->
-				<!-- <p>Upload time: <go>.General.UploadTime</go></p> -->
-				<!-- <p>Match duration: <go>.General.MatchDuration</go></p> -->
-				<!-- <p>Demo Download link: <go>.General.DemoLinkURL</go></p> -->
+				<div class="row indigo">
+					<div class="col s12">
+						<ul class="tabs tabs-fixed-width tabs-transparent indigo">
+							<li class="tab col">
+								<a href="#tab-scoreboard" class="active">
+									<i class="material-icons">timeline</i>Scoreboard
+								</a>
+							</li>
+							<li class="tab col">
+								<a href="#tab-rounds">
+									<i class="material-icons">multiline_chart</i>Rounds
+								</a>
+							</li>
+							<li class="tab col">
+								<a href="#tab-weapons">
+									<i class="material-icons">terrain</i>Weapons
+								</a>
+							</li>
+							<li class="tab col">
+								<a href="#tab-duels">
+									<i class="material-icons">whatshot</i>Duels
+								</a>
+							</li>
+							<li class="tab col">
+								<a href="#tab-heatmaps">
+									<i class="material-icons">whatshot</i>Heatmaps
+								</a>
+							</li>
+							<li class="tab col">
+								<a href="#tab-megacoins">
+									<i class="material-icons">whatshot</i>Megacoins
+								</a>
+							</li>
+						</ul>
+					</div>
+
+					<div id="tab-scoreboard" class="col s12">
+						<go>template "tab-match-scoreboard.html" .</go>
+					</div>
+					<div id="tab-rounds" class="col s12">
+						<go>template "tab-match-rounds.html" .</go>
+					</div>
+					<div id="tab-weapons" class="col s12">
+						<go>template "tab-match-weapons.html" .</go>
+					</div>
+					<div id="tab-duels" class="col s12">
+						<go>template "tab-match-duels.html" .</go>
+					</div>
+					<div id="tab-heatmaps" class="col s12">
+						<go>template "tab-match-heatmaps.html" .</go>
+					</div>
+					<div id="tab-megacoins" class="col s12">
+						<go>template "tab-match-megacoins.html" .</go>
+					</div>
+				</div>
 			</div>
-		</div>
-	</div>
-</div>
-
-<div class="row indigo">
-	<div class="col s12">
-		<ul class="tabs tabs-fixed-width tabs-transparent indigo">
-			<li class="tab col">
-				<a href="#tab-scoreboard" class="active">
-					<i class="material-icons">timeline</i>Scoreboard
-				</a>
-			</li>
-			<li class="tab col">
-				<a href="#tab-rounds">
-					<i class="material-icons">multiline_chart</i>Rounds
-				</a>
-			</li>
-			<li class="tab col">
-				<a href="#tab-weapons">
-					<i class="material-icons">terrain</i>Weapons
-				</a>
-			</li>
-			<li class="tab col">
-				<a href="#tab-duels"> <i class="material-icons">whatshot</i>Duels </a>
-			</li>
-			<li class="tab col">
-				<a href="#tab-heatmaps">
-					<i class="material-icons">whatshot</i>Heatmaps
-				</a>
-			</li>
-			<li class="tab col">
-				<a href="#tab-megacoins">
-					<i class="material-icons">whatshot</i>Megacoins
-				</a>
-			</li>
-		</ul>
-	</div>
-
-	<div id="tab-scoreboard" class="col s12">
-		<go>template "tab-match-scoreboard.html" .</go>
-	</div>
-	<div id="tab-rounds" class="col s12">
-		<go>template "tab-match-rounds.html" .</go>
-	</div>
-	<div id="tab-weapons" class="col s12">
-		<go>template "tab-match-weapons.html" .</go>
-	</div>
-	<div id="tab-duels" class="col s12">
-		<go>template "tab-match-duels.html" .</go>
-	</div>
-	<div id="tab-heatmaps" class="col s12">
-		<go>template "tab-match-heatmaps.html" .</go>
-	</div>
-	<div id="tab-megacoins" class="col s12">
-		<go>template "tab-match-megacoins.html" .</go>
-	</div>
-</div>
-
-<script>
-	$(document).ready(function () {
-		$(".tabs").tabs();
-	});
-</script>
-
-<script src="/public/js/countUp.umd.js"></script>
-
-<script charset="utf-8">
-	var animScoreClan = new countUp.CountUp(
-		"match-score-clan",
-		<go>.General.ScoreClan</go>
-	);
-	var animScoreEnemy = new countUp.CountUp(
-		"match-score-enemy",
-		<go>.General.ScoreEnemy</go>
-	);
-	animScoreClan.start();
-	animScoreEnemy.start();
-</script>
-
-<go>template "footer.html"</go>
+		</main>
+		<go>template "footer.html"</go>
+	</body>
+</html>
