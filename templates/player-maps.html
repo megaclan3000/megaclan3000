@@ -1,46 +1,27 @@
-
-<style type="text/css" media="screen">
-	
-#player-maps-chart {
-	height: 300px;
-	margin-top: 20px; 
-}
-
-.player-maps-table tr {
-	line-height: 10px;
-}
-
-.maps-table-container{
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
-
-.mapicon{
-	height:30px;
-}
-			
-</style>
 <div id="player-maps-chart" class="indigo darken-2"></div>
+
 <div class="maps-table-container">
-	
-<div class="row">
-	<div class="col s12">
-		<table id="player-maps-table" class="white-text highlight indigo darken-2">
-			<thead>
-				<tr class="indigo darken-3 orange-text">
-					<th></th>
-					<th>Map</th>
-					<th>Rounds Played</th>
-					<th>Rounds Won</th>
-					<th>Win Rate</th>
-				</tr>
-			</thead>
-			<tbody></tbody>
-		</table>
+	<div class="row">
+		<div class="col s12">
+			<table
+				id="player-maps-table"
+				class="white-text highlight indigo darken-2"
+			>
+				<thead>
+					<tr class="indigo darken-3 orange-text">
+						<th></th>
+						<th>Map</th>
+						<th>Rounds Played</th>
+						<th>Rounds Won</th>
+						<th>Win Rate</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
 	</div>
 </div>
 
-</div>
 <script id="player-maps-table-row" type="text/x-jsrender">
 	<tr>
 	<td> <img class="mapicon" src="{{:iconpath}}" alt=""></img> </td>
@@ -55,56 +36,56 @@
 	mapschart = Highcharts.chart("player-maps-chart", {
 		chart: {
 			type: "column",
-		plotBackgroundColor: null,
-		backgroundColor: 'rgba(0,0,0,0)',
-		plotBorderWidth: null,
-		plotShadow: false,
+			plotBackgroundColor: null,
+			backgroundColor: "rgba(0,0,0,0)",
+			plotBorderWidth: null,
+			plotShadow: false,
 		},
 		xAxis: {
 			categories: [],
 
-        crosshair: true,
-		gridLineWidth: 0,
-		labels: {
-            style: {
-                color: 'white'
-            }
-        }
+			crosshair: true,
+			gridLineWidth: 0,
+			labels: {
+				style: {
+					color: "white",
+				},
+			},
 		},
 		yAxis: {
 			min: 0,
 			title: null,
 		},
 
-    yAxis: {
-        min: 0,
-        title: null,
-		gridLineWidth: 0,
-		labels: {
-			style: {
-				color: 'orange'
-			}
-        }
-    },
+		yAxis: {
+			min: 0,
+			title: null,
+			gridLineWidth: 0,
+			labels: {
+				style: {
+					color: "orange",
+				},
+			},
+		},
 
-title: null,
-	credits: {
-		enabled: false
-	},
-	exporting: {
-		enabled: false
-	},
-	legend: {
-		itemStyle: {
-			color: '#ffffff',
-		}
-	},
+		title: null,
+		credits: {
+			enabled: false,
+		},
+		exporting: {
+			enabled: false,
+		},
+		legend: {
+			itemStyle: {
+				color: "#ffffff",
+			},
+		},
 		plotOptions: {
 			column: {
 				stacking: "normal",
 
-            pointPadding: 0.1,
-            borderWidth: 0,
+				pointPadding: 0.1,
+				borderWidth: 0,
 			},
 		},
 		series: [
@@ -137,14 +118,12 @@ title: null,
 					$("#player-maps-table tbody").append(
 						$.templates("#player-maps-table-row").render(data[row])
 					);
-
 					cats.push(data[row].name);
 					mapschart.series[0].addPoint(data[row].rounds_won);
 					mapschart.series[1].addPoint(
 						data[row].rounds_total - data[row].rounds_won
 					);
 				}
-
 				mapschart.xAxis[0].setCategories(cats); //setting category
 			}
 		});

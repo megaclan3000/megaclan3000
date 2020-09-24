@@ -228,3 +228,78 @@ a {
 .scoreboard-table-points {
 	font-size: large;
 }
+
+/* players details*/
+
+.chart-overview-row {
+	height: 80px;
+}
+
+
+	
+#player-maps-chart {
+	height: 300px;
+	margin-top: 20px; 
+}
+
+.player-maps-table tr {
+	line-height: 10px;
+}
+
+.maps-table-container{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.mapicon{
+	height:30px;
+}
+
+/* player matches */
+
+
+.best-weapon-img{
+	<!-- height:150px; -->
+object-fit: contain;
+filter: invert(1) opacity(0.7) drop-shadow(7px 7px 7px #1a237e)
+}
+
+.last-match-container {
+}
+
+.last-match-map-img {
+	height:100px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@font-face { font-family: Scoreboard; src: url('/public/css/font.ttf'); }
+
+.last-match-score{
+	font-family: Scoreboard, sans-serif;
+	font-size: 75px;
+}
+
+
+
+/* player weapons */
+
+#player-weapons-chart {
+	height: 300px;
+	margin-top: 20px; 
+}
+
+.player-weapons-table tr {
+	line-height: 10px;
+}
+
+.weapons-table-container{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.weaponicon{
+	height:30px;
+	object-fit: contain;
+  filter: invert(1) opacity(0.7) drop-shadow(7px 7px 7px #1a237e)
+}

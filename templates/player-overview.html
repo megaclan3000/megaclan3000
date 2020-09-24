@@ -1,14 +1,3 @@
-
-<style type="text/css" media="screen">
-.col {
-	<!-- border: 1px solid red; -->
-}
-.chart-overview-row {
-	height: 80px;
-}
-
-</style>
-
 <div class="row indigo">
 	<div class="col s4">
 		<div class="card indigo">
@@ -17,54 +6,90 @@
 					<div class="row chart-overview-row valign-wrapper">
 						<div class="col s7">
 							<p class="orange-text">KILLS</p>
-							<p> <go>.UserStatsForGame.Stats.TotalKills</go> </p>
+							<p><go>.UserStatsForGame.Stats.TotalKills</go></p>
 						</div>
-						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/kills.svg"> </div>
+						<div class="col s5">
+							<img
+								style="width: 100%"
+								class="left"
+								src="/public/img/icons/kills.svg"
+							/>
+						</div>
 					</div>
 					<div class="row chart-overview-row valign-wrapper">
 						<div class="col s7">
 							<p class="orange-text">TIME</p>
-							<p> <go>.UserStatsForGame.Extra.PlayedHours</go>h </p>
+							<p><go>.UserStatsForGame.Extra.PlayedHours</go>h</p>
 						</div>
-						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/timer.svg"> </div>
+						<div class="col s5">
+							<img
+								style="width: 100%"
+								class="left"
+								src="/public/img/icons/timer.svg"
+							/>
+						</div>
 					</div>
 					<div class="row chart-overview-row valign-wrapper">
 						<div class="col s7">
 							<p class="orange-text">WIN</p>
-							<p>	<go>.Calc.PercentWin</go>% </p>
+							<p><go>.Calc.PercentWin</go>%</p>
 						</div>
-						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/win-cup.svg"> </div>
+						<div class="col s5">
+							<img
+								style="width: 100%"
+								class="left"
+								src="/public/img/icons/win-cup.svg"
+							/>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="col s4" id="details-kd-chart"> </div>
+	<div class="col s4" id="details-kd-chart"></div>
 
 	<div class="col s4">
 		<div class="card indigo">
 			<div class="card-content indigo darken-3 white-text">
 				<div class="container">
 					<div class="row chart-overview-row valign-wrapper right-align">
-						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/target.svg"> </div>
+						<div class="col s5">
+							<img
+								style="width: 100%"
+								class="left"
+								src="/public/img/icons/target.svg"
+							/>
+						</div>
 						<div class="col s7">
 							<p class="orange-text">ACCURACY</p>
-							<p> <go>.Calc.PercentAccuracy</go>% </p>
+							<p><go>.Calc.PercentAccuracy</go>%</p>
 						</div>
 					</div>
 					<div class="row chart-overview-row valign-wrapper right-align">
-						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/headshot.svg"> </div>
+						<div class="col s5">
+							<img
+								style="width: 100%"
+								class="left"
+								src="/public/img/icons/headshot.svg"
+							/>
+						</div>
 						<div class="col s7">
 							<p class="orange-text">HEADSHOT</p>
-							<p> <go>.Calc.PercentHeadshot</go>% </p>
+							<p><go>.Calc.PercentHeadshot</go>%</p>
 						</div>
 					</div>
 					<div class="row chart-overview-row valign-wrapper right-align">
-						<div class="col s5"> <img style="width:100%" class="left" src="/public/img/icons/star.svg"> </div>
+						<div class="col s5">
+							<img
+								style="width: 100%"
+								class="left"
+								src="/public/img/icons/star.svg"
+							/>
+						</div>
 						<div class="col s7">
 							<p class="orange-text">MVPs</p>
-							<p> <go>.UserStatsForGame.Stats.TotalMvps</go></p>
+							<p><go>.UserStatsForGame.Stats.TotalMvps</go></p>
 						</div>
 					</div>
 				</div>
@@ -73,71 +98,69 @@
 	</div>
 </div>
 
-
-
 <script charset="utf-8">
-
-	Highcharts.chart('details-kd-chart', {
-	chart: {
-		backgroundColor: 'rgba(0,0,0,0)',
-		plotBackgroundColor: null,
-		plotBorderWidth: null,
-		plotShadow: false,
-	},
-	title: {
-		text: '<go>.UserStatsForGame.Extra.TotalKD</go>',
-		align: 'center',
-		verticalAlign: 'middle',
-	},
-	tooltip: {
-		pointFormat: '<b>{point.y:.0f}</b>'
-	},
-	accessibility: {
-		point: {
-			valueSuffix: '%'
-		}
-	},
+	Highcharts.chart("details-kd-chart", {
+		chart: {
+			backgroundColor: "rgba(0,0,0,0)",
+			plotBackgroundColor: null,
+			plotBorderWidth: null,
+			plotShadow: false,
+		},
+		title: {
+			text: "<go>.UserStatsForGame.Extra.TotalKD</go>",
+			align: "center",
+			verticalAlign: "middle",
+		},
+		tooltip: {
+			pointFormat: "<b>{point.y:.0f}</b>",
+		},
+		accessibility: {
+			point: {
+				valueSuffix: "%",
+			},
+		},
 		exporting: {
-			enabled: false
+			enabled: false,
 		},
 		legend: {
 			itemStyle: {
-				color: '#ffffff',
-			}
+				color: "#ffffff",
+			},
 		},
-	plotOptions: {
-		pie: {
-			dataLabels: {
-				enabled: true,
-				distance: -50,
-				style: {
-					fontWeight: 'bold',
-					color: 'white'
-				}
+		plotOptions: {
+			pie: {
+				dataLabels: {
+					enabled: true,
+					distance: -50,
+					style: {
+						fontWeight: "bold",
+						color: "white",
+					},
+				},
+				startAngle: 0,
+				endAngle: 0,
 			},
-			startAngle: 0,
-			endAngle: 0,
-		}
-	},
-	series: [{
-		type: 'pie',
-		name: 'Percentage',
-		innerSize: '50%',
-		data: [
+		},
+		series: [
 			{
-				name: "Kills",
-				y: <go>.UserStatsForGame.Stats.TotalKills</go>,
-				color: '#4caf50',
+				type: "pie",
+				name: "Percentage",
+				innerSize: "50%",
+				data: [
+					{
+						name: "Kills",
+						y: <go>.UserStatsForGame.Stats.TotalKills</go>,
+						color: "#4caf50",
+					},
+					{
+						name: "Deaths",
+						y: <go>.UserStatsForGame.Stats.TotalDeaths</go>,
+						color: "#f44336",
+					},
+				],
 			},
-			{
-				name: 'Deaths',
-				y: <go>.UserStatsForGame.Stats.TotalDeaths</go>,
-				color: '#f44336',
-
-			}
-		]
-	}]
-});
+		],
+	});
 </script>
 <div class="row indigo">
 	<div class="col s12">
@@ -146,39 +169,57 @@
 				<tbody class="white-text">
 					<tr>
 						<td>Kills</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalKills</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalKills</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Deaths</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalDeaths</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalDeaths</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Headshots</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalKillsHeadshot</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalKillsHeadshot</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Money earned</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalMoneyEarned</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalMoneyEarned</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Total Damage</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalDamageDone</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalDamageDone</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Total score</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalContributionScore</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalContributionScore</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Bombs planted</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalPlantedBombs</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalPlantedBombs</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Bombs defused</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalDefusedBombs</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalDefusedBombs</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Hostages rescued</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalRescuedHostages</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalRescuedHostages</go>
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -188,39 +229,57 @@
 				<tbody class="white-text">
 					<tr>
 						<td>Matches played</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalMatchesPlayed</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalMatchesPlayed</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Matches won</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalMatchesWon</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalMatchesWon</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Rounds played</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalRoundsPlayed</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalRoundsPlayed</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Rounds won</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalTrbombMatchesWon</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalTrbombMatchesWon</go>
+						</td>
 					</tr>
 					<tr>
 						<td>MVP stars</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalMvps</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalMvps</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Weapons donated</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalWeaponsDonated</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalWeaponsDonated</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Kills with enemy weapon</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalKillsEnemyWeapon</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalKillsEnemyWeapon</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Blinded enemies killed</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalKillsEnemyBlinded</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalKillsEnemyBlinded</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Won knife-fights</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalKillsKnifeFight</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalKillsKnifeFight</go>
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -230,43 +289,60 @@
 				<tbody class="white-text">
 					<tr>
 						<td>Aiming snipers killed</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalKillsAgainstZoomedSniper</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalKillsAgainstZoomedSniper</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Shots fired</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalShotsFired</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalShotsFired</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Shots hit</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalShotsHit</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalShotsHit</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Dominations</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalDominations</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalDominations</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Domination overkills</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalDominationOverkills</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalDominationOverkills</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Domination revenges</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalRevenges</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalRevenges</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Pistol rounds won</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalWinsPistolround</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalWinsPistolround</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Enemies tasered</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalKillsTaser</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalKillsTaser</go>
+						</td>
 					</tr>
 					<tr>
 						<td>Windows broken</td>
-						<td class="orange-text"><go>.UserStatsForGame.Stats.TotalBrokenWindows</go></td>
+						<td class="orange-text">
+							<go>.UserStatsForGame.Stats.TotalBrokenWindows</go>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
 </div>
-
