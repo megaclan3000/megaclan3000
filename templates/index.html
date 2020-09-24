@@ -132,7 +132,7 @@
 				</script>
 
 				<script id="player-scoreboard-template" type="text/x-jsrender">
-					<tr class="hoverable clickable-row" data-href="/player/{{:steamid}}">
+					<tr class="hoverable clickable-row indigo darken-2" data-href="/player/{{:steamid}}">
 						<td class=scoreboard-table-avatar><img height="50" src="{{:avatar}}" alt=""></td>
 						<td class="scoreboard-table-name">{{:player_name}}</td>
 						<td class="orange-text scoreboard-table-points">{{:points}}</td>
@@ -156,7 +156,7 @@
 						{{else status == 2}}
 						<span class="new badge blue" data-badge-caption="BUSY"></span>
 						{{else status == 3}}
-						<td> <span class="new badge blue" data-badge-caption="AWAY"></span>
+						<span class="new badge blue" data-badge-caption="AWAY"></span>
 						{{else status == 4}}
 						<span class="new badge blue" data-badge-caption="SNOOZE"></span>
 						{{else}}
@@ -167,7 +167,7 @@
 				</script>
 
 				<script id="recent-matches-template" type="text/x-jsrender">
-					<tr class="hoverable clickable-row" data-href="/match/{{:matchid}}">
+					<tr class="hoverable clickable-row indigo darken-2" data-href="/match/{{:matchid}}">
 						<td> <img class="matches-table-icon" src="/public/img/maps/icons/{{:map}}.png" alt=""> </td>
 						<td class="orange-text"> {{:score_clan}}:{{:score_enemy}} </td>
 						<td> {{:map}} </td>
