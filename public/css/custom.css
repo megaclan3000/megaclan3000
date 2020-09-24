@@ -1,139 +1,230 @@
-body{
-    display: flex; 
-    min-height: 100vh; 
-    flex-direction: column;
+@import url("https://fonts.googleapis.com/css?family=Exo:400,700");
+
+body {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+	background: #10154c;
+	font-family: "Exo", sans-serif;
+
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
 }
 
-a{
-    color: #e65100;
+body::-webkit-scrollbar {
+	display: none;
 }
 
-.main-content{
-    flex: 1;
+header,
+main,
+footer {
+	padding-left: 300px;
 }
 
-.navbar-logo{
-    height:64px;
+main {
+	flex: 1 0 auto;
+}
+
+@media only screen and (max-width: 992px) {
+	header,
+	main,
+	footer {
+		padding-left: 0;
+	}
+}
+
+a {
+	color: #e65100;
+}
+
+.main-content {
+	width: 100%;
+	flex: 1;
+}
+
+.navbar-logo {
+	width: 100%;
 }
 
 @media (max-width: 600px) {
-    .navbar-logo{
-        height: 56px;
-    }
+	.navbar-logo {
+		height: 56px;
+	}
 }
 
-.custom-orange-text{
-    color: #e65100;
+.main-logo {
+	max-height: 400px;
 }
 
-.navbar-link{
-    color: #fff;
+.h1-404 {
+	text-align: center;
+	font-size: 15rem;
+	font-weight: bolder;
 }
 
-.main-logo{
-    max-height: 400px;
+.h1-404-text {
+	text-align: center;
+	font-size: 5rem;
+	font-weight: bolder;
 }
 
-.h1-404{
-    text-align: center; 
-    font-size: 15rem; 
-    font-weight: bolder;
+.h1-404-icon {
+	text-align: center;
 }
 
-.h1-404-text{
-    text-align: center; 
-    font-size: 5rem; 
-    font-weight: bolder;
+.h1-404-icon i {
+	font-size: 20rem;
 }
 
-.h1-404-icon{
-    text-align: center;
-}
-
-.h1-404-icon i{
-    font-size: 20rem;
-}
-
-.header-icon{
-    vertical-align: middle !important;
-    font-size: 2.5rem !important;
+.header-icon {
+	vertical-align: middle !important;
+	font-size: 2.5rem !important;
 }
 
 .detail__player {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 .detail__player img {
-    width: 120px;
-    margin-right: 2rem;
+	width: 120px;
+	margin-right: 2rem;
 }
-.detail__player h3{
-    margin-top: 0;
-}
-
-.page-footer{
-    padding-top: 0px;
+.detail__player h3 {
+	margin-top: 0;
 }
 
-.stats-profile-pic{
-    width:50px;
-    height:50px;
-    vertical-align: middle
+.page-footer {
+	padding-top: 0px;
 }
 
-.stats-icon{
-    vertical-align: middle !important;
-    font-size: 2.3rem !important;
+.stats-profile-pic {
+	width: 50px;
+	height: 50px;
+	vertical-align: middle;
 }
 
-.steam-id{
-    font-size: 0.75rem; 
-    color: #dddddd
+.stats-icon {
+	vertical-align: middle !important;
+	font-size: 2.3rem !important;
 }
 
-.mono-font{
-    font-family: 'Courier New', Courier, monospace;
+.steam-id {
+	font-size: 0.75rem;
+	color: #dddddd;
 }
 
-.clickable-card:hover div{
-    -webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.3);
-    -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.3);
-    box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.3);
-    bottom: 5px;
-    right: 5px;
+.mono-font {
+	font-family: "Courier New", Courier, monospace;
 }
 
-.inline-badge{
-    position: absolute;
+.clickable-card:hover div {
+	-webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.3);
+	box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.3);
+	bottom: 5px;
+	right: 5px;
+}
+
+.inline-badge {
+	position: absolute;
 }
 
 .tab a {
-    display: flex !important;
-    align-content: center !important;
-    color: white !important;
+	display: flex !important;
+	align-content: center !important;
+	color: white !important;
 }
 .tab a .material-icons {
-    display: flex !important;
-    line-height: 2 !important;
-    margin-right: .5rem;
+	display: flex !important;
+	line-height: 2 !important;
+	margin-right: 0.5rem;
 }
 .tabs .indicator {
-    background-color: #e65100 !important;
+	background-color: #e65100 !important;
 }
 .tabs .tab a:focus,
 .tabs .tab a:focus.active {
-    background-color: rgba(0,0,0,0.1) !important;
+	background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 #weaponsKills {
-    color: green;
+	color: green;
 }
 #weaponsShots {
-    color: cornflowerblue;
+	color: cornflowerblue;
 }
 #weaponsHits {
-    color: goldenrod;
+	color: goldenrod;
 }
 #weaponsAccuracy {
-    color: goldenrod;
+	color: goldenrod;
+}
+
+/* match.html */
+.scorediv {
+	text-align: center;
+	vertical-align: middle;
+	font-size: 40;
+}
+
+.scoretitleimg {
+	height: 200px;
+	object-fit: cover;
+	opacity: 0.8;
+}
+
+.tableimage {
+	height: 30px;
+}
+
+.avatar {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+}
+
+@font-face {
+	font-family: Scoreboard;
+	src: url("/public/css/font.ttf");
+}
+
+.scoreticker {
+	font-family: Scoreboard, sans-serif;
+	font-size: 75px;
+}
+
+/* index.html */
+.matches-table-icon {
+	height: 30px;
+	padding: 0px;
+}
+
+.scoreboard-table-avatar {
+	height: 40px;
+	width: 40px;
+	padding: 1px;
+	padding-right: 10px;
+}
+.matchbadge {
+	text-align: right;
+	padding-right: 20px;
+}
+
+.scoreboardbadge {
+	text-align: right;
+	padding-right: 20px;
+}
+
+.clickable-row {
+	cursor: pointer;
+}
+
+.scoreboard-table-name {
+	font-size: large;
+	padding: 0px;
+}
+
+.scoreboard-table-points {
+	font-size: large;
 }
