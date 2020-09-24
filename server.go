@@ -14,7 +14,6 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
-	"github.com/megaclan3000/megaclan3000/internal/demoparser"
 	"github.com/megaclan3000/megaclan3000/internal/steamclient"
 )
 
@@ -73,7 +72,6 @@ func main() {
 	r.HandleFunc("/match/{id}", parseTemplates(handlerMatch))
 	r.HandleFunc("/matches", parseTemplates(handlerMatches))
 	r.HandleFunc("/awards", parseTemplates(handlerAwards))
-	r.HandleFunc("/scoreboard", parseTemplates(handlerScoreboard))
 	r.HandleFunc("/imprint", parseTemplates(handlerImprint))
 
 	// API for json data retrieval
@@ -136,15 +134,6 @@ func handlerPlayers(w http.ResponseWriter, r *http.Request) {
 
 func handlerContact(w http.ResponseWriter, r *http.Request) {
 	if err := t.ExecuteTemplate(w, "contact.html", nil); err != nil {
-		log.Warn(err)
-	}
-}
-
-func handlerScoreboard(w http.ResponseWriter, r *http.Request) {
-
-	var players demoparser.InfoStruct
-
-	if err := t.ExecuteTemplate(w, "scoreboard.html", players); err != nil {
 		log.Warn(err)
 	}
 }
