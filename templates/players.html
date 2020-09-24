@@ -1,68 +1,169 @@
-<go>template "header.html"</go>
-<script>
-	$( "#header-link-stats" ).addClass( "active" );
-</script>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MEGACLAN3000</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!-- CSS Libs -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+		/>
+		<link
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
+			rel="stylesheet"
+		/>
+		<link
+			rel="shortcut icon"
+			href="/public/img/favicon.ico"
+			type="image/x-icon"
+		/>
+		<link rel="icon" href="/public/img/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="/public/css/custom.css" />
+		<link rel="stylesheet" href="/public/css/honeycombs.css" />
 
-<div class="row">
-	<div class="col s12 m12 l12">
-		<h3 class="white-text"><i class="medium material-icons header-icon">equalizer</i>&nbsp;PLAYER STATS</h3>
-	</div>
-</div>
-<div class="row">
-	<go>range $val := .</go>
-	<div class="col s12 m12 l6">
-		<a href="player/<go>$val.PlayerSummary.SteamID</go>" class="clickable-card">
-			<div class="card indigo darken-2">
-				<div class="card-content">
-					<p class="card-title white-text">
-					<img src="<go>$val.PlayerSummary.Avatarfull</go>" class="stats-profile-pic" alt="">&nbsp;&nbsp;<go>$val.PlayerSummary.Personaname</go>
+		<script charset="utf-8" src="/public/js/helpers.js"></script>
+		<!-- JS Libs -->
+		<!-- Load jQuery -->
+		<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+		<!-- Load JsRender latest version, from www.jsviews.com: -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.7/jsrender.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 
-					<go>if eq $val.PlayerSummary.Personastate "0"</go>
-					<span class="new badge red" data-badge-caption="">offline</span>
-					<go>else</go>
-					<span class="new badge green" data-badge-caption="">online</span>
+		<!--Highcharts -->
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+		<script src="https://code.highcharts.com/modules/export-data.js"></script>
+		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		<script src="https://code.highcharts.com/modules/sankey.js"></script>
+		<script src="https://code.highcharts.com/highcharts-more.js"></script>
+		<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+		<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+		<script src="/public/js/honeycombs.js"></script>
+
+		<script src="/public/js/three.r119.min.js"></script>
+		<script src="/public/js/vanta.net.min.js"></script>
+
+		<script>
+			$(document).ready(function () {
+				$(".sidenav").sidenav();
+
+				VANTA.NET({
+					el: "body",
+					mouseControls: true,
+					touchControls: true,
+					backgroundColor: 0x10154c,
+					color: 0x283593,
+					gyroControls: false,
+					minHeight: 200.0,
+					minWidth: 200.0,
+					scale: 1.0,
+					scaleMobile: 1.0,
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<go>template "sidenav.html"</go>
+		<main>
+			<div class="container main-content">
+				<script>
+					$("#header-link-stats").addClass("active");
+				</script>
+
+				<div class="row">
+					<div class="col s12 m12 l12">
+						<h3 class="white-text">
+							<i class="medium material-icons header-icon">equalizer</i
+							>&nbsp;PLAYER STATS
+						</h3>
+					</div>
+				</div>
+				<div class="row">
+					<go>range $val := .</go>
+					<div class="col s12 m12 l6">
+						<a
+							href="player/<go>$val.PlayerSummary.SteamID</go>"
+							class="clickable-card"
+						>
+							<div class="card indigo darken-2">
+								<div class="card-content">
+									<p class="card-title white-text">
+										<img
+											src="<go>$val.PlayerSummary.Avatarfull</go>"
+											class="stats-profile-pic"
+											alt=""
+										/>&nbsp;&nbsp;<go>$val.PlayerSummary.Personaname</go>
+
+										<go>if eq $val.PlayerSummary.Personastate "0"</go>
+										<span class="new badge red" data-badge-caption=""
+											>offline</span
+										>
+										<go>else</go>
+										<span class="new badge green" data-badge-caption=""
+											>online</span
+										>
+										<go>end</go>
+									</p>
+									<br />
+									<table class="centered white-text">
+										<tr>
+											<td>
+												<i
+													class="medium material-icons stats-icon"
+													title="number of wins"
+													>beenhere</i
+												>
+												&nbsp;&nbsp;
+												<go>$val.UserStatsForGame.Stats.TotalWins</go>
+											</td>
+											<td>
+												<i
+													class="medium material-icons stats-icon"
+													title="number of played hours"
+													>timer</i
+												>
+												&nbsp;&nbsp;
+												<go>$val.RecentlyPlayedGames.PlaytimeForever</go> h
+											</td>
+										</tr>
+									</table>
+
+									<table class="centered white-text">
+										<tr>
+											<th>K / D</th>
+											<td>
+												<go>$val.UserStatsForGame.Stats.TotalKills</go> /
+												<go>$val.UserStatsForGame.Stats.TotalDeaths</go>
+											</td>
+											<td><go>$val.UserStatsForGame.Extra.TotalKD</go></td>
+										</tr>
+										<tr>
+											<th>K / D (Last Match)</th>
+											<td>
+												<go>$val.UserStatsForGame.Stats.LastMatchKills</go> /
+												<go>$val.UserStatsForGame.Stats.LastMatchDeaths</go>
+											</td>
+											<td><go>$val.UserStatsForGame.Extra.LastMatchKD</go></td>
+										</tr>
+										<tr>
+											<th>shots hit / fired</th>
+											<td>
+												<go>$val.UserStatsForGame.Stats.TotalShotsHit</go> /
+												<go>$val.UserStatsForGame.Stats.TotalShotsFired</go>
+											</td>
+											<td><go>$val.UserStatsForGame.Extra.HitRatio</go></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</a>
+					</div>
 					<go>end</go>
-
-					</p>
-					<br>
-					<table class="centered white-text">
-						<tr>
-							<td>
-								<i class="medium material-icons stats-icon" title="number of wins">beenhere</i>
-								&nbsp;&nbsp;
-								<go>$val.UserStatsForGame.Stats.TotalWins</go>
-							</td>
-							<td>
-								<i class="medium material-icons stats-icon" title="number of played hours">timer</i>
-								&nbsp;&nbsp;
-								<go>$val.RecentlyPlayedGames.PlaytimeForever</go> h
-							</td>
-						</tr>
-					</table>
-
-					<table class="centered white-text">
-						<tr>
-							<th>K / D</th>
-							<td> <go>$val.UserStatsForGame.Stats.TotalKills</go> / <go>$val.UserStatsForGame.Stats.TotalDeaths</go></td>
-							<td><go>$val.UserStatsForGame.Extra.TotalKD</go></td>
-						</tr>
-						<tr>
-							<th>K / D (Last Match)</th>
-							<td> <go>$val.UserStatsForGame.Stats.LastMatchKills</go> / <go>$val.UserStatsForGame.Stats.LastMatchDeaths</go></td>
-							<td><go>$val.UserStatsForGame.Extra.LastMatchKD</go></td>
-						</tr>
-						<tr>
-							<th>shots hit / fired</th>
-							<td><go>$val.UserStatsForGame.Stats.TotalShotsHit</go> / <go>$val.UserStatsForGame.Stats.TotalShotsFired</go></td>
-							<td><go>$val.UserStatsForGame.Extra.HitRatio</go></td>
-						</tr>
-					</table>
 				</div>
 			</div>
-		</a>
-	</div>
-
-	<go>end</go>
-</div>
-
-<go>template "footer.html"</go>
+		</main>
+		<go>template "footer.html"</go>
+	</body>
+</html>

@@ -66,7 +66,7 @@ func main() {
 
 	// Define routes
 	r.HandleFunc("/", parseTemplates(handlerIndex))
-	r.HandleFunc("/stats", parseTemplates(handlerStats))
+	r.HandleFunc("/players", parseTemplates(handlerPlayers))
 	r.HandleFunc("/contact", parseTemplates(handlerContact))
 	r.HandleFunc("/faq", parseTemplates(handlerFAQ))
 	r.HandleFunc("/player/{id}", parseTemplates(handlerDetails))
@@ -122,7 +122,7 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func handlerStats(w http.ResponseWriter, r *http.Request) {
+func handlerPlayers(w http.ResponseWriter, r *http.Request) {
 
 	// Stort players by Personastate (online status)
 	sort.Slice(datastorage.Players, func(i, j int) bool {
