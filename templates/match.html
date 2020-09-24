@@ -1,40 +1,4 @@
 <go>template "header.html"</go>
-<!-- TODO put styles in public folder -->
-<style type="text/css" media="screen">
-	.scorediv {
-		text-align: center;
-		vertical-align: middle;
-		font-size: 40;
-	}
-
-	.scoretitleimg {
-		height: 200px;
-		object-fit: cover;
-		opacity: 0.8;
-	}
-
-	.tableimage {
-		height: 30px;
-	}
-
-	.avatar {
-		display: block;
-		margin-left: auto;
-		margin-right: auto;
-		width: 100%;
-	}
-
-	@font-face {
-		font-family: Scoreboard;
-		src: url("/public/css/font.ttf");
-	}
-
-	.scoreticker {
-		font-family: Scoreboard, sans-serif;
-		font-size: 75px;
-	}
-</style>
-
 <div class="row">
 	<div class="col s12" style="padding: 0px; margin: 0px">
 		<div class="card indigo">
@@ -42,6 +6,7 @@
 				<img
 					class="scoretitleimg"
 					src="/public/img/maps/titles/<go>.General.MapName</go>.png"
+					alt=""
 				/>
 				<span class="card-title"><go>.General.MapName</go></span>
 			</div>
@@ -56,9 +21,7 @@
 								src="<go>$p.AvatarURL</go>"
 								alt=""
 							/>
-							<span class="title truncate center-align orange-text">
-								<go>$p.Name</go>
-							</span>
+							<span class="title truncate center-align orange-text"> <go>$p.Name</go> </span>
 							<img
 								src="/public/img/ranks/<go>$p.Rank</go>.png"
 								style="margin-left: auto; margin-right: auto; width: 100%"
@@ -188,5 +151,6 @@
 	animScoreClan.start();
 	animScoreEnemy.start();
 </script>
+
 
 <go>template "footer.html"</go>

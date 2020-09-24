@@ -1,7 +1,9 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>MEGACLAN3000</title>
 		<meta name="robots" content="noindex" />
+		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!-- CSS Libs -->
 		<link
@@ -43,7 +45,81 @@
 
 		<script src="/public/js/three.r119.min.js"></script>
 		<script src="/public/js/vanta.net.min.js"></script>
-	</head>
+
+<!-- match.html -->
+<style type="text/css" media="screen">
+	.scorediv {
+		text-align: center;
+		vertical-align: middle;
+		font-size: 40;
+	}
+
+	.scoretitleimg {
+		height: 200px;
+		object-fit: cover;
+		opacity: 0.8;
+	}
+
+	.tableimage {
+		height: 30px;
+	}
+
+	.avatar {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		width: 100%;
+	}
+
+	@font-face {
+		font-family: Scoreboard;
+		src: url("/public/css/font.ttf");
+	}
+
+	.scoreticker {
+		font-family: Scoreboard, sans-serif;
+		font-size: 75px;
+	}
+</style>
+
+
+	<!-- index.html -->
+<style type="text/css" media="screen">
+	.matches-table-icon {
+		height: 30px;
+		padding: 0px;
+	}
+
+	.scoreboard-table-avatar {
+		height: 40px;
+		width: 40px;
+		padding: 1px;
+		padding-right: 10px;
+	}
+	.matchbadge{
+		text-align: right;
+		padding-right: 20px;
+	}
+
+	.scoreboardbadge{
+		text-align: right;
+		padding-right: 20px;
+	}
+
+	.clickable-row {
+		cursor: pointer;
+	}
+
+
+	.scoreboard-table-name {
+		font-size: large;
+		padding: 0px;
+	}
+
+	.scoreboard-table-points {
+		font-size:large;
+	}
+</style>
 	<style type="text/css" media="screen">
 		@import url("https://fonts.googleapis.com/css?family=Exo:400,700");
 
@@ -95,6 +171,8 @@
 		}
 	</style>
 
+	</head>
+
 	<body>
 		<script>
 			$(document).ready(function () {
@@ -119,7 +197,7 @@
 			<li>
 				<div>
 					<a href="/">
-						<img class="navbar-logo" src="/public/logo/Logo_isolated.png" />
+						<img class="navbar-logo" src="/public/logo/Logo_isolated.png" alt="megaclan3000"/>
 					</a>
 				</div>
 			</li>
@@ -156,4 +234,4 @@
 			</li>
 		</ul>
 
-		<div class="container main-content">
+		<main class="container main-content">

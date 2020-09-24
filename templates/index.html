@@ -1,47 +1,12 @@
 <go>template "header.html"</go>
 
-<style type="text/css" media="screen">
-	.matches-table-icon {
-		height: 30px;
-		padding: 0px;
-	}
-
-	.scoreboard-table-avatar {
-		height: 40px;
-		width: 40px;
-		padding: 1px;
-		padding-right: 10px;
-	}
-	.matchbadge{
-		text-align: right;
-		padding-right: 20px;
-	}
-
-	.scoreboardbadge{
-		text-align: right;
-		padding-right: 20px;
-	}
-
-	.clickable-row {
-		cursor: pointer;
-	}
-
-
-	.scoreboard-table-name {
-		font-size: large;
-		padding: 0px;
-	}
-
-	.scoreboard-table-points {
-		font-size:large;
-	}
-</style>
 
 <div class="row"> </div>
 
 <div class="row">
 	<div class="col s12 m12 l12">
-	<div class="honeycombs" id="playerCombs"></div>
+		<div class="honeycombs" id="playerCombs"></div>
+	</div>
 </div>
 
 <div class="row">
@@ -81,21 +46,21 @@
 					</table>
 				</p>
 			</div>
-		<div class="card-action">
-		<a href="/matches">See all matches</a>
+			<div class="card-action"> <a href="/matches">See all matches</a> </div>
+		</div>
 	</div>
 </div>
 
 <script id="player-comb-template" type="text/x-jsrender">
 	<div class="comb">
-		<img src="{{:avatar}}" /><span><br>{{:player_name}}</span>
+		<img src="{{:avatar}}" alt="" /><span><br>{{:player_name}}</span>
 		<a href="/player/{{:steamid}}" class="" style="display:none;"></a>
 	</div>
 </script>
 
 <script id="player-scoreboard-template" type="text/x-jsrender">
 	<tr class="hoverable clickable-row" data-href="/player/{{:steamid}}">
-		<td class=scoreboard-table-avatar><img height="50px" src="{{:avatar}}" alt=""></td>
+		<td class=scoreboard-table-avatar><img height="50" src="{{:avatar}}" alt=""></td>
 		<td class="scoreboard-table-name">{{:player_name}}</td>
 		<td class="orange-text scoreboard-table-points">{{:points}}</td>
 		<td> <span class="grey-text valign-wrapper"> <i class="material-icons" title="Clan-matches participated">flag</i>{{:matches}}</span></td>
