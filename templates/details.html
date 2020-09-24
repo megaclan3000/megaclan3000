@@ -49,6 +49,8 @@
 			$(document).ready(function () {
 				$(".sidenav").sidenav();
 
+						$(".tabs").tabs();
+
 				VANTA.NET({
 					el: "body",
 					mouseControls: true,
@@ -68,6 +70,7 @@
 		<go>template "sidenav.html"</go>
 		<main>
 			<div class="container main-content">
+
 				<script>
 					$("#header-link-stats").addClass("active");
 				</script>
@@ -170,13 +173,6 @@
 					</div>
 				</div>
 
-				<script>
-					$(document).ready(function () {
-						$(".tabs").tabs();
-					});
-				</script>
-
-				<div class="row"></div>
 			</div>
 		</main>
 		<go>template "footer.html"</go>
