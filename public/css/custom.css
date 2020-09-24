@@ -259,13 +259,10 @@ a {
 
 
 .best-weapon-img{
-	<!-- height:150px; -->
 object-fit: contain;
 filter: invert(1) opacity(0.7) drop-shadow(7px 7px 7px #1a237e)
 }
 
-.last-match-container {
-}
 
 .last-match-map-img {
 	height:100px;
