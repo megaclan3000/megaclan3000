@@ -49,6 +49,24 @@
 			$(document).ready(function () {
 				$(".sidenav").sidenav();
 
+
+
+			$.getJSON("/api/claninfo/matches",  function(data) {
+
+
+				// Append all matches to table
+				for (var i = 0; i<data.length; i++) {
+					data[i].time= new Date(data[i].time).toUTCString()
+					$("#matches-table-body" ).append( $.templates( "#matches-template" ).render(data[i]));
+				}
+
+				// Make table rows clickable
+				$(".clickable-row").click(function() {
+					window.location = $(this).data("href");
+				});
+				// TODO render updates
+			});
+
 				VANTA.NET({
 					el: "body",
 					mouseControls: true,
@@ -132,28 +150,7 @@
 		</tr>
 	</script>
 
-	<script type="text/javascript">
-		$(document).ready(function () {
-
-			$.getJSON("/api/claninfo/matches",  function(data) {
-
-
-				// Append all matches to table
-				for (var i = 0; i<data.length; i++) {
-					data[i].time= new Date(data[i].time).toUTCString()
-					$("#matches-table-body" ).append( $.templates( "#matches-template" ).render(data[i]));
-				}
-
-				// Make table rows clickable
-				$(".clickable-row").click(function() {
-					window.location = $(this).data("href");
-				});
-				// TODO render updates
-			});
-		});
-	</script>
 	<script charset="utf-8">
-
 	var  opts= {
 		chart: {
 				plotBackgroundColor: null,
@@ -238,10 +235,6 @@ opts.series = ser1;
 opts.series = ser2;
 					Highcharts.chart('maps-chart-container', opts);
 				</script>
-
-
-
-
 
 			</div>
 		</main>

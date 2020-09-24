@@ -47,6 +47,20 @@
 
 		<script>
 			$(document).ready(function () {
+
+
+						$.getJSON("/api/claninfo/awards", function (data) {
+							for (var i = 0; data.lenght; i++) {
+								console.log(data[i]);
+							}
+							//TODO render awards
+							// Append all matches to table
+							//	for (var i = 0; i<data.length; i++) {
+							//		data[i].time= new Date(data[i].time).toUTCString()
+							//		$("#awards-container" ).append( $.templates( "#awards-template" ).render(data[i]));
+							//	}
+						});
+
 				$(".sidenav").sidenav();
 
 				VANTA.NET({
@@ -98,24 +112,7 @@
 						</div>
 					</div>
 				</div>
-
 				<script id="awards-template" type="text/x-jsrender"></script>
-
-				<script type="text/javascript">
-					$(document).ready(function () {
-						$.getJSON("/api/claninfo/awards", function (data) {
-							for (var i = 0; data.lenght; i++) {
-								console.log(data[i]);
-							}
-							//TODO render awards
-							// Append all matches to table
-							//	for (var i = 0; i<data.length; i++) {
-							//		data[i].time= new Date(data[i].time).toUTCString()
-							//		$("#awards-container" ).append( $.templates( "#awards-template" ).render(data[i]));
-							//	}
-						});
-					});
-				</script>
 			</div>
 		</main>
 		<go>template "footer.html"</go>

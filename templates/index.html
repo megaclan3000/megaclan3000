@@ -47,6 +47,41 @@
 
 		<script>
 			$(document).ready(function () {
+				$.getJSON("/api/claninfo/all", function (data) {
+					// Calculate a random offset so that players are placed in
+					// random position
+					var offset = Math.floor(Math.random() * 10);
+					for (var i = 0; i < data.players.length; i++) {
+						// Append player comb
+						$("#playerCombs").append(
+							$.templates("#player-comb-template").render(
+								data.players[(i + offset) % data.players.length]
+							)
+						);
+
+						// Append scoreboard line
+						$("#scoreboard-table-body").append(
+							$.templates("#player-scoreboard-template").render(data.players[i])
+						);
+					}
+
+					$(".honeycombs").honeycombs();
+
+					// Append all matches to table
+					for (var i = 0; i < data.matches.length; i++) {
+						data.matches[i].time = new Date(data.matches[i].time).toUTCString();
+						$("#recent-matches-table-body").append(
+							$.templates("#recent-matches-template").render(data.matches[i])
+						);
+					}
+
+					// Make table rows clickable
+					$(".clickable-row").click(function () {
+						window.location = $(this).data("href");
+					});
+					// TODO render updates
+				});
+
 				$(".sidenav").sidenav();
 
 				VANTA.NET({
@@ -180,51 +215,6 @@
 						<td class="matchbadge"> <span class="new badge red" data-badge-caption="LOST"></span> </td>
 						{{/if}}
 					</tr>
-				</script>
-
-				<script type="text/javascript">
-					$(document).ready(function () {
-						$.getJSON("/api/claninfo/all", function (data) {
-							// Calculate a random offset so that players are placed in
-							// random position
-							var offset = Math.floor(Math.random() * 10);
-							for (var i = 0; i < data.players.length; i++) {
-								// Append player comb
-								$("#playerCombs").append(
-									$.templates("#player-comb-template").render(
-										data.players[(i + offset) % data.players.length]
-									)
-								);
-
-								// Append scoreboard line
-								$("#scoreboard-table-body").append(
-									$.templates("#player-scoreboard-template").render(
-										data.players[i]
-									)
-								);
-							}
-
-							$(".honeycombs").honeycombs();
-
-							// Append all matches to table
-							for (var i = 0; i < data.matches.length; i++) {
-								data.matches[i].time = new Date(
-									data.matches[i].time
-								).toUTCString();
-								$("#recent-matches-table-body").append(
-									$.templates("#recent-matches-template").render(
-										data.matches[i]
-									)
-								);
-							}
-
-							// Make table rows clickable
-							$(".clickable-row").click(function () {
-								window.location = $(this).data("href");
-							});
-							// TODO render updates
-						});
-					});
 				</script>
 			</div>
 		</main>
