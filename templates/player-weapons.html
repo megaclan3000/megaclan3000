@@ -1,25 +1,28 @@
 <div id="player-weapons-chart" class="indigo darken-2"></div>
+
 <div class="weapons-table-container">
-	
-<div class="row">
-	<div class="col s12">
-		<table id="player-weapons-table" class="white-text highlight indigo darken-2">
-			<thead>
-				<tr class="indigo darken-3 orange-text">
-					<th></th>
-					<th>Weapon</th>
-					<th>Kills</th>
-					<th>Shots</th>
-					<th>Hits</th>
-					<th>Accuracy</th>
-				</tr>
-			</thead>
-			<tbody></tbody>
-		</table>
+	<div class="row">
+		<div class="col s12">
+			<table
+				id="player-weapons-table"
+				class="white-text highlight indigo darken-2"
+			>
+				<thead>
+					<tr class="indigo darken-3 orange-text">
+						<th></th>
+						<th>Weapon</th>
+						<th>Kills</th>
+						<th>Shots</th>
+						<th>Hits</th>
+						<th>Accuracy</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
 	</div>
 </div>
 
-</div>
 <script id="player-weapons-table-row" type="text/x-jsrender">
 	<tr>
 	<td> <img class="weaponicon" src="/public/img/weapons/outlines/svg_normal/{{:weapon}}.svg" > </td>
@@ -33,118 +36,84 @@
 
 <script charset="utf-8">
 	weaponschart = Highcharts.chart("player-weapons-chart", {
-    chart: {
-        type: 'column',
-	plotBackgroundColor: null,
-	backgroundColor: 'rgba(0,0,0,0)',
-	plotBorderWidth: null,
-	plotShadow: false,
-    },
-    title: null,
-    xAxis: {
-        categories: [ ],
-        crosshair: true,
-		gridLineWidth: 0,
-		labels: {
-            style: {
-                color: 'white'
-            }
-        }
-    },
-    yAxis: [{
-        min: 0,
-        title: null,
+		chart: {
+			type: "column",
+			plotBackgroundColor: null,
+			backgroundColor: "rgba(0,0,0,0)",
+			plotBorderWidth: null,
+			plotShadow: false,
+		},
+		title: null,
+		xAxis: {
+			categories: [],
+			crosshair: true,
+			gridLineWidth: 0,
+			labels: {
+				style: {
+					color: "white",
+				},
+			},
+		},
+		yAxis: [
+			{
+				min: 0,
+				title: null,
 
-		gridLineWidth: 0,
-		labels: {
-			style: {
-				color: 'orange'
-			}
-        }
+				gridLineWidth: 0,
+				labels: {
+					style: {
+						color: "orange",
+					},
+				},
+			},
+			{
+				title: null,
+			},
+		],
+		legend: {
+			shadow: false,
+		},
 
-    }, {
-        title: null,
-    }],
-    legend: {
-        shadow: false
-    },
-
-credits: {
-	enabled: false
-},
-exporting: {
-	enabled: false
-},
-legend: {
-	itemStyle: {
-		color: '#ffffff',
-	}
-},
-    tooltip: {
-        shared: true
-    },
-    plotOptions: {
-        column: {
-            grouping: false,
-            shadow: false,
-            borderWidth: 0
-        }
-    },
-    series: [{
-        name: 'Shots',
-        color: 'rgba(124, 181, 236, 0.3)',
-        data: [],
-        pointPadding: 0.1,
-    }, {
-        name: 'Hits',
-        color: 'rgba(82, 192, 185, .7)',
-        data: [],
-        pointPadding: 0.2,
-    }  , {
-        name: 'Kills',
-        color: 'rgba(234, 152, 150,1)',
-        data: [],
-        pointPadding: 0.3,
-    }]
-});
-</script>
-
-<script charset="utf-8">
-	$(document).ready(function () {
-		var steamID = window.location.href.substring(
-			window.location.href.lastIndexOf("/") + 1
-		);
-		console.log(steamID);
-		var url = "/api/playerinfo/" + steamID + "/weapons";
-		var cats = [];
-		var shots = [];
-		var hits= [];
-		var kills= [];
-
-		$.getJSON(url, function (data) {
-			data.sort((a, b) => b.kills- a.kills);
-
-			for (var row = 0; row < data.length; row++) {
-				if (data[row].shots > 0) {
-				console.log(data[row]);
-					$("#player-weapons-table tbody").append(
-						$.templates("#player-weapons-table-row").render(data[row])
-					);
-
-					cats.push(data[row].weapon);
-					shots.push(data[row].shots);
-					hits.push(data[row].hits);
-					kills.push(data[row].kills);
-
-//					);
-				}
-
-			}
-
-				weaponschart.xAxis[0].setCategories(cats); //setting category
-					weaponschart.series[0].setData(shots);
-					weaponschart.series[1].setData(hits);
-					weaponschart.series[2].setData(kills);
-		});
+		credits: {
+			enabled: false,
+		},
+		exporting: {
+			enabled: false,
+		},
+		legend: {
+			itemStyle: {
+				color: "#ffffff",
+			},
+		},
+		tooltip: {
+			shared: true,
+		},
+		plotOptions: {
+			column: {
+				grouping: false,
+				shadow: false,
+				borderWidth: 0,
+			},
+		},
+		series: [
+			{
+				name: "Shots",
+				color: "rgba(124, 181, 236, 0.3)",
+				data: [],
+				pointPadding: 0.1,
+			},
+			{
+				name: "Hits",
+				color: "rgba(82, 192, 185, .7)",
+				data: [],
+				pointPadding: 0.2,
+			},
+			{
+				name: "Kills",
+				color: "rgba(234, 152, 150,1)",
+				data: [],
+				pointPadding: 0.3,
+			},
+		],
 	});
 </script>

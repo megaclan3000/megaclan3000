@@ -48,8 +48,7 @@
 		<script>
 			$(document).ready(function () {
 				$(".sidenav").sidenav();
-
-						$(".tabs").tabs();
+				$(".tabs").tabs();
 
 				VANTA.NET({
 					el: "body",
@@ -63,6 +62,72 @@
 					scale: 1.0,
 					scaleMobile: 1.0,
 				});
+
+
+
+		var steamID = window.location.href.substring(
+			window.location.href.lastIndexOf("/") + 1
+		);
+		console.log(steamID);
+		var url = "/api/playerinfo/" + steamID + "/maps";
+		var cats = [];
+
+		$.getJSON(url, function (data) {
+			data.sort((a, b) => b.rounds_total - a.rounds_total);
+
+			for (var row = 0; row < data.length; row++) {
+				if (data[row].rounds_total > 0) {
+					$("#player-maps-table tbody").append(
+						$.templates("#player-maps-table-row").render(data[row])
+					);
+					cats.push(data[row].name);
+					mapschart.series[0].addPoint(data[row].rounds_won);
+					mapschart.series[1].addPoint(
+						data[row].rounds_total - data[row].rounds_won
+					);
+				}
+				mapschart.xAxis[0].setCategories(cats); //setting category
+			}
+		});
+
+
+
+
+		var steamID = window.location.href.substring(
+			window.location.href.lastIndexOf("/") + 1
+		);
+		console.log(steamID);
+		var url = "/api/playerinfo/" + steamID + "/weapons";
+		var cats = [];
+		var shots = [];
+		var hits= [];
+		var kills= [];
+
+		$.getJSON(url, function (data) {
+			data.sort((a, b) => b.kills- a.kills);
+
+			for (var row = 0; row < data.length; row++) {
+				if (data[row].shots > 0) {
+				console.log(data[row]);
+					$("#player-weapons-table tbody").append(
+						$.templates("#player-weapons-table-row").render(data[row])
+					);
+
+					cats.push(data[row].weapon);
+					shots.push(data[row].shots);
+					hits.push(data[row].hits);
+					kills.push(data[row].kills);
+
+//					);
+				}
+
+			}
+
+				weaponschart.xAxis[0].setCategories(cats); //setting category
+					weaponschart.series[0].setData(shots);
+					weaponschart.series[1].setData(hits);
+					weaponschart.series[2].setData(kills);
+		});
 			});
 		</script>
 	</head>
