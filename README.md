@@ -1,6 +1,4 @@
 <p align="center">
-
-
 ![megaclan3000](https://socialify.git.ci/megaclan3000/megaclan3000/image?description=1&font=Source%20Code%20Pro&forks=1&issues=1&language=1&logo=https%3A%2F%2Fmegaclan3000.de%2Fpublic%2Flogo%2FLogo_isolated.png&owner=1&pattern=Signal&pulls=1&stargazers=1&theme=Light)
 [![Build Status](https://travis-ci.org/megaclan3000/megaclan3000.svg?branch=master)](https://travis-ci.org/megaclan3000/megaclan3000)
 [![GoDoc](https://godoc.org/github.com/megaclan3000/megaclan3000?status.svg)](https://godoc.org/github.com/megaclan3000/megaclan3000)
@@ -17,6 +15,7 @@
 ![Docker Pulls](https://img.shields.io/docker/pulls/pinpox/megaclan3000)
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/pinpox/megaclan3000)
 </p>
+
 ## Suport the developers
 
 Buy the developers a coffee or a beer if you like this application! 
